@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="{{ app()->getLocale() }}" data-bs-theme="dark">
+<html lang="{{ app()->getLocale() }}" >
 
 <head>
     @include('includes.head')
