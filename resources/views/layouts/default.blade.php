@@ -12,7 +12,7 @@
     $appSidebarSearch = !empty($appSidebarSearch) ? $appSidebarSearch : '';
 @endphp
 
-<body>
+<body class="theme-orange">
     @include('includes.component.page-loader')
 
     <div id="app" class="app app-header-fixed app-sidebar-fixed app-with-wide-sidebar ">
@@ -31,8 +31,6 @@
         </div>
 
         @include('includes.component.scroll-top-btn')
-
-        @include('includes.component.theme-panel')
 
     </div>
 

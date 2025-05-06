@@ -6,7 +6,7 @@
 @endphp
 
 <!-- BEGIN #header -->
-<div id="header" class="app-header" {{ $appHeaderAttr }}>
+<div id="header" class="app-header" data-bs-theme="dark">
     <!-- BEGIN navbar-header -->
     <div class="navbar-header">
         <button type="button" class="navbar-desktop-toggler" data-toggle="app-sidebar-minify">
