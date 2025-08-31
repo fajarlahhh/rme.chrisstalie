@@ -9,7 +9,7 @@ use Livewire\Attributes\Url;
 class Index extends Component
 {
     #[Url]
-    public $date, $search;
+    public $date, $cari;
 
     public function mount()
     {
@@ -35,7 +35,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.penjualan.data.index', [
-            'data' => Sale::with(['pasien', 'saleDetail'])->where('date', $this->date)->when($this->search, fn($r) => $r->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%')))->orderBy('created_at', 'desc')->orderBy('id', 'desc')->get()
+            'data' => Sale::with(['pasien', 'saleDetail'])->where('date', $this->date)->when($this->cari, fn($r) => $r->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%')))->orderBy('created_at', 'desc')->orderBy('id', 'desc')->get()
         ]);
     }
 }

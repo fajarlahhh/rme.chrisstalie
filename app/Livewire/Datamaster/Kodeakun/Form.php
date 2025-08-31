@@ -23,7 +23,6 @@ class Form extends Component
             'kode' => 'required',
             'nama' => 'required',
             'kategori' => 'required',
-            'parent_id' => 'required',
         ]);
 
         DB::transaction(function () {

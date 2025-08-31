@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $search;
+    public $cari;
 
     public function delete($id)
     {
@@ -29,8 +29,8 @@ class Index extends Component
     {
         return view('livewire.datamaster.kodeakun.index', [
             'data' => KodeAkun::where(fn($q) => $q
-                ->where('id', 'like', '%' . $this->search . '%')
-                ->orWhere('nama', 'like', '%' . $this->search . '%'))
+                ->where('id', 'like', '%' . $this->cari . '%')
+                ->orWhere('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('id')
                 ->paginate(10)
         ]);

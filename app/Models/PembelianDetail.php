@@ -6,17 +6,19 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class PurchaseDetail extends Model
+class PembelianDetail extends Model
 {
     use HasFactory;
 
-    /**
-     * Get the goods that owns the PurchaseDetail
-     *
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     */
-    public function goods(): BelongsTo
+    protected $table = 'pembelian_detail';
+
+    public function barang(): BelongsTo
     {
         return $this->belongsTo(Barang::class);
+    }
+
+    public function pembelian(): BelongsTo
+    {
+        return $this->belongsTo(Pembelian::class);
     }
 }

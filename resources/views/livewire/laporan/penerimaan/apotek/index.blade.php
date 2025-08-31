@@ -23,7 +23,7 @@
                     <input class="form-control" type="date" wire:model.lazy="date1" />
                     &nbsp;s/d&nbsp;
                     <input class="form-control" type="date" wire:model.lazy="date2" />&nbsp;
-                    <input class="form-control" type="text" wire:model.lazy="search" />
+                    <input class="form-control" type="text" wire:model.lazy="cari" />
                 </div>
             </div>
         </div>

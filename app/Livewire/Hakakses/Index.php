@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $search, $exist = 1;
+    public $cari, $exist = 1;
 
 
     public function delete($id)
@@ -46,8 +46,8 @@ class Index extends Component
             'data' => Pengguna::where('uid', '!=', 'rafaskinclinic@gmail.com')
                 ->where(
                     fn($q) => $q
-                        ->where('uid', 'like', '%' . $this->search . '%')
-                        ->orWhere('nama', 'like', '%' . $this->search . '%')
+                        ->where('uid', 'like', '%' . $this->cari . '%')
+                        ->orWhere('nama', 'like', '%' . $this->cari . '%')
                 )
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->orderBy('nama')

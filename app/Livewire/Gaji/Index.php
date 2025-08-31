@@ -11,7 +11,7 @@ class Index extends Component
 {
     use WithPagination;
     #[Url]
-    public $search, $exist = 1, $month, $year;
+    public $cari, $exist = 1, $month, $year;
 
     public function mount()
     {
@@ -43,7 +43,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.gaji.index', [
-            'data' => Expenditure::with('pengguna')->where('type', 'Gaji')->with('expenditureDetail')->where('date', 'like', $this->year . '-' . $this->month . '%')->where('uraian', 'like', '%' . $this->search . '%')->with('pegawai')
+            'data' => Expenditure::with('pengguna')->where('type', 'Gaji')->with('expenditureDetail')->where('date', 'like', $this->year . '-' . $this->month . '%')->where('uraian', 'like', '%' . $this->cari . '%')->with('pegawai')
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->orderBy('date', 'desc')->orderBy('id', 'desc')->paginate(10)
         ]);

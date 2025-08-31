@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $search, $jenis = 'Obat';
+    public $cari, $jenis = 'Obat';
 
     public function delete($id)
     {
@@ -33,7 +33,7 @@ class Index extends Component
                 'pengguna'
             ])->where('jenis', $this->jenis)->konsinyasi()
                 ->where(fn($q) => $q
-                    ->where('nama', 'like', '%' . $this->search . '%'))
+                    ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')
                 ->paginate(10)
         ]);

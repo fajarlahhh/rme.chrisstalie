@@ -8,18 +8,18 @@ use App\Models\SaleDetail;
 
 class Index extends Component
 {
-    public $date1, $date2, $search;
+    public $date1, $date2, $cari;
 
     public function mount()
     {
         $this->date1 = $this->date1 ?: date('Y-m-01');
         $this->date2 = $this->date2 ?: date('Y-m-d');
-        $this->search = $this->search ?: '';
+        $this->cari = $this->cari ?: '';
     }
 
     public function getData()
     {
-        return collect(SaleDetail::with(['sale', 'goods.konsinyasi'])->whereHas('goods', fn($q) => $q->where('nama', 'like', '%' . $this->search . '%'))->whereHas('sale', fn($q) => $q->where('date', '>=', $this->date1)->where('date', '<=', $this->date2))->get()->groupBy('goods_id')->map(fn($q) => [
+        return collect(SaleDetail::with(['sale', 'goods.konsinyasi'])->whereHas('goods', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))->whereHas('sale', fn($q) => $q->where('date', '>=', $this->date1)->where('date', '<=', $this->date2))->get()->groupBy('goods_id')->map(fn($q) => [
             'id' => $q->first()->goods->nama . '.' . $q->first()->harga - $q->first()->discount,
             'nama' => $q->first()->goods->nama,
             'satuan' => $q->first()->goods->satuan,

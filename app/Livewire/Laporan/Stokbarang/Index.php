@@ -7,7 +7,7 @@ use Livewire\Component;
 
 class Index extends Component
 {
-    public $year, $month, $search;
+    public $year, $month, $cari;
 
     public function print()
     {
@@ -22,7 +22,7 @@ class Index extends Component
 
     public function getData()
     {
-        return Barang::where('nama', 'like', '%' . $this->search . '%')->with('pengguna')
+        return Barang::where('nama', 'like', '%' . $this->cari . '%')->with('pengguna')
             ->with(['goodsBalance' => fn($q) => $q->where('period', 'like',  $this->year . '-' . $this->month . '%')])
             ->with(['stokMasuk' => fn($q) => $q->where('date', 'like',  $this->year . '-' . $this->month . '%')])
             ->with(['saleDetail' => fn($q) => $q->whereHas('sale', fn($r) => $r->where('date', 'like',  $this->year . '-' . $this->month . '%'))])

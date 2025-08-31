@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $search;
+    public $cari, $status = 'Pending';
 
     public function delete($id)
     {
@@ -36,7 +36,10 @@ class Index extends Component
                 'verifikasiDitolak'
             ])
                 ->where(fn($q) => $q
-                    ->where('deskripsi', 'like', '%' . $this->search . '%'))
+                    ->where('deskripsi', 'like', '%' . $this->cari . '%'))
+                ->when($this->status == 'Pending', fn($q) => $q->whereDoesntHave('verifikasi'))
+                ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('verifikasiDisetujui'))
+                ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('verifikasiDitolak'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
         ]);

@@ -13,7 +13,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $search, $status = 'Pending';
+    public $cari, $status = 'Pending';
 
     public function delete($id)
     {
@@ -40,7 +40,7 @@ class Index extends Component
                     $q->whereNotNull('status');
                 }))
                 ->where(fn($q) => $q
-                    ->where('deskripsi', 'like', '%' . $this->search . '%'))
+                    ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
         ]);

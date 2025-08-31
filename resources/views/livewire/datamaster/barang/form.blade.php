@@ -25,8 +25,9 @@
                             <label class="form-label">Jenis Barang</label>
                             <select class="form-control" wire:model.live="jenis" data-width="100%">
                                 <option hidden selected>-- Pilih Jenis Barang --</option>
-                                <option value="Obat">Obat</option>
                                 <option value="Alat Kesehatan">Alat Kesehatan</option>
+                                <option value="Obat">Obat</option>
+                                <option value="Produk Kecantikan">Produk Kecantikan</option>
                             </select>
                             @error('jenis')
                                 <span class="text-danger">{{ $message }}</span>
@@ -58,10 +59,11 @@
                                 <label class="form-label">Bentuk</label>
                                 <select class="form-control" wire:model="bentuk" data-width="100%">
                                     <option hidden selected>-- Pilih Bentuk --</option>
-                                    <option value="Tablet">Tablet</option>
                                     <option value="Kapsul">Kapsul</option>
-                                    <option value="Sirup">Sirup</option>
+                                    <option value="Puyer">Puyer</option>
                                     <option value="Salep">Salep</option>
+                                    <option value="Sirup">Sirup</option>
+                                    <option value="Tablet">Tablet</option>
                                     <option value="Lainnya">Lainnya</option>
                                 </select>
                                 @error('bentuk')
@@ -79,7 +81,7 @@
                     </div>
                     <div class="col-md-6">
                         <div class="alert alert-info">
-                            @if ($jenis == 'Obat')
+                            @if ($jenis == 'Obat' || $jenis == 'Produk Kecantikan')
                                 <div class="mb-3">
                                     <label class="form-label">Golongan</label>
                                     <select class="form-control" wire:model="golongan" data-width="100%">
@@ -115,14 +117,7 @@
                                         <span class="text-danger">{{ $message }}</span>
                                     @enderror
                                 </div>
-                                <div class="mb-3">
-                                    <label class="form-label">KFA</label>
-                                    <input class="form-control" type="text" wire:model="kfa" />
-                                    @error('kfa')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
-                                </div>
-                            @else
+                            @elseif ($jenis == 'Alat Kesehatan')
                                 <div class="mb-3">
                                     <label class="form-label">Garansi <small>(Bulan)</small></label>
                                     <input class="form-control" type="number" wire:model="garansi" />

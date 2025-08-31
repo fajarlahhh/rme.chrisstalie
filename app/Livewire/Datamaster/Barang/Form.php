@@ -34,7 +34,6 @@ class Form extends Component
                 'harga_jual' => 'required',
                 'bentuk' => 'required',
                 'golongan' => 'required',
-                'kfa' => 'required',
             ]);
         } else {
             $this->validate([

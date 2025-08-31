@@ -44,7 +44,7 @@
                     &nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.live="search">
+                        wire:model.live="cari">
                 </div>
             </div>
         </div>

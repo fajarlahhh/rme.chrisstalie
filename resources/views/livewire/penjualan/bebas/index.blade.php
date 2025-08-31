@@ -35,7 +35,7 @@
                             minimumInputLength: 3,
                             dataType: 'json',
                             ajax: {
-                                url: '/search/pasien',
+                                url: '/cari/pasien',
                                 data: function(params) {
                                     var query = {
                                         search: params.term

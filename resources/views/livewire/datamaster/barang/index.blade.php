@@ -18,18 +18,19 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-control w-auto" wire:model.lazy="jenis">
-                        <option value="Obat">Obat</option>
                         <option value="Alat Kesehatan">Alat Kesehatan</option>
+                        <option value="Obat">Obat</option>
+                        <option value="Produk Kecantikan">Produk Kecantikan</option>
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="search">
+                        wire:model.lazy="cari">
                 </div>
             </div>
         </div>
         <div class="panel-body table-responsive">
             <table class="table table-hover">
-                @if ($jenis == 'Obat')
+                @if ($jenis == 'Obat' || $jenis == 'Produk Kecantikan')
                     <thead>
                         <tr>
                             <th class="w-10px">No.</th>
@@ -37,7 +38,6 @@
                             <th>Satuan</th>
                             <th>Harga Jual</th>
                             <th>Bentuk</th>
-                            <th>Golongan</th>
                             <th>KFA</th>
                             <th>Perlu Resep</th>
                             <th></th>
@@ -51,7 +51,6 @@
                                 <td>{{ $item->satuan }}</td>
                                 <td class="text-end">{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                                 <td>{{ $item->bentuk }}</td>
-                                <td>{{ $item->golongan }}</td>
                                 <td>{{ $item->kfa }}</td>
                                 <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
                                 <td class="with-btn-group text-end" nowrap>

@@ -17,9 +17,14 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
+                    <select wire:model.lazy="status" class="form-control w-auto">
+                        <option value="Disetujui">Disetujui</option>
+                        <option value="Ditolak">Ditolak</option>
+                        <option value="Pending">Pending</option>
+                    </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="search">
+                        wire:model.lazy="cari">
                 </div>
             </div>
         </div>
@@ -68,27 +73,27 @@
                                     <thead>
                                         <tr>
                                             <th>Barang</th>
+                                            <th>Satuan</th>
                                             <th>Qty Permintaan</th>
                                             <th>Qty Disetujui</th>
-                                            <th>Satuan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($item->permintaanPembelianDetail as $detail)
                                             <tr>
                                                 <td class="text-nowrap w-300px">{{ $detail->barang->nama }}</td>
+                                                <td class="text-nowrap w-80px">{{ $detail->barang->satuan }}</td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_permintaan }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_disetujui }}
                                                 </td>
-                                                <td class="text-nowrap w-80px">{{ $detail->barang->satuan }}</td>
                                             </tr>
                                         @endforeach
                                     </tbody>
                                 </table>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
-                                @role('administrator|supervisor')
+                                @role('administrator|supervisor|operator')
                                     @if ($item->verifikasiPending->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />

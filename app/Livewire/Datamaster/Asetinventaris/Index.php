@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $search, $kategori;
+    public $cari, $kategori;
 
     public function render()
     {
@@ -22,7 +22,7 @@ class Index extends Component
             ])
                 ->where('kategori', $this->kategori)
                 ->where(fn($q) => $q
-                    ->where('nama', 'like', '%' . $this->search . '%'))
+                    ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')
                 ->paginate(10)
         ]);
