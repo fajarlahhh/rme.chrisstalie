@@ -52,7 +52,8 @@
                                                 @if ($verifikasi->status == 'Disetujui')
                                                     <span class="badge bg-success">Disetujui</span>
                                                 @else
-                                                    <span class="badge bg-danger">Ditolak</span>
+                                                    <span
+                                                        class="badge bg-danger">Ditolak {{ ' - ' . $verifikasi->catatan }}</span>
                                                 @endif
                                                 <br>
                                                 <small>
@@ -82,7 +83,7 @@
                                         @foreach ($item->permintaanPembelianDetail as $detail)
                                             <tr>
                                                 <td class="text-nowrap w-300px">{{ $detail->barang->nama }}</td>
-                                                <td class="text-nowrap w-80px">{{ $detail->barang->barangSatuanTerkecil->nama }}</td>
+                                                <td class="text-nowrap w-80px">{!! $detail->barangSatuan?->nama . '<small> (' . $detail->barangSatuan?->konversi_satuan . ')</small>' !!}</td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_permintaan }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_disetujui }}
@@ -96,7 +97,7 @@
                                 @role('administrator|supervisor|operator')
                                     @if ($item->verifikasiPending->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
                                         @if ($item->verifikasiDisetujui->count() > 0 || $item->verifikasiDitolak->count() > 0)
                                             <x-action :row="$item" custom="" :detail="false" :edit="false"

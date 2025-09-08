@@ -39,7 +39,7 @@ class Index extends Component
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasi', function ($q) {
                     $q->whereNull('status');
-                }))
+                })->orWhereDoesntHave('verifikasi'))
                 ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('verifikasiDisetujui'))
                 ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('verifikasiDitolak'))
                 ->orderBy('created_at', 'desc')

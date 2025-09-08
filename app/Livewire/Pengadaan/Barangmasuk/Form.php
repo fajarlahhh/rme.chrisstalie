@@ -25,9 +25,13 @@ class Form extends Component
         $barang = PembelianDetail::where('pembelian_id', $this->pembelian_id)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
-            'satuan' => $q->barang->barangSatuanTerkecil->nama,
+            'barang_satuan_id' => $q->barang_satuan_id,
+            'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            'satuan' => $q->barangSatuan?->nama . ' (' . $q->barangSatuan?->konversi_satuan . ')',
             'qty' => $q->qty - ($stokMasuk->where('id', $q->barang_id)->first()['qty_masuk'] ?? 0),
             'qty_masuk' => null,
+            'no_batch' => null,
+            'tanggal_kedaluarsa' => null,
         ])->toArray();
         $this->barang = collect($barang)->filter(function ($q) {
             return $q['qty_masuk'] < $q['qty'];
@@ -52,32 +56,41 @@ class Form extends Component
 
         DB::transaction(function () {
             $stokMasuk = [];
+            $stok = [];
             foreach ($this->barang as $key => $value) {
+                $id = Str::uuid();
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk[] = [
-                        'id' => Str::uuid(),
+                        'id' => $id,
                         'qty' => $value['qty_masuk'],
                         'no_batch' => $value['no_batch'],
                         'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                         'barang_id' => $value['id'],
                         'pembelian_id' => $this->pembelian_id,
+                        'barang_satuan_id' => $value['barang_satuan_id'],
+                        'rasio_dari_terkecil' => $value['rasio_dari_terkecil'],
                         'pengguna_id' => auth()->id(),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
+                for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty_masuk']; $i++) {
+                    $stok[] = [
+                        'id' => Str::uuid(),
+                        'barang_id' => $value['id'],
+                        'no_batch' => $value['no_batch'],
+                        'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
+                        'stok_masuk_id' => $id,
+                        'tanggal_masuk' => now(),
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
                 }
             }
             StokMasuk::insert($stokMasuk);
-            Stok::insert(collect($stokMasuk)->map(fn($q) => [
-                'id' => $q['id'],
-                'barang_id' => $q['barang_id'],
-                'qty' => $q['qty'],
-                'no_batch' => $q['no_batch'],
-                'tanggal_kedaluarsa' => $q['tanggal_kedaluarsa'],
-                'tanggal_masuk' => now(),
-                'created_at' => $q['created_at'],
-                'updated_at' => $q['updated_at'],
-            ])->toArray());
+            foreach (array_chunk($stok, 1000) as $chunk) {
+                Stok::insert($chunk);
+            }
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect('/pengadaan/barangmasuk/form');

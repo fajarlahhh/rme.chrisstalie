@@ -28,7 +28,8 @@
                             <thead>
                                 <tr>
                                     <th>Barang</th>
-                                    <th class="w-100px">Qty</th>
+                                    <th class="w-200px">Satuan</th>
+                                    <th class="w-200px">Qty</th>
                                     <th class="w-5px"></th>
                                 </tr>
                             </thead>
@@ -45,11 +46,10 @@
                                                 showSubtext: true,
                                                 styleBase: 'form-control'
                                             })"
-                                                wire:model="barang.{{ $index }}.id">
+                                                wire:model.live="barang.{{ $index }}.id">
                                                 <option value="">-- Pilih Barang --</option>
                                                 @foreach ($dataBarang as $subRow)
-                                                    <option value="{{ $subRow['id'] }}"
-                                                        data-subtext="{{ $subRow['satuan'] }}">
+                                                    <option value="{{ $subRow['id'] }}">
                                                         {{ $subRow['nama'] }}
                                                     </option>
                                                 @endforeach
@@ -59,8 +59,30 @@
                                             @enderror
                                         </td>
                                         <td class="with-btn">
+                                            <select class="form-control" x-init="$($el).selectpicker({
+                                                liveSearch: true,
+                                                width: 'auto',
+                                                size: 10,
+                                                container: 'body',
+                                                style: '',
+                                                showSubtext: true,
+                                                styleBase: 'form-control'
+                                            })"
+                                                wire:model.live="barang.{{ $index }}.satuan">
+                                                <option value="">-- Pilih Satuan --</option>
+                                                @foreach ($row['barangSatuan'] as $subRow)
+                                                    <option value="{{ $subRow['id'] }}" data-subtext="{{ $subRow['konversi_satuan'] }}">
+                                                        {{ $subRow['nama'] }}
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('barang.' . $index . '.satuan')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                        <td class="with-btn">
                                             <input type="number" class="form-control" min="0" step="1"
-                                                min="0" max="100"
+                                                min="1"
                                                 wire:model="barang.{{ $index }}.qty" autocomplete="off">
                                             @error('barang.' . $index . '.qty')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -116,7 +138,7 @@
                     @enderror
                 </div>
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer" wire:loading.remove wire:target="submit">
                 @role('administrator|supervisor|operator')
                     <input type="submit" value="Simpan" class="btn btn-success" />
                 @endrole

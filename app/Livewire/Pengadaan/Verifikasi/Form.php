@@ -3,28 +3,31 @@
 namespace App\Livewire\Pengadaan\Verifikasi;
 
 use Livewire\Component;
+use App\Models\Verifikasi;
+use Illuminate\Support\Str;
+use App\Models\BarangSatuan;
+use Illuminate\Support\Facades\DB;
 use App\Models\PermintaanPembelian;
 use App\Models\PermintaanPembelianDetail;
-use App\Models\Verifikasi;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
 
 class Form extends Component
 {
-    public $dataBarang = [], $dataPengguna = [], $barang = [], $previous, $deskripsi, $data, $verifikator_id, $status = 'Ditolak';
+    public $dataBarang = [], $dataPengguna = [], $barang = [], $previous, $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan;
 
     public function submit()
     {
-        $this->validate([
-            'status' => 'required',
-        ]);
-
         if ($this->status == 'Disetujui') {
             $this->validate([
+                'status' => 'required',
                 'deskripsi' => 'required',
                 'barang' => 'required|array',
                 'barang.*.id' => 'required',
                 'barang.*.qty_disetujui' => 'required|numeric|min:1',
+            ]);
+        }else{
+            $this->validate([
+                'status' => 'required',
+                'catatan' => 'required',
             ]);
         }
 
@@ -34,12 +37,15 @@ class Form extends Component
                 $this->data->permintaanPembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
                     'qty_permintaan' => $q['qty'],
                     'qty_disetujui' => $q['qty_disetujui'],
+                    'barang_satuan_id' => $q['barang_satuan_id'],
+                    'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                     'permintaan_pembelian_id' => $this->data->id,
                     'barang_id' => $q['id'],
                 ])->toArray());
             }
             $verifikasi = Verifikasi::where('referensi_id', $this->data->id)->where('jenis', 'Permintaan Pembelian')->whereNull('status')->first();
             $verifikasi->status = $this->status;
+            $verifikasi->catatan = $this->catatan;
             $verifikasi->waktu_verifikasi = now();
             $verifikasi->save();
 
@@ -56,6 +62,7 @@ class Form extends Component
         $this->barang = $data->permintaanPembelianDetail->map(fn($q) => [
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
+            'satuan' => BarangSatuan::find($q->barang_satuan_id)->nama,
             'qty' => $q->qty_permintaan,
             'qty_disetujui' => 0,
         ])->toArray();

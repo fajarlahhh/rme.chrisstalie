@@ -21,4 +21,9 @@ class PembelianDetail extends Model
     {
         return $this->belongsTo(Pembelian::class);
     }
+
+    public function barangSatuan(): BelongsTo
+    {
+        return $this->belongsTo(BarangSatuan::class);
+    }
 }

@@ -49,8 +49,8 @@
                                 <td>{{ $item->nama }}</td>
                                 <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                                 <td>{!! $item->rasio_dari_terkecil == 1
-                                    ? '<span class="badge bg-success">Terkecil</span>'
-                                    : $item->rasio_dari_terkecil/$item->satuanKonversi->rasio_dari_terkecil . ' ' . $item->satuanKonversi->nama !!}</td>
+                                    ? '<span class="badge bg-success">Satuan Terkecil</span>'
+                                    : $item->konversi_satuan !!}</td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor')
                                         @if ($item->rasio_dari_terkecil == 1)

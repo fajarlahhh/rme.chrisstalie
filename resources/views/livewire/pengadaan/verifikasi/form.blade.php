@@ -23,8 +23,8 @@
                 <div class="mb-3">
                     <label class="form-label">Status</label>
                     <select class="form-control" wire:model.live="status">
-                        <option value="Disetujui">Disetujui</option>
-                        <option value="Ditolak">Ditolak</option>
+                        <option value="Disetujui">Setuju</option>
+                        <option value="Ditolak">Tolak</option>
                     </select>
                     @error('status')
                         <span class="text-danger">{{ $message }}</span>
@@ -36,6 +36,7 @@
                             <thead>
                                 <tr>
                                     <th>Barang</th>
+                                    <th class="w-200px">Satuan</th>
                                     <th class="w-100px">Qty</th>
                                     <th class="w-100px">Qty Disetujui</th>
                                 </tr>
@@ -52,6 +53,14 @@
                                             @enderror
                                         </td>
                                         <td class="with-btn">
+                                            <input type="text" class="form-control"
+                                                wire:model="barang.{{ $index }}.satuan" autocomplete="off"
+                                                disabled>
+                                            @error('barang.' . $index . '.satuan')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </td>
+                                        <td class="with-btn">
                                             <input type="number" class="form-control w-100px" min="0"
                                                 step="1" min="0" max="100"
                                                 wire:model="barang.{{ $index }}.qty" autocomplete="off" disabled>
@@ -61,7 +70,7 @@
                                         </td>
                                         <td class="with-btn">
                                             <input type="number" class="form-control w-200px" min="0"
-                                                step="1" min="0" max="100"
+                                                step="1" min="0" max="{{ $row['qty'] }}"
                                                 wire:model.lazy="barang.{{ $index }}.qty_disetujui"
                                                 autocomplete="off" @if ($status == 'Ditolak') disabled @endif>
                                             @error('barang.' . $index . '.qty_disetujui')
@@ -74,8 +83,17 @@
                         </table>
                     </div>
                 </div>
+                @if ($status == 'Ditolak')
+                    <div class="mb-3">
+                        <label class="form-label">Catatan</label>
+                        <textarea class="form-control" wire:model="catatan"></textarea>
+                        @error('catatan')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endif
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer" wire:loading.remove wire:target="submit">
                 @role('administrator|supervisor|operator')
                     <input type="submit" value="Simpan" class="btn btn-success" />
                 @endrole

@@ -15,10 +15,24 @@ class BarangSatuan extends Model
     {
         return $this->belongsTo(Barang::class);
     }
-    
+
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class)->withTrashed();
+    }
+
+    public function getKonversiSatuanAttribute()
+    {
+        if ($this->rasio_dari_terkecil == 1) {
+            return null;
+        }
+
+        $satuanKonversi = $this->satuanKonversi;
+
+        $rasio = $this->rasio_dari_terkecil / ($satuanKonversi->rasio_dari_terkecil ?? 1);
+        $nama = $satuanKonversi->nama ?? '';
+
+        return trim($rasio . ' ' . $nama);
     }
 
     public function satuanKonversi(): BelongsTo

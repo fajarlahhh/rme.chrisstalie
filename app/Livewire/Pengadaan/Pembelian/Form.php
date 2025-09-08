@@ -24,29 +24,15 @@ class Form extends Component
     public function updatedPermintaanPembelianId()
     {
         $this->barang = [];
-        $this->barang = PermintaanPembelianDetail::where('permintaan_pembelian_id', $this->permintaan_pembelian_id)->with('barang')->get()->map(fn($q) => [
+        $this->barang = PermintaanPembelianDetail::where('permintaan_pembelian_id', $this->permintaan_pembelian_id)->with('barang', 'barangSatuan')->get()->map(fn($q) => [
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
-            'satuan' => $q->barang->barangSatuanTerkecil->nama,
-            'qty' => $q->qty_permintaan,
+            'satuan' => $q->barangSatuan?->nama . ' (' . $q->barangSatuan?->konversi_satuan . ')',
+            'qty' => $q->qty_disetujui,
+            'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            'barang_satuan_id' => $q->barang_satuan_id,
             'harga_beli' => 0,
         ])->toArray();
-    }
-
-    public function tambahBarang()
-    {
-        $this->barang[] = [
-            'id' => null,
-            'satuan' => null,
-            'qty' => 0,
-            'harga_beli' => null,
-        ];
-    }
-
-    public function hapusBarang($index)
-    {
-        unset($this->barang[$index]);
-        $this->barang = array_merge($this->barang);
     }
 
     public function mount()
@@ -97,25 +83,11 @@ class Form extends Component
             $data->pembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
                 'qty' => $q['qty'],
                 'harga_beli' => $q['harga_beli'],
+                'barang_satuan_id' => $q['barang_satuan_id'],
+                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'barang_id' => $q['id'],
                 'pembelian_id' => $data->id,
             ])->toArray());
-            // if ($this->status == "Lunas") {
-            //     $expenditure = new Expenditure();
-            //     $expenditure->type = 'form';
-            //     $expenditure->tanggal = $this->tanggal;
-            //     $expenditure->uraian = "Pengadaan Barang " . $data->uraian;
-            //     $expenditure->no_faktur = $this->no_faktur;
-            //     $expenditure->Pembelian_id = $this->data->id;
-            //     $expenditure->pengguna_id = auth()->id();
-            //     $expenditure->save();
-
-            //     ExpenditureDetail::insert(collect($this->barang)->map(fn($q) => [
-            //         'expenditure_id' => $expenditure->id,
-            //         'cost' => $q['harga_beli'],
-            //         'uraian' => collect($this->dataBarang)->where('id', $q['barang_id'])->first()->nama
-            //     ])->toArray());
-            // }
 
             session()->flash('success', 'Berhasil menyimpan data');
         });

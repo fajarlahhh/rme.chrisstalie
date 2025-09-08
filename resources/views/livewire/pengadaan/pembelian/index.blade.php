@@ -53,7 +53,7 @@
                             <td>{{ $row->uraian }}</td>
                             <td>{{ $row->supplier->nama }}</td>
                             <td>{!! $row->pembayaran == 'Jatuh Tempo'
-                                ? '<span class="badge bg-danger">Jatuh Tempo' . $row->jatuh_tempo . '</span>'
+                                ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . '</span>'
                                 : '<span class="badge bg-success">Lunas</span>' !!}
                             </td>
                             <td class="w-400px">
@@ -70,7 +70,7 @@
                                             <td class="p-1">
                                                 {{ $subRow->barang->nama }}</td>
                                             <td class="text-end p-1  text-nowrap">
-                                                {{ $subRow->barang->barangSatuanTerkecil->nama }}</td>
+                                                {{ $subRow->barangSatuan?->nama . ' (' . $subRow->barangSatuan?->konversi_satuan . ')' }}</td>
                                             <td class="text-end p-1  text-nowrap">
                                                 {{ number_format($subRow->harga_beli) }}</td>
                                             <td class="text-end p-1  text-nowrap">

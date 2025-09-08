@@ -104,8 +104,8 @@
                             <thead>
                                 <tr>
                                     <th>Barang/Item</th>
-                                    <th class="w-100px">Satuan</th>
-                                    <th class="w-100px">Qty</th>
+                                    <th class="w-200px">Satuan</th>
+                                    <th class="w-150px">Qty</th>
                                     <th class="w-150px">Harga Beli</th>
                                 </tr>
                             </thead>
@@ -160,7 +160,7 @@
                         autocomplete="off" />
                 </div>
             </div>
-            <div class="panel-footer">
+            <div class="panel-footer" wire:loading.remove wire:target="submit">
                 @unlessrole('guest')
                     <input type="submit" value="Simpan" class="btn btn-success" />
                 @endunlessrole
