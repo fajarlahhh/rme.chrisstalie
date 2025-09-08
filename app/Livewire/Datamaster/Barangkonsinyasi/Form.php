@@ -36,6 +36,7 @@ class Form extends Component
                 'bentuk' => 'required',
                 'golongan' => 'required',
                 'konsinyator_id' => 'required',
+                'kantor' => 'required',
             ]);
         } else {
             $this->validate([
@@ -44,6 +45,7 @@ class Form extends Component
                 'satuan' => 'required',
                 'harga_jual' => 'required',
                 'konsinyator_id' => 'required',
+                'kantor' => 'required',
             ]);
         }
 
@@ -59,7 +61,7 @@ class Form extends Component
             $this->data->perlu_resep = $this->jenis == 'Obat' ? $this->perlu_resep : null;
             $this->data->garansi = $this->jenis == 'Alat Kesehatan' ? $this->garansi : null;
             $this->data->konsinyator_id = $this->konsinyator_id;
-            $this->data->kantor = 'Apotek';
+            $this->data->kantor = $this->kantor;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');

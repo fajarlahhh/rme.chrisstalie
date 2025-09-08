@@ -56,11 +56,6 @@ class Barang extends Model
         return $this->hasMany(StokMasuk::class);
     }
 
-    public function saleDetail(): HasMany
-    {
-        return $this->hasMany(SaleDetail::class);
-    }
-
     public function scopePersediaan(Builder $query): void
     {
         $query->whereNull('konsinyator_id');
@@ -81,10 +76,4 @@ class Barang extends Model
         return $this->hasOne(BarangSatuan::class)->where('rasio_dari_terkecil', 1);
     }
     
-    protected static function booted()
-    {
-        static::addGlobalScope('kantor_apotek', function ($query) {
-            $query->where('kantor', 'Apotek');
-        });
-    }
 }

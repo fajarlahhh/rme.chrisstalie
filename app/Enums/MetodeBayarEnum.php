@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PaymentEnum: String
+enum MetodeBayarEnum: String
 {
     //
     case Cash = "Cash";

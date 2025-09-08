@@ -19,10 +19,4 @@ class Pegawai extends Model
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
     
-    protected static function booted()
-    {
-        static::addGlobalScope('kantor_apotek', function ($query) {
-            $query->where('kantor', 'Apotek');
-        });
-    }
 }

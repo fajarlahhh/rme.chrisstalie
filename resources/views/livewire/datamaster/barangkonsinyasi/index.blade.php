@@ -17,10 +17,16 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
+                    <select class="form-control w-auto" wire:model.lazy="kantor">
+                        <option value="">Semua Kantor</option>
+                        @foreach (\App\Enums\KantorEnum::cases() as $item)
+                            <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                        @endforeach
+                    </select>&nbsp;
                     <select class="form-control w-auto" wire:model.lazy="jenis">
-                        <option value="Alat Kesehatan">Alat Kesehatan</option>
-                        <option value="Obat">Obat</option>
-                        <option value="Produk Kecantikan">Produk Kecantikan</option>
+                        @foreach (\App\Enums\JenisBarangEnum::cases() as $item)
+                            <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                        @endforeach
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
@@ -39,7 +45,7 @@
                             <th>Harga Jual</th>
                             <th>Bentuk</th>
                             <th>Konsinyator</th>
-                            <th>Perlu Resep</th>
+                            <th>Kantor</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -52,7 +58,7 @@
                                 <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                                 <td>{{ $item->bentuk }}</td>
                                 <td>{{ $item->konsinyator->nama }}</td>
-                                <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
+                                <td>{{ $item->kantor }}</td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor')
                                         <x-action :row="$item" custom="" :detail="false" :edit="true"
@@ -70,9 +76,28 @@
                             <th>Harga Jual</th>
                             <th>Garansi</th>
                             <th>Konsinyator</th>
+                            <th>Kantor</th>
                             <th></th>
                         </tr>
                     </thead>
+                    <tbody>
+                        @foreach ($data as $item)
+                            <tr>
+                                <td>{{ $item->nama }}</td>
+                                <td>{{ $item->satuan }}</td>
+                                <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
+                                <td>{{ $item->garansi }}</td>
+                                <td>{{ $item->konsinyator->nama }}</td>
+                                <td>{{ $item->kantor }}</td>
+                                <td class="with-btn-group text-end" nowrap>
+                                    @role('administrator|supervisor')
+                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @endrole
+                                </td>
+                            </tr>
+                        @endforeach
+                    </tbody>
                 @endif
             </table>
         </div>

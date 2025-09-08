@@ -15,7 +15,7 @@ class Form extends Component
     public $kategori;
     public $parent_id;
     public $dataParent;
-
+    public $kantor;
 
     public function submit()
     {
@@ -23,6 +23,7 @@ class Form extends Component
             'kode' => 'required',
             'nama' => 'required',
             'kategori' => 'required',
+            'kantor' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -30,7 +31,7 @@ class Form extends Component
             $this->data->nama = $this->nama;
             $this->data->kategori = $this->kategori;
             $this->data->parent_id = $this->parent_id;
-            $this->data->kantor = 'Apotek';
+            $this->data->kantor = $this->kantor;
             $this->data->detail = 1;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();

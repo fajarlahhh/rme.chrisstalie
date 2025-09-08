@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 class Form extends Component
 {
     public $data, $previous;
-    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status;
+    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $kantor;
 
     public function submit()
     {
@@ -25,6 +25,7 @@ class Form extends Component
             'gaji' => 'required|numeric',
             'tunjangan' => 'required|numeric',
             'tunjangan_transport' => 'required|numeric',
+            'kantor' => 'required',
         ]);
         
         DB::transaction(function () {
@@ -44,7 +45,7 @@ class Form extends Component
             $this->data->satuan_tugas = $this->satuan_tugas;
             $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
             $this->data->pengguna_id = auth()->id();
-            $this->data->kantor = 'Apotek';
+            $this->data->kantor = $this->kantor;
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });

@@ -23,6 +23,7 @@ class Form extends Component
     public $kontraindikasi;
     public $perlu_resep = 0;
     public $garansi;
+    public $kantor;
     public $barangSatuan = [];
 
     public function tambahSatuan()
@@ -52,6 +53,7 @@ class Form extends Component
                 'nama' => 'required',
                 'bentuk' => 'required',
                 'golongan' => 'required',
+                'kantor' => 'required',
             ]);
         } else {
             $this->validate([
@@ -61,6 +63,7 @@ class Form extends Component
                 'barangSatuan.*.harga_jual' => 'required',
                 'barangSatuan.*.nama' => 'required',
                 'nama' => 'required',
+                'kantor' => 'required',
             ]);
         }
 
@@ -75,7 +78,7 @@ class Form extends Component
             $this->data->perlu_resep = $this->jenis == 'Obat' ? $this->perlu_resep : null;
             $this->data->garansi = $this->jenis == 'Alat Kesehatan' ? $this->garansi : null;
             $this->data->efek_samping = $this->jenis == 'Obat' ? $this->efek_samping : null;
-            $this->data->kantor = 'Apotek';
+            $this->data->kantor = $this->kantor;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 

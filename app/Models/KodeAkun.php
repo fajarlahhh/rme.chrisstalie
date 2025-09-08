@@ -19,10 +19,4 @@ class KodeAkun extends Model
         return $this->hasMany(KodeAkun::class, 'parent_id');
     }
     
-    protected static function booted()
-    {
-        static::addGlobalScope('kantor_apotek', function ($query) {
-            $query->where('kantor', 'Apotek');
-        });
-    }
 }

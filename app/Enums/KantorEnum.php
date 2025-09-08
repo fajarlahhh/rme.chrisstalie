@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum OfficeEnum: String
+enum KantorEnum: String
 {
     //
     case Apotek = "Apotek";

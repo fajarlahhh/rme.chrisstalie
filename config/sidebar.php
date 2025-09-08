@@ -77,7 +77,7 @@ return [
         //             "title" => "Penerimaan",
         //             "sub_menu" => [
         //                 [
-        //                     "title" => "Apotek",
+        //                     "title" => "Klinik",
         //                     "method" => ["Index"],
         //                 ],
         //                 [

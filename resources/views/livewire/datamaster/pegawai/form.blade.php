@@ -20,6 +20,18 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
+                            <label class="form-label">Kantor</label>
+                            <select class="form-control" wire:model="kantor" data-width="100%">
+                                <option hidden selected>-- Pilih Kantor --</option>
+                                @foreach (\App\Enums\KantorEnum::cases() as $item)
+                                    <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                                @endforeach
+                            </select>
+                            @error('kantor')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">No. KTP</label>
                             <input class="form-control" type="number" step="1" maxlength="16" minlength="16"
                                 wire:model="nik" @if ($status == 'Non Aktif') disabled @endif />

@@ -150,7 +150,7 @@
                             <label class="form-label">Jenis Bayar</label>
                             <select class="form-control" wire:model.live="metode_bayar" data-width="100%">
                                 <option hidden selected>-- Pilih Jenis Bayar --</option>
-                                @foreach (\App\Enums\PaymentEnum::cases() as $item)
+                                @foreach (\App\Enums\MetodeBayarEnum::cases() as $item)
                                     <option value="{{ $item->value }}">{{ $item->label() }}</option>
                                 @endforeach
                             </select>

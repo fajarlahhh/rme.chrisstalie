@@ -20,12 +20,24 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
+                            <label class="form-label">Kantor</label>
+                            <select class="form-control" wire:model="kantor" data-width="100%">
+                                <option hidden selected>-- Pilih Kantor --</option>
+                                @foreach (\App\Enums\KantorEnum::cases() as $item)
+                                    <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                                @endforeach
+                            </select>
+                            @error('kantor')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">Jenis Barang</label>
                             <select class="form-control" wire:model.live="jenis" data-width="100%">
                                 <option hidden selected>-- Pilih Jenis Barang --</option>
-                                <option value="Alat Kesehatan">Alat Kesehatan</option>
-                                <option value="Obat">Obat</option>
-                                <option value="Produk Kecantikan">Produk Kecantikan</option>
+                                @foreach (\App\Enums\JenisBarangEnum::cases() as $item)
+                                    <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                                @endforeach
                             </select>
                             @error('jenis')
                                 <span class="text-danger">{{ $message }}</span>
