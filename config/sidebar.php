@@ -160,7 +160,7 @@ return [
         [
             "title" => "Penjualan",
             "icon" => "<i class='fa fa-shopping-cart'></i>",
-            "method" => ["Index", "Form"],
+            "method" => ["Index", "Data"],
         ],
         [
             "title" => "Hak Akses",

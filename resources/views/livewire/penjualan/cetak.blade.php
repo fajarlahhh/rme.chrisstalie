@@ -7,25 +7,25 @@
     <tr>
         <td class="text-nowrap w-50px p-0">Kasir</td>
         <td class="p-0">: {{ $data->pengguna->pegawai ? $data->pengguna->pegawai->nama : $data->pengguna->nama }}</td>
-        <td class="text-end">{{ $data->id }}</td>
+        <td class="p-0 text-end">No. {{ $data->id }}</td>
     </tr>
     <tr>
         <td class="text-nowrap p-0">Tanggal</td>
-        <td class="p-0">: {{ $data->created_at }}</td>
+        <td class="p-0" colspan="2">: {{ $data->created_at }}</td>
     </tr>
 </table>
 <hr>
 <table class="table table-borderless fs-11px">
     @foreach ($data->penjualanDetail as $detail)
         <tr>
-            <th>Barang</th>
-            <th>Qty</th>
-            <th>Harga</th>
+            <th class="p-0">Barang<br><br></th>
+            <th class="p-0 text-end">Qty<br><br></th>
+            <th class="p-0 text-end">Harga<br><br></th>
         </tr>
         <tr>
             <td class="p-0">
                 {{ $detail->barang->nama }}<br>
-                &nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }}</small>
+                &nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }}</small>
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">
                 {{ number_format($detail->harga) }}<br>
