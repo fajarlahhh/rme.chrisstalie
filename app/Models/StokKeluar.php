@@ -3,15 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
-use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Stok extends Model
+class StokKeluar extends Model
 {
     use HasFactory;
 
-    protected $table = 'stok';
+    protected $table = 'stok_keluar';
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';
@@ -21,13 +20,8 @@ class Stok extends Model
         return $this->belongsTo(Barang::class);
     }
 
-    public function stokMasuk(): BelongsTo
+    public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(StokMasuk::class);
-    }
-
-    public function scopeAvailable(Builder $query): void
-    {
-        $query->whereNull('stok_keluar_id');
+        return $this->belongsTo(Pengguna::class);
     }
 }

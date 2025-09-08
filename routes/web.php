@@ -1,10 +1,7 @@
 <?php
 
 use App\Models\Icd10;
-use App\Models\Loinc;
-use App\Models\Icd9cm;
 use App\Models\Pasien;
-use App\Models\SnomedCt;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -26,7 +23,7 @@ if (!function_exists('routeName')) {
                 if (class_exists("\\App\\Livewire\\" . ucfirst($url) . "\\" . $method)) {
                     Route::get(
                         '/' . ($method == "Index" ? "" : strtolower($method) . "/{data?}"),
-                        "\\App\\Livewire\\" . $url  . "\\" .  ucfirst($method)
+                        "\\App\\Livewire\\" . ucfirst($url)  . "\\" .  ucfirst($method)
                     )
                         ->middleware(['role_or_permission:administrator|' . str_replace('\\', '', strtolower($url))])
                         ->name(str_replace('\\', '.', strtolower($url)) . '.' . strtolower($method));
