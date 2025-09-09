@@ -15,10 +15,6 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Harga Jual",
-                    "method" => ["Index", "Form"],
-                ],
-                [
                     "title" => "Barang Konsinyasi",
                     "method" => ["Index", "Form"],
                 ],
@@ -31,7 +27,33 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Pasien",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Tarif Tindakan",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Aset/Inventaris",
+                    "method" => ["Index", "Form"],
+                ],
+            ]
+        ],
+        [
+            "title" => "Pengaturan",
+            "icon" => "<i class='fas fa-cog'></i>",
+            "sub_menu" => [
+                [
+                    "title" => "Harga Jual",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Jam Kerja",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Nakes",
                     "method" => ["Index", "Form"],
                 ],
             ]

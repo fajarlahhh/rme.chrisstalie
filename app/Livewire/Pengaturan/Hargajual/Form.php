@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Hargajual;
+namespace App\Livewire\Pengaturan\Hargajual;
 
 use App\Models\Barang;
 use Livewire\Component;
@@ -26,9 +26,14 @@ class Form extends Component
             'barang_id' => 'required|numeric',
             'nama' => 'required',
             'harga_jual' => 'required|numeric',
-            'faktor_konversi' => 'required|numeric',
-            'satuan_konversi_id' => 'required|numeric',
         ]);
+
+        if ($this->data->rasio_dari_terkecil != 1) {
+            $this->validate([
+                'faktor_konversi' => 'required|numeric',
+                'satuan_konversi_id' => 'required|numeric',
+            ]);
+        }
 
         DB::transaction(function () {
             $barangSatuan = collect($this->dataBarangSatuan)->where('id', $this->satuan_konversi_id)->first();
@@ -66,6 +71,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.hargajual.form');
+        return view('livewire.pengaturan.hargajual.form');
     }
 }

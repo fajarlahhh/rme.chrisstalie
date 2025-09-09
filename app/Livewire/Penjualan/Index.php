@@ -35,23 +35,6 @@ class Index extends Component
         ]);
     }
 
-    // public function updatedBarang($value, $key)
-    // {
-    //     $index = explode('.', $key);
-    //     if ($index[1] == 'id') {
-    //         $data = collect($this->dataBarang)->where('id', $value)->first();
-    //         $this->barang[$index[0]]['harga'] = $data['harga'] ?? 0;
-    //         $this->barang[$index[0]]['nama'] = $data['nama'] ?? null;
-    //         $this->barang[$index[0]]['satuan'] = $data['satuan'] ?? null;
-    //         $this->barang[$index[0]]['consignment_id'] = $data['consignment_id'] ?? null;
-    //         $this->barang[$index[0]]['modal'] = $data['consignment_id'] ? $data['modal'] : 0;
-    //         $this->barang[$index[0]]['porsi_kantor'] = $data['consignment_id'] ? $data['porsi_kantor'] : 1;
-    //         $this->barang[$index[0]]['porsi_nakes'] = $data['consignment_id'] ? $data['porsi_nakes'] : 0;
-    //     }
-    //     $this->barang[$index[0]]['total'] = ($this->barang[$index[0]]['harga'] - ($this->barang[$index[0]]['harga'] * ($this->barang[$index[0]]['discount'] ?? 0) / 100)) * ($this->barang[$index[0]]['qty'] ?? 0);
-    //     $this->total = collect($this->barang)->sum('total');
-    // }
-
     public function updatedBarang($value, $key)
     {
         $index = explode('.', $key);

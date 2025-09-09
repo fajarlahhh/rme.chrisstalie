@@ -2,7 +2,7 @@
 
 namespace App\Enums;
 
-enum PositionEnum: String
+enum PosSatuanTugasEnumitionEnum: String
 {
         //
 
@@ -12,7 +12,7 @@ enum PositionEnum: String
     case Perawat = "Perawat";
     case Apoteker = "Apoteker";
     case AsistenApoteker = "Asisten Apoteker";
-    case PenanggungJawab = "Penanggung Jawab";
+    case Security = "Security";
 
     public function label(): string
     {
@@ -23,7 +23,7 @@ enum PositionEnum: String
             self::Perawat => 'Perawat',
             self::Apoteker => 'Apoteker',
             self::AsistenApoteker => 'Asisten Apoteker',
-            self::PenanggungJawab => 'Penanggung Jawab',
+            self::Security => 'Security',
         };
     }
 }

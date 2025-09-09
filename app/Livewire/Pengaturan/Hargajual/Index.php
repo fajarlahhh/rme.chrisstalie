@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Hargajual;
+namespace App\Livewire\Pengaturan\Hargajual;
 
 use Livewire\Component;
 use App\Models\BarangSatuan;
@@ -30,7 +30,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.hargajual.index', [
+        return view('livewire.pengaturan.hargajual.index', [
             'data' => BarangSatuan::select('barang_satuan.*', 'barang.nama as barang_nama')
                 ->with(['barang', 'pengguna', 'satuanKonversi'])
                 ->whereHas('barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
