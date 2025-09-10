@@ -84,12 +84,19 @@
                         @enderror
                     </div>
                 @endif
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" wire:model="utama"
+                        @if ($utama) checked disabled @endif />
+                    <label class="form-check-label" for="utama">
+                        Utama
+                    </label>
+                </div>
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
                     <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
             </div>
         </form>
     </div>

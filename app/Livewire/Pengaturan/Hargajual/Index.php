@@ -6,13 +6,20 @@ use Livewire\Component;
 use App\Models\BarangSatuan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Models\Barang;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $jenis = 'Obat';
+    public $barang_id;
+    public $dataBarang = [];
+
+    public function mount()
+    {
+        $this->dataBarang = Barang::all()->toArray();
+    }
 
     public function delete($id)
     {
@@ -33,7 +40,7 @@ class Index extends Component
         return view('livewire.pengaturan.hargajual.index', [
             'data' => BarangSatuan::select('barang_satuan.*', 'barang.nama as barang_nama')
                 ->with(['barang', 'pengguna', 'satuanKonversi'])
-                ->whereHas('barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
+                ->when($this->barang_id, fn($q) => $q->where('barang_id', $this->barang_id))
                 ->leftJoin('barang', 'barang_satuan.barang_id', '=', 'barang.id')
                 ->orderBy('barang.nama')
                 ->orderBy('barang_satuan.rasio_dari_terkecil', 'asc')

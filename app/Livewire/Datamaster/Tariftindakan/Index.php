@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $kantor;
+    public $cari, $unit_bisnis;
 
     public function delete($id)
     {
@@ -32,7 +32,7 @@ class Index extends Component
                 'pengguna',
                 'tarifTindakanAlatBahan',
             ])
-                ->when($this->kantor, fn($q) => $q->where('kantor', $this->kantor))
+                ->when($this->unit_bisnis, fn($q) => $q->where('unit_bisnis', $this->unit_bisnis))
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')

@@ -21,6 +21,11 @@ class TarifTindakan extends Model
         return $this->belongsTo(Pengguna::class);
     }
 
+    public function kodeAkun(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class);
+    }
+
     public function getBiayaAlatBahanAttribute(): int
     {
         return $this->tarifTindakanAlatBahan->sum(function ($q) {

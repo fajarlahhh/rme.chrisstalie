@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Barang;
+namespace App\Livewire\Datamaster\Barangdagang;
 
 use App\Models\Barang;
 use Livewire\Component;
@@ -9,8 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
-    public $data, $dataKodeAkun = [];
-    public $previous;
+    public $data, $previous, $dataKodeAkun = [];
     public $nama;
     public $satuan;
     public $kode_akun_id;
@@ -18,7 +17,7 @@ class Form extends Component
     public $indikasi;
     public $harga;
     public $perlu_resep = 0;
-    public $kantor;
+    public $unit_bisnis;
     public $barangSatuan = [];
 
     public function tambahSatuan()
@@ -45,14 +44,14 @@ class Form extends Component
             'barangSatuan.*.harga_jual' => 'required',
             'barangSatuan.*.nama' => 'required',
             'nama' => 'required',
-            'kantor' => 'required',
+            'unit_bisnis' => 'required',
         ]);
 
         DB::transaction(function () {
             $this->data->nama = $this->nama;
             $this->data->kfa = $this->kfa;
-            $this->data->perlu_resep = $this->perlu_resep;
-            $this->data->kantor = $this->kantor;
+            $this->data->perlu_resep = $this->perlu_resep == 1 ? 1 : 0;
+            $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
@@ -65,6 +64,7 @@ class Form extends Component
                     'harga_jual' => $this->harga,
                     'barang_id' => $this->data->id,
                     'pengguna_id' => auth()->id(),
+                    'utama' => 1,
                     'created_at' => $timestamp,
                     'updated_at' => $timestamp,
                 ]);
@@ -95,7 +95,7 @@ class Form extends Component
                 'harga_jual' => 0
             ];
         } else {
-            $this->dataKodeAkun = KodeAkun::where('kantor', $this->kantor)->where('detail', 2)->where('kategori', 'Aktiva')->get()->toArray();
+            $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Aktiva')->get()->toArray();
             $this->satuan = $this->data->barangSatuanTerkecil->nama;
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
@@ -103,11 +103,11 @@ class Form extends Component
 
     public function updatedKantor($value)
     {
-        $this->dataKodeAkun = KodeAkun::where('kantor', $value)->where('detail', 2)->where('kategori', 'Aktiva')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Aktiva')->get()->toArray();
     }
 
     public function render()
     {
-        return view('livewire.datamaster.barang.form');
+        return view('livewire.datamaster.barangdagang.form');
     }
 }

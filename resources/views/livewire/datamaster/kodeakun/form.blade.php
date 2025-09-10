@@ -18,18 +18,6 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
-                    <label class="form-label">Kantor</label>
-                    <select class="form-control" wire:model="kantor" data-width="100%">
-                        <option hidden selected>-- Pilih Kantor --</option>
-                        @foreach (\App\Enums\KantorEnum::cases() as $item)
-                            <option value="{{ $item->value }}">{{ $item->label() }}</option>
-                        @endforeach
-                    </select>
-                    @error('kantor')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
                     <label class="form-label">Kode</label>
                     <input class="form-control" type="text" wire:model="kode" />
                     @error('kode')

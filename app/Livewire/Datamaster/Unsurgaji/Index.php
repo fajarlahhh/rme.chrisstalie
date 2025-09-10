@@ -11,7 +11,7 @@ class Index extends Component
 {
     public $dataKodeAkun = [];
     public $unsurGaji = [];
-    public $kantor;
+    public $unit_bisnis;
 
     public function tambahUnsurGaji()
     {
@@ -31,7 +31,7 @@ class Index extends Component
     public function submit()
     {
         $this->validate([
-            'kantor' => 'required',
+            'unit_bisnis' => 'required',
             'unsurGaji' => 'required|array',
             'unsurGaji.*.nama' => 'required',
             'unsurGaji.*.sifat' => 'required',
@@ -39,11 +39,11 @@ class Index extends Component
         ]);
 
         DB::transaction(function () {
-            UnsurGaji::where('kantor', $this->kantor)->delete();
+            UnsurGaji::where('unit_bisnis', $this->unit_bisnis)->delete();
             UnsurGaji::insert(collect($this->unsurGaji)->map(fn($q) => [
                 'nama' => $q['nama'],
                 'sifat' => $q['sifat'],
-                'kantor' => $this->kantor,
+                'unit_bisnis' => $this->unit_bisnis,
                 'kode_akun_id' => $q['kode_akun_id'],
                 'pengguna_id' => auth()->id(),
                 'created_at' => now(),
@@ -56,13 +56,13 @@ class Index extends Component
 
     public function mount()
     {
-        $this->dataKodeAkun = KodeAkun::where('kantor', $this->kantor)->where('detail', 2)->where('kategori', 'Beban')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Beban')->get()->toArray();
     }
 
     public function updatedKantor($value)
     {
-        $this->dataKodeAkun = KodeAkun::where('kantor', $value)->where('detail', 2)->where('kategori', 'Beban')->get()->toArray();
-        $this->unsurGaji = UnsurGaji::where('kantor', $value)->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Beban')->get()->toArray();
+        $this->unsurGaji = UnsurGaji::where('unit_bisnis', $value)->get()->toArray();
     }
     
     public function render()

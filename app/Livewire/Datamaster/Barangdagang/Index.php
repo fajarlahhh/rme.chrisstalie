@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Datamaster\Barang;
+namespace App\Livewire\Datamaster\Barangdagang;
 
 use App\Models\Barang;
 use Livewire\Attributes\Url;
@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $kantor;
+    public $cari, $unit_bisnis;
 
     public function delete($id)
     {
@@ -27,12 +27,12 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.barang.index', [
+        return view('livewire.datamaster.barangdagang.index', [
             'data' => Barang::with(['barangSatuan' => fn($q) => $q->orderBy('rasio_dari_terkecil', 'desc')])->with([
                 'pengguna',
                 'kodeAkun'
             ])->persediaan()
-                ->when($this->kantor, fn($q) => $q->where('kantor', $this->kantor))
+                ->when($this->unit_bisnis, fn($q) => $q->where('unit_bisnis', $this->unit_bisnis))
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')

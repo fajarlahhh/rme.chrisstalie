@@ -149,7 +149,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->dataBarang = Barang::with('barangSatuan.satuanKonversi')->orderBy('nama')->get()->map(fn($q) => [
+        $this->dataBarang = Barang::with('barangSatuan.satuanKonversi')->where('perlu_resep', 0)->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q['id'],
             'nama' => $q['nama'],
             'barangSatuan' => $q['barangSatuan']->map(fn($r) => [

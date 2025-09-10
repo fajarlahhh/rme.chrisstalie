@@ -15,22 +15,21 @@ class JurnalClass
         //
     }
 
-    public static function pengeluaranBarang($data, $detail)
+    public static function pengeluaranBarang($jenis, $data, $detail)
     {
         $id = Str::uuid();
 
         $jurnal = new Jurnal();
         $jurnal->id = $id;
-        $jurnal->jenis = 'Pengeluaran Barang';
+        $jurnal->jenis = $jenis;
         $jurnal->tanggal = $data['tanggal'];
         $jurnal->uraian = $data['uraian'];
-        $jurnal->kantor = $data['kantor'];
+        $jurnal->unit_bisnis = $data['unit_bisnis'];
         $jurnal->pengguna_id = auth()->id();
         $jurnal->save();
 
         $jurnal->jurnalDetail()->delete();
         $jurnal->jurnalDetail()->insert(collect($detail)->map(fn($q, $index) => [
-            'uraian' => $q['uraian'],
             'debit' => $q['debit'],
             'kredit' => $q['kredit'],
             'kode_akun_id' => $q['kode_akun_id']

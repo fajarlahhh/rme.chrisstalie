@@ -1,16 +1,16 @@
 <div>
-    @section('title', 'Data Kode Akun')
+    @section('title', 'Harga Jual')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item active">Kode Akun</li>
+        <li class="breadcrumb-item">Pengaturan</li>
+        <li class="breadcrumb-item active">Metode Bayar</li>
     @endsection
 
-    <h1 class="page-header">Kode Akun</h1>
+    <h1 class="page-header">Metode Bayar</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
-            @role('administrator|supervisor|operator')
+            @role('administrator|supervisor')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
                     Tambah</a>
@@ -28,11 +28,8 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Kode</th>
                         <th>Nama</th>
-                        <th>Kategori</th>
-                        <th>Parent</th>
-                        <th>Detail</th>
+                        <th>Kode Akun</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -40,11 +37,8 @@
                     @foreach ($data as $item)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                            <td>{{ $item->id }}</td>
                             <td>{{ $item->nama }}</td>
-                            <td>{{ $item->kategori }}</td>
-                            <td>{{ $item->parent_id }}</td>
-                            <td>{{ $item->detail ? 'Ya' : 'Tidak' }}</td>
+                            <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"

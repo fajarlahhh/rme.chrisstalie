@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Livewire\Datamaster\Kodeakun;
+namespace App\Livewire\Datamaster\Metodebayar;
 
 use Livewire\Component;
+use App\Models\MetodeBayar;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
-use App\Models\KodeAkun;
 
 class Index extends Component
 {
@@ -17,8 +17,8 @@ class Index extends Component
     public function delete($id)
     {
         try {
-            KodeAkun::findOrFail($id)
-                ->forceDelete();
+            $data = MetodeBayar::findOrFail($id);
+            $data->forceDelete();
             session()->flash('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
             session()->flash('error', 'Gagal menghapus data');
@@ -27,12 +27,8 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.datamaster.kodeakun.index', [
-            'data' => KodeAkun::where(fn($q) => $q
-                ->where('id', 'like', '%' . $this->cari . '%')
-                ->orWhere('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('id')
-                ->paginate(10)
+        return view('livewire.datamaster.metodebayar.index', [
+            'data' => MetodeBayar::where('nama', 'like', '%' . $this->cari . '%')->paginate(10)
         ]);
     }
 }

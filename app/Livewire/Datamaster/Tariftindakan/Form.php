@@ -7,13 +7,15 @@ use Livewire\Component;
 use App\Models\BarangSatuan;
 use App\Models\TarifTindakan;
 use Illuminate\Support\Facades\DB;
+use App\Models\KodeAkun;
 
 class Form extends Component
 {
     public $data;
-    public $dataBarang = [];
+    public $dataBarang = [], $dataKodeAkun = [];
     public $previous;
     public $nama;
+    public $kode_akun_id;
     public $icd_10_cm;
     public $kategori = "Medis";
     public $biaya_jasa_dokter = 0;
@@ -83,6 +85,7 @@ class Form extends Component
     {
         $this->validate([
             'kategori' => 'required',
+            'kode_akun_id' => 'required',
             'nama' => 'required',
             'biaya_jasa_dokter' => 'required|numeric',
             'biaya_jasa_perawat' => 'required|numeric',
@@ -94,12 +97,13 @@ class Form extends Component
         DB::transaction(function () {
             $this->data->icd_10_cm = $this->icd_10_cm;
             $this->data->kategori = $this->kategori;
+            $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->nama = $this->nama;
             $this->data->biaya_jasa_dokter = $this->biaya_jasa_dokter;
             $this->data->biaya_jasa_perawat = $this->biaya_jasa_perawat;
             $this->data->biaya_tidak_langsung = $this->biaya_tidak_langsung;
             $this->data->biaya_keuntungan_klinik = $this->biaya_keuntungan_klinik;
-            
+
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
@@ -136,6 +140,7 @@ class Form extends Component
                 ] : null,
             ]),
         ])->toArray();
+        $this->dataKodeAkun = KodeAkun::where('detail', 1)->where('kategori', 'Pendapatan')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {

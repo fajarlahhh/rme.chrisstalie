@@ -1,13 +1,13 @@
 <div>
-    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Barang')
+    @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Barang Dagang')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item">Barang</li>
+        <li class="breadcrumb-item">Barang Dagang</li>
         <li class="breadcrumb-item active">{{ !$data->exists ? 'Tambah' : 'Edit' }}</li>
     @endsection
 
-    <h1 class="page-header">Barang <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
+    <h1 class="page-header">Barang Dagang <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
@@ -18,14 +18,14 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
-                    <label class="form-label">Kantor</label>
-                    <select class="form-control" wire:model.live="kantor" data-width="100%">
-                        <option hidden selected>-- Pilih Kantor --</option>
+                    <label class="form-label">Unit Bisnis</label>
+                    <select class="form-control" wire:model.live="unit_bisnis" data-width="100%">
+                        <option hidden selected>-- Pilih Unit Bisnis --</option>
                         @foreach (\App\Enums\KantorEnum::cases() as $item)
                             <option value="{{ $item->value }}">{{ $item->label() }}</option>
                         @endforeach
                     </select>
-                    @error('kantor')
+                    @error('unit_bisnis')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

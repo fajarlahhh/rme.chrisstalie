@@ -44,6 +44,18 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Kode Akun</label>
+                            <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
+                                <option hidden selected>-- Pilih Kode Akun --</option>
+                                @foreach ($dataKodeAkun as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                                @endforeach
+                            </select>
+                            @error('kode_akun_id')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
                     </div>
                     <div class="col-md-8">
                         <div class="alert alert-secondary">

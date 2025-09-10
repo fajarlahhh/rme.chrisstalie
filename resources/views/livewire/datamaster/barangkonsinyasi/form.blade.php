@@ -20,14 +20,14 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label">Kantor</label>
-                            <select class="form-control" wire:model="kantor" data-width="100%">
-                                <option hidden selected>-- Pilih Kantor --</option>
+                            <label class="form-label">Unit Bisnis</label>
+                            <select class="form-control" wire:model="unit_bisnisisnis" data-width="100%">
+                                <option hidden selected>-- Pilih Unit Bisnis --</option>
                                 @foreach (\App\Enums\KantorEnum::cases() as $item)
                                     <option value="{{ $item->value }}">{{ $item->label() }}</option>
                                 @endforeach
                             </select>
-                            @error('kantor')
+                            @error('unit_bisnis')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>

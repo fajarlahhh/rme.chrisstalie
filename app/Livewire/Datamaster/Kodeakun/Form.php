@@ -14,16 +14,19 @@ class Form extends Component
     public $nama;
     public $kategori;
     public $parent_id;
-    public $dataParent;
-    public $kantor;
+    public $dataParent = [];
+
+    public function updatedKategori($value)
+    {
+        $this->dataParent = KodeAkun::where('kategori', $value)->get()->toArray();
+    }
 
     public function submit()
     {
         $this->validate([
-            'kode' => 'required',
+            'kode' => 'required|unique:kode_akun,id,' . $this->data->id,
             'nama' => 'required',
             'kategori' => 'required',
-            'kantor' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -31,7 +34,6 @@ class Form extends Component
             $this->data->nama = $this->nama;
             $this->data->kategori = $this->kategori;
             $this->data->parent_id = $this->parent_id;
-            $this->data->kantor = $this->kantor;
             $this->data->detail = 1;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
@@ -59,7 +61,6 @@ class Form extends Component
         $this->data = $data;
         $this->kode = $this->data->id;
         $this->fill($this->data->toArray());
-        $this->dataParent = KodeAkun::all()->toArray();
     }
 
     public function render()

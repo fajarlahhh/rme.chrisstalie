@@ -10,7 +10,7 @@ use App\Models\UnsurGaji;
 class Form extends Component
 {
     public $data, $previous, $unsurGaji = [];
-    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $kantor;
+    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $unit_bisnis;
 
     public function submit()
     {
@@ -26,7 +26,7 @@ class Form extends Component
             'gaji' => 'required|numeric',
             'tunjangan' => 'required|numeric',
             'tunjangan_transport' => 'required|numeric',
-            'kantor' => 'required',
+            'unit_bisnis' => 'required',
         ]);
         
         DB::transaction(function () {
@@ -42,7 +42,7 @@ class Form extends Component
             $this->data->satuan_tugas = $this->satuan_tugas;
             $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
             $this->data->pengguna_id = auth()->id();
-            $this->data->kantor = $this->kantor;
+            $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->save();
 
             $this->data->pegawaiUnsurGaji()->delete();
@@ -61,7 +61,7 @@ class Form extends Component
         $this->previous = url()->previous();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->unsurGaji = UnsurGaji::where('kantor', $this->kantor)->get()->map(fn($q) => [
+        $this->unsurGaji = UnsurGaji::where('unit_bisnis', $this->unit_bisnis)->get()->map(fn($q) => [
             'id' => $q['id'],
             'nama' => $q['nama'],
             'sifat' => $q['sifat'],
@@ -71,7 +71,7 @@ class Form extends Component
 
     public function updatedKantor($value)
     {   
-        $this->unsurGaji = UnsurGaji::where('kantor', $value)->get()->map(fn($q) => [
+        $this->unsurGaji = UnsurGaji::where('unit_bisnis', $value)->get()->map(fn($q) => [
             'id' => $q['id'],
             'nama' => $q['nama'],
             'sifat' => $q['sifat'],

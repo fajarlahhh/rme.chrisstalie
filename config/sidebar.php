@@ -11,13 +11,13 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Barang",
+                    "title" => "Barang Dagang",
                     "method" => ["Index", "Form"],
                 ],
-                [
-                    "title" => "Barang Konsinyasi",
-                    "method" => ["Index", "Form"],
-                ],
+                // [
+                //     "title" => "Barang Konsinyasi",
+                //     "method" => ["Index", "Form"],
+                // ],
                 [
                     "title" => "Pegawai",
                     "method" => ["Index", "Form"],
@@ -41,6 +41,10 @@ return [
                 [
                     "title" => "Unsur Gaji",
                     "method" => ["Index"],
+                ],
+                [
+                    "title" => "Metode Bayar",
+                    "method" => ["Index", "Form"],
                 ],
             ]
         ],

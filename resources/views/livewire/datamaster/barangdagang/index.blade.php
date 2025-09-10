@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Barang')
+    @section('title', 'Barang Dagang')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Data Master</li>
-        <li class="breadcrumb-item active">Barang</li>
+        <li class="breadcrumb-item active">Barang Dagang</li>
     @endsection
 
-    <h1 class="page-header">Barang</h1>
+    <h1 class="page-header">Barang Dagang</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
@@ -38,7 +38,7 @@
                         <th>KFA</th>
                         <th>Perlu Resep</th>
                         <th>Satuan</th>
-                        <th>Kantor</th>
+                        <th>Unit Bisnis</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -47,7 +47,7 @@
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $item->nama }}</td>
-                            <td>{{ $item->kodeAkun?->nama }}</td>
+                            <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                             <td>{{ $item->kfa }}</td>
                             <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
                             <td>
@@ -67,7 +67,7 @@
                                     </tbody>
                                 </table>
                             </td>
-                            <td>{{ $item->kantor }}</td>
+                            <td>{{ $item->unit_bisnis }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"

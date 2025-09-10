@@ -16,18 +16,18 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
-                    <label class="form-label">Kantor</label>
-                    <select class="form-control" wire:model.live="kantor" data-width="100%">
-                        <option hidden selected>-- Pilih Kantor --</option>
+                    <label class="form-label">Unit Bisnis</label>
+                    <select class="form-control" wire:model.live="unit_bisnis" data-width="100%">
+                        <option hidden selected>-- Pilih Unit Bisnis --</option>
                         @foreach (\App\Enums\KantorEnum::cases() as $item)
                             <option value="{{ $item->value }}">{{ $item->label() }}</option>
                         @endforeach
                     </select>
-                    @error('kantor')
+                    @error('unit_bisnis')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                @if ($kantor)
+                @if ($unit_bisnis)
                     <div class="note alert-success mb-2">
                         <div class="note-content">
                             <table class="table table-borderless">

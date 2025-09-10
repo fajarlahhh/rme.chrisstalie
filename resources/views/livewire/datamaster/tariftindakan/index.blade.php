@@ -17,7 +17,7 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control w-auto" wire:model.lazy="kantor">
+                    <select class="form-control w-auto" wire:model.lazy="unit_bisnis">
                         <option value="">Semua Kategori</option>
                         <option value="Medis">Medis</option>
                         <option value="Non Medis">Non Medis</option>
@@ -36,6 +36,7 @@
                         <th rowspan="2">Nama</th>
                         <th rowspan="2">Kategori</th>
                         <th rowspan="2">ICD 10 CM</th>
+                        <th rowspan="2">Kode Akun</th>
                         <th colspan="6">Biaya</th>
                         <th rowspan="2"></th>
                     </tr>
@@ -55,6 +56,7 @@
                             <td>{{ $item->nama }}</td>
                             <td>{{ $item->kategori }}</td>
                             <td>{{ $item->icd_10_cm }}</td>
+                            <td>{{ $item->kodeAkun?->nama }}</td>
                             <td class="text-end">{{ number_format($item->biaya_alat_bahan) }}</td>
                             <td class="text-end">{{ number_format($item->biaya_jasa_dokter) }}</td>
                             <td class="text-end">{{ number_format($item->biaya_jasa_perawat) }}</td>

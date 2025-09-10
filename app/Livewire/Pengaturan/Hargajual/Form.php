@@ -14,9 +14,9 @@ class Form extends Component
     public $barang_id;
     public $nama;
     public $harga_jual;
+    public $utama;
     public $faktor_konversi;
     public $satuan_konversi_id;
-    public $jenis = "Obat";
     public $dataBarang = [];
     public $dataBarangSatuan = [];
 
@@ -36,6 +36,9 @@ class Form extends Component
         }
 
         DB::transaction(function () {
+            if ($this->utama == 1) {
+                BarangSatuan::where('barang_id', $this->barang_id)->where('id', '!=', $this->data->id)->update(['utama' => 0]);
+            }
             $barangSatuan = collect($this->dataBarangSatuan)->where('id', $this->satuan_konversi_id)->first();
             if ($this->data->rasio_dari_terkecil != 1) {
                 $this->data->nama = $this->nama;
@@ -46,6 +49,7 @@ class Form extends Component
             }
             $this->data->barang_id = $this->barang_id;
             $this->data->harga_jual = $this->harga_jual;
+            $this->data->utama = $this->utama;
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
@@ -66,6 +70,11 @@ class Form extends Component
         $this->dataBarang = Barang::persediaan()->with(['barangSatuanTerkecil'])->orderBy('nama')->get()->toArray();
         if ($data->rasio_dari_terkecil != 1) {
             $this->dataBarangSatuan = BarangSatuan::where('barang_id', $data->barang_id)->with(['barang.barangSatuanTerkecil'])->orderBy('rasio_dari_terkecil', 'desc')->get()->toArray();
+        }
+
+        if ($data->exists && $data->rasio_dari_terkecil != 1) {
+            $this->faktor_konversi = $data->rasio_dari_terkecil / $data->satuanKonversi->rasio_dari_terkecil;
+            $this->utama = $data->utama == 1 ? 1 : 0;
         }
     }
 

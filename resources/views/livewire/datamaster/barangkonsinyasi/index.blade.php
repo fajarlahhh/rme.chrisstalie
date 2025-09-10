@@ -17,8 +17,8 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control w-auto" wire:model.lazy="kantor">
-                        <option value="">Semua Kantor</option>
+                    <select class="form-control w-auto" wire:model.lazy="unit_bisnis">
+                        <option value="">Semua Unit Bisnis</option>
                         @foreach (\App\Enums\KantorEnum::cases() as $item)
                             <option value="{{ $item->value }}">{{ $item->label() }}</option>
                         @endforeach
@@ -45,7 +45,7 @@
                             <th>Harga Jual</th>
                             <th>Bentuk</th>
                             <th>Konsinyator</th>
-                            <th>Kantor</th>
+                            <th>Unit Bisnis</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -58,7 +58,7 @@
                                 <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                                 <td>{{ $item->bentuk }}</td>
                                 <td>{{ $item->konsinyator->nama }}</td>
-                                <td>{{ $item->kantor }}</td>
+                                <td>{{ $item->unit_bisnis }}</td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor')
                                         <x-action :row="$item" custom="" :detail="false" :edit="true"
@@ -76,7 +76,7 @@
                             <th>Harga Jual</th>
                             <th>Garansi</th>
                             <th>Konsinyator</th>
-                            <th>Kantor</th>
+                            <th>Unit Bisnis</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -88,7 +88,7 @@
                                 <td>{{ number_format($item->harga_jual, 0, ',', '.') }}</td>
                                 <td>{{ $item->garansi }}</td>
                                 <td>{{ $item->konsinyator->nama }}</td>
-                                <td>{{ $item->kantor }}</td>
+                                <td>{{ $item->unit_bisnis }}</td>
                                 <td class="with-btn-group text-end" nowrap>
                                     @role('administrator|supervisor')
                                         <x-action :row="$item" custom="" :detail="false" :edit="true"

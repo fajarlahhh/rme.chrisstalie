@@ -69,7 +69,7 @@ class Form extends Component
                 $verifikasi->id = Str::uuid();
                 $verifikasi->referensi_id = $this->data->id;
                 $verifikasi->jenis = 'Permintaan Pembelian';
-                $verifikasi->kantor = 'Apotek';
+                $verifikasi->unit_bisnis = 'Apotek';
                 $verifikasi->pengguna_id = $this->verifikator_id;
                 $verifikasi->save();
             }
