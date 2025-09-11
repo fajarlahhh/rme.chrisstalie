@@ -18,7 +18,7 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
-                    <label class="form-label">Permintaan Pembelian</label>
+                    <label class="form-label">Cari Permintaan Pembelian</label>
                     <select data-container="body" class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
@@ -49,7 +49,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Uraian</label>
+                    <label class="form-label">Uraian/No. Faktur</label>
                     <input class="form-control" type="text" wire:model="uraian" required />
                     @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
