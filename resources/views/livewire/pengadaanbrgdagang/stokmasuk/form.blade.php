@@ -66,8 +66,8 @@
                                                 value="{{ $row['qty'] }}" disabled autocomplete="off">
                                         </td>
                                         <td class="with-btn">
-                                            <input type="number" class="form-control" min="0" max="" step="1"
-                                                wire:model.lazy="barang.{{ $index }}.qty_masuk"
+                                            <input type="number" class="form-control" min="0" max="{{ $row['qty'] }}" step="1"
+                                                wire:model="barang.{{ $index }}.qty_masuk"
                                                 autocomplete="off">
                                             @error('barang.' . $index . '.qty_masuk')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -75,7 +75,7 @@
                                         </td>
                                         <td class="with-btn">
                                             <input type="text" class="form-control" min="0" step="1"
-                                                wire:model.lazy="barang.{{ $index }}.no_batch"
+                                                wire:model="barang.{{ $index }}.no_batch"
                                                 autocomplete="off">
                                             @error('barang.' . $index . '.no_batch')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -83,7 +83,7 @@
                                         </td>
                                         <td class="with-btn">
                                             <input type="date" class="form-control" min="0" step="1"
-                                                wire:model.lazy="barang.{{ $index }}.tanggal_kedaluarsa"
+                                                wire:model="barang.{{ $index }}.tanggal_kedaluarsa"
                                                 autocomplete="off">
                                             @error('barang.' . $index . '.tanggal_kedaluarsa')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -100,7 +100,7 @@
                 @unlessrole('guest')
                     <input wire:loading.remove type="submit" value="Simpan" class="btn btn-success" />
                 @endunlessrole
-                <a href="/pengadaan/barangmasuk" class="btn btn-danger" wire:ignore>Kembali</a>
+                <a href="/pengadaanbrgdagang/stokmasuk" class="btn btn-danger" wire:ignore>Kembali</a>
             </div>
         </form>
     </div>

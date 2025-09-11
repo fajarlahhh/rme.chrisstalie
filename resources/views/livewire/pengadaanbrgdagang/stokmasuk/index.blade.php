@@ -13,7 +13,9 @@
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
-                    Tambah</a>
+                    Tambah</a>&nbsp;
+                <a href="javascript:;" class="btn btn-warning" disabled>
+                    {!! $pending !!}</a>
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">

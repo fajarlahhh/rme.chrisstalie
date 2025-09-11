@@ -8,6 +8,7 @@ use Livewire\Component;
 use App\Models\Pembelian;
 use App\Models\StokMasuk;
 use Illuminate\Support\Str;
+use App\Models\JurnalDetail;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
 
@@ -26,6 +27,7 @@ class Form extends Component
         $barang = PembelianDetail::where('pembelian_id', $this->pembelian_id)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barang_id,
             'nama' => $q->barang->nama,
+            'kode_akun_id' => $q->barang->kode_akun_id,
             'barang_satuan_id' => $q->barang_satuan_id,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
             'satuan' => $q->barangSatuan?->nama . ' (' . $q->barangSatuan?->konversi_satuan . ')',
@@ -46,7 +48,7 @@ class Form extends Component
             ->leftJoin('pembelian_detail', 'pembelian.id', '=', 'pembelian_detail.pembelian_id')
             ->groupBy('pembelian.id', 'tanggal', 'supplier_id', 'uraian')
             ->havingRaw('SUM(pembelian_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pembelian_id = pembelian.id )')
-            ->with('supplier')->get()->toArray();;
+            ->with('supplier')->get()->toArray();
     }
 
     public function submit()
@@ -54,13 +56,33 @@ class Form extends Component
         $this->validate([
             'pembelian_id' => 'required',
             'barang' => 'required|array',
+            'barang.*.qty_masuk' => [
+                'required',
+                'numeric',
+                'min:0',
+                function ($attribute, $value, $fail) {
+                    $matches = [];
+                    if (preg_match('/^barang\.(\d+)\.qty_masuk$/', $attribute, $matches)) {
+                        $index = (int)$matches[1];
+                        if (isset($this->barang[$index]['qty']) && $value > $this->barang[$index]['qty']) {
+                            $fail('Max ' . $this->barang[$index]['qty'] . ' ' . $this->barang[$index]['satuan']);
+                        }
+                    }
+                }
+            ],
+            'barang.*.no_batch' => 'required|string',
+            'barang.*.tanggal_kedaluarsa' => 'required|date',
         ]);
 
         DB::transaction(function () {
             $stokMasuk = [];
             $stok = [];
+
+            $jurnal = [];
+            $jurnalDetail = [];
             foreach ($this->barang as $key => $value) {
                 $id = Str::uuid();
+                $idJurnal = Str::uuid();
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk[] = [
                         'id' => $id,
@@ -89,15 +111,45 @@ class Form extends Component
                         'updated_at' => now(),
                     ];
                 }
+
+                $jurnal[] = [
+                    'id' => $idJurnal,
+                    'jenis' => 'Stok Masuk Barang Dagang',
+                    'tanggal' => now(),
+                    'uraian' => 'Stok Masuk Barang Dagang ' . $value['nama'],
+                    'unit_bisnis' => 'Apotek',
+                    'referensi_id' => $id,
+                    'pengguna_id' => auth()->id(),
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+                $jurnalDetail = [
+                    [
+                        'jurnal_id' => $idJurnal,
+                        'debet' => 0,
+                        'kredit' => $value['harga_beli'] * $value['qty_masuk'],
+                        'kode_akun_id' => '11420',
+                    ],
+                    [
+                        'jurnal_id' => $idJurnal,
+                        'debet' => $value['harga_beli'] * $value['qty_masuk'],
+                        'kredit' => 0,
+                        'kode_akun_id' => $value['kode_akun_id'],
+                    ]
+                ];
             }
             StokMasuk::insert($stokMasuk);
             foreach (array_chunk($stok, 1000) as $chunk) {
                 Stok::insert($chunk);
             }
+            Jurnal::insert($jurnal);
+            foreach (array_chunk($jurnalDetail, 1000) as $chunk) {
+                JurnalDetail::insert($chunk);
+            }
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/pengadaan/stokmasuk/form');
+        $this->redirect('/pengadaanbrgdagang/stokmasuk/form');
     }
 
     public function render()

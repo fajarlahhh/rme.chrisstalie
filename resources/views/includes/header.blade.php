@@ -21,7 +21,7 @@
         </button>
         <a href="/" class="navbar-brand">
             <span class="navbar-logo"></span>
-            <b>{{ strtoupper(config('app.name')) }}</b>&nbsp;APOTEK
+            <b>{{ strtoupper(config('app.name')) }}</b>&nbsp;RME
         </a>
     </div>
 

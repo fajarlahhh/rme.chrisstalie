@@ -42,9 +42,9 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tanggal</label>
-                    <input class="form-control" type="date" wire:model="date" max="{{ now()->format('Y-m-d') }}"
+                    <input class="form-control" type="date" wire:model="tanggal" max="{{ now()->format('Y-m-d') }}"
                         required />
-                    @error('date')
+                    @error('tanggal')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -85,21 +85,10 @@
                             <select data-container="body" class="form-control" wire:model.live="pembayaran"
                                 data-width="100%">
                                 <option selected value="Jatuh Tempo">Jatuh Tempo</option>
-                                <option value="Lunas">Lunas</option>
-                            </select>
-                        </div>
-                        <div class="mb-3">
-                            <label class="form-label">Kode Akun</label>
-                            <select data-container="body" class="form-control" wire:model="kode_akun_id"
-                                data-width="100%">
-                                <option selected value="">-- Pilih Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $row)
                                     <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
                                 @endforeach
                             </select>
-                            @error('kode_akun_id')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
                         </div>
                         @if ($pembayaran == 'Jatuh Tempo')
                             <div class="mb-3">
