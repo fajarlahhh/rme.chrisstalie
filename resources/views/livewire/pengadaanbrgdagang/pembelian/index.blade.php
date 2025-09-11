@@ -80,7 +80,7 @@
                                         </tr>
                                     @endforeach
                                     <tr>
-                                        <td class="p-1" colspan="4">Sub Total</td>
+                                        <td class="p-1" colspan="4">Total</td>
                                         <td class="text-end p-1  text-nowrap">
                                             {{ number_format($row->pembelianDetail->sum(fn($q) => $q->harga_beli * $q->qty)) }}
                                         </td>

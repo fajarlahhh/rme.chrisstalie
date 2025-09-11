@@ -111,7 +111,7 @@ class Form extends Component
                 'jurnal_id' => $id,
                 'debet' => 0,
                 'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
-                'kode_akun_id' => $this->pembayaran == "Jatuh Tempo" ? '11100' : $this->pembayaran
+                'kode_akun_id' => $this->pembayaran == "Jatuh Tempo" ? '21110' : $this->pembayaran
             ])->toArray());
             $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
                 'jurnal_id' => $id,
