@@ -68,7 +68,7 @@
                                                 showSubtext: true,
                                                 styleBase: 'form-control'
                                             })"
-                                                wire:model.live="barang.{{ $index }}.satuan">
+                                                wire:model="barang.{{ $index }}.satuan">
                                                 <option value="">-- Pilih Satuan --</option>
                                                 @foreach ($row['barangSatuan'] as $subRow)
                                                     <option value="{{ $subRow['id'] }}" data-subtext="{{ $subRow['konversi_satuan'] }}">
@@ -99,7 +99,7 @@
                             </tbody>
                             <tfoot>
                                 <tr>
-                                    <td colspan="2">
+                                    <td colspan="4">
                                         <div class="text-center">
                                             <a class="btn btn-secondary" href="javascript:;"
                                                 wire:click="tambahBarang">Tambah
