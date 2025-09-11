@@ -71,7 +71,7 @@
                                         <td class="with-btn">
                                             <input type="number" class="form-control w-200px" min="0"
                                                 step="1" min="0" max="{{ $row['qty'] }}"
-                                                wire:model.lazy="barang.{{ $index }}.qty_disetujui"
+                                                wire:model="barang.{{ $index }}.qty_disetujui"
                                                 autocomplete="off" @if ($status == 'Ditolak') disabled @endif>
                                             @error('barang.' . $index . '.qty_disetujui')
                                                 <span class="text-danger">{{ $message }}</span>
