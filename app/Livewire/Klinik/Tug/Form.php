@@ -17,7 +17,7 @@ class Form extends Component
         $this->data = $data;
         if ($this->data->tug) {
             $this->fill($this->data->tug->toArray());
-            $this->observasi = json_decode($this->data->tug->observasi_kualitatif, true);
+            $this->observasi = json_decode($this->data->tug->observasi_kualitatif, true);   
         }
     }
 

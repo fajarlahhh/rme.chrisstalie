@@ -99,10 +99,6 @@ class Form extends Component
             $this->satuan = $this->data->barangSatuanTerkecil->nama;
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
-    }
-
-    public function updatedKantor($value)
-    {
         $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Aktiva')->get()->toArray();
     }
 

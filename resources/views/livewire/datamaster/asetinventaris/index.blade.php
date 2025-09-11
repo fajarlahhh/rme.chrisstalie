@@ -36,6 +36,7 @@
                         <th>Tanggal Perolehan</th>
                         <th class="text-end">Harga Perolehan</th>
                         <th>Masa Manfaat</th>
+                        <th>Lokasi</th>
                         <th>Status</th>
                         <th></th>
                     </tr>
@@ -50,6 +51,7 @@
                             <td>{{ $item->tanggal_perolehan }}</td>
                             <td class="text-end">{{ number_format($item->harga_perolehan) }}</td>
                             <td>{{ $item->masa_manfaat }} <small>bulan</small></td>
+                            <td>{{ $item->lokasi }}</td>
                             <td>
                                 @switch($item->status)
                                     @case('Aktif')
