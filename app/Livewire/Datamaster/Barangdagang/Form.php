@@ -40,7 +40,7 @@ class Form extends Component
         $this->validate([
             'kode_akun_id' => 'required',
             'barangSatuan' => 'required',
-            'barangSatuan.*.rasio_dari_terkecil' => 'required|numeric|min:1',
+            // 'barangSatuan.*.rasio_dari_terkecil' => 'required|numeric|min:1',
             'barangSatuan.*.harga_jual' => 'required',
             'barangSatuan.*.nama' => 'required',
             'nama' => 'required',
