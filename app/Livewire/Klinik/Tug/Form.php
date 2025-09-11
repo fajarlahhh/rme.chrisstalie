@@ -15,8 +15,10 @@ class Form extends Component
     public function mount(Registrasi $data)
     {
         $this->data = $data;
-        $this->fill($this->data->tug->toArray());
-        $this->observasi = json_decode($this->data->tug->observasi_kualitatif, true);
+        if ($this->data->tug) {
+            $this->fill($this->data->tug->toArray());
+            $this->observasi = json_decode($this->data->tug->observasi_kualitatif, true);
+        }
     }
 
     public function submit()
