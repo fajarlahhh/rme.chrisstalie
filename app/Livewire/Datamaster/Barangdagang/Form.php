@@ -39,12 +39,10 @@ class Form extends Component
     {
         $this->validate([
             'kode_akun_id' => 'required',
-            // 'barangSatuan' => 'required',
-            // // 'barangSatuan.*.rasio_dari_terkecil' => 'required|numeric|min:1',
-            // 'barangSatuan.*.harga_jual' => 'required',
-            // 'barangSatuan.*.nama' => 'required',
-            // 'nama' => 'required',
-            // 'unit_bisnis' => 'required',
+            'satuan' => 'required',
+            'harga' => 'required',
+            'nama' => 'required',
+            'unit_bisnis' => 'required',
         ]);
 
         DB::transaction(function () {
