@@ -95,11 +95,10 @@ class Form extends Component
                 'harga_jual' => 0
             ];
         } else {
-            $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Aktiva')->get()->toArray();
             $this->satuan = $this->data->barangSatuanTerkecil->nama;
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
-        $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Aktiva')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '113%')->where('kategori', 'Aktiva')->get()->toArray();
     }
 
     public function render()

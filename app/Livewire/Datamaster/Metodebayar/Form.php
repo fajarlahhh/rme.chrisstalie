@@ -34,7 +34,7 @@ class Form extends Component
         $this->previous = url()->previous();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Aktiva')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '111%')->where('kategori', 'Aktiva')->get()->toArray();
     }
 
     public function render()
