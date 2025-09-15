@@ -5,13 +5,16 @@ return [
         [
             "title" => "Data Master",
             "icon" => "<i class='fas fa-database'></i>",
+            "urutkan" => true,
             "sub_menu" => [
                 [
                     "title" => "Kode Akun",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Barang Dagang",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 // [
@@ -20,30 +23,37 @@ return [
                 // ],
                 [
                     "title" => "Pegawai",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Supplier",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Pasien",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Tarif Tindakan",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Aset/Inventaris",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Unsur Gaji",
+                    "urutkan" => true,
                     "method" => ["Index"],
                 ],
                 [
                     "title" => "Metode Bayar",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
             ]
@@ -51,23 +61,28 @@ return [
         [
             "title" => "Pengaturan",
             "icon" => "<i class='fas fa-cog'></i>",
+            "urutkan" => true,
             "sub_menu" => [
                 [
                     "title" => "Harga Jual",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Jam Kerja",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Nakes",
+                    "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
             ]
         ],
         [
             "title" => "Rekapitulasi Stok",
+            "urutkan" => true,
             "method" => ["Index"],
             "icon" => "<i class='fa fa-legal'></i>",
         ],
@@ -125,21 +140,26 @@ return [
         [
             "title" => "Pengadaan Brg. Dagang",
             "icon" => "<i class='fas fa-cubes'></i>",
+            "urutkan" => false,
             "sub_menu" => [
                 [
                     "title" => "Permintaan",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Pembelian",
+                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Verifikasi",
+                    "urutkan" => false,
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Pembelian",
+                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Stok Masuk",
+                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ]
             ]
@@ -147,35 +167,38 @@ return [
         [
             "title" => "Klinik",
             "icon" => "<i class='fas fa-stethoscope'></i>",
+            "urutkan" => false,
             "sub_menu" => [
                 [
                     "title" => "Registrasi",
+                    "urutkan" => false,
                     "method" => ["Index", "Data"],
                 ],
                 [
                     "title" => "Pemeriksaan Awal",
+                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Diagnosis",
+                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Tindakan",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "TUG",
+                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Kasir",
+                    "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ]
             ]
         ],
         [
             "title" => "Jurnal Keuangan",
+            "urutkan" => true,
             "method" => ["Index", "Form"],
             "icon" => "<i class='fas fa-book'></i>"
         ],
@@ -200,6 +223,7 @@ return [
         [
             "icon" => "<i class='fas fa-info-circle'></i>",
             "title" => "Informasi Harga",
+            "urutkan" => true,
             "method" => ["Index"],
         ],
         // [
@@ -224,11 +248,13 @@ return [
         // ],       
         [
             "title" => "Penjualan",
+            "urutkan" => true,
             "icon" => "<i class='fa fa-shopping-cart'></i>",
             "method" => ["Index", "Data"],
         ],
         [
             "title" => "Hak Akses",
+            "urutkan" => true,
             "icon" => "<i class='fa fa-cog'></i>",
             "method" => ["Index", "Form"],
         ],

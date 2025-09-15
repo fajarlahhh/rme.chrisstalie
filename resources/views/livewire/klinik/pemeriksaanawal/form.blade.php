@@ -10,14 +10,23 @@
     <h1 class="page-header">Pemeriksaan Awal <small>Tambah</small></h1>
 
     <x-alert />
-
-    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-        <!-- begin panel-heading -->
-        <div class="panel-heading ui-sortable-handle">
-            <h4 class="panel-title">Form</h4>
-        </div>
-        <form wire:submit.prevent="submit">
-            <div class="panel-body">
+    <ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item" role="presentation" wire:ignore>
+            <a href="#default-tab-0" data-bs-toggle="tab" class="nav-link active" aria-selected="true" role="tab">
+                <span class="d-sm-none">Pemeriksaan Awal</span>
+                <span class="d-sm-block d-none">Pemeriksaan Awal</span>
+            </a>
+        </li>
+        <li class="nav-item" role="presentation" wire:ignore>
+            <a href="#default-tab-1" data-bs-toggle="tab" class="nav-link" aria-selected="true" role="tab">
+                <span class="d-sm-none">TUG</span>
+                <span class="d-sm-block d-none">Tes Up and Go</span>
+            </a>
+        </li>
+    </ul>
+    <form wire:submit.prevent="submit">
+        <div class="tab-content panel rounded-0 p-3 m-0">
+            <div class="tab-pane fade active show" id="default-tab-0" role="tabpanel" wire:ignore.self>
                 <div class="row">
                     <div class="col-md-4">
                         <div class="note alert-primary mb-2">
@@ -59,8 +68,8 @@
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Jenis Kelamin</label>
-                                    <input class="form-control" type="text" value="{{ $data->pasien->jenis_kelamin }}"
-                                        disabled />
+                                    <input class="form-control" type="text"
+                                        value="{{ $data->pasien->jenis_kelamin }}" disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. Telpon</label>
@@ -109,14 +118,16 @@
                                                 @endif
                                                 @if ($key == 'Fungsi Penciuman')
                                                     <select data-container="body" class="form-control"
-                                                        wire:model="pemeriksaanTtv.{{ $key }}" data-width="100%">
+                                                        wire:model="pemeriksaanTtv.{{ $key }}"
+                                                        data-width="100%">
                                                         <option value="Normal">Normal</option>
                                                         <option value="Tidak Normal">Tidak Normal</option>
                                                     </select>
                                                 @endif
                                                 @if ($key == 'Kesadaran')
                                                     <select data-container="body" class="form-control"
-                                                        wire:model="pemeriksaanTtv.{{ $key }}" data-width="100%">
+                                                        wire:model="pemeriksaanTtv.{{ $key }}"
+                                                        data-width="100%">
                                                         <option value="01">Compos mentis</option>
                                                         <option value="02">Somnolence</option>
                                                         <option value="03">Sopor</option>
@@ -132,12 +143,131 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-footer">
-                @role('administrator|supervisor|operator')
-                    <input type="submit" value="Simpan" class="btn btn-success" />
-                @endrole
-                <a href="/klinik/pemeriksaanawal" class="btn btn-warning m-r-3">Data</a>
+            <div class="tab-pane fade" id="default-tab-1" role="tabpanel" wire:ignore.self>
+                <div class="note alert-secondary mb-2">
+                    <div class="note-content">
+                        <h3>Hasil Tes</h3>
+                        <div class="mb-3">
+                            <label class="form-label">Waktu yang Dibutuhkan:</label>
+                            <div class="input-group"> <input type="number" id="waktu_tes_detik"
+                                    name="waktu_tes_detik" placeholder="Contoh: 11.5" wire:model="waktu_tes_detik"
+                                    step="0.01" class="form-control" required>
+                                <div class="input-group-append">
+                                    <span class="input-group-text bg-info text-white">detik</span>
+                                </div>
+                            </div>
+                            <small class="text-muted">Waktu > 14 detik dapat mengindikasikan peningkatan risiko
+                                jatuh.</small>
+                        </div>
+                        <label class="form-label">Observasi Kualitatif Gerakan (Pilih yang sesuai):</label>
+                        @php
+                            // Daftar observasi kualitatif sebagai array agar lebih mudah di-maintain dan menghindari duplikasi value
+                            $observasiOptions = [
+                                [
+                                    'id' => 'observasi_lambat_ragu',
+                                    'label' => 'Mulai dengan lambat/ragu-ragu',
+                                    'value' => 'Mulai dengan lambat/ragu-ragu',
+                                    'col' => 12,
+                                ],
+                                [
+                                    'id' => 'observasi_tidak_seimbang',
+                                    'label' => 'Kehilangan keseimbangan saat berjalan',
+                                    'value' => 'Kehilangan keseimbangan saat berjalan',
+                                    'col' => 12,
+                                ],
+                                [
+                                    'id' => 'observasi_langkah_pendek',
+                                    'label' => 'Langkah pendek dan tidak normal',
+                                    'value' => 'Langkah pendek dan tidak normal',
+                                    'col' => 12,
+                                ],
+                                [
+                                    'id' => 'observasi_berhenti_saat_jalan',
+                                    'label' => 'Berhenti saat sedang berjalan',
+                                    'value' => 'Berhenti saat sedang berjalan',
+                                    'col' => '6 col-md-3',
+                                ],
+                                [
+                                    'id' => 'observasi_bergoyang',
+                                    'label' => 'Badan tampak bergoyang (swaying)',
+                                    'value' => 'Badan tampak bergoyang (swaying)',
+                                    'col' => '6 col-md-3',
+                                ],
+                                [
+                                    'id' => 'observasi_berbalik_tidak_stabil',
+                                    'label' => 'Berbalik tidak stabil',
+                                    'value' => 'Berbalik tidak stabil',
+                                    'col' => '6 col-md-3',
+                                ],
+                                [
+                                    'id' => 'observasi_berpegangan',
+                                    'label' => 'Berpegangan pada objek sekitar untuk bantuan',
+                                    'value' => 'Berpegangan pada objek sekitar untuk bantuan',
+                                    'col' => '6 col-md-3',
+                                ],
+                            ];
+                        @endphp
+                        <div class="row g-2">
+                            @foreach ($observasiOptions as $idx => $opt)
+                                @if ($idx === 3)
+                                    <div class="col-12">
+                                        <hr>
+                                    </div>
+                                @endif
+                                <div class="col-{{ $opt['col'] }}">
+                                    <div class="form-check">
+                                        <input class="form-check-input" type="checkbox" id="{{ $opt['id'] }}"
+                                            value="{{ $opt['value'] }}" wire:model="observasi" />
+                                        <label class="form-check-label" for="{{ $opt['id'] }}">
+                                            {{ $opt['label'] }}
+                                        </label>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </div>
+                </div>
+                <div class="note alert-secondary mb-2">
+                    <div class="note-content">
+                        <h3>Penilaian & Rekomendasi</h3>
+                        <div class="mb-3">
+                            <label class="form-label">Penilaian Risiko Jatuh:</label>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="risiko_jatuh" value="Rendah"
+                                    wire:model="risiko_jatuh" id="risiko_jatuh_rendah">
+                                <label class="form-check-label" for="risiko_jatuh_rendah">Risiko Rendah
+                                    (Mobilitas
+                                    Normal)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="risiko_jatuh"
+                                    id="risiko_jatuh_sedang" value="Sedang" wire:model="risiko_jatuh">
+                                <label class="form-check-label" for="risiko_jatuh_sedang">Risiko Sedang (Perlu
+                                    observasi_kualitatif lanjut)</label>
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="risiko_jatuh"
+                                    id="risiko_jatuh_tinggi" value="Tinggi" wire:model="risiko_jatuh">
+                                <label class="form-check-label" for="risiko_jatuh_tinggi">Risiko Tinggi (Perlu
+                                    intervensi)</label>
+                            </div>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Catatan Tambahan / Rekomendasi:</label>
+                            <textarea id="catatan" rows="4" wire:model="catatan" class="form-control"
+                                placeholder="Tulis catatan observasi_kualitatif lain atau rencana tindak lanjut..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div wire:loading.remove>
+                    @role('administrator|supervisor|operator')
+                        <input type="submit" value="Simpan" class="btn btn-success" />
+                    @endrole
+                    <a href="/klinik/pemeriksaanawal" class="btn btn-warning m-r-3">Data</a>
+                </div>
             </div>
-        </form>
-    </div>
+        </div>
+    </form>
 </div>
