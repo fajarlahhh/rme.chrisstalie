@@ -97,7 +97,7 @@ class Form extends Component
             $this->satuan = $this->data->barangSatuanTerkecil->nama;
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
-        $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '113%')->where('kategori', 'Aktiva')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();
     }
 
     public function render()

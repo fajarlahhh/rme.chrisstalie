@@ -151,8 +151,8 @@ class Form extends Component
                 ] : null,
             ]),
         ])->toArray();
-        $this->dataAset = Aset::where('kategori', 'Alat Medis')->where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
-        $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Pendapatan')->where('id', 'like', '42%')->get()->toArray();
+        $this->dataAset = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {

@@ -69,7 +69,7 @@ class Form extends Component
                 AsetPenyusutan::insert($penyusutan);
             }
 
-            if ($this->data->jurnal->count() == 0) {
+            if ($this->data->jurnal == 0) {
                 $id = Str::uuid();
                 $jurnal = new Jurnal();
                 $jurnal->id = $id;

@@ -13,18 +13,11 @@ class Index extends Component
 
     #[Url]
     public $cari, $exist = 1;
-    
+
     public function delete($id)
     {
         Supplier::findOrFail($id)
-            ->forceDelete();
-    }
-
-    public function restore($id)
-    {
-        Supplier::withTrashed()
-            ->findOrFail($id)
-            ->restore();
+            ->delete();
     }
 
     public function render()
