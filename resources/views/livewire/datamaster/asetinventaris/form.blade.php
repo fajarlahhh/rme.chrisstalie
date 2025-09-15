@@ -56,7 +56,7 @@
                     <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
                     @error('kode_akun_id')
@@ -67,8 +67,8 @@
                     <label class="form-label">Sumber Dana</label>
                     <select class="form-control" wire:model.live="kode_akun_sumber_dana_id" data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
-                        @foreach ($dataKodeAkunPembayaran as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                        @foreach ($dataKodeAkunSumberDana as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
                     @error('kode_akun_sumber_dana_id')

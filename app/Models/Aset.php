@@ -21,6 +21,11 @@ class Aset extends Model
         return $this->belongsTo(KodeAkun::class);
     }
 
+    public function kodeAkunSumberDana(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class, 'kode_akun_sumber_dana_id');
+    }
+
     public function asetPenyusutan(): HasMany
     {
         return $this->hasMany(AsetPenyusutan::class);

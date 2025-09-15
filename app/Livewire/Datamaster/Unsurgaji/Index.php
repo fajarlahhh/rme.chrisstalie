@@ -55,7 +55,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->dataKodeAkun = KodeAkun::detail()->where('kategori', 'Beban')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '61000')->get()->toArray();
         $this->unsurGaji = UnsurGaji::all()->toArray();
     }
 

@@ -20,8 +20,8 @@
                     <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                         <option value="">-- Semua Kategori --</option>
                         @foreach ($dataKodeAkun as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
-                        @endforeach                        
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                        @endforeach
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
@@ -39,6 +39,7 @@
                         <th>Kategori</th>
                         <th>Tanggal Perolehan</th>
                         <th class="text-end">Harga Perolehan</th>
+                        <th>Sumber Dana</th>
                         <th>Masa Manfaat</th>
                         <th>Lokasi</th>
                         <th>Status</th>
@@ -54,6 +55,11 @@
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun->nama }}</td>
                             <td>{{ $item->tanggal_perolehan }}</td>
                             <td class="text-end">{{ number_format($item->harga_perolehan) }}</td>
+                            <td>
+                                @if ($item->kode_akun_sumber_dana_id)
+                                    {{ $item->kode_akun_sumber_dana_id }} - {{ $item->kodeAkunSumberDana->nama }}
+                                @endif
+                            </td>
                             <td>{{ $item->masa_manfaat }} <small>bulan</small></td>
                             <td>{{ $item->lokasi }}</td>
                             <td>

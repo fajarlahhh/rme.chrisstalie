@@ -58,7 +58,7 @@
                                             <option value="">-- Pilih Kode Akun --</option>
                                             @foreach ($dataKodeAkun as $subRow)
                                                 <option value="{{ $subRow['id'] }}">
-                                                    {{ $subRow['nama'] }}
+                                                    {{ $subRow['id'] }} - {{ $subRow['nama'] }}
                                                 </option>
                                             @endforeach
                                         </select>

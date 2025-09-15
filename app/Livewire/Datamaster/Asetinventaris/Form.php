@@ -14,7 +14,7 @@ use App\Models\JurnalDetail;
 
 class Form extends Component
 {
-    public $data, $previous, $dataKodeAkun = [], $dataKodeAkunPembayaran = [];
+    public $data, $previous, $dataKodeAkun = [], $dataKodeAkunSumberDana = [];
     public $nama;
     public $tanggal_perolehan;
     public $harga_perolehan;
@@ -108,7 +108,7 @@ class Form extends Component
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '15100')->get()->toArray();
-        $this->dataKodeAkunPembayaran = KodeAkun::detail()->where('parent_id', '11100')->get()->toArray();
+        $this->dataKodeAkunSumberDana = KodeAkun::detail()->where('parent_id', '11100')->get()->toArray();
     }
 
     public function render()

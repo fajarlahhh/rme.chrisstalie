@@ -20,7 +20,7 @@
                     <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                         <option value="">Semua Kategori</option>
                         @foreach ($dataKodeAkun as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
