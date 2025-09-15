@@ -47,81 +47,103 @@
             @php
                 $currentUrl = '/' . request()->path();
             @endphp
-            <div class="menu-item  @if (strpos($currentUrl, '/home') === 0) active @endif">
-                <a href="/home" class="menu-link">
-                    <div class="menu-icon"><i class="fas fa-home"></i></div>
-                    <div class="menu-text">Home
+            <div class="menu-item  @if (strpos($currentUrl, '/dashboard') === 0) active @endif">
+                <a href="/dashboard" class="menu-link">
+                    <div class="menu-icon"><i class="fas fa-dashboard"></i></div>
+                    <div class="menu-text">Dashboard
                     </div>
                 </a>
             </div>
             @php
-                function renderSubMenu($parent, $value, $currentUrl)
-                {
-                    $subMenu = '';
-                    $GLOBALS['sub_level'] += 1;
-                    $GLOBALS['active'][$GLOBALS['sub_level']] = '';
-                    $currentLevel = $GLOBALS['sub_level'];
-                    foreach ($value as $key => $row) {
-                        $GLOBALS['subparent_level'] = '';
-
-                        $url = str_replace(
-                            [' ', '&', ',', '.', '\''],
-                            '',
-                            strtolower($parent . '/' . str_replace('/', '', $row['title'])),
-                        );
-                        if (auth()->user()->can(str_replace('/', '', $url))) {
+                if (!function_exists('renderSubMenu')) {
+                    function renderSubMenu($parent, $value, $currentUrl)
+                    {
+                        $subMenu = '';
+                        $GLOBALS['sub_level'] += 1;
+                        $GLOBALS['active'][$GLOBALS['sub_level']] = '';
+                        $currentLevel = $GLOBALS['sub_level'];
+                        foreach (collect($value) as $key => $row) {
                             $GLOBALS['subparent_level'] = '';
 
-                            $subSubMenu = '';
-                            $hasSub = !empty($row['sub_menu']) ? 'has-sub' : '';
-                            $hasCaret = !empty($row['sub_menu']) ? '<div class="menu-caret"></div>' : '';
-                            $hasTitle = !empty($row['title'])
-                                ? '<div class="menu-text">' . $row['title'] . '</div>'
-                                : '';
+                            $url = str_replace(
+                                [' ', '&', '\'', ',', '(', ')', '.'],
+                                '',
+                                strtolower($parent . '/' . str_replace('/', '', $row['title'])),
+                            );
+                            if (
+                                auth()
+                                    ->user()
+                                    ->can(strtolower(config('app.name')) . str_replace('/', '', $url))
+                            ) {
+                                $GLOBALS['subparent_level'] = '';
 
-                            if (!empty($row['sub_menu'])) {
-                                $GLOBALS['sub_level'] = 1;
-                                $subSubMenu .= '<div class="menu-submenu">';
-                                $subSubMenu .= renderSubMenu(
-                                    $parent . '/' . $row['title'],
-                                    collect($row['sub_menu'])->sortBy('title')->toArray(),
-                                    $currentUrl,
-                                );
-                                $subSubMenu .= '</div>';
-                            }
-
-                            $currentUrlArray = explode('/', substr($currentUrl, 1));
-
-                            $active =
-                                implode('/', array_slice($currentUrlArray, 0, $currentLevel + 1)) == $url
-                                    ? 'active '
+                                $subSubMenu = '';
+                                $hasSub = !empty($row['sub_menu']) ? 'has-sub' : '';
+                                $hasCaret = !empty($row['sub_menu']) ? '<div class="menu-caret"></div>' : '';
+                                $hasTitle = !empty($row['title'])
+                                    ? '<div class="menu-text">' . $row['title'] . '</div>'
                                     : '';
 
-                            if ($active) {
-                                $GLOBALS['parent_active'] = true;
-                                $GLOBALS['active'][$GLOBALS['sub_level'] - 1] = true;
+                                if (!empty($row['sub_menu'])) {
+                                    $GLOBALS['sub_level'] = 1;
+                                    $subSubMenu .= '<div class="menu-submenu">';
+                                    if ($row['urutkan'] == true) {
+                                        $dataSubMenu = collect($row['sub_menu'])->sortBy('title')->all();
+                                    } else {
+                                        $dataSubMenu = collect($row['sub_menu'])->all();
+                                    }
+                                    $subSubMenu .= renderSubMenu(
+                                        $parent . '/' . $row['title'],
+                                        $dataSubMenu,
+                                        $currentUrl,
+                                    );
+                                    $subSubMenu .= '</div>';
+                                }
+
+                                $currentUrlArray = explode('/', substr($currentUrl, 1));
+
+                                $active =
+                                    implode('/', array_slice($currentUrlArray, 0, $currentLevel + 1)) == $url
+                                        ? 'active '
+                                        : '';
+
+                                if ($active) {
+                                    $GLOBALS['parent_active'] = true;
+                                    $GLOBALS['active'][$GLOBALS['sub_level'] - 1] = true;
+                                }
+                                $subMenu .=
+                                    '<div class="menu-item ' .
+                                    $hasSub .
+                                    ' ' .
+                                    $active .
+                                    '"><a href="' .
+                                    ($hasSub == '' ? '/' . $url : 'javascript:;') .
+                                    '" class="menu-link">' .
+                                    $hasTitle .
+                                    $hasCaret .
+                                    '</a>' .
+                                    $subSubMenu .
+                                    '</div>';
                             }
-                            $subMenu .=
-                                '<div class="menu-item ' .
-                                $hasSub .
-                                ' ' .
-                                $active .
-                                '"><a href="' .
-                                ($hasSub == '' ? '/' . $url : 'javascript:;') .
-                                '" class="menu-link">' .
-                                $hasTitle .
-                                $hasCaret .
-                                '</a>' .
-                                $subSubMenu .
-                                '</div>';
                         }
+                        return $subMenu;
                     }
-                    return $subMenu;
                 }
 
-                foreach ($menu as $key => $row) {
-                    $url = str_replace([' ', '/', '&', ',', '.', '\''], '', strtolower($row['title']));
-                    if (auth()->user()->can($url)) {
+                foreach (
+                    collect($menu)
+                        ->sortBy('title')
+                        ->all()
+                    as $key => $row
+                ) {
+                    $url = str_replace([' ', '/', '&', '\'', ',', '(', ')', '.'], '', strtolower($row['title']));
+                    if (
+                        auth()
+                            ->user()
+                            ->can(
+                                str_replace([' ', '/', '&', '\'', ',', '(', ')', '.'], '', config('app.name')) . "$url",
+                            )
+                    ) {
                         $GLOBALS['parent_active'] = '';
 
                         $hasSub = !empty($row['sub_menu']) ? 'has-sub' : '';
@@ -132,13 +154,14 @@
                         $subMenu = '';
 
                         if (!empty($row['sub_menu'])) {
+                            if ($row['urutkan'] == true) {
+                                $dataSubMenu = collect($row['sub_menu'])->sortBy('title')->all();
+                            } else {
+                                $dataSubMenu = collect($row['sub_menu'])->all();
+                            }
                             $GLOBALS['sub_level'] = 0;
                             $subMenu .= '<div class="menu-submenu">';
-                            $subMenu .= renderSubMenu(
-                                $row['title'],
-                                collect($row['sub_menu'])->sortBy('title')->all(),
-                                $currentUrl,
-                            );
+                            $subMenu .= renderSubMenu($row['title'], $dataSubMenu, $currentUrl);
                             $subMenu .= '</div>';
                         }
                         $active = explode('/', substr($currentUrl, 1))[0] == $url ? 'active ' : '';
@@ -159,6 +182,14 @@
                     }
                 }
             @endphp
+            @role(config('app.name') . '-administrator')
+                <div class="menu-item">
+                    <a href="/logging" target="_blank" class="menu-link">
+                        <div class="menu-icon"><i class="fas fa-scroll"></i></div>
+                        <div class="menu-text">Log</div>
+                    </a>
+                </div>
+            @endrole
             <!-- BEGIN minify-button -->
             <div class="menu-item d-flex">
                 <a href="javascript:;" class="app-sidebar-minify-btn ms-auto" data-toggle="app-sidebar-minify"><i
