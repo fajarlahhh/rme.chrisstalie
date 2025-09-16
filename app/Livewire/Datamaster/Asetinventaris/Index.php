@@ -20,6 +20,16 @@ class Index extends Component
         $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '151%')->where('kategori', 'Aktiva')->get()->toArray();
     }
 
+    public function delete($id)
+    {
+        $data = Aset::findOrFail($id);
+        if ($data->asetPenyusutanTerjurnal()->count() == 0) {
+            $data->jurnal()->delete();
+            $data->forceDelete();
+            session()->flash('success', 'Berhasil menghapus data');
+        }
+    }
+
     public function render()
     {
         return view('livewire.datamaster.asetinventaris.index', [

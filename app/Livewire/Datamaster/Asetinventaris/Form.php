@@ -26,6 +26,7 @@ class Form extends Component
     public $unit_bisnis = 'Klinik';
     public $kode_akun_id;
     public $kode_akun_sumber_dana_id;
+    public $detail;
 
     public function submit()
     {
@@ -51,6 +52,7 @@ class Form extends Component
             $this->data->lokasi = $this->lokasi;
             $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->kode_akun_id = $this->kode_akun_id;
+            $this->data->detail = $this->detail;
             $this->data->kode_akun_sumber_dana_id = $this->kode_akun_sumber_dana_id;
             $this->data->status = !$this->data->exists ? 'Aktif' : $this->status;
             $this->data->pengguna_id = auth()->id();
@@ -69,7 +71,7 @@ class Form extends Component
                 AsetPenyusutan::insert($penyusutan);
             }
 
-            if ($this->data->jurnal == 0) {
+            if ($this->data->jurnal) {
                 $id = Str::uuid();
                 $jurnal = new Jurnal();
                 $jurnal->id = $id;

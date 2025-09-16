@@ -31,6 +31,11 @@ class Aset extends Model
         return $this->hasMany(AsetPenyusutan::class);
     }
 
+    public function asetPenyusutanTerjurnal(): HasOne
+    {
+        return $this->hasMany(AsetPenyusutan::class)->whereNotNull('jurnal_id');
+    }
+
     public function jurnal(): HasOne
     {
         return $this->hasOne(Jurnal::class, 'referensi_id')->where('jenis', 'Pembelian Aset');

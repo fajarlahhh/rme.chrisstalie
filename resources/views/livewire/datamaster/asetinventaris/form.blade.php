@@ -37,6 +37,13 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Detail</label>
+                    <textarea class="form-control" wire:model="detail" rows="3"></textarea>
+                    @error('detail')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Satuan</label>
                     <input class="form-control" type="text" wire:model="satuan" />
                     @error('satuan')
