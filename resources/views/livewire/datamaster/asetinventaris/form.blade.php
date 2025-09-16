@@ -98,6 +98,19 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                @if ($data->exists)
+                    <div class="mb-3">
+                        <label class="form-label">Status</label>
+                        <select class="form-control" wire:model="status" data-width="100%">
+                            <option hidden selected>-- Pilih Status --</option>
+                            <option value="Aktif">Aktif</option>
+                            <option value="Tidak Aktif">Tidak Aktif</option>
+                        </select>
+                        @error('status')
+                            <span class="text-danger">{{ $message }}</span>
+                        @enderror
+                    </div>
+                @endif
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')

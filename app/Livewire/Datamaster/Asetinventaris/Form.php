@@ -52,7 +52,7 @@ class Form extends Component
             $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->kode_akun_sumber_dana_id = $this->kode_akun_sumber_dana_id;
-            $this->data->status = 'Aktif';
+            $this->data->status = !$this->data->exists ? 'Aktif' : $this->status;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
