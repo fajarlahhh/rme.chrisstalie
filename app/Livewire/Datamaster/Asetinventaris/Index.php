@@ -13,7 +13,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $kode_akun_id, $dataKodeAkun=[];
+    public $cari, $kode_akun_id, $dataKodeAkun = [];
 
     public function mount()
     {
@@ -26,13 +26,19 @@ class Index extends Component
             'data' => Aset::with([
                 'pengguna'
             ])
-                ->when($this->kode_akun_id, function($q) {
+                ->when($this->kode_akun_id, function ($q) {
                     $q->where('kode_akun_id', $this->kode_akun_id);
                 })
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->orderBy('nama')
-                ->paginate(10)
+                ->paginate(10),
+            'dataRaw' => Aset::when($this->kode_akun_id, function ($q) {
+                $q->where('kode_akun_id', $this->kode_akun_id);
+            })
+                ->where(fn($q) => $q
+                    ->where('nama', 'like', '%' . $this->cari . '%'))
+                ->get()
         ]);
     }
 }
