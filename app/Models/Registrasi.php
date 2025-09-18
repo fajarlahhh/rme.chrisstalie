@@ -45,4 +45,14 @@ class Registrasi extends Model
     {
         return $this->hasOne(Diagnosis::class, 'id');
     }
+
+    public function siteMarking(): HasOne
+    {
+        return $this->hasOne(SiteMarking::class, 'id');
+    }
+
+    public function pembayaran(): HasOne
+    {
+        return $this->hasOne(Pembayaran::class, 'id');
+    }
 }

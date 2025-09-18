@@ -6,8 +6,6 @@ use Livewire\Component;
 use App\Models\Registrasi;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Helpers\SatusehatClass;
-use Illuminate\Support\Facades\DB;
 
 class Data extends Component
 {

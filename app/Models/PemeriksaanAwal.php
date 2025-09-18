@@ -27,4 +27,9 @@ class PemeriksaanAwal extends Model
     {
         return $this->hasMany(PemeriksaanAwalTandaTandaVital::class);
     }
+
+    public function pengguna()
+    {
+        return $this->belongsTo(Pengguna::class);
+    }
 }

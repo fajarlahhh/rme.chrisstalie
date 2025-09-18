@@ -18,7 +18,8 @@
                         <option value="2">Sudah Proses</option>
                     </select>&nbsp;
                     @if ($status == 2)
-                        <input class="form-control" type="date" wire:model.lazy="tanggal" max="{{ date('Y-m-d') }}" />&nbsp;
+                        <input class="form-control" type="date" wire:model.lazy="tanggal"
+                            max="{{ date('Y-m-d') }}" />&nbsp;
                     @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
@@ -64,12 +65,14 @@
                                             Input
                                         </a>
                                     @else
-                                        @if ($row->pemeriksaanAwal->upload != '' || $row->pemeriksaanAwal->upload != null)
-                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                        @if ($row->pembayaran)
+                                            <x-action :row="$row"
+                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->diagnosis->pengguna->nama }}<br>{{ $row->diagnosis->updated_at }}</a>"
+                                                :detail="false" :edit="false" :information="false" :print="false"
+                                                :permanentDelete="false" :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row"
-                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->pemeriksaanAwal->user?->name }}<br>{{ $row->pemeriksaanAwal->updated_at }}</a>"
+                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->diagnosis->pengguna->nama }}<br>{{ $row->diagnosis->updated_at }}</a>"
                                                 :detail="false" :edit="true" :information="false" :print="false"
                                                 :permanentDelete="false" :restore="false" :delete="true" />
                                         @endif

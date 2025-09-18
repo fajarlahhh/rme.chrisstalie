@@ -13,7 +13,7 @@ class Form extends Component
     public $data;
     public $waktu_tes_detik, $observasi = [], $risiko_jatuh, $catatan;
     public $keluhan_utama, $riwayat_sekarang, $riwayat_dahulu, $riwayat_alergi;
-    public $tekanan_darah, $nadi, $pernapasan, $suhu, $saturasi_o2, $berat_badan, $tinggi_badan;
+    public $tekanan_darah = '120/80', $nadi = '70', $pernapasan = '12', $suhu = '36.5', $saturasi_o2 = '98', $berat_badan = '65.5', $tinggi_badan = '170';
     public $kesadaran = 'Compos Mentis', $kesan_sakit = 'Tidak Tampak Sakit', $status_gizi = 'Baik';
     public $kepala_normal = false, $kepala_temuan;
     public $jantung_normal = false, $jantung_temuan;
