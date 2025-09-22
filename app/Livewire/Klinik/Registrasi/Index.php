@@ -66,8 +66,16 @@ class Index extends Component
     public function resetPatient()
     {
         $this->reset([
-            'nik', 'rm', 'nama', 'alamat', 'jenis_kelamin',
-            'tanggal_lahir', 'no_hp', 'catatan', 'pasien_id', 'keluhan_awal'
+            'nik',
+            'rm',
+            'nama',
+            'alamat',
+            'jenis_kelamin',
+            'tanggal_lahir',
+            'no_hp',
+            'catatan',
+            'pasien_id',
+            'keluhan_awal'
         ]);
     }
 
@@ -81,6 +89,17 @@ class Index extends Component
 
         if ($this->pasien_id) {
             $rules['alamat'] = 'required';
+            $rules['rm'] = [
+                'required',
+                function ($attribute, $value, $fail) {
+                    $exists = Registrasi::where('pasien_id', $value)
+                        ->where('tanggal', $this->tanggal)
+                        ->exists();
+                    if ($exists) {
+                        $fail('Pasien dengan RM ini sudah terdaftar pada tanggal tersebut.');
+                    }
+                }
+            ];
         } else {
             $rules = array_merge($rules, [
                 'nik' => 'required|unique:pasien,nik',

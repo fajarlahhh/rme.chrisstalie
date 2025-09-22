@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasOne;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Registrasi extends Model
 {
@@ -46,9 +47,9 @@ class Registrasi extends Model
         return $this->hasOne(Diagnosis::class, 'id');
     }
 
-    public function siteMarking(): HasOne
+    public function siteMarking(): HasMany
     {
-        return $this->hasOne(SiteMarking::class, 'id');
+        return $this->hasMany(SiteMarking::class, 'id');
     }
 
     public function pembayaran(): HasOne

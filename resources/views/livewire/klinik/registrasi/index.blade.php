@@ -146,6 +146,9 @@
                                     <input class="form-control" type="text" wire:model="rm"
                                         @if ($nik) disabled @endif
                                         @if (!$pasien_id) disabled @endif />
+                                    @error('rm')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror   
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
@@ -233,7 +236,7 @@
                     </div>
                 </div>
             </div>
-            <div class="panel-footer" wire:loading.remove>
+            <div class="panel-footer">
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
@@ -245,8 +248,8 @@
                     <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
-                <button type="button" class="btn btn-secondary m-r-3" onclick="window.location.href='/klinik/registrasi'"
-                    wire:loading.attr="disabled">
+                <button type="button" class="btn btn-secondary m-r-3"
+                    onclick="window.location.href='/klinik/registrasi'" wire:loading.attr="disabled">
                     <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                     Reset
                 </button>

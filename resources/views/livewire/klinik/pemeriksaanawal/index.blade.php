@@ -67,12 +67,12 @@
                                     @else
                                         @if ($row->pembayaran)
                                             <x-action :row="$row"
-                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->diagnosis->pengguna->nama }}<br>{{ $row->diagnosis->updated_at }}</a>"
+                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->pemeriksaanAwal->pengguna->nama }}<br>{{ $row->pemeriksaanAwal->updated_at }}</a>"
                                                 :detail="false" :edit="false" :information="false" :print="false"
                                                 :permanentDelete="false" :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row"
-                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->diagnosis->pengguna->nama }}<br>{{ $row->diagnosis->updated_at }}</a>"
+                                                custom="<li><hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>{{ $row->pemeriksaanAwal->pengguna->nama }}<br>{{ $row->pemeriksaanAwal->updated_at }}</a>"
                                                 :detail="false" :edit="true" :information="false" :print="false"
                                                 :permanentDelete="false" :restore="false" :delete="true" />
                                         @endif

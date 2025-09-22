@@ -11,50 +11,78 @@
 
     <x-alert />
 
+    @if ($data)
+        <div class="note alert-primary mb-2">
+            <div class="note-content">
+                <h5>Data Pasien</h5>
+                <hr>
+                <table class="w-100">
+                    <tr>
+                        <td class="w-200px">No. RM</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien_id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nama</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien->nama }}</td>
+                    </tr>
+                    <tr>
+                        <td>Usia</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien->umur }} Tahun</td>
+                    </tr>
+                    <tr>
+                        <td>Jenis Kelamin</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien->jenis_kelamin }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+    @endif
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
 
-        @if ($data->exists)
+        @if ($data)
             <div class="panel-heading ui-sortable-handle">
                 <h4 class="panel-title">Form</h4>
             </div>
             <form wire:submit.prevent="submit">
                 <div class="panel-body">
                     <div class="form-container">
-                        <h1>Formulir Penandaan Lokasi Operasi (Site Marking)</h1>
-                        <form action="/submit-site-marking" method="post">
-
-
-                            <fieldset>
-                                <div class="form-group">
-                                    <label>Tandai Lokasi Prosedur pada Diagram Tubuh</label>
-                                    <div class="interactive-diagram-container">
-                                        <div class="diagram-wrapper">
-                                            <canvas id="frontCanvas" width="350" height="500"></canvas>
-                                            <div class="diagram-label">Diagram Tubuh Depan</div>
-                                        </div>
-                                        <div class="diagram-wrapper">
-                                            <canvas id="backCanvas" width="350" height="500"></canvas>
-                                            <div class="diagram-label">Diagram Tubuh Belakang</div>
-                                        </div>
+                        <fieldset>
+                            <div class="form-group">
+                                <div class="interactive-diagram-container">
+                                    <div class="overflow-auto">
+                                        <canvas id="imgCanvas" width="550" height="700"></canvas>
                                     </div>
-                                    <input type="hidden" id="marked_locations" name="marked_locations">
-                                    <label for="marked_locations_display">Daftar Lokasi Ditandai:</label>
-                                    <ul id="marked_locations_display" class="marker-list">
-                                    </ul>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="catatan_diagram">Catatan Tambahan Lokasi Penandaan</label>
-                                    <textarea id="catatan_diagram" name="catatan_diagram"
-                                        placeholder="Deskripsikan lokasi penandaan secara lebih spesifik, contoh: 'X' pada lutut kanan lateral, 'O' pada pergelangan tangan kiri."></textarea>
-                                </div>
-                            </fieldset>
-                        </form>
+                            </div>
+                            <table class="table">
+                                @if ($marker)
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>Catatan</th>
+                                    </tr>
+                                    @foreach (json_decode($marker) as $key => $item)
+                                        <tr>
+                                            <td class="w-20px">{{ $item->label }}</td>
+                                            <td>
+                                                <input type="text" class="form-control"
+                                                    wire:model="catatan.{{ $item->label }}">
+                                                @error('catatan.{{ $item->label }}')
+                                                    <div class="text-danger">{{ $message }}</div>
+                                                @enderror
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                @endif
+                            </table>
+                        </fieldset>
                     </div>
-
                 </div>
-                <div class="panel-footer" wire:loading.remove>
+                <div class="panel-footer">
                     @role('administrator|supervisor|operator')
                         <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                             <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
@@ -108,24 +136,30 @@
                     </div>
                 </div>
             </div>
+            <div class="panel-footer">
+                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                    onclick="window.location.href='/klinik/registrasi/data'">
+                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    Data
+                </button>
+            </div>
         @endif
+
     </div>
     <script>
-        const frontCanvas = document.getElementById('frontCanvas');
-        const backCanvas = document.getElementById('backCanvas');
-        const frontCtx = frontCanvas.getContext('2d');
-        const backCtx = backCanvas.getContext('2d');
+        const imgCanvas = document.getElementById('imgCanvas');
+        let frontCtx = null;
+        if (imgCanvas) {
+            frontCtx = imgCanvas.getContext('2d');
+        }
         const markedLocationsInput = document.getElementById('marked_locations');
-        const markedLocationsDisplay = document.getElementById('marked_locations_display');
 
         // ===================================================================
         // PERUBAHAN DI SINI: Menggunakan path gambar lokal
         // ===================================================================
-        const frontBodyImgSrc = 'images/body-front.png';
-        const backBodyImgSrc = 'images/body-back.png';
+        const imgSrc = "{{ asset('assets/img/sitemarking.jpg') }}";
 
-        let frontBodyImg = new Image();
-        let backBodyImg = new Image();
+        let gambarImg = new Image();
 
         let markers = []; // Array untuk menyimpan semua marker {canvasId, x, y, label}
 
@@ -142,7 +176,6 @@
                 ctx.fillText('Memuat gambar diagram...', canvas.width / 2, canvas.height / 2);
             }
 
-            // Gambar semua marker yang relevan untuk canvas ini
             markersToDraw.forEach(marker => {
                 ctx.beginPath();
                 ctx.arc(marker.x, marker.y, 8, 0, Math.PI * 2, true); // Lingkaran
@@ -159,46 +192,16 @@
             });
         }
 
-        // Fungsi untuk mengupdate daftar marker yang ditampilkan di UI
-        function updateMarkersDisplay() {
-            markedLocationsDisplay.innerHTML = ''; // Bersihkan daftar
-            if (markers.length === 0) {
-                const li = document.createElement('li');
-                li.style.backgroundColor = '#f8f9fa';
-                li.style.textAlign = 'center';
-                li.style.color = '#6c757d';
-                li.textContent = 'Belum ada lokasi yang ditandai.';
-                markedLocationsDisplay.appendChild(li);
-            } else {
-                markers.forEach((marker, index) => {
-                    const li = document.createElement('li');
-                    li.textContent =
-                        `(${marker.canvasId === 'frontCanvas' ? 'Depan' : 'Belakang'}) Lokasi: X${marker.x}, Y${marker.y} - Penanda: ${marker.label}`;
-                    const removeBtn = document.createElement('button');
-                    removeBtn.textContent = 'Hapus';
-                    removeBtn.onclick = () => removeMarker(index);
-                    li.appendChild(removeBtn);
-                    markedLocationsDisplay.appendChild(li);
-                });
-            }
-            // Update input hidden untuk disubmit
-            markedLocationsInput.value = JSON.stringify(markers);
-        }
-
-        // Fungsi untuk menambahkan marker
         function addMarker(canvasId, event) {
             const rect = event.target.getBoundingClientRect();
-            const scaleX = event.target.width / rect.width; // Hitung rasio skala
-            const scaleY = event.target.height / rect.height; // Hitung rasio skala
+            const scaleX = event.target.width / rect.width;
+            const scaleY = event.target.height / rect.height;
 
-            // Dapatkan koordinat X dan Y yang diskalakan ke ukuran canvas internal
             const x = (event.clientX - rect.left) * scaleX;
             const y = (event.clientY - rect.top) * scaleY;
 
-            // Prompt untuk label marker (bisa diganti dengan custom modal/input lebih baik)
-            let label = prompt("Masukkan label untuk penanda ini (cth: 'Kiri Atas', 'X', 'Operasi') :",
-                `P${markers.length + 1}`);
-            if (!label) label = `P${markers.length + 1}`; // Default label jika kosong
+            let label = `P${markers.length + 1}`;
+            if (!label) label = `P${markers.length + 1}`;
 
             markers.push({
                 canvasId,
@@ -206,48 +209,40 @@
                 y: Math.round(y),
                 label
             });
-
             redrawAllCanvases();
-            updateMarkersDisplay();
+            markers[markers.length - 1].catatan = '';
+            @this.set('marker', JSON.stringify(markers));
         }
 
-        // Fungsi untuk menghapus marker
         function removeMarker(index) {
             markers.splice(index, 1);
             redrawAllCanvases();
-            updateMarkersDisplay();
         }
 
-        // Fungsi untuk menggambar ulang semua canvas
         function redrawAllCanvases() {
-            drawCanvas(frontCanvas, frontCtx, frontBodyImg, markers.filter(m => m.canvasId === 'frontCanvas'));
-            drawCanvas(backCanvas, backCtx, backBodyImg, markers.filter(m => m.canvasId === 'backCanvas'));
+            drawCanvas(imgCanvas, frontCtx, gambarImg, markers.filter(m => m.canvasId === 'imgCanvas'));
         }
 
-        // Muat gambar dan gambar canvas awal
-        frontBodyImg.onload = () => redrawAllCanvases();
-        backBodyImg.onload = () => redrawAllCanvases();
+        gambarImg.onload = () => redrawAllCanvases();
 
-        // Menambahkan penanganan error jika gambar tidak ditemukan
-        frontBodyImg.onerror = () => {
+        gambarImg.onerror = () => {
             console.error("Gambar body-front.png tidak ditemukan di folder 'images'.");
             alert(
-                "Error: Gagal memuat gambar diagram depan. Pastikan file 'body-front.png' ada di dalam folder 'images'.");
-        }
-        backBodyImg.onerror = () => {
-            console.error("Gambar body-back.png tidak ditemukan di folder 'images'.");
-            alert(
-                "Error: Gagal memuat gambar diagram belakang. Pastikan file 'body-back.png' ada di dalam folder 'images'.");
+                "Error: Gagal memuat gambar diagram depan. Pastikan file 'body-front.png' ada di dalam folder 'images'."
+            );
         }
 
-        frontBodyImg.src = frontBodyImgSrc;
-        backBodyImg.src = backBodyImgSrc;
+        gambarImg.src = imgSrc;
 
-        // Tambahkan event listener untuk klik pada canvas
-        frontCanvas.addEventListener('click', (e) => addMarker('frontCanvas', e));
-        backCanvas.addEventListener('click', (e) => addMarker('backCanvas', e));
-
-        // Inisialisasi tampilan marker saat pertama kali load
-        updateMarkersDisplay();
+        imgCanvas.addEventListener('click', (e) => addMarker('imgCanvas', e));
     </script>
+    @if (isset($data) && $data && $data->siteMarking && count($data->siteMarking) > 0)
+        <script>
+            document.addEventListener('DOMContentLoaded', function() {
+                let backendMarkers = @json(json_decode($marker));
+                markers = backendMarkers;
+                redrawAllCanvases();
+            });
+        </script>
+    @endif
 </div>
