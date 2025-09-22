@@ -37,9 +37,10 @@
                         <th>Nama</th>
                         <th>Satuan</th>
                         <th>Kategori</th>
-                        <th>Perlu Resep</th>
                         <th>Unit Bisnis</th>
                         <th>KFA</th>
+                        <th>Perlu Resep</th>
+                        <th>Persediaan Klinik</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -70,9 +71,10 @@
                                 </table>
                             </td>
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
-                            <td>{{ $item->perlu_resep ? 'Ya' : 'Tidak' }}</td>
                             <td>{{ $item->unit_bisnis }}</td>
                             <td>{{ $item->kfa }}</td>
+                            <td>{{ $item->perlu_resep ? 'Ya' : '' }}</td>
+                            <td>{{ $item->klinik ? 'Ya' : '' }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"

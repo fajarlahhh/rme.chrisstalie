@@ -18,6 +18,7 @@ class Form extends Component
     public $indikasi;
     public $harga;
     public $perlu_resep = 0;
+    public $klinik = 0;
     public $unit_bisnis = 'Apotek';
     public $barangSatuan = [];
 
@@ -50,6 +51,7 @@ class Form extends Component
             $this->data->nama = $this->nama;
             $this->data->kfa = $this->kfa;
             $this->data->perlu_resep = $this->perlu_resep == 1 ? 1 : 0;
+            $this->data->klinik = $this->klinik == 1 ? 1 : 0;
             $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->pengguna_id = auth()->id();

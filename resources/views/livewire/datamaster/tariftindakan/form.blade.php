@@ -38,7 +38,8 @@
                             <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
                                 <option hidden selected>-- Pilih Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('kode_akun_id')
@@ -121,6 +122,7 @@
                                     <tr>
                                         <th>Biaya Bahan</th>
                                         <th class="w-150px">Satuan</th>
+                                        <th class="w-150px">Harga Jual</th>
                                         <th class="w-100px">Qty</th>
                                         <th class="w-150px">Sub Total</th>
                                         <th class="w-5px"></th>
@@ -158,7 +160,7 @@
                                                     @foreach ($row['barangSatuan'] as $subRow)
                                                         <option value="{{ $subRow['id'] }}"
                                                             data-subtext="{{ $subRow['konversi_satuan'] }}">
-                                                            {{ $subRow['harga_jual'] }} / {{ $subRow['nama'] }}
+                                                            {{ $subRow['nama'] }}
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -167,9 +169,17 @@
                                                 @enderror
                                             </td>
                                             <td class="with-btn">
-                                                <input type="number" class="form-control" min="0"
-                                                    step="1" min="0"
-                                                    wire:model.live="alatBahan.{{ $index }}.qty"
+                                                <input type="number" class="form-control" min="0" step="1"
+                                                    min="0"
+                                                    wire:model.live="alatBahan.{{ $index }}.harga_jual"
+                                                    autocomplete="off">
+                                                @error('alatBahan.' . $index . '.harga_jual')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                            <td class="with-btn">
+                                                <input type="number" class="form-control" min="0" step="1"
+                                                    min="0" wire:model.live="alatBahan.{{ $index }}.qty"
                                                     autocomplete="off">
                                                 @error('alatBahan.' . $index . '.qty')
                                                     <span class="text-danger">{{ $message }}</span>
@@ -177,7 +187,7 @@
                                             </td>
                                             <td class="with-btn">
                                                 <input type="text" class="form-control text-end"
-                                                    value="{{ number_format((int) ($row['harga'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
+                                                    value="{{ number_format((int) ($row['harga_jual'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
                                                     disabled autocomplete="off">
                                             </td>
                                             <td class="with-btn">
@@ -189,8 +199,8 @@
                                         </tr>
                                     @endforeach
                                     <tr>
-                                        <th colspan="3" class="text-end align-middle">Total Biaya Alat & Bahan
-                                            </th">
+                                        <th colspan="4" class="text-end align-middle">Total Biaya Bahan
+                                        </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
                                                 value="{{ number_format($biaya_alat_bahan) }}" disabled

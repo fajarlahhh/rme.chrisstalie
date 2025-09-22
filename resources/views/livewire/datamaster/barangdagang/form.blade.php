@@ -78,6 +78,13 @@
                         Perlu Resep
                     </label>
                 </div>
+                <div class="form-check mb-3">
+                    <input class="form-check-input" type="checkbox" wire:model="klinik"
+                        @if ($klinik) checked @endif />
+                    <label class="form-check-label" for="klinik">
+                        PersediaanKlinik
+                    </label>
+                </div>
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
@@ -86,7 +93,7 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
             </div>
         </form>
     </div>

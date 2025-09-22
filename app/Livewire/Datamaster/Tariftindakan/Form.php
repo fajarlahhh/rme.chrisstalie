@@ -33,7 +33,7 @@ class Form extends Component
             'barang_satuan_id' => null,
             'barangSatuan' => [],
             'qty' => 0,
-            'harga' => 0,
+            'harga_jual' => 0,
             'rasio_dari_terkecil' => 0,
         ]);
     }
@@ -51,7 +51,7 @@ class Form extends Component
                     $this->alatBahan[$index[0]]['barangSatuan'] = $barangSatuan->toArray();
                     $this->alatBahan[$index[0]]['qty'] = $this->alatBahan[$index[0]]['qty'] ?? 0;
                     $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = null;
-                    $this->alatBahan[$index[0]]['harga'] = 0;
+                    $this->alatBahan[$index[0]]['harga_jual'] = 0;
                 }
             }
 
@@ -62,7 +62,7 @@ class Form extends Component
                     $selectedSatuan = $barangSatuan->where('id', $this->alatBahan[$index[0]]['barang_satuan_id'])->first();
                     $this->alatBahan[$index[0]]['barang_satuan_id'] = $this->alatBahan[$index[0]]['barang_satuan_id'];
                     $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = $selectedSatuan['rasio_dari_terkecil'];
-                    $this->alatBahan[$index[0]]['harga'] = $selectedSatuan['harga_jual'] ?? 0;
+                    $this->alatBahan[$index[0]]['harga_jual'] = $selectedSatuan['harga_jual'] ?? 0;
                 }
             }
         } else {
@@ -72,11 +72,11 @@ class Form extends Component
                 $this->alatBahan[$index[0]]['barangSatuan'] = [];
                 $this->alatBahan[$index[0]]['qty'] = 0;
                 $this->alatBahan[$index[0]]['rasio_dari_terkecil'] = null;
-                $this->alatBahan[$index[0]]['harga'] = 0;
+                $this->alatBahan[$index[0]]['harga_jual'] = 0;
             }
         }
         if ($this->alatBahan[$index[0]]['jenis'] == 'Bahan') {
-            $harga = (int) ($this->alatBahan[$index[0]]['harga'] ?? 0);
+            $harga = (int) ($this->alatBahan[$index[0]]['harga_jual'] ?? 0);
             $qty = (int) ($this->alatBahan[$index[0]]['qty'] ?? 0);
             $this->alatBahan[$index[0]]['sub_total'] = $harga * $qty;
             $this->biaya_alat_bahan = collect($this->alatBahan)->count() > 0 ? collect($this->alatBahan)->sum(fn($q) => $q['sub_total'] ?? 0) : 0;
@@ -122,6 +122,7 @@ class Form extends Component
                 'qty' => $q['qty'],
                 'barang_satuan_id' => $q['barang_satuan_id'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
+                'harga_jual' => $q['harga_jual'],
             ])->toArray());
 
             session()->flash('success', 'Berhasil menyimpan data');
@@ -157,7 +158,7 @@ class Form extends Component
                 'id' => $q->barang_id,
                 'jenis' => $q->jenis,
                 'barang_satuan_id' => $q->barang_satuan_id,
-                'harga' => $q->barangSatuan?->harga_jual,
+                'harga_jual' => $q->barangSatuan?->harga_jual,
                 'barangSatuan' => BarangSatuan::where('barang_id', $q->barang_id)->get()->map(fn($r) => [
                     'id' => $r->id,
                     'nama' => $r->nama,
