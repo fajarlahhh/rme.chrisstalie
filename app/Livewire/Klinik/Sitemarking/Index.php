@@ -20,21 +20,22 @@ class Index extends Component
         if ($this->id) {
             $this->data = Registrasi::find($this->id);
         }
-        $this->dataRegistrasi = Registrasi::whereHas('pemeriksaanAwal')
+        $this->dataRegistrasi = Registrasi::whereHas('informedConsentDenganFile')
             ->whereDoesntHave('siteMarking')
             ->whereDoesntHave('pembayaran')
-            ->where('tanggal', date('Y-m-d'))
             ->get();
-        if ($this->data->siteMarking) {
-            $this->marker = json_encode($this->data->siteMarking->map(fn($q) => [
-                'canvasId' => 'imgCanvas',
-                'label' => $q->label,
-                'x' => $q->x,
-                'y' => $q->y,
-                'catatan' => $q->catatan,
-            ])->toArray());
-            foreach ($this->data->siteMarking as $key => $value) {
-                $this->catatan[$value->label] = $value->catatan;
+        if ($this->data) {
+            if ($this->data->siteMarking) {
+                $this->marker = json_encode($this->data->siteMarking->map(fn($q) => [
+                    'canvasId' => 'imgCanvas',
+                    'label' => $q->label,
+                    'x' => $q->x,
+                    'y' => $q->y,
+                    'catatan' => $q->catatan,
+                ])->toArray());
+                foreach ($this->data->siteMarking as $key => $value) {
+                    $this->catatan[$value->label] = $value->catatan;
+                }
             }
         }
     }

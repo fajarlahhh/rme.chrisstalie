@@ -42,10 +42,10 @@
         </div>
     @endif
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <div class="panel-heading ui-sortable-handle">
+            <h4 class="panel-title">Form</h4>
+        </div>
         @if ($data)
-            <div class="panel-heading ui-sortable-handle">
-                <h4 class="panel-title">Form</h4>
-            </div>
             <form wire:submit.prevent="submit">
                 <div class="panel-body">
                     <div class="form-container">
@@ -102,7 +102,7 @@
         @else
             <div class="panel-body">
                 <div class="row">
-                    <div class="mb-3 position-relative">
+                    <div class="form-group">
                         <label class="form-label">Cari Data Registrasi</label>
                         <select class="form-control" x-init="$($el).selectpicker({
                             liveSearch: true,
@@ -122,12 +122,6 @@
                                 </option>
                             @endforeach
                         </select>
-                        <div style="position: absolute; right: 20px; top: 33px; z-index: 10;">
-                            <span wire:loading wire:target="registrasi_id">
-                                <span class="spinner-border spinner-border-sm text-primary" role="status"
-                                    aria-hidden="true"></span>
-                            </span>
-                        </div>
                         @error('registrasi_id')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -143,96 +137,99 @@
             </div>
         @endif
     </div>
-    <script>
-        const imgCanvas = document.getElementById('imgCanvas');
-        let frontCtx = null;
-        if (imgCanvas) {
-            frontCtx = imgCanvas.getContext('2d');
-        }
-        const markedLocationsInput = document.getElementById('marked_locations');
+    <x-alert />
+    @if ($data)
+        <script>
+            const imgCanvas = document.getElementById('imgCanvas');
+            let frontCtx = null;
+            if (imgCanvas) {
+                frontCtx = imgCanvas.getContext('2d');
+            }
+            const markedLocationsInput = document.getElementById('marked_locations');
 
-        // ===================================================================
-        // PERUBAHAN DI SINI: Menggunakan path gambar lokal
-        // ===================================================================
-        const imgSrc = "{{ asset('assets/img/sitemarking.jpg') }}";
+            // ===================================================================
+            // PERUBAHAN DI SINI: Menggunakan path gambar lokal
+            // ===================================================================
+            const imgSrc = "{{ asset('assets/img/sitemarking.jpg') }}";
 
-        let gambarImg = new Image();
+            let gambarImg = new Image();
 
-        let markers = []; // Array untuk menyimpan semua marker {canvasId, x, y, label}
+            let markers = []; // Array untuk menyimpan semua marker {canvasId, x, y, label}
 
-        // Fungsi untuk menggambar ulang canvas
-        function drawCanvas(canvas, ctx, image, markersToDraw) {
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
-            if (image.complete && image.naturalWidth > 0) {
-                ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Gambar ulang background
-            } else {
-                // Jika gambar belum load atau error, tampilkan placeholder teks
-                ctx.fillStyle = '#666';
-                ctx.font = '14px Arial';
-                ctx.textAlign = 'center';
-                ctx.fillText('Memuat gambar diagram...', canvas.width / 2, canvas.height / 2);
+            // Fungsi untuk menggambar ulang canvas
+            function drawCanvas(canvas, ctx, image, markersToDraw) {
+                ctx.clearRect(0, 0, canvas.width, canvas.height); // Bersihkan canvas
+                if (image.complete && image.naturalWidth > 0) {
+                    ctx.drawImage(image, 0, 0, canvas.width, canvas.height); // Gambar ulang background
+                } else {
+                    // Jika gambar belum load atau error, tampilkan placeholder teks
+                    ctx.fillStyle = '#666';
+                    ctx.font = '14px Arial';
+                    ctx.textAlign = 'center';
+                    ctx.fillText('Memuat gambar diagram...', canvas.width / 2, canvas.height / 2);
+                }
+
+                markersToDraw.forEach(marker => {
+                    ctx.beginPath();
+                    ctx.arc(marker.x, marker.y, 8, 0, Math.PI * 2, true); // Lingkaran
+                    ctx.fillStyle = 'red';
+                    ctx.fill();
+                    ctx.lineWidth = 2;
+                    ctx.strokeStyle = '#003300';
+                    ctx.stroke();
+
+                    // Opsional: Tulis label marker
+                    ctx.fillStyle = 'blue';
+                    ctx.font = 'bold 12px Arial';
+                    ctx.fillText(marker.label, marker.x, marker.y - 10);
+                });
             }
 
-            markersToDraw.forEach(marker => {
-                ctx.beginPath();
-                ctx.arc(marker.x, marker.y, 8, 0, Math.PI * 2, true); // Lingkaran
-                ctx.fillStyle = 'red';
-                ctx.fill();
-                ctx.lineWidth = 2;
-                ctx.strokeStyle = '#003300';
-                ctx.stroke();
+            function addMarker(canvasId, event) {
+                const rect = event.target.getBoundingClientRect();
+                const scaleX = event.target.width / rect.width;
+                const scaleY = event.target.height / rect.height;
 
-                // Opsional: Tulis label marker
-                ctx.fillStyle = 'blue';
-                ctx.font = 'bold 12px Arial';
-                ctx.fillText(marker.label, marker.x, marker.y - 10);
-            });
-        }
+                const x = (event.clientX - rect.left) * scaleX;
+                const y = (event.clientY - rect.top) * scaleY;
 
-        function addMarker(canvasId, event) {
-            const rect = event.target.getBoundingClientRect();
-            const scaleX = event.target.width / rect.width;
-            const scaleY = event.target.height / rect.height;
+                let label = `P${markers.length + 1}`;
+                if (!label) label = `P${markers.length + 1}`;
 
-            const x = (event.clientX - rect.left) * scaleX;
-            const y = (event.clientY - rect.top) * scaleY;
+                markers.push({
+                    canvasId,
+                    x: Math.round(x),
+                    y: Math.round(y),
+                    label
+                });
+                redrawAllCanvases();
+                markers[markers.length - 1].catatan = '';
+                @this.set('marker', JSON.stringify(markers));
+            }
 
-            let label = `P${markers.length + 1}`;
-            if (!label) label = `P${markers.length + 1}`;
+            function removeMarker(index) {
+                markers.splice(index, 1);
+                redrawAllCanvases();
+            }
 
-            markers.push({
-                canvasId,
-                x: Math.round(x),
-                y: Math.round(y),
-                label
-            });
-            redrawAllCanvases();
-            markers[markers.length - 1].catatan = '';
-            @this.set('marker', JSON.stringify(markers));
-        }
+            function redrawAllCanvases() {
+                drawCanvas(imgCanvas, frontCtx, gambarImg, markers.filter(m => m.canvasId === 'imgCanvas'));
+            }
 
-        function removeMarker(index) {
-            markers.splice(index, 1);
-            redrawAllCanvases();
-        }
+            gambarImg.onload = () => redrawAllCanvases();
 
-        function redrawAllCanvases() {
-            drawCanvas(imgCanvas, frontCtx, gambarImg, markers.filter(m => m.canvasId === 'imgCanvas'));
-        }
+            gambarImg.onerror = () => {
+                console.error("Gambar body-front.png tidak ditemukan di folder 'images'.");
+                alert(
+                    "Error: Gagal memuat gambar diagram depan. Pastikan file 'body-front.png' ada di dalam folder 'images'."
+                );
+            }
 
-        gambarImg.onload = () => redrawAllCanvases();
+            gambarImg.src = imgSrc;
 
-        gambarImg.onerror = () => {
-            console.error("Gambar body-front.png tidak ditemukan di folder 'images'.");
-            alert(
-                "Error: Gagal memuat gambar diagram depan. Pastikan file 'body-front.png' ada di dalam folder 'images'."
-            );
-        }
-
-        gambarImg.src = imgSrc;
-
-        imgCanvas.addEventListener('click', (e) => addMarker('imgCanvas', e));
-    </script>
+            imgCanvas.addEventListener('click', (e) => addMarker('imgCanvas', e));
+        </script>
+    @endif
     @if (isset($data) && $data && $data->siteMarking && count($data->siteMarking) > 0)
         <script>
             document.addEventListener('DOMContentLoaded', function() {

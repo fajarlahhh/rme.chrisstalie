@@ -62,8 +62,13 @@ class Registrasi extends Model
         return $this->hasOne(Pembayaran::class, 'id');
     }
 
-    public function informConsent(): HasOne
+    public function informedConsent(): HasOne
     {
-        return $this->hasOne(InformConsent::class, 'id');
+        return $this->hasOne(InformedConsent::class, 'id');
+    }
+
+    public function informedConsentDenganFile(): HasOne
+    {
+        return $this->hasOne(InformedConsent::class, 'id')->whereNotNull('file');
     }
 }

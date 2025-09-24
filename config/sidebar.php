@@ -190,14 +190,14 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Inform Consent",
+                    "title" => "Informed Consent",
                     "urutkan" => false,
                     "method" => ["Index", "Data"],
                 ],
                 [
                     "title" => "Site Marking",
                     "urutkan" => false,
-                    "method" => ["Index", "Form"],
+                    "method" => ["Index", "Data"],
                 ],
                 [
                     "title" => "Laporan Operasi",

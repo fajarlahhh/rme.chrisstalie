@@ -1,13 +1,13 @@
 <div>
-    @section('title', 'Input Inform Consent')
+    @section('title', 'Input Informed Consent')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Klinik</li>
-        <li class="breadcrumb-item">Inform Consent</li>
+        <li class="breadcrumb-item">Informed Consent</li>
         <li class="breadcrumb-item active">Input</li>
     @endsection
 
-    <h1 class="page-header">Inform Consent <small>Input</small></h1>
+    <h1 class="page-header">Informed Consent <small>Input</small></h1>
 
     <x-alert />
 
@@ -171,12 +171,12 @@
                         </button>
                     @endrole
                     <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='/klinik/informconsent/data'">
+                        onclick="window.location.href='/klinik/informedconsent/data'">
                         <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                         Data
                     </button>
                     <button type="button" class="btn btn-secondary m-r-3"
-                        onclick="window.location.href='/klinik/informconsent'" wire:loading.attr="disabled">
+                        onclick="window.location.href='/klinik/informedconsent'" wire:loading.attr="disabled">
                         <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                         Reset
                     </button>
@@ -185,7 +185,7 @@
         @else
             <div class="panel-body">
                 <div class="row">
-                    <div class="mb-3 position-relative">
+                    <div class="form-group">
                         <label class="form-label">Cari Data Registrasi</label>
                         <select class="form-control" x-init="$($el).selectpicker({
                             liveSearch: true,
@@ -205,12 +205,6 @@
                                 </option>
                             @endforeach
                         </select>
-                        <div style="position: absolute; right: 20px; top: 33px; z-index: 10;">
-                            <span wire:loading wire:target="registrasi_id">
-                                <span class="spinner-border spinner-border-sm text-primary" role="status"
-                                    aria-hidden="true"></span>
-                            </span>
-                        </div>
                         @error('registrasi_id')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
@@ -219,7 +213,7 @@
             </div>
             <div class="panel-footer">
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='/klinik/informconsent/data'">
+                    onclick="window.location.href='/klinik/informedconsent/data'">
                     <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>

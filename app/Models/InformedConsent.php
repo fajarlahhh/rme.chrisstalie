@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class InformConsent extends Model
+class InformedConsent extends Model
 {
     //
-    protected $table = 'inform_consent';
+    protected $table = 'informed_consent';
     protected $primaryKey = 'id';
     public $incrementing = false;
 
     public function registrasi(): BelongsTo
     {
-        return $this->belongsTo(Registrasi::class);
+        return $this->belongsTo(Registrasi::class, 'id');
     }
 
     public function pengguna(): BelongsTo

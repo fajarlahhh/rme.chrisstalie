@@ -52,7 +52,7 @@
                             <td>{{ $row->pasien->id }}</td>
                             <td>{{ $row->pasien->nama }}</td>
                             <td>{{ $row->pasien->nik }}</td>
-                            <td>{{ $row->pasien->tanggal_lahir }}</td>
+                            <td>{{ $row->pasien->tanggal_lahir->format('d-m-Y') }}</td>
                             <td>{{ $row->pasien->jenis_kelamin }}</td>
                             <td>{{ $row->pasien->alamat }}</td>
                             <td>{{ $row->pasien->no_hp }}</td>

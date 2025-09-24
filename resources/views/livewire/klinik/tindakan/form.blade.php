@@ -223,7 +223,7 @@
                                         <input class="form-check-input" type="checkbox" id="membutuhkan_inform_consent"
                                             wire:model.live="tindakan.{{ $index }}.membutuhkan_inform_consent">
                                         <label class="form-check-label" for="membutuhkan_inform_consent">
-                                            Butuh Inform Consent</label>
+                                            Butuh Informed Consent</label>
                                     </div>
                                     <hr>
                                     @if ($row['membutuhkan_inform_consent'])

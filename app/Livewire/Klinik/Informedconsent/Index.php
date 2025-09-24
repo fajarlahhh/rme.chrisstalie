@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\Klinik\Informconsent;
+namespace App\Livewire\Klinik\Informedconsent;
 
 use Livewire\Component;
 use App\Models\Registrasi;
 use Livewire\Attributes\Url;
 use Illuminate\Support\Facades\DB;
-use App\Models\InformConsent;
+use App\Models\InformedConsent;
 
 class Index extends Component
 {
@@ -19,12 +19,12 @@ class Index extends Component
     {
         if ($this->id) {
             $this->data = Registrasi::find($this->id);
-            if ($this->data->informConsent) {
-                $this->fill($this->data->informConsent);
+            if ($this->data->informedConsent) {
+                $this->fill($this->data->informedConsent);
             }
         }
         $this->dataRegistrasi = Registrasi::whereHas('pemeriksaanAwal')
-            ->whereDoesntHave('informConsent')->whereHas('tindakanDenganInformConsent')
+            ->whereDoesntHave('informedConsent')->whereHas('tindakanDenganInformConsent')
             ->where('tanggal', date('Y-m-d'))
             ->get();
     }
@@ -44,8 +44,8 @@ class Index extends Component
         }
 
         DB::transaction(function () {
-            InformConsent::where('id', $this->data->id)->delete();
-            InformConsent::insert([
+            InformedConsent::where('id', $this->data->id)->delete();
+            InformedConsent::insert([
                 'id' => $this->data->id,
                 'pasien_id' => $this->data->pasien_id,
                 'pengguna_id' => auth()->id(),
@@ -56,7 +56,7 @@ class Index extends Component
                 'ttd_saksi' => $this->ttd_saksi,
             ]);
             if ($this->status == 'menyetujui') {
-                $cetak = view('livewire.klinik.informconsent.cetak', [
+                $cetak = view('livewire.klinik.informedconsent.cetak', [
                     'cetak' => true,
                     'data' => Registrasi::findOrFail($this->data->id),
                 ])->render();
@@ -64,16 +64,16 @@ class Index extends Component
             }
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/klinik/informconsent/data');
+        $this->redirect('/klinik/informedconsent/data');
     }
 
     public function updatedRegistrasiId($id)
     {
-        $this->redirect('/klinik/informconsent?id=' . $id);
+        $this->redirect('/klinik/informedconsent?id=' . $id);
     }
 
     public function render()
     {
-        return view('livewire.klinik.informconsent.index');
+        return view('livewire.klinik.informedconsent.index');
     }
 }
