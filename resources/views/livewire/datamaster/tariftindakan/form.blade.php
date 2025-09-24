@@ -83,8 +83,10 @@
                                                     <option value="">-- Pilih Alat --</option>
                                                     @foreach ($dataAset as $subRow)
                                                         <option value="{{ $subRow['id'] }}">
-                                                            {{ $subRow['nama'] }} (Rp.
-                                                            {{ $subRow['harga_perolehan'] / $subRow['masa_manfaat'] }})
+                                                            {{ $subRow['nama'] }} @if ($subRow['metode_penyusutan'] == 'Satuan Hasil Produksi')
+                                                                (Rp.
+                                                                {{ number_format($subRow['harga_perolehan'] / $subRow['masa_manfaat']) }})
+                                                            @endif
                                                         </option>
                                                     @endforeach
                                                 </select>
@@ -310,7 +312,7 @@
                 <button type="button" onclick="window.location.href='{{ $previous }}'" class="btn btn-danger"
                     wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
-                    Batal   
+                    Batal
                 </button>
             </div>
         </form>

@@ -57,7 +57,7 @@ class Form extends Component
                 if ($this->alatBahan[$index[0]]['jenis'] == 'Alat') {
                     $alatBahan = collect($this->dataAset)->where('id', $value)->first();
                     $this->alatBahan[$index[0]]['id'] = $alatBahan['id'] ?? null;
-                    $this->alatBahan[$index[0]]['harga_jual'] = $alatBahan['harga_perolehan'] / $alatBahan['masa_manfaat'] ?? 0;
+                    $this->alatBahan[$index[0]]['harga_jual'] = $alatBahan['metode_penyusutan'] == 'Satuan Hasil Produksi' ? $alatBahan['harga_perolehan'] / $alatBahan['masa_manfaat'] : 0;
                 }
             }
 
@@ -161,7 +161,7 @@ class Form extends Component
                 ] : null,
             ]),
         ])->toArray();
-        $this->dataAset = Aset::where('kode_akun_id', '15130')->with('asetPenyusutanUnitProduksi')->whereHas('asetPenyusutanUnitProduksi')->orderBy('nama')->get()->toArray();
+        $this->dataAset = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
