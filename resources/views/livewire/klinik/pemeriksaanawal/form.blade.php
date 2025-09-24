@@ -10,6 +10,7 @@
     <h1 class="page-header">Pemeriksaan Awal <small>Input</small></h1>
 
     <x-alert />
+    
     <div class="note alert-primary mb-2">
         <div class="note-content">
             <h5>Data Pasien</h5>

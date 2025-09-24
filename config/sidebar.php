@@ -185,17 +185,17 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Inform Consent",
+                    "title" => "Tindakan",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Inform Consent",
+                    "urutkan" => false,
+                    "method" => ["Index", "Data"],
                 ],
                 [
                     "title" => "Site Marking",
-                    "urutkan" => false,
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Tindakan",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
                 ],

@@ -73,6 +73,9 @@
                                             </option>
                                         @endforeach
                                     </select>
+                                    @error('diagnosis.{{ $index }}.icd10')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
                                 </th>
                                 <th class="align-middle w-5px pt-0 pb-0 pr-0">
                                     <button type="button" class="btn btn-danger btn-sm"
@@ -102,26 +105,6 @@
                         <div class="text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-
-                <fieldset>
-                    <legend>Plan (Rencana Tindak Lanjut)</legend>
-                    <div class="form-group mb-3">
-                        <label for="rencana_terapi">Rencana Terapi / Tindakan</label>
-                        <textarea id="rencana_terapi" class="form-control" wire:model="rencana_terapi"
-                            placeholder="Tuliskan resep obat, tindakan medis, atau anjuran terapi..."></textarea>
-                        @error('rencana_terapi')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                    <div class="form-group mb-3">
-                        <label for="rencana_pemeriksaan">Rencana Pemeriksaan Penunjang</label>
-                        <textarea id="rencana_pemeriksaan" class="form-control" wire:model="rencana_pemeriksaan"
-                            placeholder="Contoh: Cek Darah Lengkap, Rontgen Thorax, dll."></textarea>
-                        @error('rencana_pemeriksaan')
-                            <div class="text-danger">{{ $message }}</div>
-                        @enderror
-                    </div>
-                </fieldset>
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
@@ -145,4 +128,5 @@
             </div>
         </div>
     </form>
+    <x-alert />
 </div>

@@ -1,10 +1,10 @@
 <div>
-    @section('title', 'Tambah Pemeriksaan Awal')
+    @section('title', 'Input Tindakan')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Klinik</li>
-        <li class="breadcrumb-item">Pemeriksaan Awal</li>
-        <li class="breadcrumb-item active">Tambah</li>
+        <li class="breadcrumb-item">Tindakan</li>
+        <li class="breadcrumb-item active">Input</li>
     @endsection
 
     @section('css')<style>
@@ -139,139 +139,162 @@
         </style>
     @endsection
 
-    <h1 class="page-header">Pemeriksaan Awal <small>Tambah</small></h1>
+    <h1 class="page-header">Tindakan <small>Input</small></h1>
 
     <x-alert />
-    <ul class="nav nav-tabs" role="tablist">
-        <li class="nav-item" role="presentation" wire:ignore>
-            <a href="#default-tab-0" data-bs-toggle="tab" class="nav-link active" aria-selected="true" role="tab">
-                <span class="d-sm-none">Pemeriksaan Awal</span>
-                <span class="d-sm-block d-none">Pemeriksaan Awal</span>
-            </a>
-        </li>
-        <li class="nav-item" role="presentation" wire:ignore>
-            <a href="#default-tab-1" data-bs-toggle="tab" class="nav-link" aria-selected="true" role="tab">
-                <span class="d-sm-none">TUG</span>
-                <span class="d-sm-block d-none">Tes Up and Go</span>
-            </a>
-        </li>
-    </ul>
+
     <form wire:submit.prevent="submit">
-        <div class="tab-content panel rounded-0 p-3 m-0">
-            <div class="tab-pane fade active show" id="default-tab-0" role="tabpanel" wire:ignore.self>
-
-                <fieldset>
-                    <legend>Data Pasien & Prosedur</legend>
-                    <div class="form-group">
-                        <label for="nama_pasien">Nama Pasien</label>
-                        <input type="text" id="nama_pasien" name="nama_pasien"
-                            placeholder="Masukkan nama lengkap pasien" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="no_rm">No. Rekam Medis</label>
-                        <input type="text" id="no_rm" name="no_rm" placeholder="Contoh: 00123456" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="tgl_lahir">Tanggal Lahir</label>
-                        <input type="date" id="tgl_lahir" name="tgl_lahir" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="prosedur">Nama Prosedur / Tindakan</label>
-                        <textarea id="prosedur" name="prosedur" placeholder="Jelaskan nama prosedur yang akan dilakukan" required></textarea>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Proses Penandaan Lokasi</legend>
-                    <div class="form-group">
-                        <label for="lokasi_prosedur">Lokasi / Sisi Prosedur yang Ditandai</label>
-                        <input type="text" id="lokasi_prosedur" name="lokasi_prosedur"
-                            placeholder="Contoh: Lutut Kanan, Jari Telunjuk Kiri, Perut Kuadran Kanan Bawah" required>
-                    </div>
-                    <div class="form-group">
-                        <label>Keterlibatan Pasien</label>
-                        <div class="radio-group">
-                            <input type="radio" id="pasien_terlibat" name="keterlibatan_pasien" value="ya"
-                                checked>
-                            <label for="pasien_terlibat">Ya, pasien/keluarga terlibat aktif dan mengkonfirmasi
-                                lokasi</label>
-                        </div>
-                        <div class="radio-group">
-                            <input type="radio" id="pasien_tidak_kompeten" name="keterlibatan_pasien"
-                                value="tidak_kompeten">
-                            <label for="pasien_tidak_kompeten">Tidak, pasien tidak sadar / tidak kompeten</label>
-                        </div>
-                        <div class="radio-group">
-                            <input type="radio" id="pasien_menolak" name="keterlibatan_pasien" value="menolak">
-                            <label for="pasien_menolak">Pasien menolak penandaan</label>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="petugas">Penandaan Dilakukan Oleh</label>
-                        <input type="text" id="petugas" name="petugas" placeholder="Nama lengkap dan gelar petugas"
-                            required>
-                    </div>
-                    <div class="form-group">
-                        <label for="waktu_penandaan">Tanggal & Waktu Penandaan</label>
-                        <input type="datetime-local" id="waktu_penandaan" name="waktu_penandaan" required>
-                    </div>
-
-                    <div class="form-group">
-                        <label>Diagram Lokasi Tubuh untuk Referensi</label>
-                        <div class="body-diagram-container">
-                            <img src="https://via.placeholder.com/350x500/E0F2F7/333333?text=Diagram+Tubuh+Depan"
-                                alt="Diagram Tubuh Depan">
-                            <img src="https://via.placeholder.com50x500/F2E0F7/333333?text=Diagram+Tubuh+Belakang"
-                                alt="Diagram Tubuh Belakang">
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label for="catatan_diagram">Catatan Terkait Penandaan pada Diagram</label>
-                        <textarea id="catatan_diagram" name="catatan_diagram"
-                            placeholder="Deskripsikan lokasi penandaan secara spesifik. Contoh: Tanda 'X' diberikan pada lutut kanan, bagian lateral, 5cm di atas patella."></textarea>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Pengecualian (Bila Lokasi Tidak Ditandai)</legend>
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="tidak_ditandai" name="tidak_ditandai">
-                        <label for="tidak_ditandai">Lokasi tidak memungkinkan untuk ditandai.</label>
-                    </div>
-                    <div class="form-group">
-                        <label for="alasan_tidak_ditandai">Alasan (jika tidak ditandai)</label>
-                        <textarea id="alasan_tidak_ditandai" name="alasan_tidak_ditandai"
-                            placeholder="Contoh: Operasi pada gigi, area mukosa, bayi prematur, lesi kulit yang akan dieksisi, dll."></textarea>
-                    </div>
-                </fieldset>
-
-                <fieldset>
-                    <legend>Verifikasi</legend>
-                    <div class="form-group">
-                        <label for="verifier_name">Diverifikasi Oleh (Perawat/Dokter)</label>
-                        <input type="text" id="verifier_name" name="verifier_name"
-                            placeholder="Nama lengkap verifikator" required>
-                    </div>
-                    <div class="form-group checkbox-group">
-                        <input type="checkbox" id="verifikasi_check" name="verifikasi_check" required>
-                        <label for="verifikasi_check">Saya telah memverifikasi bahwa lokasi yang ditandai sesuai dengan
-                            data rekam medis dan konfirmasi pasien/keluarga.</label>
-                    </div>
-                </fieldset>
-
-            </div>
-            <div class="tab-pane fade" id="default-tab-1" role="tabpanel" wire:ignore.self>
+        <div class="note alert-primary mb-2">
+            <div class="note-content">
+                <h5>Data Pasien</h5>
                 <hr>
-                <div>
-                    @role('administrator|supervisor|operator')
-                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                <table class="w-100">
+                    <tr>
+                        <td class="w-200px">No. RM</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien_id }}</td>
+                    </tr>
+                    <tr>
+                        <td>Nama</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien->nama }}</td>
+                    </tr>
+                    <tr>
+                        <td>Usia</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien->umur }} Tahun</td>
+                    </tr>
+                    <tr>
+                        <td>Jenis Kelamin</td>
+                        <td class="w-10px">:</td>
+                        <td>{{ $data->pasien->jenis_kelamin }}</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+            <div class="panel-heading ui-sortable-handle">
+                <h4 class="panel-title">Form</h4>
+            </div>
+            <div class="panel-body">
+                <table class="table table-borderless p-0">
+                    <tr>
+                        <td class="p-0">
+                            @foreach ($tindakan as $index => $row)
+                                <div class="border p-3 position-relative @if ($index > 0) mt-3 @endif">
+                                    @if ($index > 0)
+                                        <button type="button" class="btn btn-danger btn-xs position-absolute"
+                                            style="top: 5px; right: 5px; z-index: 10;"
+                                            wire:click="hapusTindakan({{ $index }})"
+                                            wire:loading.attr="disabled">
+                                            &nbsp;x&nbsp;
+                                        </button>
+                                    @endif
+                                    <div class="mb-3">
+                                        <label class="form-label">Tindakan {{ $index + 1 }}</label>
+                                        <select data-container="body" class="form-control" x-init="$($el).selectpicker({
+                                            liveSearch: true,
+                                            width: 'auto',
+                                            size: 10,
+                                            container: 'body',
+                                            style: '',
+                                            showSubtext: true,
+                                            styleBase: 'form-control'
+                                        })"
+                                            wire:model="tindakan.{{ $index }}.id" data-width="100%">
+                                            <option value="" selected hidden>-- Pilih Tindakan --
+                                            </option>
+                                            @foreach ($dataTindakan as $tindakan)
+                                                <option value="{{ $tindakan['id'] }}">
+                                                    {{ $tindakan['nama'] }} (Rp.
+                                                    {{ number_format($tindakan['biaya_total'], 0, ',', '.') }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('tindakan.' . $index . '.id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Deskripsi Singkat</label>
+                                        <textarea class="form-control" wire:model="tindakan.{{ $index }}.deskripsi"></textarea>
+                                    </div>
+                                    <div class="form-check form-switch mb-3">
+                                        <input class="form-check-input" type="checkbox" id="membutuhkan_inform_consent"
+                                            wire:model.live="tindakan.{{ $index }}.membutuhkan_inform_consent">
+                                        <label class="form-check-label" for="membutuhkan_inform_consent">
+                                            Butuh Inform Consent</label>
+                                    </div>
+                                    <hr>
+                                    @if ($row['membutuhkan_inform_consent'])
+                                        <div class="p-3 bg-light border rounded">
+                                            <div class="mb-3">
+                                                <label for="tujuan_manfaat" class="form-label">Tujuan & Manfaat <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea id="tujuan_manfaat" class="form-control" wire:model="tindakan.{{ $index }}.tujuan_manfaat"
+                                                    rows="2"></textarea>
+                                                @error('tindakan.' . $index . '.tujuan_manfaat')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="risiko_komplikasi" class="form-label">Risiko & Komplikasi
+                                                    <span class="text-danger">*</span></label>
+                                                <textarea id="risiko_komplikasi" class="form-control" wire:model="tindakan.{{ $index }}.risiko_komplikasi"
+                                                    rows="2"></textarea>
+                                                @error('tindakan.' . $index . '.risiko_komplikasi')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="alternatif_risiko" class="form-label">Alternatif & Risikonya
+                                                    <span class="text-danger">*</span></label>
+                                                <textarea id="alternatif_risiko" class="form-control" wire:model="tindakan.{{ $index }}.alternatif_risiko"
+                                                    rows="2"></textarea>
+                                                @error('tindakan.' . $index . '.alternatif_risiko')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                            <div class="mb-3">
+                                                <label for="prognosis" class="form-label">Prognosis <span
+                                                        class="text-danger">*</span></label>
+                                                <textarea id="prognosis" class="form-control" wire:model="tindakan.{{ $index }}.prognosis" rows="2"></textarea>
+                                                @error('tindakan.' . $index . '.prognosis')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </div>
+                                        </div>
+                                    @endif
+
+                                </div>
+                            @endforeach
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="text-center">
+                            <button type="button" class="btn btn-primary btn-sm" wire:click="tambahTindakan"
+                                wire:loading.attr="disabled">
+                                <span wire:loading class="spinner-border spinner-border-sm"></span>
+                                Tambah Tindakan Lainnya
+                            </button>
+                        </td>
+                    </tr>
+                </table>
+            </div>
+            <div class="panel-footer">
+                @role('administrator|supervisor|operator')
+                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
-                    @endrole
-                    <a href="/klinik/pemeriksaanawal" class="btn btn-warning m-r-3">Data</a>
-                </div>
+                @endrole
+                <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
+                    onclick="window.location.href='/klinik/tindakan'">
+                    <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
+                    Data
+                </button>
             </div>
         </div>
     </form>
+    <x-alert />
 </div>

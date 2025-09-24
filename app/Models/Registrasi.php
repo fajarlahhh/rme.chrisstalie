@@ -37,9 +37,14 @@ class Registrasi extends Model
         return $this->hasOne(Tug::class, 'id');
     }
 
-    public function tindakan(): HasOne
+    public function tindakan(): HasMany
     {
-        return $this->hasOne(Tindakan::class, 'id');
+        return $this->hasMany(Tindakan::class, 'id');
+    }
+
+    public function tindakanDenganInformConsent(): HasMany
+    {
+        return $this->hasMany(Tindakan::class, 'id')->with('tarifTindakan')->where('membutuhkan_inform_consent', 1);
     }
 
     public function diagnosis(): HasOne
@@ -55,5 +60,10 @@ class Registrasi extends Model
     public function pembayaran(): HasOne
     {
         return $this->hasOne(Pembayaran::class, 'id');
+    }
+
+    public function informConsent(): HasOne
+    {
+        return $this->hasOne(InformConsent::class, 'id');
     }
 }

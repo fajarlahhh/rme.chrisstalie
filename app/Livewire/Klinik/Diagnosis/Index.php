@@ -35,6 +35,4 @@ class Index extends Component
                 ->orderBy('urutan', 'asc')->paginate(10)
         ]);
     }
-
-
 }

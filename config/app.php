@@ -124,6 +124,10 @@ return [
     ],
 
     'organization' => env('APP_ORGANIZATION', 'Laravel'),
+    'organization_address' => env('APP_ORGANIZATION_ADDRESS', 'Laravel'),
+    'organization_phone' => env('APP_ORGANIZATION_PHONE', 'Laravel'),
+    'organization_email' => env('APP_ORGANIZATION_EMAIL', 'Laravel'),
+    'organization_description' => env('APP_ORGANIZATION_DESCRIPTION', 'Laravel'),
     
     'satusehat' => [
         'url' => env('SATUSEHAT_URL', 'Laravel'),

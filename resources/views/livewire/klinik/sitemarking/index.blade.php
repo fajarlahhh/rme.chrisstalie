@@ -42,8 +42,6 @@
         </div>
     @endif
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-        <!-- begin panel-heading -->
-
         @if ($data)
             <div class="panel-heading ui-sortable-handle">
                 <h4 class="panel-title">Form</h4>
@@ -90,12 +88,12 @@
                         </button>
                     @endrole
                     <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='/klinik/registrasi/data'">
+                        onclick="window.location.href='/klinik/sitemarking/data'">
                         <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                         Data
                     </button>
                     <button type="button" class="btn btn-secondary m-r-3"
-                        onclick="window.location.href='/klinik/registrasi'" wire:loading.attr="disabled">
+                        onclick="window.location.href='/klinik/sitemarking'" wire:loading.attr="disabled">
                         <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                         Reset
                     </button>
@@ -138,13 +136,12 @@
             </div>
             <div class="panel-footer">
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='/klinik/registrasi/data'">
+                    onclick="window.location.href='/klinik/sitemarking/data'">
                     <span wire:loading wire:target="submit" class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
             </div>
         @endif
-
     </div>
     <script>
         const imgCanvas = document.getElementById('imgCanvas');

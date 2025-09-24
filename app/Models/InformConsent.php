@@ -5,18 +5,20 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Tindakan extends Model
+class InformConsent extends Model
 {
     //
-    protected $table = 'tindakan';
+    protected $table = 'inform_consent';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
 
     public function registrasi(): BelongsTo
     {
         return $this->belongsTo(Registrasi::class);
     }
 
-    public function tarifTindakan(): BelongsTo
+    public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(TarifTindakan::class);
+        return $this->belongsTo(Pengguna::class);
     }
 }
