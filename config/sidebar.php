@@ -197,7 +197,7 @@ return [
                 [
                     "title" => "Site Marking",
                     "urutkan" => false,
-                    "method" => ["Index", "Data"],
+                    "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Laporan Operasi",
