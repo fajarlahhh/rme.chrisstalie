@@ -6,10 +6,11 @@ use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Penjualan;
+use App\Class\JurnalClass;
 use App\Models\StokKeluar;
+use App\Models\MetodeBayar;
 use Illuminate\Support\Str;
 use App\Models\PenjualanDetail;
-use App\Models\MetodeBayar;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
@@ -27,6 +28,7 @@ class Index extends Component
         array_push($this->barang, [
             'id' => null,
             'barang_satuan_id' => null,
+            'kode_akun_id' => null,
             'barangSatuan' => [],
             'qty' => 0,
             'harga' => 0,
@@ -43,6 +45,8 @@ class Index extends Component
                 $barangSatuan = collect($barang['barangSatuan']);
                 $this->barang[$index[0]]['id'] = $barang['id'] ?? null;
                 $this->barang[$index[0]]['barang_satuan_id'] = null;
+                $this->barang[$index[0]]['kode_akun_id'] = $barang['kode_akun_id'];
+                $this->barang[$index[0]]['kode_akun_penjualan_id'] = $barang['kode_akun_penjualan_id'];
                 $this->barang[$index[0]]['barangSatuan'] = $barangSatuan->toArray();
                 $this->barang[$index[0]]['qty'] = $this->barang[$index[0]]['qty'] ?? 0;
                 $this->barang[$index[0]]['rasio_dari_terkecil'] = null;
@@ -60,6 +64,8 @@ class Index extends Component
         } else {
             $this->barang[$index[0]]['id'] = null;
             $this->barang[$index[0]]['barang_satuan_id'] = null;
+            $this->barang[$index[0]]['kode_akun_id'] = null;
+            $this->barang[$index[0]]['kode_akun_penjualan_id'] = null;
             $this->barang[$index[0]]['barangSatuan'] = [];
             $this->barang[$index[0]]['qty'] = 0;
             $this->barang[$index[0]]['rasio_dari_terkecil'] = null;
@@ -81,7 +87,10 @@ class Index extends Component
     public function submit()
     {
         $this->validate([
+            'metode_bayar' => 'required',
+            'cash' => $this->metode_bayar == 1 ? 'required|integer|min:' . ($this->total_harga_barang - $this->diskon) : 'nullable',
             'barang' => 'required|array',
+            'barang.*.kode_akun_penjualan_id' => 'required',
             'barang.*.id' => 'required',
             'barang.*.barang_satuan_id' => 'required',
             'barang.*.harga' => 'required|integer',
@@ -90,6 +99,8 @@ class Index extends Component
 
         DB::transaction(function () {
             $dataTerakhir = Penjualan::where('created_at', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
+
+            $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
 
             if ($dataTerakhir) {
                 $id = $dataTerakhir->id + 1;
@@ -100,14 +111,13 @@ class Index extends Component
             $data = new Penjualan();
             $data->id = $id;
             $data->keterangan = $this->keterangan;
-            $data->metode_bayar = $this->metode_bayar;
+            $data->metode_bayar = $metodeBayar->nama;
             $data->total_harga_barang = $this->total_harga_barang;
             $data->diskon = $this->diskon;
             $data->total_tagihan = $this->total_harga_barang - $this->diskon;
-            $data->bayar = $this->metode_bayar == 'Cash' ? $this->cash : ($this->total_harga_barang - $this->diskon);
+            $data->bayar = $metodeBayar->nama == 'Cash' ? $this->cash : ($this->total_harga_barang - $this->diskon);
             $data->pengguna_id = auth()->id();
             $data->save();
-
             PenjualanDetail::insert(collect($this->barang)->map(fn($q) => [
                 'qty' => $q['qty'],
                 'harga' => $q['harga'],
@@ -116,7 +126,6 @@ class Index extends Component
                 'barang_satuan_id' => $q['barang_satuan_id'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
             ])->toArray());
-
             foreach ($this->barang as $barang) {
                 $stokKeluarId = Str::uuid();
                 StokKeluar::insert([
@@ -137,6 +146,8 @@ class Index extends Component
                 ]);
             }
 
+            $this->jurnalPendapatan($data, $metodeBayar);
+
             $cetak = view('livewire.penjualan.cetak', [
                 'cetak' => true,
                 'data' => Penjualan::findOrFail($data->id),
@@ -147,12 +158,56 @@ class Index extends Component
         $this->redirect('penjualan');
     }
 
+    private function jurnalPendapatan($data, $metodeBayar)
+    {
+        $id = Str::uuid();
+        $jurnalDetail = [];
+
+        foreach (
+            collect($this->barang)->groupBy('kode_akun_penjualan_id')->map(fn($q) => [
+                'kode_akun_id' => $q->first()['kode_akun_penjualan_id'],
+                'total' => $q->sum(fn($q) => $q['harga'] * $q['qty']),
+            ]) as $barang
+        ) {
+            $jurnalDetail[] = [
+                'jurnal_id' => $id,
+                'debet' => 0,
+                'kredit' => $barang['total'],
+                'kode_akun_id' => $barang['kode_akun_id']
+            ];
+        }
+        if ($this->diskon > 0) {
+            $jurnalDetail[] = [
+                'jurnal_id' => $id,
+                'debet' => $this->diskon,
+                'kredit' => 0,
+                'kode_akun_id' => '44100'
+            ];
+        }
+        $jurnalDetail[] = [
+            'jurnal_id' => $id,
+            'debet' => $this->total_harga_barang - $this->diskon,
+            'kredit' => 0,
+            'kode_akun_id' => $metodeBayar->kode_akun_id
+        ];
+        JurnalClass::insert($id, 'Penjualan', [
+            'tanggal' => now(),
+            'uraian' => 'Penjualan Barang Bebas ' . $data->id,
+            'unit_bisnis' => 'Apotek',
+            'referensi_id' => $data->id,
+            'pengguna_id' => auth()->id(),
+        ], $jurnalDetail);
+    }
+
     public function mount()
     {
         $this->dataMetodeBayar = MetodeBayar::get()->toArray();
-        $this->dataBarang = Barang::with('barangSatuan.satuanKonversi')->where('perlu_resep', 0)->where('klinik', 0)->orderBy('nama')->get()->map(fn($q) => [
+        $this->dataBarang = Barang::with(['barangSatuan.satuanKonversi', 'kodeAkun'])->where('perlu_resep', 0)->where('klinik', 0)->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q['id'],
             'nama' => $q['nama'],
+            'kode_akun_id' => $q['kode_akun_id'],
+            'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
+            'kategori' => $q->kodeAkun->nama,
             'barangSatuan' => $q['barangSatuan']->map(fn($r) => [
                 'id' => $r['id'],
                 'nama' => $r['nama'],

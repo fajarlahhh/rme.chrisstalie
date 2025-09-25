@@ -10,11 +10,12 @@ use Illuminate\Support\Facades\DB;
 
 class Form extends Component
 {
-    public $data, $previous, $dataKodeAkun = [];
+    public $data, $previous, $dataKodeAkun = [], $dataKodeAkunPenjualan = [];
     public $nama;
     public $satuan;
     public $kode_akun_id;
     public $kfa;
+    public $kode_akun_penjualan_id;
     public $indikasi;
     public $harga;
     public $perlu_resep = 0;
@@ -41,6 +42,7 @@ class Form extends Component
     {
         $this->validate([
             'kode_akun_id' => 'required',
+            'kode_akun_penjualan_id' => 'required',
             'satuan' => 'required',
             'harga' => 'required',
             'nama' => 'required',
@@ -54,6 +56,7 @@ class Form extends Component
             $this->data->klinik = $this->klinik == 1 ? 1 : 0;
             $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->kode_akun_id = $this->kode_akun_id;
+            $this->data->kode_akun_penjualan_id = $this->kode_akun_penjualan_id;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
             
@@ -99,6 +102,7 @@ class Form extends Component
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();
+        $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '41000')->get()->toArray();
     }
 
     public function render()

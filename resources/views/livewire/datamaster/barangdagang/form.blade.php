@@ -65,6 +65,18 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Kategori Penjualan</label>
+                    <select class="form-control" wire:model.live="kode_akun_penjualan_id" data-width="100%">
+                        <option hidden selected>-- Pilih Kode Akun --</option>
+                        @foreach ($dataKodeAkunPenjualan as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                        @endforeach
+                    </select>
+                    @error('kode_akun_penjualan_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label class="form-label">KFA</label>
                     <input class="form-control" type="text" wire:model="kfa" />
                     @error('kfa')

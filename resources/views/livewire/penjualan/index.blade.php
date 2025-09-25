@@ -49,10 +49,11 @@
                                                 showSubtext: true,
                                                 styleBase: 'form-control'
                                             })"
-                                                wire:model.live="barang.{{ $index }}.id">
+                                                wire:model.lazy="barang.{{ $index }}.id">
                                                 <option value="">-- Pilih Barang --</option>
                                                 @foreach ($dataBarang as $subRow)
-                                                    <option value="{{ $subRow['id'] }}">
+                                                    <option value="{{ $subRow['id'] }}"
+                                                        data-subtext="{{ $subRow['kategori'] }}">
                                                         {{ $subRow['nama'] }}
                                                     </option>
                                                 @endforeach
@@ -63,7 +64,7 @@
                                         </td>
                                         <td class="with-btn">
                                             <select class="form-control"
-                                                wire:model.live="barang.{{ $index }}.barang_satuan_id">
+                                                wire:model.lazy="barang.{{ $index }}.barang_satuan_id">
                                                 <option value="">-- Pilih Satuan --</option>
                                                 @foreach ($row['barangSatuan'] as $subRow)
                                                     <option value="{{ $subRow['id'] }}"
@@ -84,7 +85,7 @@
                                         </td>
                                         <td class="with-btn">
                                             <input type="number" class="form-control" min="0" step="1"
-                                                min="0" wire:model.live="barang.{{ $index }}.qty"
+                                                min="0" wire:model.lazy="barang.{{ $index }}.qty"
                                                 autocomplete="off">
                                             @error('barang.' . $index . '.qty')
                                                 <span class="text-danger">{{ $message }}</span>
@@ -134,7 +135,7 @@
                 <br>
                 <div class="mb-3">
                     <label class="form-label">Diskon</label>
-                    <input class="form-control text-end" type="text" wire:model.live="diskon" />
+                    <input class="form-control text-end" type="text" wire:model.lazy="diskon" />
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Total Tagihan</label>
@@ -147,21 +148,21 @@
                         <h4>Pembayaran</h4>
                         <hr>
                         <div class="mb-3">
-                            <label class="form-label">Jenis Bayar</label>
-                            <select class="form-control" wire:model.live="metode_bayar" data-width="100%">
-                                <option hidden selected>-- Pilih Jenis Bayar --</option>
-                                @foreach (\App\Enums\MetodeBayarEnum::cases() as $item)
-                                    <option value="{{ $item->value }}">{{ $item->label() }}</option>
+                            <label class="form-label">Metode Bayar</label>
+                            <select class="form-control" wire:model.lazy="metode_bayar" data-width="100%">
+                                <option hidden selected>-- Pilih Metode Bayar --</option>
+                                @foreach ($dataMetodeBayar as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
                             @error('metode_bayar')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
-                        @if ($metode_bayar == 'Cash')
+                        @if ($metode_bayar == 1)
                             <div class="mb-3">
                                 <label class="form-label">Cash</label>
-                                <input class="form-control" type="number" wire:model.live="cash" />
+                                <input class="form-control" type="number" wire:model.lazy="cash" />
                                 @error('cash')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

@@ -80,4 +80,9 @@ class Barang extends Model
     {
         return $this->belongsTo(KodeAkun::class);
     }
+
+    public function kodeAkunPenjualan(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class, 'kode_akun_penjualan_id');
+    }
 }

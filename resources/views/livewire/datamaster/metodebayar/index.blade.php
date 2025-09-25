@@ -41,8 +41,13 @@
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @if ($item->nama == 'Cash')
+                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                    @else
+                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @endif
                                 @endrole
                             </td>
                         </tr>

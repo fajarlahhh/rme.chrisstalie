@@ -17,7 +17,7 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <select class="form-control w-auto" wire:model.lazy="kategori">
+                    <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                         <option value="">Semua Kategori</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
@@ -25,7 +25,13 @@
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
+                        wire:model.lazy="cari">&nbsp;
+                    <div class="form-check">
+                        <label class="form-check-label" for="klinik">
+                            Klinik
+                        </label>
+                        <input class="form-check-input" type="checkbox" wire:model.lazy="klinik" />
+                    </div>
                 </div>
             </div>
         </div>
@@ -57,13 +63,11 @@
                                                 <td class="p-1">{{ $satuan->nama }}</td>
                                                 <td class="text-end w-100px p-1">
                                                     {{ number_format($satuan->harga_jual, 0, ',', '.') }}</td>
-                                                <td class="text-center p-1 text-nowrap w-50px">
+                                                <td class="p-1 text-nowrap w-150px">
                                                     {!! $satuan->rasio_dari_terkecil == 1
                                                         ? '<span class="badge bg-success">Terkecil</span>'
-                                                        : '1/' . $satuan->rasio_dari_terkecil !!}
-                                                    {!! $satuan->utama == 1
-                                                        ? '<span class="badge bg-info">Utama</span>'
-                                                        : '' !!}
+                                                        : '<span class="badge bg-warning">' . $satuan->konversi_satuan . '</span>' !!}
+                                                    {!! $satuan->utama == 1 ? '<span class="badge bg-info">Utama</span>' : '' !!}
                                                 </td>
                                             </tr>
                                         @endforeach

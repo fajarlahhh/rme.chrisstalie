@@ -87,7 +87,7 @@
                     @endforeach
                     @if ($data->currentPage() == $data->lastPage())
                         <tr>
-                            <th colspan="11" class="text-end">TOTAL HARGA PEROLEHAN</th>
+                            <th colspan="11" class="text-end">TOTAL</th>
                             <th class="text-end">{{ number_format($dataRaw->sum('harga_perolehan')) }}</th>
                         </tr>
                     @endif

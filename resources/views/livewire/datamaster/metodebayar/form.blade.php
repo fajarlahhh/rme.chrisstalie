@@ -13,13 +13,14 @@
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
 
-            <h4 class="panel-title">Form</h4>   
+            <h4 class="panel-title">Form</h4>
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text" wire:model="nama" />
+                    <input class="form-control" type="text" wire:model="nama"
+                        @if ($nama == 'Cash') disabled @endif />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -29,7 +30,7 @@
                     <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
                     @error('kode_akun_id')

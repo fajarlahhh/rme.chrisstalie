@@ -13,11 +13,11 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $unit_bisnis, $kode_akun_id, $dataKodeAkun = [];
+    public $cari, $unit_bisnis, $kode_akun_id, $dataKodeAkun = [], $klinik;
 
     public function mount()
     {
-        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();    
+        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();
     }
 
     public function delete($id)
@@ -31,6 +31,12 @@ class Index extends Component
         };
     }
 
+
+    public function updated()
+    {
+        $this->resetPage();
+    }
+
     public function render()
     {
         return view('livewire.datamaster.barangdagang.index', [
@@ -39,7 +45,8 @@ class Index extends Component
                 'kodeAkun'
             ])->persediaan()
                 ->when($this->unit_bisnis, fn($q) => $q->where('unit_bisnis', $this->unit_bisnis))
-                ->when($this->kode_akun_id, function($q) {
+                ->when($this->klinik, fn($q) => $q->where('klinik', $this->klinik))
+                ->when($this->kode_akun_id, function ($q) {
                     $q->where('kode_akun_id', $this->kode_akun_id);
                 })
                 ->where(fn($q) => $q

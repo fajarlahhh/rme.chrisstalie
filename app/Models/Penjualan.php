@@ -23,14 +23,19 @@ class Penjualan extends Model
     {
         return $this->belongsTo(Pasien::class);
     }
-    
+
     public function penjualanDetail(): HasMany
     {
         return $this->hasMany(PenjualanDetail::class);
     }
-    
+
     public function stok(): HasMany
     {
         return $this->hasMany(Stok::class);
+    }
+
+    public function jurnal(): HasMany
+    {
+        return $this->hasMany(Jurnal::class, 'referensi_id')->where('jenis', 'Penjualan');
     }
 }
