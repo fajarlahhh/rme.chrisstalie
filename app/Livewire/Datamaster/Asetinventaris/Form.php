@@ -87,7 +87,9 @@ class Form extends Component
                             'jurnal_id' => null,
                         ];
                     }
-                    AsetPenyusutanUnitProduksi::insert($penyusutan);
+                    foreach (array_chunk($penyusutan, 1000) as $chunk) {
+                        AsetPenyusutanUnitProduksi::insert($chunk);
+                    }
                 }
             }
 
