@@ -16,7 +16,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <div class="row width-full">
+                <div class="row w-100">
                     <div class="col-md-4">
                         @if ($data->exists)
                             <div class="mb-3">

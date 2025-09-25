@@ -51,7 +51,7 @@ class Form extends Component
                 'label' => $q->label,
                 'x' => $q->x,
                 'y' => $q->y,
-                'catatan' => $this->catatan[$q->label],
+                'catatan' => array_key_exists($q->label, $this->catatan) ? $this->catatan[$q->label] : null,
                 'pengguna_id' => auth()->id(),
                 'created_at' => now(),
                 'updated_at' => now(),

@@ -80,6 +80,7 @@ class Form extends Component
             $this->uploadFile($this->data->id, 'Diagnosis');
         });
         session()->flash('success', 'Berhasil menyimpan data Diagnosis');
+        $this->redirect('/klinik/diagnosis/form/' . $this->data->id);
     }
 
     public function render()

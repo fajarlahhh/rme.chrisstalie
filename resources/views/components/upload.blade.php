@@ -52,11 +52,11 @@
                                 {{ $row['keterangan'] }}
                             </p>
                             @if (collect($fileDihapus)->contains($row['link']))
-                                <button class="btn btn-warning width-full" type="button"
+                                <button class="btn btn-warning w-100" type="button"
                                     wire:click="batalFileDihapus({{ $row['id'] }})">Batal Dihapus
                                 </button>
                             @else
-                                <button class="btn btn-danger width-full" type="button"
+                                <button class="btn btn-danger w-100" type="button"
                                     wire:click="tambahFileDihapus({{ $row['id'] }}, '{{ $row['link'] }}')">Hapus</button>
                             @endif
                         </div>
@@ -81,14 +81,14 @@
                         </div>
                         <div class="input-group">
                             <a href="javascript:;" wire:click="hapusFileDiupload({{ $index }})"
-                                class="btn btn-danger width-full"> Hapus</a>
+                                wire:loading.attr="disabled" class="btn btn-danger w-100"> Hapus</a>
                         </div>
                     </div>
                 @endif
             </div>
         @endforeach
         <div class="col-md-6 col-lg-4 col-xl-4">
-            <a href="javascript:;" wire:click="tambahFileDiupload" class="btn btn-secondary width-full p-0"
+            <a href="javascript:;" wire:click="tambahFileDiupload" class="btn btn-secondary w-100 p-0"
                 style="height:135px">
                 <div class="card border-0 w-100 h-100">
                     <div class="card-body text-dark pt-40px">Upload

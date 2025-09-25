@@ -61,15 +61,7 @@
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     @if (!$row->payment)
-                                        @php
-                                            $custom =
-                                                "<hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>" .
-                                                $row->informedConsent->pengguna->nama .
-                                                '<br>' .
-                                                $row->informedConsent->updated_at .
-                                                '</a>';
-                                        @endphp
-                                        <x-action :row="$row" :custom="$custom" :detail="false" :edit="true"
+                                        <x-action :row="$row" :custom="null" :detail="false" :edit="true"
                                             :information="false" :print="false" :permanentDelete="false" :restore="false"
                                             :delete="true" />
                                     @else
