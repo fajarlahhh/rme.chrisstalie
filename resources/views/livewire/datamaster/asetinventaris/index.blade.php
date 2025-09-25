@@ -62,6 +62,9 @@
                                 @endif
                             </td>
                             <td>{{ $item->masa_manfaat }} <small>bulan</small></td>
+                            @if ($item->metode_penyusutan == 'Satuan Hasil Produksi')
+                                <td>{{ $item->masa_manfaat }} <small>x</small></td>
+                            @endif
                             <td>{{ $item->lokasi }}</td>
                             <td>
                                 @switch($item->status)
