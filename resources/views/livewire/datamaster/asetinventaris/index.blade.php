@@ -61,10 +61,13 @@
                                     {{ $item->kode_akun_sumber_dana_id }} - {{ $item->kodeAkunSumberDana->nama }}
                                 @endif
                             </td>
-                            <td>{{ $item->masa_manfaat }} <small>bulan</small></td>
-                            @if ($item->metode_penyusutan == 'Satuan Hasil Produksi')
-                                <td>{{ $item->masa_manfaat }} <small>x</small></td>
-                            @endif
+                            <td>
+                                @if ($item->metode_penyusutan == 'Satuan Hasil Produksi')
+                                    {{ $item->masa_manfaat }} <small>x</small>
+                                @else
+                                    {{ $item->masa_manfaat }} <small>bulan</small>
+                                @endif
+                            </td>
                             <td>{{ $item->lokasi }}</td>
                             <td>
                                 @switch($item->status)
