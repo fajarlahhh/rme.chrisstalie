@@ -14,4 +14,9 @@ class ResepObat extends Model
     {
         return $this->belongsTo(Registrasi::class);
     }
+
+    public function barang(): BelongsTo
+    {
+        return $this->belongsTo(Barang::class);
+    }
 }

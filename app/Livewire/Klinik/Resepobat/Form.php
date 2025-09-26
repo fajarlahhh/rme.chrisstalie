@@ -6,6 +6,7 @@ use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Penjualan;
+use App\Models\ResepObat;
 use App\Models\Registrasi;
 use App\Models\StokKeluar;
 use App\Models\JurnalClass;
@@ -34,8 +35,6 @@ class Form extends Component
             'kode_akun_id' => null,
             'barangSatuan' => [],
             'qty' => 0,
-            'harga' => 0,
-            'rasio_dari_terkecil' => 0,
         ]);
     }
 
@@ -75,91 +74,35 @@ class Form extends Component
     public function submit()
     {
         $this->validate([
-            'metode_bayar' => 'required',
-            'cash' => $this->metode_bayar == 1 ? 'required|integer|min:' . ($this->total_harga_barang - $this->diskon) : 'nullable',
-            'barang' => 'required|array',
-            'barang.*.kode_akun_penjualan_id' => 'required',
-            'barang.*.id' => 'required',
-            'barang.*.barang_satuan_id' => 'required',
-            'barang.*.harga' => 'required|integer',
-            'barang.*.qty' => [
-                'required',
-                'integer',
-                'min:1',
-                function ($attribute, $value, $fail) {
-                    $index = explode('.', $attribute)[1];
-                    $barang = $this->barang[$index] ?? null;
-                    if (!$barang) return;
-                    // Cek stok tersedia
-                    $stokTersedia = Stok::where('barang_id', $barang['id'])
-                        ->available()
-                        ->count();
-                    if (($value / ($barang['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
-                        $fail('Stok barang tidak mencukupi. Stok tersedia: ' . $stokTersedia);
-                    }
-                }
-            ],
+            'resep' => 'required',
+            'resep.*.barang' => 'required|array',
+            'resep.*.barang.*.id' => 'required',
+            'resep.*.barang.*.barang_satuan_id' => 'required',
+            'resep.*.barang.*.qty' => 'required|integer|min:1',
         ]);
 
         DB::transaction(function () {
-            $dataTerakhir = Penjualan::where('created_at', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
-
-            $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
-
-            if ($dataTerakhir) {
-                $id = $dataTerakhir->id + 1;
-            } else {
-                $id = date('Ym') . '00001';
+            $resepObat = [];
+            ResepObat::where('id', $this->data->id)->delete();
+            foreach ($this->resep as $x => $row) {
+                foreach ($row['barang'] as $barang) {
+                    $resepObat[] = [
+                        'id' => $this->data->id,
+                        'barang_id' => $barang['id'],
+                        'barang_satuan_id' => $barang['barang_satuan_id'],
+                        'resep' => $x + 1,
+                        'qty' => $barang['qty'],
+                        'catatan' => $row['catatan'],
+                        'pengguna_id' => auth()->id(),
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                }
             }
-
-            $data = new Penjualan();
-            $data->id = $id;
-            $data->keterangan = $this->keterangan;
-            $data->metode_bayar = $metodeBayar->nama;
-            $data->total_harga_barang = $this->total_harga_barang;
-            $data->diskon = $this->diskon;
-            $data->total_tagihan = $this->total_harga_barang - $this->diskon;
-            $data->bayar = $metodeBayar->nama == 'Cash' ? $this->cash : ($this->total_harga_barang - $this->diskon);
-            $data->pengguna_id = auth()->id();
-            $data->save();
-            PenjualanDetail::insert(collect($this->barang)->map(fn($q) => [
-                'qty' => $q['qty'],
-                'harga' => $q['harga'],
-                'penjualan_id' => $data->id,
-                'barang_id' => $q['id'],
-                'barang_satuan_id' => $q['barang_satuan_id'],
-                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-            ])->toArray());
-            foreach ($this->barang as $barang) {
-                $stokKeluarId = Str::uuid();
-                StokKeluar::insert([
-                    'id' => $stokKeluarId,
-                    'tanggal' => now(),
-                    'qty' => $barang['qty'],
-                    'penjualan_id' => $data->id,
-                    'barang_id' => $barang['id'],
-                    'pengguna_id' => auth()->id(),
-                    'barang_satuan_id' => $barang['barang_satuan_id'],
-                    'rasio_dari_terkecil' => $barang['rasio_dari_terkecil'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-                Stok::where('barang_id', $barang['id'])->available()->orderBy('tanggal_kedaluarsa', 'asc')->limit($barang['qty'])->update([
-                    'tanggal_keluar' => now(),
-                    'stok_keluar_id' => $stokKeluarId,
-                ]);
-            }
-
-            $this->jurnalPendapatan($data, $metodeBayar);
-
-            $cetak = view('livewire.penjualan.cetak', [
-                'cetak' => true,
-                'data' => Penjualan::findOrFail($data->id),
-            ])->render();
-            session()->flash('cetak', $cetak);
+            ResepObat::insert($resepObat);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('penjualan');
+        $this->redirect('/klinik/resepobat');
     }
 
     public function mount(Registrasi $data)
@@ -189,6 +132,23 @@ class Form extends Component
                 'barang' => [],
                 'catatan' => '',
             ];
+        } else {
+            $this->resep = $data->resepobat->groupBy('resep')->map(fn($q) => [
+                'catatan' => $q->first()->catatan,
+                'barang' => $q->map(fn($r) => [
+                    'id' => $r->barang_id,
+                    'barang_satuan_id' => $r->barang_satuan_id,
+                    'kode_akun_id' => $r->barang->kode_akun_id,
+                    'barangSatuan' => $r->barang->barangSatuan->map(fn($s) => [
+                        'id' => $s->id,
+                        'nama' => $s->nama,
+                        'konversi_satuan' => $s->konversi_satuan,
+                        'harga_jual' => $s->harga_jual,
+                        'rasio_dari_terkecil' => $s->rasio_dari_terkecil,
+                    ]),
+                    'qty' => $r->qty,
+                ])->toArray(),
+            ])->toArray();
         }
     }
 
