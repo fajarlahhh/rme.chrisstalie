@@ -29,6 +29,7 @@ class Form extends Component
                 'perawat_id' => $q->perawat_id,
                 'biaya_jasa_dokter' => $q->dokter_id ? 1 : 0,
                 'biaya_jasa_perawat' => $q->perawat_id ? 1 : 0,
+                'biaya' => $q->biaya,
             ])->toArray();
         } else {
             $this->tindakan[] = [
@@ -38,10 +39,11 @@ class Form extends Component
                 'catatan' => null,
                 'membutuhkan_inform_consent' => false,
                 'membutuhkan_sitemarking' => false,
-                'dokter_id' => null,
+                'dokter_id' => auth()->user()->dokter?->id,
                 'perawat_id' => null,
                 'biaya_jasa_dokter' => 0,
                 'biaya_jasa_perawat' => 0,
+                'biaya' => 0,
             ];
         }
         $this->dataNakes = Nakes::orderBy('nama')->get()->map(fn($q) => [
@@ -67,10 +69,11 @@ class Form extends Component
             'catatan' => null,
             'membutuhkan_inform_consent' => false,
             'membutuhkan_sitemarking' => false,
-            'dokter_id' => null,
+            'dokter_id' => auth()->user()->dokter?->id,
             'perawat_id' => null,
             'biaya_jasa_dokter' => 0,
             'biaya_jasa_perawat' => 0,
+            'biaya' => 0,
         ];
     }
 
@@ -83,15 +86,17 @@ class Form extends Component
                 $this->tindakan[$index[0]]['id'] = $tindakan['id'] ?? null;
                 $this->tindakan[$index[0]]['biaya_jasa_dokter'] = $tindakan['biaya_jasa_dokter'] ?? 0;
                 $this->tindakan[$index[0]]['biaya_jasa_perawat'] = $tindakan['biaya_jasa_perawat'] ?? 0;
-                $this->tindakan[$index[0]]['dokter_id'] = null;
+                $this->tindakan[$index[0]]['dokter_id'] = auth()->user()->dokter?->id;
                 $this->tindakan[$index[0]]['perawat_id'] = null;
+                $this->tindakan[$index[0]]['biaya'] = $tindakan['biaya_total'] ?? 0;
             }
         } else {
             $this->tindakan[$index[0]]['id'] = null;
             $this->tindakan[$index[0]]['biaya_jasa_dokter'] = null;
             $this->tindakan[$index[0]]['biaya_jasa_perawat'] = null;
-            $this->tindakan[$index[0]]['dokter_id'] = null;
+            $this->tindakan[$index[0]]['dokter_id'] = auth()->user()->dokter?->id;
             $this->tindakan[$index[0]]['perawat_id'] = null;
+            $this->tindakan[$index[0]]['biaya'] = 0;
         }
     }
 
@@ -123,6 +128,8 @@ class Form extends Component
                 'catatan' => $q['catatan'],
                 'membutuhkan_inform_consent' => $q['membutuhkan_inform_consent'],
                 'membutuhkan_sitemarking' => $q['membutuhkan_sitemarking'],
+                'biaya_jasa_dokter' => $q['biaya_jasa_dokter'],
+                'biaya_jasa_perawat' => $q['biaya_jasa_perawat'],
                 'dokter_id' => $q['dokter_id'],
                 'perawat_id' => $q['perawat_id'],
                 'pengguna_id' => auth()->id(),

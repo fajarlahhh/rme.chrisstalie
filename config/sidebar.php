@@ -200,6 +200,11 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Penugasan",
+                    "urutkan" => false,
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Kasir",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],

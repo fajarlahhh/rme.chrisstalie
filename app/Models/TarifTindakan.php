@@ -11,9 +11,9 @@ class TarifTindakan extends Model
     //
     protected $table = 'tarif_tindakan';
 
-    public function tarifTindakanAlatBahan(): HasMany
+    public function tarifTindakanAlatBarang(): HasMany
     {
-        return $this->hasMany(TarifTindakanAlatBahan::class);
+        return $this->hasMany(TarifTindakanAlatBarang::class);
     }
 
     public function pengguna(): BelongsTo
@@ -26,15 +26,10 @@ class TarifTindakan extends Model
         return $this->belongsTo(KodeAkun::class);
     }
 
-    public function getBiayaAlatBahanAttribute(): int
+    public function getBiayaAlatBarangAttribute(): int
     {
-        return $this->tarifTindakanAlatBahan->sum(function ($q) {
-            return ($q->qty ?? 0) * ($q->jenis == 'Bahan' ? $q->barangSatuan->harga_jual ?? 0 : $q->harga_jual ?? 0);
+        return $this->tarifTindakanAlatBarang->sum(function ($q) {
+            return ($q->qty ?? 0) * ($q->barang_id? $q->barangSatuan->harga_jual ?? 0 : $q->biaya ?? 0);
         });
-    }
-
-    public function getBiayaTotalAttribute(): int
-    {
-        return $this->biaya_jasa_dokter + $this->biaya_jasa_perawat + $this->biaya_tidak_langsung + $this->biaya_alat_bahan + $this->biaya_keuntungan_klinik;
     }
 }

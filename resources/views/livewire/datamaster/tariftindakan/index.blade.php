@@ -56,7 +56,7 @@
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                             <td>{{ $item->icd_9_cm }}</td>
                             <td class="text-end">{{ number_format($item->tarif) }}</td>
-                            <td class="text-end">{{ number_format($item->biaya_alat_bahan) }}</td>
+                            <td class="text-end">{{ number_format($item->biaya_alat_barang) }}</td>
                             <td class="text-end">{{ number_format($item->biaya_jasa_dokter) }}</td>
                             <td class="text-end">{{ number_format($item->biaya_jasa_perawat) }}</td>
                             <th class="text-end">
@@ -64,7 +64,7 @@
                                     $item->tarif -
                                         $item->biaya_jasa_dokter -
                                         $item->biaya_jasa_perawat -
-                                        $item->biaya_alat_bahan,
+                                        $item->biaya_alat_barang,
                                 ) }}
                             </th>
                             <td class="with-btn-group text-end" nowrap>

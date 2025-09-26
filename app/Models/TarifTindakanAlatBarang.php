@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class TarifTindakanAlatBahan extends Model
+class TarifTindakanAlatBarang extends Model
 {
     //
-    protected $table = 'tarif_tindakan_alat_bahan';
+    protected $table = 'tarif_tindakan_alat_barang';
 
     public function tarifTindakan(): BelongsTo
     {
@@ -17,12 +17,12 @@ class TarifTindakanAlatBahan extends Model
 
     public function barang(): BelongsTo
     {
-        return $this->belongsTo(Barang::class)->where('jenis', 'Bahan');
+        return $this->belongsTo(Barang::class)->whereNotNull('barang_id');
     }
 
     public function alat(): BelongsTo
     {
-        return $this->belongsTo(Aset::class)->where('jenis', 'Alat');
+        return $this->belongsTo(Aset::class)->whereNotNull('aset_id');
     }
 
     public function barangSatuan(): BelongsTo

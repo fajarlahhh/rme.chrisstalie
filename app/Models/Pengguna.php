@@ -5,6 +5,7 @@ namespace App\Models;
 // use Illuminate\Contracts\Auth\MustVerifyuid;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -58,5 +59,15 @@ class Pengguna extends Authenticatable
     public function pegawai(): BelongsTo
     {
         return $this->belongsTo(Pegawai::class)->withTrashed();
+    }
+
+    public function nakes(): HasOne
+    {
+        return $this->hasOne(Nakes::class);
+    }
+
+    public function dokter(): HasOne
+    {
+        return $this->hasOne(Nakes::class)->where('dokter', 1);
     }
 }

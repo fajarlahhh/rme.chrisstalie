@@ -36,14 +36,14 @@
                         <div class="mb-3">
                             <label class="form-label">Tarif</label>
                             <input class="form-control" type="number" step="1" min="0"
-                                wire:model.live="tarif" />
+                                wire:model.lazy="tarif" />
                             @error('tarif')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
-                            <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
+                            <select class="form-control" wire:model="kode_akun_id" data-width="100%">
                                 <option hidden selected>-- Pilih Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)
                                     <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
@@ -67,7 +67,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (collect($alatBahan)->where('jenis', 'Alat') as $index => $row)
+                                    @foreach (collect($alatBarang)->where('jenis', 'Alat') as $index => $row)
                                         <tr>
                                             <td class="with-btn">
                                                 <select class="form-control" x-init="$($el).selectpicker({
@@ -79,7 +79,7 @@
                                                     showSubtext: true,
                                                     styleBase: 'form-control'
                                                 })"
-                                                    wire:model.live="alatBahan.{{ $index }}.id">
+                                                    wire:model.live="alatBarang.{{ $index }}.aset_id">
                                                     <option value="">-- Pilih Alat --</option>
                                                     @foreach ($dataAset as $subRow)
                                                         <option value="{{ $subRow['id'] }}">
@@ -90,26 +90,26 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                @error('alatBahan.' . $index . '.id')
+                                                @error('alatBarang.' . $index . '.aset_id')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </td>
                                             <td class="with-btn">
                                                 <input type="number" class="form-control" min="0" step="1"
-                                                    min="0" wire:model.live="alatBahan.{{ $index }}.qty"
+                                                    min="0" wire:model.live="alatBarang.{{ $index }}.qty"
                                                     autocomplete="off">
-                                                @error('alatBahan.' . $index . '.qty')
+                                                @error('alatBarang.' . $index . '.qty')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </td>
                                             <td class="with-btn">
                                                 <input type="text" class="form-control text-end"
-                                                    value="{{ number_format((int) ($row['harga_jual'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
+                                                    value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
                                                     disabled autocomplete="off">
                                             </td>
                                             <td class="with-btn">
                                                 <button type="button" class="btn btn-danger"
-                                                    wire:click="hapusAlatBahan({{ $index }})"
+                                                    wire:click="hapusAlatBarang({{ $index }})"
                                                     wire:loading.attr="disabled">
                                                     <span wire:loading>
                                                         <span class="spinner-border spinner-border-sm" role="status"
@@ -138,7 +138,7 @@
                                         <td colspan="4">
                                             <div class="text-center">
                                                 <button type="button" class="btn btn-secondary"
-                                                    wire:click="tambahAlatBahan('Alat')" wire:loading.attr="disabled">
+                                                    wire:click="tambahAlatBarang('Alat')" wire:loading.attr="disabled">
                                                     <span wire:loading>
                                                         <span class="spinner-border spinner-border-sm" role="status"
                                                             aria-hidden="true"></span>
@@ -148,7 +148,7 @@
                                                     </span>
                                                 </button>
                                                 <br>
-                                                @error('alatBahan')
+                                                @error('alatBarang')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -169,7 +169,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (collect($alatBahan)->where('jenis', 'Bahan') as $index => $row)
+                                    @foreach (collect($alatBarang)->where('jenis', 'Barang') as $index => $row)
                                         <tr>
                                             <td class="with-btn">
                                                 <select class="form-control" x-init="$($el).selectpicker({
@@ -181,7 +181,7 @@
                                                     showSubtext: true,
                                                     styleBase: 'form-control'
                                                 })"
-                                                    wire:model.live="alatBahan.{{ $index }}.id">
+                                                    wire:model.live="alatBarang.{{ $index }}.barang_id">
                                                     <option value="">-- Pilih Barang --</option>
                                                     @foreach ($dataBarang as $subRow)
                                                         <option value="{{ $subRow['id'] }}">
@@ -189,13 +189,13 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                @error('alatBahan.' . $index . '.id')
+                                                @error('alatBarang.' . $index . '.barang_id')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </td>
                                             <td class="with-btn">
                                                 <select class="form-control"
-                                                    wire:model.live="alatBahan.{{ $index }}.barang_satuan_id">
+                                                    wire:model.live="alatBarang.{{ $index }}.barang_satuan_id">
                                                     <option value="">-- Pilih Satuan --</option>
                                                     @foreach ($row['barangSatuan'] as $subRow)
                                                         <option value="{{ $subRow['id'] }}"
@@ -205,27 +205,27 @@
                                                         </option>
                                                     @endforeach
                                                 </select>
-                                                @error('alatBahan.' . $index . '.barang_satuan_id')
+                                                @error('alatBarang.' . $index . '.barang_satuan_id')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </td>
                                             <td class="with-btn">
                                                 <input type="number" class="form-control" min="0"
                                                     step="1" min="0"
-                                                    wire:model.live="alatBahan.{{ $index }}.qty"
+                                                    wire:model.live="alatBarang.{{ $index }}.qty"
                                                     autocomplete="off">
-                                                @error('alatBahan.' . $index . '.qty')
+                                                @error('alatBarang.' . $index . '.qty')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </td>
                                             <td class="with-btn">
                                                 <input type="text" class="form-control text-end"
-                                                    value="{{ number_format((int) ($row['harga_jual'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
+                                                    value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
                                                     disabled autocomplete="off">
                                             </td>
                                             <td class="with-btn">
                                                 <button type="button" class="btn btn-danger"
-                                                    wire:click="hapusAlatBahan({{ $index }})"
+                                                    wire:click="hapusAlatBarang({{ $index }})"
                                                     wire:loading.attr="disabled">
                                                     <span wire:loading>
                                                         <span class="spinner-border spinner-border-sm" role="status"
@@ -253,7 +253,7 @@
                                     <tr>
                                         <td colspan="4" class="text-center">
                                             <button type="button" class="btn btn-secondary"
-                                                wire:click="tambahAlatBahan('Bahan')" wire:loading.attr="disabled">
+                                                wire:click="tambahAlatBarang('Bahan')" wire:loading.attr="disabled">
                                                 <span wire:loading>
                                                     <span class="spinner-border spinner-border-sm" role="status"
                                                         aria-hidden="true"></span>
@@ -262,7 +262,7 @@
                                                     Tambah Bahan
                                                 </span>
                                             </button>
-                                            @error('alatBahan')
+                                            @error('alatBarang')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
