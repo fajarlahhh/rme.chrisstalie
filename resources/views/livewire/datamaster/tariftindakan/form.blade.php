@@ -69,66 +69,82 @@
                                 <tbody>
                                     @foreach (collect($alatBarang)->where('jenis', 'Alat') as $index => $row)
                                         <tr>
-                                            <td class="with-btn">
-                                                <select class="form-control" x-init="$($el).selectpicker({
-                                                    liveSearch: true,
-                                                    width: 'auto',
-                                                    size: 10,
-                                                    container: 'body',
-                                                    style: '',
-                                                    showSubtext: true,
-                                                    styleBase: 'form-control'
-                                                })"
-                                                    wire:model.live="alatBarang.{{ $index }}.aset_id">
-                                                    <option value="">-- Pilih Alat --</option>
-                                                    @foreach ($dataAset as $subRow)
-                                                        <option value="{{ $subRow['id'] }}">
-                                                            {{ $subRow['nama'] }} @if ($subRow['metode_penyusutan'] == 'Satuan Hasil Produksi')
-                                                                (Rp.
-                                                                {{ number_format($subRow['harga_perolehan'] / $subRow['masa_manfaat']) }})
-                                                            @endif
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('alatBarang.' . $index . '.aset_id')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td class="with-btn">
-                                                <input type="number" class="form-control" min="0" step="1"
-                                                    min="0" wire:model.live="alatBarang.{{ $index }}.qty"
-                                                    autocomplete="off">
-                                                @error('alatBarang.' . $index . '.qty')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td class="with-btn">
-                                                <input type="text" class="form-control text-end"
-                                                    value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
-                                                    disabled autocomplete="off">
-                                            </td>
-                                            <td class="with-btn">
-                                                <button type="button" class="btn btn-danger"
-                                                    wire:click="hapusAlatBarang({{ $index }})"
-                                                    wire:loading.attr="disabled">
-                                                    <span wire:loading>
-                                                        <span class="spinner-border spinner-border-sm" role="status"
-                                                            aria-hidden="true"></span>
-                                                    </span>
-                                                    <span wire:loading.remove>
-                                                        <i class="fa fa-times"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                            <td class="with-btn" wire:ignore>
+                                                <select class="form-control select2" x-init="window.livewireSelect2 = window.livewireSelect2 || [];
+                                                window.livewireSelect2[{{ $index }}] = $($el).select2({
+                                                    width: '100%',
+                                                    templateResult: function(data) {
+                                                        if (!data.id) { return data.text; }
+                                                        var $result = $('<span></span>');
+                                                        $result.text(data.text);
+                                                        if ($(data.element).data('subtext')) {
+                                                            $result.append('<span class=\'text-muted ms-2\' style=\'font-size: 0.9em;\'>(' + $(data.element).data('subtext') + ')</span>');
+                                                        }
+                                                        return $result;
+                                                    },
+                                                    templateSelection: function(data) {
+                                                        if (!data.id) { return data.text; }
+                                                        var $result = $('<span></span>');
+                                                        $result.text(data.text);
+                                                        if ($(data.element).data('subtext')) {
+                                                            $result.append('<span class=\'text-muted ms-2\' style=\'font-size: 0.9em;\'>(' + $(data.element).data('subtext') + ')</span>');
+                                                        }
+                                                        return $result;
+                                                    }
+                                                });
+                                                $($el).on('change', function(e) { $wire.set('alatBarang.{{ $index }}.aset_id', $(this).val()); });" wire:ignore
+                                                    data-index="{{ $index }}" @if (isset($row['aset_id']))
+                                                    data-selected="{{ $row['aset_id'] }}"
+                                    @endif>
+                                    <option value="">-- Pilih Alat --</option>
+                                    @foreach ($dataAset as $subRow)
+                                        <option value="{{ $subRow['id'] }}"
+                                            @if (isset($row['aset_id']) && $row['aset_id'] == $subRow['id']) selected @endif>
+                                            {{ $subRow['nama'] }} @if ($subRow['metode_penyusutan'] == 'Satuan Hasil Produksi')
+                                                (Rp.
+                                                {{ number_format($subRow['harga_perolehan'] / $subRow['masa_manfaat']) }})
+                                            @endif
+                                        </option>
+                                    @endforeach
+                                    </select>
+                                    @error('alatBarang.' . $index . '.aset_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    </td>
+                                    <td class="with-btn">
+                                        <input type="number" class="form-control" min="0" step="1"
+                                            min="0" wire:model.live="alatBarang.{{ $index }}.qty"
+                                            autocomplete="off">
+                                        @error('alatBarang.' . $index . '.qty')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+                                    <td class="with-btn">
+                                        <input type="text" class="form-control text-end"
+                                            value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
+                                            disabled autocomplete="off">
+                                    </td>
+                                    <td class="with-btn">
+                                        <button type="button" class="btn btn-danger"
+                                            wire:click="hapusAlatBarang({{ $index }})"
+                                            wire:loading.attr="disabled">
+                                            <span wire:loading>
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </span>
+                                            <span wire:loading.remove>
+                                                <i class="fa fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    </tr>
                                     @endforeach
                                     <tr>
                                         <th colspan="2" class="text-end align-middle">Total Biaya Alat
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                value="{{ number_format($biaya_alat) }}" disabled
-                                                autocomplete="off">
+                                                value="{{ number_format($biaya_alat) }}" disabled autocomplete="off">
                                         </th>
                                         <th></th>
                                     </tr>
@@ -171,72 +187,88 @@
                                 <tbody>
                                     @foreach (collect($alatBarang)->where('jenis', 'Barang') as $index => $row)
                                         <tr>
-                                            <td class="with-btn">
-                                                <select class="form-control" x-init="$($el).selectpicker({
-                                                    liveSearch: true,
-                                                    width: 'auto',
-                                                    size: 10,
-                                                    container: 'body',
-                                                    style: '',
-                                                    showSubtext: true,
-                                                    styleBase: 'form-control'
-                                                })"
-                                                    wire:model.live="alatBarang.{{ $index }}.barang_id">
-                                                    <option value="">-- Pilih Barang --</option>
-                                                    @foreach ($dataBarang as $subRow)
-                                                        <option value="{{ $subRow['id'] }}">
-                                                            {{ $subRow['nama'] }}
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('alatBarang.' . $index . '.barang_id')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td class="with-btn">
-                                                <select class="form-control"
-                                                    wire:model.live="alatBarang.{{ $index }}.barang_satuan_id">
-                                                    <option value="">-- Pilih Satuan --</option>
-                                                    @foreach ($row['barangSatuan'] as $subRow)
-                                                        <option value="{{ $subRow['id'] }}"
-                                                            data-subtext="{{ $subRow['konversi_satuan'] }}">
-                                                            {{ $subRow['nama'] }} (Rp.
-                                                            {{ number_format($subRow['harga_jual']) }})
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('alatBarang.' . $index . '.barang_satuan_id')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td class="with-btn">
-                                                <input type="number" class="form-control" min="0"
-                                                    step="1" min="0"
-                                                    wire:model.live="alatBarang.{{ $index }}.qty"
-                                                    autocomplete="off">
-                                                @error('alatBarang.' . $index . '.qty')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td class="with-btn">
-                                                <input type="text" class="form-control text-end"
-                                                    value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
-                                                    disabled autocomplete="off">
-                                            </td>
-                                            <td class="with-btn">
-                                                <button type="button" class="btn btn-danger"
-                                                    wire:click="hapusAlatBarang({{ $index }})"
-                                                    wire:loading.attr="disabled">
-                                                    <span wire:loading>
-                                                        <span class="spinner-border spinner-border-sm" role="status"
-                                                            aria-hidden="true"></span>
-                                                    </span>
-                                                    <span wire:loading.remove>
-                                                        <i class="fa fa-times"></i>
-                                                    </span>
-                                                </button>
-                                            </td>
-                                        </tr>
+                                            <td class="with-btn" wire:ignore>
+                                                <select class="form-control select2" x-init="window.livewireSelect2 = window.livewireSelect2 || [];
+                                                window.livewireSelect2[{{ $index }}] = $($el).select2({
+                                                    width: '100%',
+                                                    templateResult: function(data) {
+                                                        if (!data.id) { return data.text; }
+                                                        var $result = $('<span></span>');
+                                                        $result.text(data.text);
+                                                        if ($(data.element).data('subtext')) {
+                                                            $result.append('<span class=\'text-muted ms-2\' style=\'font-size: 0.9em;\'>(' + $(data.element).data('subtext') + ')</span>');
+                                                        }
+                                                        return $result;
+                                                    },
+                                                    templateSelection: function(data) {
+                                                        if (!data.id) { return data.text; }
+                                                        var $result = $('<span></span>');
+                                                        $result.text(data.text);
+                                                        if ($(data.element).data('subtext')) {
+                                                            $result.append('<span class=\'text-muted ms-2\' style=\'font-size: 0.9em;\'>(' + $(data.element).data('subtext') + ')</span>');
+                                                        }
+                                                        return $result;
+                                                    }
+                                                });
+                                                $($el).on('change', function(e) { $wire.set('alatBarang.{{ $index }}.barang_id', $(this).val()); });"
+                                                    wire:ignore data-index="{{ $index }}" @if (isset($row['barang_id']))
+                                                    data-selected="{{ $row['barang_id'] }}"
+                                    @endif>
+                                    <option value="">-- Pilih Barang --</option>
+                                    @foreach ($dataBarang as $subRow)
+                                        <option value="{{ $subRow['id'] }}"
+                                            @if (isset($row['barang_id']) && $row['barang_id'] == $subRow['id']) selected @endif>
+                                            {{ $subRow['nama'] }}
+                                        </option>
+                                    @endforeach
+                                    </select>
+                                    @error('alatBarang.' . $index . '.barang_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                    @enderror
+                                    </td>
+                                    <td class="with-btn">
+                                        <select class="form-control"
+                                            wire:model.live="alatBarang.{{ $index }}.barang_satuan_id">
+                                            <option value="">-- Pilih Satuan --</option>
+                                            @foreach ($row['barangSatuan'] as $subRow)
+                                                <option value="{{ $subRow['id'] }}"
+                                                    data-subtext="{{ $subRow['konversi_satuan'] }}">
+                                                    {{ $subRow['nama'] }} (Rp.
+                                                    {{ number_format($subRow['harga_jual']) }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                        @error('alatBarang.' . $index . '.barang_satuan_id')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+                                    <td class="with-btn">
+                                        <input type="number" class="form-control" min="0" step="1"
+                                            min="0" wire:model.live="alatBarang.{{ $index }}.qty"
+                                            autocomplete="off">
+                                        @error('alatBarang.' . $index . '.qty')
+                                            <span class="text-danger">{{ $message }}</span>
+                                        @enderror
+                                    </td>
+                                    <td class="with-btn">
+                                        <input type="text" class="form-control text-end"
+                                            value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
+                                            disabled autocomplete="off">
+                                    </td>
+                                    <td class="with-btn">
+                                        <button type="button" class="btn btn-danger"
+                                            wire:click="hapusAlatBarang({{ $index }})"
+                                            wire:loading.attr="disabled">
+                                            <span wire:loading>
+                                                <span class="spinner-border spinner-border-sm" role="status"
+                                                    aria-hidden="true"></span>
+                                            </span>
+                                            <span wire:loading.remove>
+                                                <i class="fa fa-times"></i>
+                                            </span>
+                                        </button>
+                                    </td>
+                                    </tr>
                                     @endforeach
                                     <tr>
                                         <th colspan="3" class="text-end align-middle">Total Biaya Bahan
@@ -295,7 +327,7 @@
                                         ($tarif === '' ? 0 : $tarif ?? 0) -
                                             ($biaya_jasa_dokter === '' ? 0 : $biaya_jasa_dokter ?? 0) -
                                             ($biaya_jasa_perawat === '' ? 0 : $biaya_jasa_perawat ?? 0) -
-                                            ($biaya_bahan === '' ? 0 : $biaya_bahan ?? 0)-
+                                            ($biaya_bahan === '' ? 0 : $biaya_bahan ?? 0) -
                                             ($biaya_alat === '' ? 0 : $biaya_alat ?? 0),
                                     ) }}"
                                     disabled />

@@ -7,6 +7,7 @@ use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Penjualan;
 use App\Class\JurnalClass;
+use App\Models\Pembayaran;
 use App\Models\StokKeluar;
 use App\Models\MetodeBayar;
 use Illuminate\Support\Str;
@@ -124,10 +125,19 @@ class Index extends Component
                 $id = date('Ym') . '00001';
             }
 
+            $id = Str::uuid();
+            $pembayaran = new Pembayaran();
+            $pembayaran->total_tagihan = $this->total_harga_barang - $this->diskon;
+            $pembayaran->total_harga_barang = $this->total_harga_barang;
+            $pembayaran->total_tarif_tindakan = $this->total_tarif_tindakan;
+            $pembayaran->metode = $metodeBayar->nama;
+            $pembayaran->jumlah = $metodeBayar->nama == 'Cash' ? $this->cash : ($this->total_harga_barang - $this->diskon);
+            $pembayaran->id = $id;
+            $pembayaran->save();
+
             $data = new Penjualan();
             $data->id = $id;
             $data->keterangan = $this->keterangan;
-            $data->metode_bayar = $metodeBayar->nama;
             $data->total_harga_barang = $this->total_harga_barang;
             $data->diskon = $this->diskon;
             $data->total_tagihan = $this->total_harga_barang - $this->diskon;

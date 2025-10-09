@@ -484,7 +484,7 @@
                         Simpan
                     </button>
                 @endrole
-                @if ($data->pemeriksaanAwal->count() > 0)
+                @if ($data->pemeriksaanAwal)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/diagnosis/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
