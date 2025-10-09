@@ -253,7 +253,7 @@
                                     <tr>
                                         <td colspan="4" class="text-center">
                                             <button type="button" class="btn btn-secondary"
-                                                wire:click="tambahAlatBarang('Bahan')" wire:loading.attr="disabled">
+                                                wire:click="tambahAlatBarang('Barang')" wire:loading.attr="disabled">
                                                 <span wire:loading>
                                                     <span class="spinner-border spinner-border-sm" role="status"
                                                         aria-hidden="true"></span>
