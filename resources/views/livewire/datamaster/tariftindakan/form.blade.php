@@ -1,4 +1,4 @@
-<div>
+<div x-data="tarifTindakanForm()" x-init="init()" x-ref="alpineRoot">
     @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Tarif Tindakan')
 
     @section('breadcrumb')
@@ -10,12 +10,10 @@
     <h1 class="page-header">Tarif Tindakan <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-        <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
-
             <h4 class="panel-title">Form</h4>
         </div>
-        <form wire:submit.prevent="submit">
+        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-4">
@@ -56,6 +54,7 @@
                         </div>
                     </div>
                     <div class="col-md-8">
+                        <!-- TABEL ALAT -->
                         <div class="alert alert-secondary">
                             <table class="table table-borderless">
                                 <thead>
@@ -67,68 +66,53 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (collect($alatBarang)->where('jenis', 'Alat') as $index => $row)
+                                    <template x-for="(row, index) in alat" :key="row.id || index">
                                         <tr>
-                                            <td class="with-btn">
-                                                <select class="form-control" x-init="$($el).selectpicker({
-                                                    liveSearch: true,
-                                                    width: 'auto',
-                                                    size: 10,
-                                                    container: 'body',
-                                                    style: '',
-                                                    showSubtext: true,
-                                                    styleBase: 'form-control'
-                                                })"
-                                                    wire:model.live="alatBarang.{{ $index }}.aset_id">
+                                            <td class="with-btn" wire:ignore>
+                                                <select class="form-control" x-model.lazy="row.id"
+                                                    x-init="$($el).select2({ width: '100%' });
+                                                    $($el).on('change', function(e) {
+                                                        row.id = e.target.value;
+                                                        updateAlat(index);
+                                                    });
+                                                    $watch('row.id', (value) => {
+                                                        if (value !== $($el).val()) {
+                                                            $($el).val(value).trigger('change');
+                                                        }
+                                                    });">
                                                     <option value="">-- Pilih Alat --</option>
-                                                    @foreach ($dataAset as $subRow)
-                                                        <option value="{{ $subRow['id'] }}">
-                                                            {{ $subRow['nama'] }} @if ($subRow['metode_penyusutan'] == 'Satuan Hasil Produksi')
-                                                                (Rp.
-                                                                {{ number_format($subRow['harga_perolehan'] / $subRow['masa_manfaat']) }})
-                                                            @endif
+                                                    <template x-for="alatItem in dataAset" :key="alatItem.id">
+                                                        <option :value="alatItem.id"
+                                                            x-text="`${alatItem.nama} ${alatItem.metode_penyusutan == 'Satuan Hasil Produksi' ? '(Rp. ' + new Intl.NumberFormat('id-ID').format(Math.round(alatItem.harga_perolehan / alatItem.masa_manfaat)) + ')' : ''}`">
                                                         </option>
-                                                    @endforeach
+                                                    </template>
                                                 </select>
-                                                @error('alatBarang.' . $index . '.aset_id')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
                                             </td>
                                             <td class="with-btn">
-                                                <input type="number" class="form-control" min="0" step="1"
-                                                    min="0" wire:model.live="alatBarang.{{ $index }}.qty"
-                                                    autocomplete="off">
-                                                @error('alatBarang.' . $index . '.qty')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                <input type="number" class="form-control" min="1" step="any"
+                                                    x-model.number="row.qty" @input="calculateAlat(index)">
                                             </td>
                                             <td class="with-btn">
                                                 <input type="text" class="form-control text-end"
-                                                    value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
+                                                    :value="new Intl.NumberFormat('id-ID').format((row.biaya ?? 0) * (row.qty ??
+                                                        0))"
                                                     disabled autocomplete="off">
                                             </td>
-                                            <td class="with-btn">
-                                                <button type="button" class="btn btn-danger"
-                                                    wire:click="hapusAlatBarang({{ $index }})"
-                                                    wire:loading.attr="disabled">
-                                                    <span wire:loading>
-                                                        <span class="spinner-border spinner-border-sm" role="status"
-                                                            aria-hidden="true"></span>
-                                                    </span>
-                                                    <span wire:loading.remove>
-                                                        <i class="fa fa-times"></i>
-                                                    </span>
+                                            <td>
+                                                <button type="button" class="btn btn-danger" @click="hapusAlat(index)">
+                                                    <i class="fa fa-times"></i>
                                                 </button>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    </template>
                                     <tr>
                                         <th colspan="2" class="text-end align-middle">Total Biaya Alat
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                value="{{ number_format($biaya_alat) }}" disabled
-                                                autocomplete="off">
+                                                :value="new Intl.NumberFormat('id-ID').format(alat.reduce((total, row) =>
+                                                    total + (row.biaya ?? 0) * (row.qty ?? 0), 0))"
+                                                disabled autocomplete="off">
                                         </th>
                                         <th></th>
                                     </tr>
@@ -137,18 +121,10 @@
                                     <tr>
                                         <td colspan="4">
                                             <div class="text-center">
-                                                <button type="button" class="btn btn-secondary"
-                                                    wire:click="tambahAlatBarang('Alat')" wire:loading.attr="disabled">
-                                                    <span wire:loading>
-                                                        <span class="spinner-border spinner-border-sm" role="status"
-                                                            aria-hidden="true"></span>
-                                                    </span>
-                                                    <span wire:loading.remove>
-                                                        Tambah Alat
-                                                    </span>
+                                                <button type="button" class="btn btn-secondary" @click="addAlat">
+                                                    Tambah Alat
                                                 </button>
-                                                <br>
-                                                @error('alatBarang')
+                                                @error('alat')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
                                             </div>
@@ -157,7 +133,38 @@
                                 </tfoot>
                             </table>
                         </div>
-                        <div class="alert alert-secondary">
+                        <!-- TABEL BAHAN -->
+                        <div class="alert alert-secondary" x-data="{
+                            bahan: @js(collect($alatBarang)->where('jenis', 'Barang')->values()),
+                            dataBarang: @js($dataBarang),
+                            calculateBahan(index) {
+                                let row = this.bahan[index];
+                                let selectedBarang = this.dataBarang.find(b => b.id == row.barang_id);
+                                if (selectedBarang) {
+                                    let satuans = selectedBarang.satuan ? [selectedBarang] : (selectedBarang.barangSatuan || []);
+                                    let satuan = satuans.find(s => s.id == row.barang_satuan_id);
+                                    row.biaya = satuan ? satuan.harga_jual : 0;
+                                } else {
+                                    row.biaya = 0;
+                                }
+                                this.$wire.set('alatBarang.' + index + '.qty', row.qty);
+                                this.$wire.set('alatBarang.' + index + '.barang_id', row.barang_id);
+                                this.$wire.set('alatBarang.' + index + '.barang_satuan_id', row.barang_satuan_id);
+                            },
+                            addBahan() {
+                                this.bahan.push({
+                                    barang_id: '',
+                                    barang_satuan_id: '',
+                                    qty: 1,
+                                    biaya: 0
+                                });
+                                this.$wire.call('tambahAlatBarang', 'Barang');
+                            },
+                            hapusBahan(index) {
+                                this.bahan.splice(index, 1);
+                                this.$wire.call('hapusAlatBarang', index);
+                            }
+                        }">
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
@@ -169,7 +176,7 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @foreach (collect($alatBarang)->where('jenis', 'Barang') as $index => $row)
+                                    <template x-for="(row, index) in bahan" :key="row.barang_id || index">
                                         <tr>
                                             <td class="with-btn">
                                                 <select class="form-control" x-init="$($el).selectpicker({
@@ -181,90 +188,67 @@
                                                     showSubtext: true,
                                                     styleBase: 'form-control'
                                                 })"
-                                                    wire:model.live="alatBarang.{{ $index }}.barang_id">
+                                                    x-model="row.id"
+                                                    @change="row.barang_satuan_id=''; calculateBahan(index)">
                                                     <option value="">-- Pilih Barang --</option>
-                                                    @foreach ($dataBarang as $subRow)
-                                                        <option value="{{ $subRow['id'] }}">
-                                                            {{ $subRow['nama'] }}
+                                                    <template x-for="barang in dataBarang" :key="barang.id">
+                                                        <option :value="barang.id"
+                                                            x-text="`${barang.nama} ${barang.satuan}`">
                                                         </option>
-                                                    @endforeach
+                                                    </template>
                                                 </select>
-                                                @error('alatBarang.' . $index . '.barang_id')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                <template x-if="$store.wireErrors?.[`barang.${index}.id`]">
+                                                    <span class="text-danger"
+                                                        x-text="$store.wireErrors[`barang.${index}.id`]"></span>
+                                                </template>
                                             </td>
                                             <td class="with-btn">
-                                                <select class="form-control"
-                                                    wire:model.live="alatBarang.{{ $index }}.barang_satuan_id">
-                                                    <option value="">-- Pilih Satuan --</option>
-                                                    @foreach ($row['barangSatuan'] as $subRow)
-                                                        <option value="{{ $subRow['id'] }}"
-                                                            data-subtext="{{ $subRow['konversi_satuan'] }}">
-                                                            {{ $subRow['nama'] }} (Rp.
-                                                            {{ number_format($subRow['harga_jual']) }})
-                                                        </option>
-                                                    @endforeach
-                                                </select>
-                                                @error('alatBarang.' . $index . '.barang_satuan_id')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
-                                            </td>
-                                            <td class="with-btn">
-                                                <input type="number" class="form-control" min="0"
-                                                    step="1" min="0"
-                                                    wire:model.live="alatBarang.{{ $index }}.qty"
-                                                    autocomplete="off">
-                                                @error('alatBarang.' . $index . '.qty')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                <input type="number" class="form-control" min="1"
+                                                    step="any" x-model.number="row.qty"
+                                                    @input="calculateBahan(index)">
+                                                <template x-if="$store.wireErrors?.[`barang.${index}.qty`]">
+                                                    <span class="text-danger"
+                                                        x-text="$store.wireErrors[`barang.${index}.qty`]"></span>
+                                                </template>
                                             </td>
                                             <td class="with-btn">
                                                 <input type="text" class="form-control text-end"
-                                                    value="{{ number_format((int) ($row['biaya'] ?? 0) * (int) ($row['qty'] ?? 0)) }}"
+                                                    :value="new Intl.NumberFormat('id-ID').format((row.biaya ?? 0) * (row.qty ??
+                                                        0))"
                                                     disabled autocomplete="off">
                                             </td>
-                                            <td class="with-btn">
+                                            <td>
                                                 <button type="button" class="btn btn-danger"
-                                                    wire:click="hapusAlatBarang({{ $index }})"
-                                                    wire:loading.attr="disabled">
-                                                    <span wire:loading>
-                                                        <span class="spinner-border spinner-border-sm" role="status"
-                                                            aria-hidden="true"></span>
-                                                    </span>
-                                                    <span wire:loading.remove>
-                                                        <i class="fa fa-times"></i>
-                                                    </span>
+                                                    @click="hapusBahan(index)">
+                                                    <i class="fa fa-times"></i>
                                                 </button>
                                             </td>
                                         </tr>
-                                    @endforeach
+                                    </template>
                                     <tr>
                                         <th colspan="3" class="text-end align-middle">Total Biaya Bahan
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                value="{{ number_format($biaya_bahan) }}" disabled
-                                                autocomplete="off">
+                                                :value="new Intl.NumberFormat('id-ID').format(bahan.reduce((total, row) =>
+                                                    total + (row.biaya ?? 0) * (row.qty ?? 0), 0))"
+                                                disabled autocomplete="off">
                                         </th>
                                         <th></th>
                                     </tr>
                                 </tbody>
                                 <tfoot>
                                     <tr>
-                                        <td colspan="4" class="text-center">
-                                            <button type="button" class="btn btn-secondary"
-                                                wire:click="tambahAlatBarang('Barang')" wire:loading.attr="disabled">
-                                                <span wire:loading>
-                                                    <span class="spinner-border spinner-border-sm" role="status"
-                                                        aria-hidden="true"></span>
-                                                </span>
-                                                <span wire:loading.remove>
+                                        <td colspan="4">
+                                            <div class="text-center">
+                                                <button type="button" class="btn btn-secondary" @click="addBahan">
                                                     Tambah Bahan
-                                                </span>
-                                            </button>
-                                            @error('alatBarang')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
+                                                </button>
+                                                <template x-if="$store.wireErrors?.barang">
+                                                    <span class="text-danger"
+                                                        x-text="$store.wireErrors.barang"></span>
+                                                </template>
+                                            </div>
                                         </td>
                                     </tr>
                                 </tfoot>
@@ -295,7 +279,7 @@
                                         ($tarif === '' ? 0 : $tarif ?? 0) -
                                             ($biaya_jasa_dokter === '' ? 0 : $biaya_jasa_dokter ?? 0) -
                                             ($biaya_jasa_perawat === '' ? 0 : $biaya_jasa_perawat ?? 0) -
-                                            ($biaya_bahan === '' ? 0 : $biaya_bahan ?? 0)-
+                                            ($biaya_bahan === '' ? 0 : $biaya_bahan ?? 0) -
                                             ($biaya_alat === '' ? 0 : $biaya_alat ?? 0),
                                     ) }}"
                                     disabled />
@@ -323,3 +307,61 @@
     <x-alert />
 
 </div>
+
+@push('scripts')
+    <script>
+        function tarifTindakanForm() {
+            return {
+                alat: Array.isArray(@js($alat)) ? @js($alat) : [],
+                dataAset: @js($dataAset),
+                componentId: null,
+                get $wire() {
+                    if (!this.componentId && this.$root) {
+                        this.componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                    }
+                    if (this.componentId) {
+                        return window.Livewire.find(this.componentId);
+                    }
+                    return null;
+                },
+                addAlat() {
+                    this.alat.push({
+                        id: '',
+                        qty: 1,
+                        biaya: 0,
+                    });
+                },
+                hapusAlat(index) {
+                    if (index > -1 && index < this.alat.length) {
+                        this.alat.splice(index, 1);
+                        this.syncToLivewire();
+                    }
+                },
+                updateAlat(index) {
+                    let row = this.alat[index];
+                    let selectedAlat = this.dataAset.find(g => g.id == row.id);
+                    if (selectedAlat) {
+                        row.biaya = (selectedAlat.metode_penyusutan == 'Satuan Hasil Produksi') ?
+                            Math.round((selectedAlat.harga_perolehan || 0) / (selectedAlat.masa_manfaat || 1)) :
+                            0;
+                    } else {
+                        row.biaya = 0;
+                    }
+                    this.calculateAlat(index);
+                },
+                calculateAlat(index) {
+                    let row = this.alat[index];
+                    if (row && typeof row.qty !== "undefined" && typeof row.biaya !== "undefined") {
+                        row.subtotal = (parseFloat(row.biaya) || 0) * (parseFloat(row.qty) || 0);
+                    }
+                },
+                syncToLivewire() {
+                    if (this.$wire) {
+                        this.$wire.set('alat', JSON.parse(JSON.stringify(this.alat)));
+                    }
+                },
+                init() {}
+            }
+        }
+    </script>
+@endpush
