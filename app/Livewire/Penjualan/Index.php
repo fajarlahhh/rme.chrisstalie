@@ -218,25 +218,26 @@ class Index extends Component
     public function mount()
     {
         $this->dataMetodeBayar = MetodeBayar::get()->toArray();
-        $this->dataBarang = Barang::with(['barangSatuan.satuanKonversi', 'kodeAkun'])->where('perlu_resep', 0)->where('klinik', 0)->orderBy('nama')->get()->map(fn($q) => [
-            'id' => $q['id'],
-            'nama' => $q['nama'],
-            'kode_akun_id' => $q['kode_akun_id'],
-            'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
-            'kategori' => $q->kodeAkun->nama,
-            'barangSatuan' => $q['barangSatuan']->map(fn($r) => [
-                'id' => $r['id'],
-                'nama' => $r['nama'],
-                'rasio_dari_terkecil' => $r['rasio_dari_terkecil'],
-                'konversi_satuan' => $r['konversi_satuan'],
-                'harga_jual' => $r['harga_jual'],
-                'satuan_konversi' => $r['satuanKonversi'] ? [
-                    'id' => $r['satuanKonversi']['id'],
-                    'nama' => $r['satuanKonversi']['nama'],
-                    'rasio_dari_terkecil' => $r['satuanKonversi']['rasio_dari_terkecil'],
-                ] : null,
-            ]),
-        ])->toArray();
+        $this->dataBarang = Barang::with(['barangSatuan.satuanKonversi', 'kodeAkun'])->where('perlu_resep', 0)->apotek()
+            ->orderBy('nama')->get()->map(fn($q) => [
+                'id' => $q['id'],
+                'nama' => $q['nama'],
+                'kode_akun_id' => $q['kode_akun_id'],
+                'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
+                'kategori' => $q->kodeAkun->nama,
+                'barangSatuan' => $q['barangSatuan']->map(fn($r) => [
+                    'id' => $r['id'],
+                    'nama' => $r['nama'],
+                    'rasio_dari_terkecil' => $r['rasio_dari_terkecil'],
+                    'konversi_satuan' => $r['konversi_satuan'],
+                    'harga_jual' => $r['harga_jual'],
+                    'satuan_konversi' => $r['satuanKonversi'] ? [
+                        'id' => $r['satuanKonversi']['id'],
+                        'nama' => $r['satuanKonversi']['nama'],
+                        'rasio_dari_terkecil' => $r['satuanKonversi']['rasio_dari_terkecil'],
+                    ] : null,
+                ]),
+            ])->toArray();
     }
 
     public function render()

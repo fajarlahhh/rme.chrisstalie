@@ -16,7 +16,7 @@
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
                 <div class="row">
-                    <div class="col-md-4">
+                    <div class="col-lg-4">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
                             <input class="form-control" type="text" wire:model="nama" />
@@ -33,15 +33,24 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Tarif</label>
-                            <input class="form-control" type="number" step="1" min="0"
-                                wire:model.lazy="tarif" />
+                            <input class="form-control" type="number" step="1" min="0" wire:model="tarif"
+                                x-model.live="tarif" @change="hitungKeuntungan()" />
                             @error('tarif')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
-                            <select class="form-control" wire:model="kode_akun_id" data-width="100%">
+                            <select class="form-control" wire:model="kode_akun_id" x-init="$($el).selectpicker({
+                                liveSearch: true,
+                                width: 'auto',
+                                size: 10,
+                                container: 'body',
+                                style: '',
+                                showSubtext: true,
+                                styleBase: 'form-control'
+                            })"
+                                data-width="100%">
                                 <option hidden selected>-- Pilih Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)
                                     <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
@@ -53,9 +62,41 @@
                             @enderror
                         </div>
                     </div>
-                    <div class="col-md-8">
+                    <div class="col-lg-8">
                         <!-- TABEL ALAT -->
-                        <div class="alert alert-secondary">
+                        <div class="alert alert-secondary table-responsive" x-data="{
+                            addAlat() {
+                                    this.alat.push({
+                                        id: '',
+                                        qty: 1,
+                                        biaya: 0,
+                                    });
+                                    this.hitungKeuntungan();
+                                },
+                                hapusAlat(index) {
+                                    this.alat.splice(index, 1);
+                                    this.hitungKeuntungan();
+                                },
+                                updateAlat(index) {
+                                    let row = this.alat[index];
+                                    let selectedAlat = this.dataAlat.find(g => g.id == row.id);
+                                    if (selectedAlat) {
+                                        row.biaya = (selectedAlat.metode_penyusutan == 'Satuan Hasil Produksi') ?
+                                            Math.round((selectedAlat.harga_perolehan || 0) / (selectedAlat.masa_manfaat || 1)) :
+                                            0;
+                                    } else {
+                                        row.biaya = 0;
+                                    }
+                                    this.calculateAlat(index);
+                                    this.hitungKeuntungan();
+                                },
+                                calculateAlat(index) {
+                                    let row = this.alat[index];
+                                    row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.biaya) || 0) || 0;
+                                    this.total_biaya_alat = this.alat.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                                    this.hitungKeuntungan();
+                                },
+                        }">
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
@@ -66,37 +107,42 @@
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <template x-for="(row, index) in alat" :key="row.id || index">
+                                    <template x-for="(row, index) in alat" :key="index">
                                         <tr>
-                                            <td class="with-btn" wire:ignore>
-                                                <select class="form-control" x-model.lazy="row.id"
-                                                    x-init="$($el).select2({ width: '100%' });
-                                                    $($el).on('change', function(e) {
-                                                        row.id = e.target.value;
-                                                        updateAlat(index);
-                                                    });
-                                                    $watch('row.id', (value) => {
-                                                        if (value !== $($el).val()) {
-                                                            $($el).val(value).trigger('change');
-                                                        }
-                                                    });">
-                                                    <option value="">-- Pilih Alat --</option>
-                                                    <template x-for="alatItem in dataAset" :key="alatItem.id">
-                                                        <option :value="alatItem.id"
-                                                            x-text="`${alatItem.nama} ${alatItem.metode_penyusutan == 'Satuan Hasil Produksi' ? '(Rp. ' + new Intl.NumberFormat('id-ID').format(Math.round(alatItem.harga_perolehan / alatItem.masa_manfaat)) + ')' : ''}`">
+                                            <td>
+                                                <div wire:ignore>
+                                                    <select class="form-control" x-model.live="row.id"
+                                                        x-init="$($el).select2({
+                                                            width: '100%',
+                                                            dropdownAutoWidth: true
+                                                        });
+                                                        $($el).on('change', function(e) {
+                                                            row.id = e.target.value;
+                                                            updateAlat(index);
+                                                        });
+                                                        $watch('row.id', (value) => {
+                                                            if (value !== $($el).val()) {
+                                                                $($el).val(value).trigger('change');
+                                                            }
+                                                        });">
+                                                        <option value="" selected disabled>-- Pilih Alat --
                                                         </option>
-                                                    </template>
-                                                </select>
+                                                        <template x-for="alat in dataAlat" :key="alat.id">
+                                                            <option :value="alat.id" :selected="row.id == alat.id"
+                                                                x-text="`${alat.nama} ${alat.metode_penyusutan == 'Satuan Hasil Produksi' ? '(Rp. ' + new Intl.NumberFormat('id-ID').format(Math.round(alat.harga_perolehan / alat.masa_manfaat)) + ')' : ''}`">
+                                                            </option>
+                                                        </template>
+                                                    </select>
+                                                </div>
                                             </td>
                                             <td class="with-btn">
-                                                <input type="number" class="form-control" min="1" step="any"
-                                                    x-model.number="row.qty" @input="calculateAlat(index)">
+                                                <input type="number" class="form-control w-100px" min="1"
+                                                    step="any" x-model.number.live="row.qty"
+                                                    @input="calculateAlat(index)">
                                             </td>
-                                            <td class="with-btn">
-                                                <input type="text" class="form-control text-end"
-                                                    :value="new Intl.NumberFormat('id-ID').format((row.biaya ?? 0) * (row.qty ??
-                                                        0))"
-                                                    disabled autocomplete="off">
+                                            <td>
+                                                <input type="text" class="form-control text-end w-150px"
+                                                    :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger" @click="hapusAlat(index)">
@@ -110,9 +156,7 @@
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                :value="new Intl.NumberFormat('id-ID').format(alat.reduce((total, row) =>
-                                                    total + (row.biaya ?? 0) * (row.qty ?? 0), 0))"
-                                                disabled autocomplete="off">
+                                                :value="formatNumber(total_biaya_alat)" disabled>
                                         </th>
                                         <th></th>
                                     </tr>
@@ -124,9 +168,9 @@
                                                 <button type="button" class="btn btn-secondary" @click="addAlat">
                                                     Tambah Alat
                                                 </button>
-                                                @error('alat')
-                                                    <span class="text-danger">{{ $message }}</span>
-                                                @enderror
+                                                <template x-if="$store.wireErrors?.alat">
+                                                    <span class="text-danger" x-text="$store.wireErrors.alat"></span>
+                                                </template>
                                             </div>
                                         </td>
                                     </tr>
@@ -134,105 +178,99 @@
                             </table>
                         </div>
                         <!-- TABEL BAHAN -->
-                        <div class="alert alert-secondary" x-data="{
-                            bahan: @js(collect($alatBarang)->where('jenis', 'Barang')->values()),
-                            dataBarang: @js($dataBarang),
-                            calculateBahan(index) {
-                                let row = this.bahan[index];
-                                let selectedBarang = this.dataBarang.find(b => b.id == row.barang_id);
-                                if (selectedBarang) {
-                                    let satuans = selectedBarang.satuan ? [selectedBarang] : (selectedBarang.barangSatuan || []);
-                                    let satuan = satuans.find(s => s.id == row.barang_satuan_id);
-                                    row.biaya = satuan ? satuan.harga_jual : 0;
-                                } else {
-                                    row.biaya = 0;
-                                }
-                                this.$wire.set('alatBarang.' + index + '.qty', row.qty);
-                                this.$wire.set('alatBarang.' + index + '.barang_id', row.barang_id);
-                                this.$wire.set('alatBarang.' + index + '.barang_satuan_id', row.barang_satuan_id);
-                            },
-                            addBahan() {
-                                this.bahan.push({
-                                    barang_id: '',
-                                    barang_satuan_id: '',
-                                    qty: 1,
-                                    biaya: 0
-                                });
-                                this.$wire.call('tambahAlatBarang', 'Barang');
-                            },
-                            hapusBahan(index) {
-                                this.bahan.splice(index, 1);
-                                this.$wire.call('hapusAlatBarang', index);
-                            }
+                        <div class="alert alert-secondary table-responsive" x-data="{
+                            addBarang() {
+                                    this.barang.push({
+                                        id: '',
+                                        qty: 1,
+                                        biaya: 0
+                                    });
+                                    this.hitungKeuntungan();
+                                },
+                                hapusBarang(index) {
+                                    this.barang.splice(index, 1);
+                                    this.hitungKeuntungan();
+                                },
+                                updateBarang(index) {
+                                    let row = this.barang[index];
+                                    let selectedBarang = this.dataBarang.find(g => g.id == row.id);
+                                    if (selectedBarang) {
+                                        row.biaya = selectedBarang.biaya;
+                                    } else {
+                                        row.biaya = 0;
+                                    }
+                                    this.calculateBarang(index);
+                                    this.hitungKeuntungan();
+                                },
+                                calculateBarang(index) {
+                                    let row = this.barang[index];
+                                    row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.biaya) || 0) || 0;
+                                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                                    this.hitungKeuntungan();
+                                },
                         }">
                             <table class="table table-borderless">
                                 <thead>
                                     <tr>
-                                        <th> Bahan</th>
-                                        <th class="w-150px">Satuan</th>
+                                        <th>Bahan</th>
                                         <th class="w-100px">Qty</th>
                                         <th class="w-150px">Sub Total</th>
                                         <th class="w-5px"></th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <template x-for="(row, index) in bahan" :key="row.barang_id || index">
+                                    <template x-for="(row, index) in barang" :key="index">
                                         <tr>
                                             <td class="with-btn">
-                                                <select class="form-control" x-init="$($el).selectpicker({
-                                                    liveSearch: true,
-                                                    width: 'auto',
-                                                    size: 10,
-                                                    container: 'body',
-                                                    style: '',
-                                                    showSubtext: true,
-                                                    styleBase: 'form-control'
-                                                })"
-                                                    x-model="row.id"
-                                                    @change="row.barang_satuan_id=''; calculateBahan(index)">
-                                                    <option value="">-- Pilih Barang --</option>
-                                                    <template x-for="barang in dataBarang" :key="barang.id">
-                                                        <option :value="barang.id"
-                                                            x-text="`${barang.nama} ${barang.satuan}`">
+                                                <div wire:ignore>
+                                                    <select class="form-control" x-model.live="row.id"
+                                                        x-init="$($el).select2({
+                                                            width: '100%',
+                                                            dropdownAutoWidth: true
+                                                        });
+                                                        $($el).on('change', function(e) {
+                                                            row.id = e.target.value;
+                                                            updateBarang(index);
+                                                        });
+                                                        $watch('row.id', (value) => {
+                                                            if (value !== $($el).val()) {
+                                                                $($el).val(value).trigger('change');
+                                                            }
+                                                        });">
+                                                        <option value="" selected disabled>-- Pilih Barang --
                                                         </option>
-                                                    </template>
-                                                </select>
-                                                <template x-if="$store.wireErrors?.[`barang.${index}.id`]">
-                                                    <span class="text-danger"
-                                                        x-text="$store.wireErrors[`barang.${index}.id`]"></span>
-                                                </template>
+                                                        <template x-for="barang in dataBarang" :key="barang.id">
+                                                            <option :value="barang.id"
+                                                                :selected="row.id == barang.id"
+                                                                x-text="`${barang.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(barang.biaya)} / ${barang.satuan})`">
+                                                            </option>
+                                                        </template>
+                                                    </select>
+                                                </div>
                                             </td>
                                             <td class="with-btn">
-                                                <input type="number" class="form-control" min="1"
-                                                    step="any" x-model.number="row.qty"
-                                                    @input="calculateBahan(index)">
-                                                <template x-if="$store.wireErrors?.[`barang.${index}.qty`]">
-                                                    <span class="text-danger"
-                                                        x-text="$store.wireErrors[`barang.${index}.qty`]"></span>
-                                                </template>
+                                                <input type="number" class="form-control w-100px" min="1"
+                                                    step="any" x-model.number.live="row.qty"
+                                                    @input="calculateBarang(index)">
                                             </td>
-                                            <td class="with-btn">
-                                                <input type="text" class="form-control text-end"
-                                                    :value="new Intl.NumberFormat('id-ID').format((row.biaya ?? 0) * (row.qty ??
-                                                        0))"
-                                                    disabled autocomplete="off">
+                                            <td>
+                                                <input type="text" class="form-control text-end w-150px"
+                                                    :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger"
-                                                    @click="hapusBahan(index)">
+                                                    @click="hapusBarang(index)">
                                                     <i class="fa fa-times"></i>
                                                 </button>
                                             </td>
                                         </tr>
                                     </template>
                                     <tr>
-                                        <th colspan="3" class="text-end align-middle">Total Biaya Bahan
+                                        <th colspan="2" class="text-end align-middle">Total Biaya Barang
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                :value="new Intl.NumberFormat('id-ID').format(bahan.reduce((total, row) =>
-                                                    total + (row.biaya ?? 0) * (row.qty ?? 0), 0))"
-                                                disabled autocomplete="off">
+                                                :value="formatNumber(total_biaya_barang)" disabled autocomplete="off">
                                         </th>
                                         <th></th>
                                     </tr>
@@ -241,8 +279,8 @@
                                     <tr>
                                         <td colspan="4">
                                             <div class="text-center">
-                                                <button type="button" class="btn btn-secondary" @click="addBahan">
-                                                    Tambah Bahan
+                                                <button type="button" class="btn btn-secondary" @click="addBarang">
+                                                    Tambah Barang
                                                 </button>
                                                 <template x-if="$store.wireErrors?.barang">
                                                     <span class="text-danger"
@@ -258,7 +296,8 @@
                             <div class="mb-3">
                                 <label class="form-label">Biaya Jasa Dokter</label>
                                 <input class="form-control" type="number" step="1" min="0"
-                                    wire:model.live="biaya_jasa_dokter" />
+                                    wire:model="biaya_jasa_dokter" x-model.live="biaya_jasa_dokter"
+                                    @change="hitungKeuntungan()" />
                                 @error('biaya_jasa_dokter')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -266,7 +305,8 @@
                             <div class="mb-3">
                                 <label class="form-label">Biaya Jasa Perawat</label>
                                 <input class="form-control" type="number" step="1" min="0"
-                                    wire:model.live="biaya_jasa_perawat" />
+                                    wire:model="biaya_jasa_perawat" x-model.live="biaya_jasa_perawat"
+                                    @change="hitungKeuntungan()" />
                                 @error('biaya_jasa_perawat')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -274,14 +314,7 @@
                             <hr>
                             <div class="mb-3">
                                 <label class="form-label">Keuntungan</label>
-                                <input class="form-control" type="text"
-                                    value="{{ number_format(
-                                        ($tarif === '' ? 0 : $tarif ?? 0) -
-                                            ($biaya_jasa_dokter === '' ? 0 : $biaya_jasa_dokter ?? 0) -
-                                            ($biaya_jasa_perawat === '' ? 0 : $biaya_jasa_perawat ?? 0) -
-                                            ($biaya_bahan === '' ? 0 : $biaya_bahan ?? 0) -
-                                            ($biaya_alat === '' ? 0 : $biaya_alat ?? 0),
-                                    ) }}"
+                                <input class="form-control" type="text" :value="formatNumber(keuntungan)"
                                     disabled />
                             </div>
                         </div>
@@ -312,55 +345,56 @@
     <script>
         function tarifTindakanForm() {
             return {
-                alat: Array.isArray(@js($alat)) ? @js($alat) : [],
-                dataAset: @js($dataAset),
-                componentId: null,
-                get $wire() {
-                    if (!this.componentId && this.$root) {
-                        this.componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
-                    }
-                    if (this.componentId) {
-                        return window.Livewire.find(this.componentId);
-                    }
-                    return null;
+                alat: @js($alat),
+                dataAlat: @js($dataAlat),
+                barang: @js($barang),
+                dataBarang: @js($dataBarang),
+                biaya_jasa_dokter: @js($biaya_jasa_dokter),
+                biaya_jasa_perawat: @js($biaya_jasa_perawat),
+                total_biaya_alat: @js($biaya_alat),
+                total_biaya_barang: @js($biaya_alat),
+                tarif: @js($tarif),
+                keuntungan: 0,
+                formatNumber(val) {
+                    return new Intl.NumberFormat('id-ID').format(val || 0);
                 },
-                addAlat() {
-                    this.alat.push({
-                        id: '',
-                        qty: 1,
-                        biaya: 0,
-                    });
+                hitungKeuntungan() {
+                    this.keuntungan =
+                        (parseFloat(this.tarif) || 0) -
+                        (parseFloat(this.total_biaya_alat) || 0) -
+                        (parseFloat(this.total_biaya_barang) || 0) -
+                        (parseFloat(this.biaya_jasa_dokter) || 0) -
+                        (parseFloat(this.biaya_jasa_perawat) || 0);
                 },
-                hapusAlat(index) {
-                    if (index > -1 && index < this.alat.length) {
-                        this.alat.splice(index, 1);
-                        this.syncToLivewire();
-                    }
-                },
-                updateAlat(index) {
-                    let row = this.alat[index];
-                    let selectedAlat = this.dataAset.find(g => g.id == row.id);
-                    if (selectedAlat) {
-                        row.biaya = (selectedAlat.metode_penyusutan == 'Satuan Hasil Produksi') ?
-                            Math.round((selectedAlat.harga_perolehan || 0) / (selectedAlat.masa_manfaat || 1)) :
-                            0;
-                    } else {
-                        row.biaya = 0;
-                    }
-                    this.calculateAlat(index);
-                },
-                calculateAlat(index) {
-                    let row = this.alat[index];
-                    if (row && typeof row.qty !== "undefined" && typeof row.biaya !== "undefined") {
-                        row.subtotal = (parseFloat(row.biaya) || 0) * (parseFloat(row.qty) || 0);
-                    }
-                },
+                // Fix: Use $wire from Alpine global, not from __livewire
                 syncToLivewire() {
-                    if (this.$wire) {
-                        this.$wire.set('alat', JSON.parse(JSON.stringify(this.alat)));
+                    if (window.Livewire && window.Livewire.find) {
+                        // Try to get the Livewire component by id
+                        let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                        if (componentId) {
+                            let $wire = window.Livewire.find(componentId);
+                            if ($wire && typeof $wire.set === 'function') {
+                                $wire.set('alat', JSON.parse(JSON.stringify(this.alat)), true);
+                                $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), true);
+                            }
+                        }
                     }
                 },
-                init() {}
+                init() {
+                    this.total_biaya_alat = this.alat.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0),
+                        0);
+                    this.hitungKeuntungan();
+                    this.$watch('biaya_jasa_dokter', () => {
+                        this.hitungKeuntungan();
+                    });
+                    this.$watch('biaya_jasa_perawat', () => {
+                        this.hitungKeuntungan();
+                    });
+                    this.$watch('tarif', () => {
+                        this.hitungKeuntungan();
+                    });
+                }
             }
         }
     </script>

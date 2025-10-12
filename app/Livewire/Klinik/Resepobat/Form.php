@@ -108,7 +108,7 @@ class Form extends Component
     public function mount(Registrasi $data)
     {
         $this->data = $data;
-        $this->dataBarang = Barang::with(['barangSatuan.satuanKonversi', 'kodeAkun'])->where('klinik', 0)->orderBy('nama')->get()->map(fn($q) => [
+        $this->dataBarang = Barang::with(['barangSatuan.satuanKonversi', 'kodeAkun'])->apotek()->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q['id'],
             'nama' => $q['nama'],
             'kode_akun_id' => $q['kode_akun_id'],

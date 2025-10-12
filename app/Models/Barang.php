@@ -66,6 +66,16 @@ class Barang extends Model
         $query->whereNotNull('konsinyator_id');
     }
 
+    public function scopeKlinik(Builder $query): void
+    {
+        $query->where('unit_bisnis', 'Klinik');
+    }
+
+    public function scopeApotek(Builder $query): void
+    {
+        $query->where('unit_bisnis', 'Apotek');
+    }
+
     public function barangSatuan(): HasMany
     {
         return $this->hasMany(BarangSatuan::class);
@@ -80,6 +90,8 @@ class Barang extends Model
     {
         return $this->belongsTo(KodeAkun::class);
     }
+
+
 
     public function kodeAkunPenjualan(): BelongsTo
     {

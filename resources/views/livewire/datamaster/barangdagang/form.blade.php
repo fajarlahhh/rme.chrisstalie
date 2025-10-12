@@ -54,7 +54,16 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kategori</label>
-                    <select class="form-control" wire:model.live="kode_akun_id" data-width="100%">
+                    <select class="form-control" x-init="$($el).selectpicker({
+                        liveSearch: true,
+                        width: 'auto',
+                        size: 10,
+                        container: 'body',
+                        style: '',
+                        showSubtext: true,
+                        styleBase: 'form-control'
+                    })" wire:model.live="kode_akun_id"
+                        data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
@@ -66,7 +75,16 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kategori Penjualan</label>
-                    <select class="form-control" wire:model.live="kode_akun_penjualan_id" data-width="100%">
+                    <select class="form-control" x-init="$($el).selectpicker({
+                        liveSearch: true,
+                        width: 'auto',
+                        size: 10,
+                        container: 'body',
+                        style: '',
+                        showSubtext: true,
+                        styleBase: 'form-control'
+                    })" wire:model.live="kode_akun_penjualan_id"
+                        data-width="100%">
                         <option hidden selected>-- Pilih Kode Akun --</option>
                         @foreach ($dataKodeAkunPenjualan as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>

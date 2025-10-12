@@ -13,19 +13,19 @@ use App\Models\Aset;
 class Form extends Component
 {
     public $data;
-    public $dataBarang = [], $dataKodeAkun = [], $dataAset = [];
+    public $dataBarang = [], $dataKodeAkun = [], $dataAlat = [];
     public $previous;
     public $nama;
     public $kode_akun_id;
     public $icd_9_cm;
     public $biaya_jasa_dokter = 0;
     public $biaya_jasa_perawat = 0;
-    public $biaya_bahan = 0;
+    public $biaya_barang = 0;
     public $biaya_alat = 0;
     public $tarif = 0;
     public $alatBarang = [];
     public $alat = [];
-    public $bahan = [];
+    public $barang = [];
 
     public function submit()
     {
@@ -36,29 +36,7 @@ class Form extends Component
             'biaya_jasa_perawat' => 'required|numeric',
             'tarif' => 'required|numeric',
         ]);
-
         DB::transaction(function () {
-            $alatBahan = collect(collect($this->alat)->map(fn($q) => [
-                'barang_id' => null,
-                'aset_id' => $q['id'],
-                'tarif_tindakan_id' => $this->data->id,
-                'qty' => $q['qty'],
-                'jenis' => 'Alat',
-                'barang_satuan_id' => null,
-                'rasio_dari_terkecil' => null,
-                'biaya' => $q['biaya'],
-            ]))->merge(collect($this->bahan)->map(fn($q) => [
-                'barang_id' => $q['id'],
-                'aset_id' => null,
-                'tarif_tindakan_id' => $this->data->id,
-                'qty' => $q['qty'],
-                'jenis' => 'Barang',
-                'barang_satuan_id' => $q['barang_satuan_id'],
-                'rasio_dari_terkecil' => null,
-                'biaya' => $q['biaya'],
-            ]));
-
-            dd($alatBahan);
 
             $this->data->icd_9_cm = $this->icd_9_cm;
             $this->data->kode_akun_id = $this->kode_akun_id;
@@ -69,6 +47,26 @@ class Form extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
+            $alatBahan = collect(collect($this->alat)->map(fn($q) => [
+                'barang_id' => null,
+                'aset_id' => $q['id'],
+                'tarif_tindakan_id' => $this->data->id,
+                'qty' => $q['qty'],
+                'jenis' => 'Alat',
+                'barang_satuan_id' => null,
+                'rasio_dari_terkecil' => null,
+                'biaya' => $q['biaya'],
+            ]))->merge(collect($this->barang)->map(fn($q) => [
+                'barang_id' => collect($this->dataBarang)->firstWhere('id', $q['id'])['barang_id'],
+                'aset_id' => null,
+                'tarif_tindakan_id' => $this->data->id,
+                'qty' => $q['qty'],
+                'jenis' => 'Barang',
+                'barang_satuan_id' => $q['id'],
+                'rasio_dari_terkecil' => collect($this->dataBarang)->firstWhere('id', $q['id'])['rasio_dari_terkecil'],
+                'biaya' => $q['biaya'],
+            ]));
+            
             $this->data->tarifTindakanAlatBarang()->delete();
             $this->data->tarifTindakanAlatBarang()->insert(collect($alatBahan)->map(fn($q) => [
                 'barang_id' => $q['barang_id'],
@@ -76,7 +74,7 @@ class Form extends Component
                 'tarif_tindakan_id' => $this->data->id,
                 'qty' => $q['qty'],
                 'barang_satuan_id' => $q['barang_satuan_id'],
-                'rasio_dari_terkecil' => $q['jenis'] == 'Barang' ? null : $q['rasio_dari_terkecil'],
+                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'biaya' => $q['biaya'],
             ])->toArray());
 
@@ -88,41 +86,38 @@ class Form extends Component
     public function mount(TarifTindakan $data)
     {
         $this->previous = url()->previous();
-        $this->dataBarang = BarangSatuan::with('barang', 'satuanKonversi')->orderBy('nama')->get()->map(fn($q) => [
-            'id' => $q['barang_id'],
-            'nama' => $q['barang']['nama'],
-            'barang_satuan_id' => $q['barang_satuan_id'],
+        $this->dataBarang = Barang::select(
+            'barang.id as barang_id',
+            'barang.nama as barang_nama',
+            'barang_satuan.id as barang_satuan_id',
+            'barang_satuan.nama as barang_satuan_nama',
+            'barang_satuan.rasio_dari_terkecil',
+            'barang_satuan.harga_jual',
+        )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')->with('barangSatuan.satuanKonversi')->klinik()->orderBy('barang.nama')->get()->map(fn($q) => [
+            'id' => $q['barang_satuan_id'],
+            'nama' => $q['barang_nama'],
+            'barang_id' => $q['barang_satuan_id'],
             'biaya' => $q['harga_jual'],
             'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
-            'konversi_satuan' => $q['konversi_satuan'],
-            'satuan' => $q['nama'],
-            'satuan_konversi' => isset($q['satuanKonversi']) ? $q['satuanKonversi']['nama'] : null,
-            'satuan_konversi_rasio_dari_terkecil' => isset($q['satuanKonversi']) ? $q['satuanKonversi']['rasio_dari_terkecil'] : null,
+            'satuan' => $q['barang_satuan_nama'],
         ])->toArray();
-        $this->dataAset = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
+        $this->dataAlat = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
-            $this->alatBarang = $this->data->tarifTindakanAlatBarang->map(fn($q) => [
-                'barang_id' => $q->barang_id,
-                'aset_id' => $q->aset_id,
-                'jenis' => $q->barang_id ? 'Barang' : 'Alat',
-                'barang_satuan_id' => $q->barang_satuan_id,
-                'biaya' => $q->jenis == 'Barang' ? $q->barangSatuan?->biaya : $q->biaya,
-                'barangSatuan' => BarangSatuan::where('barang_id', $q->barang_id)->get()->map(fn($r) => [
-                    'id' => $r->id,
-                    'nama' => $r->nama,
-                    'harga_jual' => $r->harga_jual,
-                    'rasio_dari_terkecil' => $r->rasio_dari_terkecil,
-                    'konversi_satuan' => $r->konversi_satuan,
-                ]),
+            $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_id')->values()->map(fn($q) => [
+                'id' => $q->barang_satuan_id,
+                'biaya' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['biaya'],
                 'qty' => $q->qty,
-                'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-                'sub_total' => $q->jenis == 'Barang' ? $q->barangSatuan?->harga_jual * $q->qty : $q->biaya * $q->qty,
+                'subtotal' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['biaya'] * $q->qty,
             ])->toArray();
-            $this->biaya_bahan = collect($this->alatBarang)->where('jenis', 'Barang')->sum(fn($q) => $q['sub_total'] ?? 0);
-            $this->biaya_alat = collect($this->alatBarang)->where('jenis', 'Alat')->sum(fn($q) => $q['sub_total'] ?? 0);
+            $this->alat = $this->data->tarifTindakanAlatBarang->whereNotNull('aset_id')->values()->map(fn($q) => [
+                'id' => $q->aset_id,
+                'biaya' => $q->biaya,
+                'qty' => $q->qty,
+                'subtotal' => $q->biaya * $q->qty,
+            ])->toArray();
         }
     }
 

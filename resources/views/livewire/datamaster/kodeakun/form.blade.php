@@ -33,7 +33,15 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Kategori</label>
-                    <select class="form-control" wire:model.live="kategori" data-width="100%">
+                    <select class="form-control" x-init="$($el).selectpicker({
+                        liveSearch: true,
+                        width: 'auto',
+                        size: 10,
+                        container: 'body',
+                        style: '',
+                        showSubtext: true,
+                        styleBase: 'form-control'
+                    })" wire:model.live="kategori" data-width="100%">
                         <option hidden selected>-- Pilih Kategori --</option>
                         <option value="Aktiva">Aktiva</option>
                         <option value="Kewajiban">Kewajiban</option>
@@ -47,7 +55,15 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Parent</label>
-                    <select class="form-control" wire:model.live="parent_id" data-width="100%">
+                    <select class="form-control" x-init="$($el).selectpicker({
+                        liveSearch: true,
+                        width: 'auto',
+                        size: 10,
+                        container: 'body',
+                        style: '',
+                        showSubtext: true,
+                        styleBase: 'form-control'
+                    })" wire:model.live="parent_id" data-width="100%">
                         <option hidden selected>-- Pilih Parent --</option>
                         @foreach ($dataParent as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
@@ -65,7 +81,7 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
             </div>
         </form>
     </div>
