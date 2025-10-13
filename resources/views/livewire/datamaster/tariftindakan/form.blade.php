@@ -19,14 +19,14 @@
                     <div class="col-lg-4">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="nama" />
+                            <input class="form-control" type="text" wire:model="nama" x-model="nama" />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">ICD 9 CM</label>
-                            <input class="form-control" type="text" wire:model="icd_9_cm" />
+                            <input class="form-control" type="text" wire:model="icd_9_cm" x-model="icd_9_cm" />
                             @error('icd_9_cm')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -34,14 +34,17 @@
                         <div class="mb-3">
                             <label class="form-label">Tarif</label>
                             <input class="form-control" type="number" step="1" min="0" wire:model="tarif"
-                                x-model.live="tarif" @change="hitungKeuntungan()" />
+                                x-model.number="tarif" @change="hitungKeuntungan()" />
                             @error('tarif')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Kategori</label>
-                            <select class="form-control" wire:model="kode_akun_id" x-init="$($el).selectpicker({
+                            <select class="form-control"
+                                wire:model="kode_akun_id"
+                                x-model="kode_akun_id"
+                                x-init="$($el).selectpicker({
                                 liveSearch: true,
                                 width: 'auto',
                                 size: 10,
@@ -70,6 +73,7 @@
                                         id: '',
                                         qty: 1,
                                         biaya: 0,
+                                        subtotal: 0,
                                     });
                                     this.hitungKeuntungan();
                                 },
@@ -111,7 +115,7 @@
                                         <tr>
                                             <td>
                                                 <div wire:ignore>
-                                                    <select class="form-control" x-model.live="row.id"
+                                                    <select class="form-control" x-model="row.id"
                                                         x-init="$($el).select2({
                                                             width: '100%',
                                                             dropdownAutoWidth: true
@@ -137,12 +141,12 @@
                                             </td>
                                             <td class="with-btn">
                                                 <input type="number" class="form-control w-100px" min="1"
-                                                    step="any" x-model.number.live="row.qty"
+                                                    step="any" x-model.number="row.qty"
                                                     @input="calculateAlat(index)">
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control text-end w-150px"
-                                                    :value="formatNumber(row.subtotal)" disabled>
+                                                    x-model="row.subtotal" :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger" @click="hapusAlat(index)">
@@ -156,7 +160,7 @@
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                :value="formatNumber(total_biaya_alat)" disabled>
+                                                x-model="total_biaya_alat" :value="formatNumber(total_biaya_alat)" disabled>
                                         </th>
                                         <th></th>
                                     </tr>
@@ -183,7 +187,8 @@
                                     this.barang.push({
                                         id: '',
                                         qty: 1,
-                                        biaya: 0
+                                        biaya: 0,
+                                        subtotal: 0,
                                     });
                                     this.hitungKeuntungan();
                                 },
@@ -223,7 +228,7 @@
                                         <tr>
                                             <td class="with-btn">
                                                 <div wire:ignore>
-                                                    <select class="form-control" x-model.live="row.id"
+                                                    <select class="form-control" x-model="row.id"
                                                         x-init="$($el).select2({
                                                             width: '100%',
                                                             dropdownAutoWidth: true
@@ -250,12 +255,12 @@
                                             </td>
                                             <td class="with-btn">
                                                 <input type="number" class="form-control w-100px" min="1"
-                                                    step="any" x-model.number.live="row.qty"
+                                                    step="any" x-model.number="row.qty"
                                                     @input="calculateBarang(index)">
                                             </td>
                                             <td>
                                                 <input type="text" class="form-control text-end w-150px"
-                                                    :value="formatNumber(row.subtotal)" disabled>
+                                                    x-model="row.subtotal" :value="formatNumber(row.subtotal)" disabled>
                                             </td>
                                             <td>
                                                 <button type="button" class="btn btn-danger"
@@ -270,7 +275,7 @@
                                         </th>
                                         <th>
                                             <input type="text" class="form-control text-end"
-                                                :value="formatNumber(total_biaya_barang)" disabled autocomplete="off">
+                                                x-model="total_biaya_barang" :value="formatNumber(total_biaya_barang)" disabled autocomplete="off">
                                         </th>
                                         <th></th>
                                     </tr>
@@ -296,7 +301,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Biaya Jasa Dokter</label>
                                 <input class="form-control" type="number" step="1" min="0"
-                                    wire:model="biaya_jasa_dokter" x-model.live="biaya_jasa_dokter"
+                                    wire:model="biaya_jasa_dokter" x-model.number="biaya_jasa_dokter"
                                     @change="hitungKeuntungan()" />
                                 @error('biaya_jasa_dokter')
                                     <span class="text-danger">{{ $message }}</span>
@@ -305,7 +310,7 @@
                             <div class="mb-3">
                                 <label class="form-label">Biaya Jasa Perawat</label>
                                 <input class="form-control" type="number" step="1" min="0"
-                                    wire:model="biaya_jasa_perawat" x-model.live="biaya_jasa_perawat"
+                                    wire:model="biaya_jasa_perawat" x-model.number="biaya_jasa_perawat"
                                     @change="hitungKeuntungan()" />
                                 @error('biaya_jasa_perawat')
                                     <span class="text-danger">{{ $message }}</span>
@@ -314,7 +319,7 @@
                             <hr>
                             <div class="mb-3">
                                 <label class="form-label">Keuntungan</label>
-                                <input class="form-control" type="text" :value="formatNumber(keuntungan)"
+                                <input class="form-control" type="text" x-model="keuntungan" :value="formatNumber(keuntungan)"
                                     disabled />
                             </div>
                         </div>
@@ -345,20 +350,31 @@
     <script>
         function tarifTindakanForm() {
             return {
-                alat: @js($alat),
+                alat: @js($alat).map(row => ({
+                    ...row,
+                    subtotal: row.subtotal ?? ((parseFloat(row.qty) || 0) * (parseFloat(row.biaya) || 0) || 0)
+                })),
                 dataAlat: @js($dataAlat),
-                barang: @js($barang),
+                barang: @js($barang).map(row => ({
+                    ...row,
+                    subtotal: row.subtotal ?? ((parseFloat(row.qty) || 0) * (parseFloat(row.biaya) || 0) || 0)
+                })),
                 dataBarang: @js($dataBarang),
                 biaya_jasa_dokter: @js($biaya_jasa_dokter),
                 biaya_jasa_perawat: @js($biaya_jasa_perawat),
                 total_biaya_alat: @js($biaya_alat),
-                total_biaya_barang: @js($biaya_alat),
+                total_biaya_barang: @js($biaya_barang),
                 tarif: @js($tarif),
+                nama: @js($nama),
+                kode_akun_id: @js($kode_akun_id),
+                icd_9_cm: @js($icd_9_cm),
                 keuntungan: 0,
                 formatNumber(val) {
                     return new Intl.NumberFormat('id-ID').format(val || 0);
                 },
                 hitungKeuntungan() {
+                    this.total_biaya_alat = this.alat.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
+                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
                     this.keuntungan =
                         (parseFloat(this.tarif) || 0) -
                         (parseFloat(this.total_biaya_alat) || 0) -
@@ -366,25 +382,29 @@
                         (parseFloat(this.biaya_jasa_dokter) || 0) -
                         (parseFloat(this.biaya_jasa_perawat) || 0);
                 },
-                // Fix: Use $wire from Alpine global, not from __livewire
                 syncToLivewire() {
                     if (window.Livewire && window.Livewire.find) {
-                        // Try to get the Livewire component by id
                         let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
                         if (componentId) {
                             let $wire = window.Livewire.find(componentId);
                             if ($wire && typeof $wire.set === 'function') {
                                 $wire.set('alat', JSON.parse(JSON.stringify(this.alat)), true);
                                 $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), true);
+                                $wire.set('nama', this.nama, true);
+                                $wire.set('kode_akun_id', this.kode_akun_id, true);
+                                $wire.set('icd_9_cm', this.icd_9_cm, true);
+                                $wire.set('tarif', this.tarif, true);
+                                $wire.set('biaya_jasa_dokter', this.biaya_jasa_dokter, true);
+                                $wire.set('biaya_jasa_perawat', this.biaya_jasa_perawat, true);
                             }
                         }
                     }
                 },
                 init() {
                     this.total_biaya_alat = this.alat.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
-                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0),
-                        0);
+                    this.total_biaya_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0), 0);
                     this.hitungKeuntungan();
+
                     this.$watch('biaya_jasa_dokter', () => {
                         this.hitungKeuntungan();
                     });
@@ -394,6 +414,15 @@
                     this.$watch('tarif', () => {
                         this.hitungKeuntungan();
                     });
+                    this.$watch('alat', () => {
+                        this.hitungKeuntungan();
+                    }, { deep: true });
+                    this.$watch('barang', () => {
+                        this.hitungKeuntungan();
+                    }, { deep: true });
+                    this.$watch('nama', () => {}, {deep: false});
+                    this.$watch('kode_akun_id', () => {}, {deep: false});
+                    this.$watch('icd_9_cm', () => {}, {deep: false});
                 }
             }
         }

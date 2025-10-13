@@ -66,7 +66,7 @@ class Form extends Component
                 'rasio_dari_terkecil' => collect($this->dataBarang)->firstWhere('id', $q['id'])['rasio_dari_terkecil'],
                 'biaya' => $q['biaya'],
             ]));
-            
+
             $this->data->tarifTindakanAlatBarang()->delete();
             $this->data->tarifTindakanAlatBarang()->insert(collect($alatBahan)->map(fn($q) => [
                 'barang_id' => $q['barang_id'],
@@ -106,9 +106,9 @@ class Form extends Component
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
-            $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_id')->values()->map(fn($q) => [
+            $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_id')->whereIn('barang_satuan_id', collect($this->dataBarang)->pluck('id'))->values()->map(fn($q) => [
                 'id' => $q->barang_satuan_id,
-                'biaya' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['biaya'],
+                'biaya' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id),
                 'qty' => $q->qty,
                 'subtotal' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['biaya'] * $q->qty,
             ])->toArray();
