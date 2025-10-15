@@ -107,13 +107,6 @@
                         Perlu Resep
                     </label>
                 </div>
-                <div class="form-check mb-3">
-                    <input class="form-check-input" type="checkbox" wire:model="klinik"
-                        @if ($klinik) checked @endif />
-                    <label class="form-check-label" for="klinik">
-                        Khusus Tarif Tindakan Klinik
-                    </label>
-                </div>
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
