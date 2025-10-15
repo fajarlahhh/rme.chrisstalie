@@ -15,6 +15,11 @@
             <hr>
             <table class="w-100">
                 <tr>
+                    <td class="w-200px">No. Registrasi</td>
+                    <td class="w-10px">:</td>
+                    <td>{{ $data->urutan }}</td>
+                </tr>
+                <tr>
                     <td class="w-200px">No. RM</td>
                     <td class="w-10px">:</td>
                     <td>{{ $data->pasien_id }}</td>

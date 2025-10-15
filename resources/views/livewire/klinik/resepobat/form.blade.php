@@ -9,12 +9,16 @@
     <h1 class="page-header">Resep Obat</h1>
 
     <x-alert />
-
     <div class="note alert-primary mb-2">
         <div class="note-content">
             <h5>Data Pasien</h5>
             <hr>
             <table class="w-100">
+                <tr>
+                    <td class="w-200px">No. Registrasi</td>
+                    <td class="w-10px">:</td>
+                    <td>{{ $data->urutan }}</td>
+                </tr>
                 <tr>
                     <td class="w-200px">No. RM</td>
                     <td class="w-10px">:</td>

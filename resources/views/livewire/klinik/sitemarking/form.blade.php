@@ -1,4 +1,4 @@
-<div>
+<div x-data="siteMarkingForm()" x-init="init()" x-ref="alpineRoot">
     @section('title', 'Site Marking')
 
     @section('breadcrumb')
@@ -53,7 +53,7 @@
                         <ul>
                             @foreach ($data->tindakan as $row)
                                 @if ($row->membutuhkan_sitemarking)
-                                    <li>{{ $row->tarifTindakan->nama }}</li>
+                                    <li>{{ $row->tarifTindakan->nama }} ({{ $row->qty }}x)</li>
                                 @endif
                             @endforeach
                         </ul>

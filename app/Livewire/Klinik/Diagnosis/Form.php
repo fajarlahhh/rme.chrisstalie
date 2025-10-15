@@ -17,8 +17,6 @@ class Form extends Component
     public $data;
     public $dataIcd10 = [];
     public $diagnosis_banding;
-    public $rencana_pemeriksaan;
-    public $rencana_terapi;
     public $diagnosis = [];
     public $fileDiupload = [];
 
@@ -64,8 +62,6 @@ class Form extends Component
             $diagnosis->pengguna_id = auth()->id();
             $diagnosis->icd10 = json_encode($this->diagnosis);
             $diagnosis->diagnosis_banding = $this->diagnosis_banding;
-            $diagnosis->rencana_terapi = $this->rencana_terapi;
-            $diagnosis->rencana_pemeriksaan = $this->rencana_pemeriksaan;
             $diagnosis->save();
 
             $this->hapusFile();

@@ -29,6 +29,7 @@ class Index extends Component
     public function getQuery()
     {
         $query = Registrasi::query()
+        ->whereHas('tindakan', fn($q) => $q->where('membutuhkan_sitemarking', 1))
             ->with([
                 'pasien',
                 'nakes',

@@ -33,7 +33,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Tiket</th>
+                        <th>No. Registrasi</th>
                         <th>RM</th>
                         <th>Nama</th>
                         <th>NIK</th>

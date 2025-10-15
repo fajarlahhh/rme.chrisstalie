@@ -8,9 +8,12 @@ use App\Models\Tindakan;
 use App\Models\Registrasi;
 use App\Models\TarifTindakan;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
+    
     public $tindakan = [], $dataTindakan = [], $dataNakes = [];
     public $data;
 
@@ -60,49 +63,9 @@ class Form extends Component
         ])->toArray();
     }
 
-    public function tambahTindakan()
-    {
-        $this->tindakan[] = [
-            'id' => null,
-            'qty' => 1,
-            'harga' => null,
-            'catatan' => null,
-            'membutuhkan_inform_consent' => false,
-            'membutuhkan_sitemarking' => false,
-            'dokter_id' => auth()->user()->dokter?->id,
-            'perawat_id' => null,
-            'biaya_jasa_dokter' => 0,
-            'biaya_jasa_perawat' => 0,
-            'biaya' => 0,
-        ];
-    }
-
-    public function updatedTindakan($value, $key)
-    {
-        $index = explode('.', $key);
-        if ($value) {
-            if ($index[1] == 'id') {
-                $tindakan = collect($this->dataTindakan)->where('id', $value)->first();
-                $this->tindakan[$index[0]]['id'] = $tindakan['id'] ?? null;
-                $this->tindakan[$index[0]]['biaya_jasa_dokter'] = $tindakan['biaya_jasa_dokter'] ?? 0;
-                $this->tindakan[$index[0]]['biaya_jasa_perawat'] = $tindakan['biaya_jasa_perawat'] ?? 0;
-                $this->tindakan[$index[0]]['dokter_id'] = auth()->user()->dokter?->id;
-                $this->tindakan[$index[0]]['perawat_id'] = null;
-                $this->tindakan[$index[0]]['biaya'] = $tindakan['tarif'] ?? 0;
-            }
-        } else {
-            $this->tindakan[$index[0]]['id'] = null;
-            $this->tindakan[$index[0]]['biaya_jasa_dokter'] = null;
-            $this->tindakan[$index[0]]['biaya_jasa_perawat'] = null;
-            $this->tindakan[$index[0]]['dokter_id'] = auth()->user()->dokter?->id;
-            $this->tindakan[$index[0]]['perawat_id'] = null;
-            $this->tindakan[$index[0]]['biaya'] = 0;
-        }
-    }
-
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'tindakan' => 'required|array',
             'tindakan.*.id' => 'required|distinct',
             'tindakan.*.qty' => 'required|min:1',
@@ -113,9 +76,16 @@ class Form extends Component
                     $this->tindakan[$index]['biaya_jasa_dokter'] > 0 &&
                     (empty($value) || $value < 1)
                 ) {
-                    $fail('The dokter id field is required.');
+                    $fail('Dokter wajib dipilih untuk tindakan ini.');
                 }
             },
+        ], [
+            'tindakan.required' => 'Minimal satu tindakan harus dipilih.',
+            'tindakan.array' => 'Format data tindakan tidak valid.',
+            'tindakan.*.id.required' => 'Tindakan wajib dipilih.',
+            'tindakan.*.id.distinct' => 'Terdapat tindakan yang duplikat.',
+            'tindakan.*.qty.required' => 'Jumlah tindakan wajib diisi.',
+            'tindakan.*.qty.min' => 'Jumlah tindakan minimal 1.',
         ]);
 
         DB::transaction(function () {
@@ -140,12 +110,6 @@ class Form extends Component
             Tindakan::insert($tindakan);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-    }
-
-    public function hapusTindakan($index)
-    {
-        unset($this->tindakan[$index]);
-        $this->tindakan = array_merge($this->tindakan);
     }
 
     public function render()
