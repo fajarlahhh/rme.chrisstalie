@@ -24,7 +24,6 @@ class Form extends Component
     public $satuan;
     public $deskripsi;
     public $lokasi;
-    public $unit_bisnis = 'Klinik';
     public $kode_akun_id;
     public $kode_akun_sumber_dana_id;
     public $detail;
@@ -40,7 +39,6 @@ class Form extends Component
             'kode_akun_sumber_dana_id' => 'required',
             'satuan' => 'required',
             'lokasi' => 'required',
-            'unit_bisnis' => 'required',
             'kode_akun_id' => 'required',
             'metode_penyusutan' => 'required',
         ]);
@@ -53,7 +51,6 @@ class Form extends Component
             $this->data->satuan = $this->satuan;
             $this->data->deskripsi = $this->deskripsi;
             $this->data->lokasi = $this->lokasi;
-            $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->detail = $this->detail;
             $this->data->kode_akun_sumber_dana_id = $this->kode_akun_sumber_dana_id;

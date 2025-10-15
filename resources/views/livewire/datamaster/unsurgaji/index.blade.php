@@ -7,121 +7,94 @@
     @endsection
 
     <h1 class="page-header">Unsur Gaji</h1>
-    <ul class="nav nav-tabs" role="tablist">
-        @foreach (\App\Enums\UnitBisnisEnum::cases() as $key => $item)
-            <li class="nav-item" role="presentation" wire:ignore>
-                <a href="#default-tab-{{ $key }}" data-bs-toggle="tab"
-                    class="nav-link {{ $key == 0 ? 'active' : '' }}" aria-selected="true" role="tab">
-                    <span class="d-sm-none">{{ $item->label() }}</span>
-                    <span class="d-sm-block d-none">{{ $item->label() }}</span>
-                </a>
-            </li>
-        @endforeach
-    </ul>
-    <div class="tab-content panel rounded-0 p-3 m-0">
-        @foreach (\App\Enums\UnitBisnisEnum::cases() as $key => $item)
-            <div class="tab-pane fade {{ $key == 0 ? 'active show' : '' }}" id="default-tab-{{ $key }}"
-                role="tabpanel" wire:ignore.self>
-
-                <form wire:submit.prevent="submit('{{ $item->value }}')"
-                    @submit.prevent="syncToLivewire('{{ $item->value }}')">
-                    <div class="table-responsive" x-data="{
-                        add() {
-                                this.unsurGaji.push({
-                                    id: '',
-                                    sifat: '+',
-                                    kode_akun_id: null,
-                                    unit_bisnis: '{{ $item->value }}',
-                                });
-                            },
-                            hapus(unit_bisnis, index) {
-                                // Find all items with matching unit_bisnis
-                                const filteredIndexes = this.unsurGaji
-                                    .map((item, i) => ({ item, i }))
-                                    .filter(({ item }) => item.unit_bisnis === unit_bisnis)
-                                    .map(({ i }) => i);
-                                // Remove the right index from filtered items
-                                if (filteredIndexes[index] !== undefined) {
-                                    this.unsurGaji.splice(filteredIndexes[index], 1);
-                                }
-                            },
-                    }" x-ref="unsurGaji{{ $item->value }}">
-                        <table class="table">
-                            <thead>
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <div class="panel-body table-responsive">
+            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire">
+                <div class="table-responsive" x-data="{
+                    add() {
+                            this.unsurGaji.push({
+                                id: '',
+                                sifat: '+',
+                                kode_akun_id: null,
+                            });
+                        },
+                        hapus(index) {
+                            // Find all items with matching unit_bisnis
+                            const filteredIndexes = this.unsurGaji
+                                .map((item, i) => ({ item, i }))
+                                .map(({ i }) => i);
+                            // Remove the right index from filtered items
+                            if (filteredIndexes[index] !== undefined) {
+                                this.unsurGaji.splice(filteredIndexes[index], 1);
+                            }
+                        },
+                }" x-ref="unsurGaji">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Unsur Gaji</th>
+                                <th class="w-50px">Sifat</th>
+                                <th>Kode Akun</th>
+                                <th class="w-5px"></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <template x-for="(row, index) in unsurGaji" :key="index">
                                 <tr>
-                                    <th>Unsur Gaji</th>
-                                    <th class="w-50px">Sifat</th>
-                                    <th>Kode Akun</th>
-                                    <th class="w-5px"></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <template
-                                    x-for="(row, index) in unsurGaji.filter(u => u.unit_bisnis === '{{ $item->value }}')"
-                                    :key="index">
-                                    <tr>
-                                        <td>
-                                            <input type="text" class="form-control"
-                                                :name="'unsurGaji[' + index + '][nama]'" x-model="row.nama"
-                                                autocomplete="off">
-                                        </td>
-                                        <td>
-                                            <select class="form-control" :name="'unsurGaji[' + index + '][sifat]'"
-                                                x-model="row.sifat">
-                                                <option value="+">+</option>
-                                                <option value="-">-</option>
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <select class="form-control"
-                                                :name="'unsurGaji[' + index + '][kode_akun_id]'"
-                                                x-model="row.kode_akun_id">
-                                                <option value="">-- Pilih Kode Akun --</option>
-                                                @foreach ($dataKodeAkun as $subRow)
-                                                    <option value="{{ $subRow['id'] }}">
-                                                        {{ $subRow['id'] }} - {{ $subRow['nama'] }}
-                                                    </option>
-                                                @endforeach
-                                            </select>
-                                        </td>
-                                        <td>
-                                            <button type="button" class="btn btn-danger"
-                                                @click="hapus('{{ $item->value }}', index)">
-                                                <i class="fa fa-times"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                </template>
-                            </tbody>
-                            <tfoot>
-                                <tr>
-                                    <td colspan="5">
-                                        <div class="text-center">
-                                            <button type="button" class="btn btn-secondary" @click="add">
-                                                Tambah Unsur Gaji
-                                            </button>
-                                            <template x-if="$store.wireErrors?.unsurGaji">
-                                                <span class="text-danger" x-text="$store.wireErrors.unsurGaji"></span>
-                                            </template>
-                                        </div>
+                                    <td>
+                                        <input type="text" class="form-control"
+                                            :name="'unsurGaji[' + index + '][nama]'" x-model="row.nama"
+                                            autocomplete="off">
+                                    </td>
+                                    <td>
+                                        <select class="form-control" :name="'unsurGaji[' + index + '][sifat]'"
+                                            x-model="row.sifat">
+                                            <option value="+">+</option>
+                                            <option value="-">-</option>
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <select class="form-control" :name="'unsurGaji[' + index + '][kode_akun_id]'"
+                                            x-model="row.kode_akun_id">
+                                            <option value="">-- Pilih Kode Akun --</option>
+                                            @foreach ($dataKodeAkun as $subRow)
+                                                <option value="{{ $subRow['id'] }}">
+                                                    {{ $subRow['id'] }} - {{ $subRow['nama'] }}
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </td>
+                                    <td>
+                                        <button type="button" class="btn btn-danger" @click="hapus(index)">
+                                            <i class="fa fa-times"></i>
+                                        </button>
                                     </td>
                                 </tr>
-                            </tfoot>
-                        </table>
-                        @role('administrator|supervisor')
-                            <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                                <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                Simpan
-                            </button>
-                        @endrole
-                    </div>
-                </form>
-            </div>
-        @endforeach
-        <!-- END tab-pane -->
+                            </template>
+                        </tbody>
+                        <tfoot>
+                            <tr>
+                                <td colspan="5">
+                                    <div class="text-center">
+                                        <button type="button" class="btn btn-secondary" @click="add">
+                                            Tambah Unsur Gaji
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tfoot>
+                    </table>
+                    @role('administrator|supervisor')
+                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                            <span wire:loading class="spinner-border spinner-border-sm"></span>
+                            Simpan
+                        </button>
+                        <x-alert />
+                    @endrole
+                </div>
+            </form>
+        </div>
     </div>
-    <br>
-    <x-alert />
 </div>
 
 

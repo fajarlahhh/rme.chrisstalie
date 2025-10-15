@@ -43,7 +43,6 @@
                         <th>Masa Manfaat</th>
                         <th>Lokasi</th>
                         <th>Status</th>
-                        <th>Unit Bisnis</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -82,7 +81,6 @@
                                     @default
                                 @endswitch
                             </td>
-                            <td>{{ $item->unit_bisnis }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"
@@ -93,7 +91,7 @@
                     @endforeach
                     @if ($data->currentPage() == $data->lastPage())
                         <tr>
-                            <th colspan="11" class="text-end">TOTAL</th>
+                            <th colspan="10" class="text-end">TOTAL</th>
                             <th class="text-end">{{ number_format($dataRaw->sum('harga_perolehan')) }}</th>
                         </tr>
                     @endif

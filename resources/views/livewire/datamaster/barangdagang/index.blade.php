@@ -17,6 +17,11 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
+                    <select class="form-control w-auto" wire:model.lazy="persediaan">
+                        <option value="">Semua Persediaan</option>
+                        <option value="Apotek">Apotek</option>
+                        <option value="Klinik">Klinik</option>
+                    </select>&nbsp;
                     <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                         <option value="">Semua Kategori</option>
                         @foreach ($dataKodeAkun as $item)
@@ -25,13 +30,7 @@
                     </select>&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">&nbsp;
-                    <div class="form-check">
-                        <label class="form-check-label" for="klinik">
-                            Klinik
-                        </label>
-                        <input class="form-check-input" type="checkbox" wire:model.lazy="klinik" />
-                    </div>
+                        wire:model.lazy="cari">
                 </div>
             </div>
         </div>
@@ -43,10 +42,9 @@
                         <th>Nama</th>
                         <th>Satuan</th>
                         <th>Kategori</th>
-                        <th>Unit Bisnis</th>
                         <th>KFA</th>
                         <th>Perlu Resep</th>
-                        <th>Persediaan Klinik</th>
+                        <th>Persediaan</th>
                         <th></th>
                     </tr>
                 </thead>
@@ -75,10 +73,9 @@
                                 </table>
                             </td>
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
-                            <td>{{ $item->unit_bisnis }}</td>
                             <td>{{ $item->kfa }}</td>
                             <td>{{ $item->perlu_resep ? 'Ya' : '' }}</td>
-                            <td>{{ $item->klinik ? 'Ya' : '' }}</td>
+                            <td>{{ $item->persediaan }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"

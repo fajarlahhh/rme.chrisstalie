@@ -12,7 +12,7 @@ class Index extends Component
     public $dataKodeAkun = [];
     public $unsurGaji = [];
 
-    public function submit($unit_bisnis)
+    public function submit()
     {   
         $this->validate([
             'unsurGaji' => 'required|array',
@@ -21,12 +21,11 @@ class Index extends Component
             'unsurGaji.*.kode_akun_id' => 'required',
         ]);
 
-        DB::transaction(function () use ($unit_bisnis) {
-            UnsurGaji::where('unit_bisnis', $unit_bisnis)->delete();
-            UnsurGaji::insert(collect($this->unsurGaji)->where('unit_bisnis', $unit_bisnis)->map(fn($q) => [
+        UnsurGaji::truncate();
+        DB::transaction(function () {
+            UnsurGaji::insert(collect($this->unsurGaji)->map(fn($q) => [
                 'nama' => $q['nama'],
                 'sifat' => $q['sifat'],
-                'unit_bisnis' => $unit_bisnis,
                 'kode_akun_id' => $q['kode_akun_id'],
                 'pengguna_id' => auth()->id(),
                 'created_at' => now(),

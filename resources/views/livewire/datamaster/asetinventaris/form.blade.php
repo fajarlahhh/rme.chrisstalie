@@ -18,18 +18,6 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3">
-                    <label class="form-label">Unit Bisnis</label>
-                    <select class="form-control" wire:model.live="unit_bisnis" data-width="100%">
-                        <option hidden selected>-- Pilih Unit Bisnis --</option>
-                        @foreach (\App\Enums\UnitBisnisEnum::cases() as $item)
-                            <option value="{{ $item->value }}">{{ $item->label() }}</option>
-                        @endforeach
-                    </select>
-                    @error('unit_bisnis')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
                     <label class="form-label">Nama</label>
                     <input class="form-control" type="text" wire:model="nama" />
                     @error('nama')

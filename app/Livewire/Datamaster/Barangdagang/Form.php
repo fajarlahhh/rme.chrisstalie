@@ -21,8 +21,7 @@ class Form extends Component
     public $indikasi;
     public $harga;
     public $perlu_resep = 0;
-    public $klinik = 0;
-    public $unit_bisnis = 'Apotek';
+    public $persediaan = 'Apotek';
     public $barangSatuan = [];
 
     public function tambahSatuan()
@@ -48,7 +47,7 @@ class Form extends Component
             'satuan' => 'required',
             'harga' => 'required|numeric',
             'nama' => 'required',
-            'unit_bisnis' => 'required',
+            'persediaan' => 'required',
         ], [
             'kode_akun_id.required' => 'Kode akun pembelian wajib dipilih.',
             'kode_akun_penjualan_id.required' => 'Kode akun penjualan wajib dipilih.',
@@ -56,15 +55,14 @@ class Form extends Component
             'harga.required' => 'Harga barang wajib diisi.',
             'harga.numeric' => 'Harga barang harus berupa angka.',
             'nama.required' => 'Nama barang wajib diisi.',
-            'unit_bisnis.required' => 'Unit bisnis wajib dipilih.',
+            'persediaan.required' => 'Unit bisnis wajib dipilih.',
         ]);
 
         DB::transaction(function () {
             $this->data->nama = $this->nama;
             $this->data->kfa = $this->kfa;
             $this->data->perlu_resep = $this->perlu_resep == 1 ? 1 : 0;
-            $this->data->klinik = $this->klinik == 1 ? 1 : 0;
-            $this->data->unit_bisnis = $this->unit_bisnis;
+            $this->data->persediaan = $this->persediaan;
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->kode_akun_penjualan_id = $this->kode_akun_penjualan_id;
             $this->data->pengguna_id = auth()->id();

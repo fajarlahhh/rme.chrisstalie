@@ -13,7 +13,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $unit_bisnis, $kode_akun_id, $dataKodeAkun = [], $klinik;
+    public $cari, $persediaan, $kode_akun_id, $dataKodeAkun = [], $klinik;
 
     public function mount()
     {
@@ -44,7 +44,7 @@ class Index extends Component
                 'pengguna',
                 'kodeAkun'
             ])->persediaan()
-                ->when($this->unit_bisnis, fn($q) => $q->where('unit_bisnis', $this->unit_bisnis))
+                ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
                 ->when($this->klinik, fn($q) => $q->where('klinik', $this->klinik))
                 ->when($this->kode_akun_id, function ($q) {
                     $q->where('kode_akun_id', $this->kode_akun_id);

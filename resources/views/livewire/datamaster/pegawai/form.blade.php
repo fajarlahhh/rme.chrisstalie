@@ -20,18 +20,6 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">
-                            <label class="form-label">Unit Bisnis</label>
-                            <select class="form-control" wire:model.live="unit_bisnis" data-width="100%">
-                                <option hidden selected>-- Pilih Unit Bisnis --</option>
-                                @foreach (\App\Enums\UnitBisnisEnum::cases() as $item)
-                                    <option value="{{ $item->value }}">{{ $item->label() }}</option>
-                                @endforeach
-                            </select>
-                            @error('unit_bisnis')
-                                <span class="text-danger">{{ $message }}</span>
-                            @enderror
-                        </div>
-                        <div class="mb-3">
                             <label class="form-label">No. KTP</label>
                             <input class="form-control" type="number" step="1" maxlength="16" minlength="16"
                                 wire:model="nik" @if ($status == 'Non Aktif') disabled @endif />
@@ -67,7 +55,7 @@
                             <label class="form-label">Jenis Kelamin</label>
                             <select data-container="body" class="form-control " wire:model="jenis_kelamin"
                                 data-width="100%" @if ($status == 'Non Aktif') disabled @endif>
-                                <option selected>-- Pilih Jenis Kelamin --</option>
+                                <option selected hidden>-- Pilih Jenis Kelamin --</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>
@@ -117,13 +105,15 @@
                             @enderror
                         </div>
 
-                        <div class="form-check mb-3">
-                            <input class="form-check-input" type="checkbox" wire:model="status"
-                                @if ($status == 'Aktif') checked @endif />
-                            <label class="form-check-label" for="status">
-                                Aktif
-                            </label>
-                        </div>
+                        @if ($data->exists)
+                            <div class="form-check mb-3">
+                                <input class="form-check-input" type="checkbox" wire:model="status"
+                                    @if ($status == 'Aktif') checked @endif />
+                                <label class="form-check-label" for="status">
+                                    Aktif
+                                </label>
+                            </div>
+                        @endif
                     </div>
                     <div class="col-md-6">
                         <div class="note alert-secondary mb-0">
@@ -132,7 +122,7 @@
                                 <hr>
                                 @foreach ($unsurGaji as $index => $item)
                                     <div class="mb-3">
-                                        <label class="form-label">{{ $item['nama'] }}</label>
+                                        <label class="form-label">{{ $item['unsur_gaji_nama'] }}</label>
                                         <input class="form-control" type="number" step="1" min="0"
                                             wire:model="unsurGaji.{{ $index }}.nilai" @if ($status == 'Non Aktif') disabled @endif />
                                     </div>
@@ -150,10 +140,10 @@
                     </button>
                 @endrole
                 <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+
+                <x-alert />
             </div>
         </form>
     </div>
-
-    <x-alert />
 
 </div>

@@ -10,7 +10,7 @@ use App\Models\UnsurGaji;
 class Form extends Component
 {
     public $data, $previous, $unsurGaji = [];
-    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $unit_bisnis;
+    public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status;
 
     public function submit()
     {
@@ -23,12 +23,8 @@ class Form extends Component
             'tanggal_masuk' => 'required|date',
             'nik' => 'required|numeric|digits:16',
             'no_bpjs' => 'required',
-            'gaji' => 'required|numeric',
-            'tunjangan' => 'required|numeric',
-            'tunjangan_transport' => 'required|numeric',
-            'unit_bisnis' => 'required',
         ]);
-        
+
         DB::transaction(function () {
             $this->data->nama = $this->nama;
             $this->data->alamat = $this->alamat;
@@ -40,15 +36,21 @@ class Form extends Component
             $this->data->npwp = $this->npwp;
             $this->data->no_bpjs = $this->no_bpjs;
             $this->data->satuan_tugas = $this->satuan_tugas;
+            if ($this->data->exists) {
+                $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
+            } else {
+                $this->data->status = 'Aktif';
+            }
             $this->data->status = $this->status == 'Aktif' ? 'Aktif' : 'Non Aktif';
             $this->data->pengguna_id = auth()->id();
-            $this->data->unit_bisnis = $this->unit_bisnis;
             $this->data->save();
 
             $this->data->pegawaiUnsurGaji()->delete();
-            $this->data->pegawaiUnsurGaji()->insert(collect($this->unsurGaji)->map(fn($q) => [
+            $this->data->pegawaiUnsurGaji()->insert(collect($this->unsurGaji)->where('nilai', '>', 0)->map(fn($q) => [
                 'pegawai_id' => $this->data->id,
-                'unsur_gaji_id' => $q['id'],
+                'unsur_gaji_kode_akun_id' => $q['unsur_gaji_kode_akun_id'],
+                'unsur_gaji_nama' => $q['unsur_gaji_nama'],
+                'unsur_gaji_sifat' => $q['unsur_gaji_sifat'],
                 'nilai' => $q['nilai'],
             ])->toArray());
             session()->flash('success', 'Berhasil menyimpan data');
@@ -61,22 +63,31 @@ class Form extends Component
         $this->previous = url()->previous();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->unsurGaji = UnsurGaji::where('unit_bisnis', $this->unit_bisnis)->get()->map(fn($q) => [
-            'id' => $q['id'],
-            'nama' => $q['nama'],
-            'sifat' => $q['sifat'],
-            'nilai' => $this->data->exists ? $this->data->pegawaiUnsurGaji->where('unsur_gaji_id', $q['id'])->first()->nilai : 0,
+        $dataUnsurGaji =  UnsurGaji::all()->map(fn($q) => [
+            'unsur_gaji_nama' => $q['nama'],
+            'unsur_gaji_sifat' => $q['sifat'],
+            'unsur_gaji_kode_akun_id' => $q['kode_akun_id'],
         ]);
-    }
+        $pegawaiUnsurGaji = $this->data->pegawaiUnsurGaji->map(fn($q) => [
+            'unsur_gaji_nama' => $q['unsur_gaji_nama'],
+            'unsur_gaji_sifat' => $q['unsur_gaji_sifat'],
+            'unsur_gaji_kode_akun_id' => $q['unsur_gaji_kode_akun_id'],
+        ]);
 
-    public function updatedKantor($value)
-    {   
-        $this->unsurGaji = UnsurGaji::where('unit_bisnis', $value)->get()->map(fn($q) => [
-            'id' => $q['id'],
-            'nama' => $q['nama'],
-            'sifat' => $q['sifat'],
-            'nilai' =>  $this->data->exists ? $this->data->pegawaiUnsurGaji->where('unsur_gaji_id', $q['id'])->first()->nilai : 0,
-        ]);
+        $mergedUnsurGaji = $dataUnsurGaji
+            ->merge($pegawaiUnsurGaji)
+            ->unique('unsur_gaji_kode_akun_id')
+            ->values();
+        $dataUnsurGajiPegawai = [];
+        foreach ($mergedUnsurGaji as $key => $value) {
+            $dataUnsurGajiPegawai[] =[
+                'unsur_gaji_nama' => $value['unsur_gaji_nama'],
+                'unsur_gaji_sifat' => $value['unsur_gaji_sifat'],
+                'unsur_gaji_kode_akun_id' => $value['unsur_gaji_kode_akun_id'],
+                'nilai' => $this->data->pegawaiUnsurGaji->where('unsur_gaji_kode_akun_id', $value['unsur_gaji_kode_akun_id'])->first()?->nilai ?? 0,
+            ];
+        }
+        $this->unsurGaji = $dataUnsurGajiPegawai;
     }
 
     public function render()

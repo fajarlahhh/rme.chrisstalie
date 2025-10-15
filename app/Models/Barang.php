@@ -68,12 +68,12 @@ class Barang extends Model
 
     public function scopeKlinik(Builder $query): void
     {
-        $query->where('unit_bisnis', 'Klinik');
+        $query->where('persediaan', 'Klinik');
     }
 
     public function scopeApotek(Builder $query): void
     {
-        $query->where('unit_bisnis', 'Apotek');
+        $query->where('persediaan', 'Apotek');
     }
 
     public function barangSatuan(): HasMany

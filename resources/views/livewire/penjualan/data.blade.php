@@ -11,6 +11,11 @@
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading">
+            @role('administrator|supervisor|operator')
+                <a href="/penjualan"
+                    class="btn btn-primary">
+                    Tambah</a>
+            @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <input class="form-control" type="date" wire:model.lazy="tanggal1" />&nbsp;
