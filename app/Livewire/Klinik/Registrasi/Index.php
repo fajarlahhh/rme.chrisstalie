@@ -8,9 +8,11 @@ use App\Models\Pasien;
 use App\Models\Nakes;
 use App\Models\Registrasi;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Index extends Component
 {
+    use CustomValidationTrait;
     use WithPagination;
 
     public $previous;
@@ -111,7 +113,7 @@ class Index extends Component
             ]);
         }
 
-        $this->validate($rules);
+        $this->validateWithCustomMessages($rules);
 
         DB::transaction(function () {
             if (!$this->pasien_id) {

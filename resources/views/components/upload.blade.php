@@ -66,17 +66,17 @@
                         <div class="input-group">
                             <input class="form-control" type="file" autocomplete="off"
                                 accept="image/jpeg,image/jpg,image/png,application/pdf"
-                                wire:model.defer="fileDiupload.{{ $index }}.file"
+                                wire:model="fileDiupload.{{ $index }}.file"
                                 @error('fileDiupload.' . $index . '.file') style="border-color: #ff5b57!important" @enderror />
                         </div>
                         <div class="input-group">
                             <input class="form-control" type="text" autocomplete="off" placeholder="Judul"
-                                wire:model.defer="fileDiupload.{{ $index }}.judul"
+                                wire:model="fileDiupload.{{ $index }}.judul"
                                 @error('fileDiupload.' . $index . '.judul') style="border-color: #ff5b57!important" @enderror />
                         </div>
                         <div class="input-group">
                             <input class="form-control" type="text" autocomplete="off" placeholder="Keterangan"
-                                wire:model.defer="fileDiupload.{{ $index }}.keterangan"
+                                wire:model="fileDiupload.{{ $index }}.keterangan"
                                 @error('fileDiupload.' . $index . '.keterangan') style="border-color: #ff5b57!important" @enderror />
                         </div>
                         <div class="input-group">

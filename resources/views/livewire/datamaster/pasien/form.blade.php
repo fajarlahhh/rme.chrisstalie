@@ -93,6 +93,7 @@
                     </button>
                 @endrole
                 <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
+                <x-alert />
             </div>
         </form>
     </div>

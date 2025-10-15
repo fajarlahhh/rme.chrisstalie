@@ -5,15 +5,17 @@ namespace App\Livewire\Datamaster\Supplier;
 use Livewire\Component;
 use App\Models\Supplier;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous;
     public $nama, $deskripsi, $alamat, $no_hp, $konsinyator = false;
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'nama' => 'required',
             'alamat' => 'required',
             'no_hp' => 'required',

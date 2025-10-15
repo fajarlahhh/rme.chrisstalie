@@ -6,15 +6,17 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\UnsurGaji;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Index extends Component
 {
+    use CustomValidationTrait;
     public $dataKodeAkun = [];
     public $unsurGaji = [];
 
     public function submit()
     {   
-        $this->validate([
+        $this->validateWithCustomMessages([
             'unsurGaji' => 'required|array',
             'unsurGaji.*.nama' => 'required',
             'unsurGaji.*.sifat' => 'required',

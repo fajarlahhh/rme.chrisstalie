@@ -9,8 +9,6 @@
 
     <h1 class="page-header">Registrasi</h1>
 
-    <x-alert />
-
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
@@ -148,7 +146,7 @@
                                         @if (!$pasien_id) disabled @endif />
                                     @error('rm')
                                         <span class="text-danger">{{ $message }}</span>
-                                    @enderror   
+                                    @enderror
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">No. KTP</label>
@@ -253,6 +251,8 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Reset
                 </button>
+
+                <x-alert />
             </div>
         </form>
     </div>

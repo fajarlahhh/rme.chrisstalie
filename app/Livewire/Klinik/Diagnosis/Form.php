@@ -22,19 +22,6 @@ class Form extends Component
     public $diagnosis = [];
     public $fileDiupload = [];
 
-    public function tambahDiagnosis()
-    {
-        $this->diagnosis[] = ['icd10' => null];
-    }
-
-    public function hapusDiagnosis($index)
-    {
-        if (isset($this->diagnosis[$index])) {
-            unset($this->diagnosis[$index]);
-            $this->diagnosis = array_values($this->diagnosis);
-        }
-    }
-
     public function mount(Registrasi $data)
     {
         $this->data = $data;
@@ -61,7 +48,7 @@ class Form extends Component
     }
 
     public function submit()
-    {
+    {   
         $this->validate([
             'diagnosis' => 'required|array|min:1',
             'diagnosis.*.icd10' => 'required',

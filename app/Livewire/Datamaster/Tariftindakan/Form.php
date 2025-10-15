@@ -10,9 +10,11 @@ use App\Class\BarangClass;
 use App\Models\BarangSatuan;
 use App\Models\TarifTindakan;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data;
     public $dataBarang = [], $dataKodeAkun = [], $dataAlat = [];
     public $previous;
@@ -30,7 +32,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'kode_akun_id' => 'required',
             'nama' => 'required',
             'biaya_jasa_dokter' => 'required|numeric',

@@ -5,15 +5,17 @@ namespace App\Livewire\Datamaster\Pasien;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pasien;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous;
     public $nama, $ihs, $nik, $rm, $jenis_kelamin, $birth_place, $tanggal_lahir, $tanggal_daftar, $alamat, $no_hp;
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'nama' => 'required',
             'nik' => 'required',
             'jenis_kelamin' => 'required',

@@ -9,8 +9,6 @@
 
     <h1 class="page-header">Pemeriksaan Awal <small>Input</small></h1>
 
-    <x-alert />
-
     <div class="note alert-primary mb-2">
         <div class="note-content">
             <h5>Data Pasien</h5>
@@ -208,94 +206,136 @@
                         <h5 class="mt-4 mb-3">Pemeriksaan Head to Toe</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <div class="pemeriksaan-item">
+                                <div class="pemeriksaan-item" x-data="{
+                                    checked: @entangle('kepala_normal'),
+                                    init() {
+                                        this.$watch('checked', value => {
+                                            if (value) $wire.set('kepala_temuan', '');
+                                        })
+                                    }
+                                }" x-init="init">
                                     <h6>Kepala, Mata, THT, Leher</h6>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="kepala_normal"
-                                            wire:model.live="kepala_normal">
-                                        <label class="form-check-label" for="kepala_normal">Dalam Batas
-                                            Normal</label>
+                                            x-model="checked" wire:model="kepala_normal">
+                                        <label class="form-check-label" for="kepala_normal">Dalam Batas Normal</label>
                                     </div>
                                     <textarea class="form-control" id="kepala_temuan" name="kepala_temuan" placeholder="Jelaskan temuan abnormal..."
-                                        wire:model="kepala_temuan" @if ($kepala_normal) disabled @endif></textarea>
-                                    @if (!$kepala_normal)
-                                        @error('kepala_temuan')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @endif
+                                        wire:model="kepala_temuan" :disabled="checked"></textarea>
+                                    <template x-if="!checked">
+                                        <span>
+                                            @error('kepala_temuan')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </span>
+                                    </template>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <div class="pemeriksaan-item">
+                                <div class="pemeriksaan-item" x-data="{
+                                    checked: @entangle('jantung_normal'),
+                                    init() {
+                                        this.$watch('checked', value => {
+                                            if (value) $wire.set('jantung_temuan', '');
+                                        })
+                                    }
+                                }" x-init="init">
                                     <h6>Thorax - Jantung</h6>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="jantung_normal"
-                                            wire:model.live="jantung_normal">
+                                            x-model="checked" wire:model="jantung_normal">
                                         <label class="form-check-label" for="jantung_normal">Dalam Batas
                                             Normal</label>
                                     </div>
                                     <textarea class="form-control" id="jantung_temuan" name="jantung_temuan" placeholder="Jelaskan temuan abnormal..."
-                                        wire:model="jantung_temuan" @if ($jantung_normal) disabled @endif></textarea>
-                                    @if (!$jantung_normal)
-                                        @error('jantung_temuan')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @endif
+                                        wire:model="jantung_temuan" :disabled="checked"></textarea>
+                                    <template x-if="!checked">
+                                        <span>
+                                            @error('jantung_temuan')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </span>
+                                    </template>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <div class="pemeriksaan-item">
+                                <div class="pemeriksaan-item" x-data="{
+                                    checked: @entangle('paru_normal'),
+                                    init() {
+                                        this.$watch('checked', value => {
+                                            if (value) $wire.set('paru_temuan', '');
+                                        })
+                                    }
+                                }" x-init="init">
                                     <h6>Thorax - Paru</h6>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="paru_normal"
-                                            wire:model.live="paru_normal">
-                                        <label class="form-check-label" for="paru_normal">Dalam Batas
-                                            Normal</label>
+                                            x-model="checked" wire:model="paru_normal">
+                                        <label class="form-check-label" for="paru_normal">Dalam Batas Normal</label>
                                     </div>
                                     <textarea class="form-control" id="paru_temuan" name="paru_temuan" placeholder="Jelaskan temuan abnormal..."
-                                        wire:model.live="paru_temuan" @if ($paru_normal) disabled @endif></textarea>
-                                    @if (!$paru_normal)
-                                        @error('paru_temuan')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @endif
+                                        wire:model="paru_temuan" :disabled="checked"></textarea>
+                                    <template x-if="!checked">
+                                        <span>
+                                            @error('paru_temuan')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </span>
+                                    </template>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <div class="pemeriksaan-item">
+                                <div class="pemeriksaan-item" x-data="{
+                                    checked: @entangle('abdomen_normal'),
+                                    init() {
+                                        this.$watch('checked', value => {
+                                            if (value) $wire.set('abdomen_temuan', '');
+                                        })
+                                    }
+                                }" x-init="init">
                                     <h6>Abdomen</h6>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="abdomen_normal"
-                                            wire:model.live="abdomen_normal">
+                                            x-model="checked" wire:model="abdomen_normal">
                                         <label class="form-check-label" for="abdomen_normal">Dalam Batas
                                             Normal</label>
                                     </div>
                                     <textarea class="form-control" id="abdomen_temuan" name="abdomen_temuan" placeholder="Jelaskan temuan abnormal..."
-                                        wire:model="abdomen_temuan" @if ($abdomen_normal) disabled @endif></textarea>
-                                    @if (!$abdomen_normal)
-                                        @error('abdomen_temuan')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @endif
+                                        wire:model="abdomen_temuan" :disabled="checked"></textarea>
+                                    <template x-if="!checked">
+                                        <span>
+                                            @error('abdomen_temuan')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </span>
+                                    </template>
                                 </div>
                             </div>
                             <div class="col-md-12 mb-3">
-                                <div class="pemeriksaan-item">
+                                <div class="pemeriksaan-item" x-data="{
+                                    checked: @entangle('ekstremitas_normal'),
+                                    init() {
+                                        this.$watch('checked', value => {
+                                            if (value) $wire.set('ekstremitas_temuan', '');
+                                        })
+                                    }
+                                }" x-init="init">
                                     <h6>Ekstremitas & Kulit</h6>
                                     <div class="form-check mb-2">
                                         <input class="form-check-input" type="checkbox" id="ekstremitas_normal"
-                                            wire:model.live="ekstremitas_normal">
+                                            x-model="checked" wire:model="ekstremitas_normal">
                                         <label class="form-check-label" for="ekstremitas_normal">Dalam Batas
                                             Normal</label>
                                     </div>
                                     <textarea class="form-control" id="ekstremitas_temuan" name="ekstremitas_temuan"
-                                        placeholder="Jelaskan temuan abnormal..." wire:model="ekstremitas_temuan"
-                                        @if ($ekstremitas_normal) disabled @endif></textarea>
-                                    @if (!$ekstremitas_normal)
-                                        @error('ekstremitas_temuan')
-                                            <span class="text-danger">{{ $message }}</span>
-                                        @enderror
-                                    @endif
+                                        placeholder="Jelaskan temuan abnormal..." wire:model="ekstremitas_temuan" :disabled="checked"></textarea>
+                                    <template x-if="!checked">
+                                        <span>
+                                            @error('ekstremitas_temuan')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </span>
+                                    </template>
                                 </div>
                             </div>
                         </div>
@@ -333,7 +373,7 @@
                         Simpan
                     </button>
                 @endrole
-                @if ($data->pemeriksaanAwal)
+                @if (isset($data->pemeriksaanAwal) && $data->pemeriksaanAwal->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/diagnosis/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
@@ -345,6 +385,7 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
+                <x-alert />
             </form>
         </div>
         <div class="tab-pane fade" id="default-tab-1" role="tabpanel" wire:ignore.self>
@@ -484,7 +525,7 @@
                         Simpan
                     </button>
                 @endrole
-                @if ($data->pemeriksaanAwal->count() > 0)
+                @if (isset($data->pemeriksaanAwal) && $data->pemeriksaanAwal->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/diagnosis/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
@@ -496,9 +537,8 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
+                <x-alert />
             </form>
         </div>
     </div>
-    <br>
-    <x-alert />
 </div>

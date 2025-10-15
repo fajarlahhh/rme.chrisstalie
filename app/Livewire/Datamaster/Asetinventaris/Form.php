@@ -12,9 +12,11 @@ use App\Models\JurnalDetail;
 use Illuminate\Support\Facades\DB;
 use App\Models\AsetPenyusutanGarisLurus;
 use App\Models\AsetPenyusutanUnitProduksi;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous, $dataKodeAkun = [], $dataKodeAkunSumberDana = [];
     public $nama;
     public $tanggal_perolehan;
@@ -31,7 +33,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'nama' => 'required',
             'tanggal_perolehan' => 'required|date',
             'harga_perolehan' => 'required|numeric',

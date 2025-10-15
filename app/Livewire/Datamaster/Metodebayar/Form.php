@@ -6,15 +6,17 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\MetodeBayar;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous, $dataKodeAkun = [];
     public $nama, $kode_akun_id;
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'nama' => 'required',
             'kode_akun_id' => 'required',
         ]);

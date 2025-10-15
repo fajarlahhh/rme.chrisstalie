@@ -335,13 +335,11 @@
                     wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
-                </button>
+                </button>                
+                <x-alert />
             </div>
         </form>
     </div>
-
-    <x-alert />
-
 </div>
 
 @push('scripts')

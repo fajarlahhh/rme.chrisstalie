@@ -7,9 +7,11 @@ use App\Models\Registrasi;
 use Illuminate\Support\Facades\DB;
 use App\Models\PemeriksaanAwal;
 use App\Models\Tug;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data;
     public $waktu_tes_detik;
     public $observasi = [];
@@ -98,7 +100,7 @@ class Form extends Component
             $rules["{$field}_temuan"] = "required_if:{$field}_normal,false";
         }
 
-        $validated = $this->validate($rules);
+        $this->validateWithCustomMessages($rules);
 
         DB::transaction(function () {
             // Delete existing records

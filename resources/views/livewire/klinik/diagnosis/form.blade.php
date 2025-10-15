@@ -1,4 +1,4 @@
-<div>
+<div x-data="diagnosisForm()" x-ref="alpineRoot">
     @section('title', 'Input Diagnosis')
 
     @section('breadcrumb')
@@ -10,7 +10,7 @@
     <h1 class="page-header">Diagnosis <small>Input</small></h1>
 
     <x-alert />
-    <form wire:submit.prevent="submit">
+    <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
         <div class="note alert-primary mb-2">
             <div class="note-content">
                 <h5>Data Pasien</h5>
@@ -52,47 +52,45 @@
                         </tr>
                     </thead>
                     <tbody>
-                        @foreach ($diagnosis as $index => $row)
+                        <template x-for="(row, index) in diagnosis" :key="index">
                             <tr>
-                                <th class="p-0">
-                                    <select data-container="body" class="form-control" x-init="$($el).selectpicker({
-                                        liveSearch: true,
-                                        width: 'auto',
-                                        size: 10,
-                                        container: 'body',
-                                        style: '',
-                                        showSubtext: true,
-                                        styleBase: 'form-control'
-                                    })"
-                                        wire:model="diagnosis.{{ $index }}.icd10" data-width="100%" required>
-                                        <option value="" selected hidden>-- Pilih ICD 10 --
-                                        </option>
-                                        @foreach ($dataIcd10 as $icd)
-                                            <option value="{{ $icd['id'] }}">
-                                                {{ $icd['id'] }} - {{ $icd['uraian'] }}
+                                <th class="p-0" wire:ignore>
+                                    <select class="form-control" x-model="row.icd10" x-init="$($el).select2({
+                                        width: '100%',
+                                        dropdownAutoWidth: true
+                                    });
+                                    $($el).on('change', function(e) {
+                                        row.icd10 = e.target.value;
+                                    });
+                                    $watch('row.icd10', (value) => {
+                                        if (value !== $($el).val()) {
+                                            $($el).val(value).trigger('change');
+                                        }
+                                    });">
+                                        <option value="" selected>-- Pilih ICD 10 --</option>
+                                        <template x-for="item in dataIcd10" :key="item.id">
+                                            <option :value="item.id" :selected="row.icd10 == item.id"
+                                                x-text="`${item.id} - ${item.uraian}`">
                                             </option>
-                                        @endforeach
+                                        </template>
                                     </select>
-                                    @error('diagnosis.{{ $index }}.icd10')
-                                        <span class="text-danger">{{ $message }}</span>
-                                    @enderror
                                 </th>
                                 <th class="align-middle w-5px pt-0 pb-0 pr-0">
-                                    @if ($index > 0)
+                                    <template x-if="index > 0">
                                         <button type="button" class="btn btn-danger btn-sm"
-                                            wire:click="hapusDiagnosis({{ $index }})"
-                                            wire:loading.attr="disabled">
-                                            <span wire:loading class="spinner-border spinner-border-sm"></span>
-                                            <span wire:loading.remove>x</span>
+                                            @click="diagnosis.splice(index, 1)">
+                                            <span x-show="$wire.__instance.loading"
+                                                class="spinner-border spinner-border-sm"></span>
+                                            <span x-show="!$wire.__instance.loading">x</span>
                                         </button>
-                                    @endif
+                                    </template>
                                 </th>
                             </tr>
-                        @endforeach
+                        </template>
                     </tbody>
                     <tr class="p-0">
                         <td colspan="3" class="p-0 pt-1 pb-0 pr-0">
-                            <button type="button" class="btn btn-primary btn-sm" wire:click="tambahDiagnosis"
+                            <button type="button" class="btn btn-primary btn-sm" @click="addDiagnosis"
                                 wire:loading.attr="disabled">
                                 <span wire:loading class="spinner-border spinner-border-sm"></span>
                                 Tambah ICD 10
@@ -120,7 +118,7 @@
                         Simpan
                     </button>
                 @endrole
-                @if ($data->diagnosis->count() > 0)
+                @if (isset($data->diagnosis) && $data->diagnosis->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
                         onclick="window.location.href='/klinik/tindakan/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
@@ -137,3 +135,41 @@
     </form>
     <x-alert />
 </div>
+
+@push('scripts')
+    <script>
+        function diagnosisForm() {
+            return {
+                diagnosis: @js($diagnosis).map(row => ({
+                    ...row
+                })),
+                dataIcd10: @js($dataIcd10),
+                diagnosis_banding: @js($diagnosis_banding),
+                rencana_pemeriksaan: @js($rencana_pemeriksaan),
+                rencana_terapi: @js($rencana_terapi),
+                fileDiupload: @js($fileDiupload),
+                addDiagnosis() {
+                    this.diagnosis.push({
+                        icd10: '',
+                    });
+                },
+                hapusDiagnosis(index) {
+                    this.diagnosis.splice(index, 1);
+                },
+                syncToLivewire() {
+                    // sinkronkan data ke livewire
+                    console.log(this.diagnosis);
+                    if (window.Livewire && window.Livewire.find) {
+                        let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
+                        if (componentId) {
+                            let $wire = window.Livewire.find(componentId);
+                            if ($wire && typeof $wire.set === 'function') {
+                                $wire.set('diagnosis', JSON.parse(JSON.stringify(this.diagnosis)), true);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+@endpush

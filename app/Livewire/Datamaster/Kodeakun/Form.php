@@ -5,9 +5,11 @@ namespace App\Livewire\Datamaster\Kodeakun;
 use App\Models\KodeAkun;
 use Livewire\Component;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data;
     public $previous;
     public $kode;
@@ -23,7 +25,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'kode' => 'required|unique:kode_akun,id,' . $this->data->id,
             'nama' => 'required',
             'kategori' => 'required',
