@@ -3,7 +3,7 @@
 namespace App\Livewire\Penjualan;
 
 use Livewire\Component;
-use App\Models\Penjualan;
+use App\Models\Pembayaran;
 use Livewire\Attributes\Url;
 use Illuminate\Support\Facades\DB;
 
@@ -20,7 +20,7 @@ class Data extends Component
 
     public function print($id)
     {
-        $data = Penjualan::with(['penjualanDetail.barang', 'penjualanDetail.barangSatuan'])->findOrFail($id);
+        $data = Pembayaran::with(['stokKeluar.barang', 'stokKeluar.barangSatuan'])->findOrFail($id);
         $cetak = view('livewire.penjualan.cetak', [
             'cetak' => true,
             'data' => $data,
@@ -31,8 +31,8 @@ class Data extends Component
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
-            $data = Penjualan::findOrFail($id);
-            $data->jurnal()->delete();
+            $data = Pembayaran::findOrFail($id);
+            $data->jurnalPenjualanBarangBebas()->delete();
             $data->delete();
             session()->flash('success', 'Berhasil menghapus data');
         });
@@ -40,7 +40,7 @@ class Data extends Component
 
     public function render()
     {
-        $query = Penjualan::with(['penjualanDetail.barang', 'penjualanDetail.barangSatuan', 'pengguna']);
+        $query = Pembayaran::with(['stokKeluar.barang', 'stokKeluar.barangSatuan', 'pengguna']);
 
         if ($this->tanggal1) {
             $query->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]);

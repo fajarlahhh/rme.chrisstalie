@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 
 class Pembayaran extends Model
 {
@@ -21,5 +22,20 @@ class Pembayaran extends Model
     public function penjualan(): BelongsTo
     {
         return $this->belongsTo(Penjualan::class);
+    }
+
+    public function pengguna(): BelongsTo
+    {
+        return $this->belongsTo(Pengguna::class);
+    }
+
+    public function stokKeluar(): HasMany
+    {
+        return $this->hasMany(StokKeluar::class);
+    }
+
+    public function jurnalPenjualanBarangBebas(): HasMany
+    {
+        return $this->hasMany(Jurnal::class, 'referensi_id')->where('jenis', 'Penjualan Barang Bebas');
     }
 }

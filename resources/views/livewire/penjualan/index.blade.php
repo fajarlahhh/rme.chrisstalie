@@ -7,8 +7,6 @@
 
     <h1 class="page-header">Penjualan</h1>
 
-    <x-alert />
-
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading ui-sortable-handle">
             <h4 class="panel-title">Form</h4>
@@ -31,7 +29,7 @@
                                     <th>Barang</th>
                                     <th class="w-150px">Harga</th>
                                     <th class="w-100px">Qty</th>
-                                    <th class="w-150px">Sub Total</th>
+                                    <th class="w-150px">Subtotal</th>
                                     <th class="w-5px"></th>
                                 </tr>
                             </thead>
@@ -52,11 +50,10 @@
                                                     $($el).val(value).trigger('change');
                                                 }
                                             });">
-                                                <option value="" selected>-- Pilih Barang --
-                                                </option>
-                                                <template x-for="barang in dataBarang" :key="barang.id">
-                                                    <option :value="barang.id" :selected="row.id == barang.id"
-                                                        x-text="`${barang.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(barang.harga)} / ${barang.satuan})`">
+                                                <option value="" selected>-- Pilih Barang --</option>
+                                                <template x-for="item in dataBarang" :key="item.id">
+                                                    <option :value="item.id" :selected="row.id == item.id"
+                                                        x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.harga)} / ${item.satuan})`">
                                                     </option>
                                                 </template>
                                             </select>
@@ -93,7 +90,7 @@
                                 <tr>
                                     <td colspan="5">
                                         <div class="text-center">
-                                            <button type="button" class="btn btn-secondary" @click="addBarang">
+                                            <button type="button" class="btn btn-secondary " @click="addBarang">
                                                 Tambah Barang
                                             </button>
                                             <br>
@@ -129,7 +126,8 @@
                                 data-width="100%">
                                 <option hidden>-- Pilih Metode Bayar --</option>
                                 <template x-for="item in dataMetodeBayar" :key="item.id">
-                                    <option :value="item.id" x-text="item.nama" :selected="metode_bayar == item.id"></option>
+                                    <option :value="item.id" x-text="item.nama"
+                                        :selected="metode_bayar == item.id"></option>
                                 </template>
                             </select>
                         </div>
@@ -145,8 +143,14 @@
                                     <input class="form-control text-end" type="text" disabled
                                         :value="formatNumber((parseInt(cash || 0)) - (total_tagihan || 0))" />
                                 </div>
+
                             </div>
                         </template>
+                        <div class="mb-3">
+                            <label class="form-label">Keterangan Pembayaran</label>
+                            <input class="form-control" type="text" wire:model="keterangan_pembayaran"
+                                x-model.number="keterangan_pembayaran" />
+                        </div>
                     </div>
                 </div>
             </div>
@@ -158,6 +162,7 @@
                     </button>
                 @endrole
                 <a href="/penjualan/data" class="btn btn-warning">Data</a>
+                <x-alert />
             </div>
         </form>
     </div>
@@ -179,6 +184,7 @@
                 cash: @js($cash),
                 keterangan: @js($keterangan),
                 metode_bayar: @js($metode_bayar),
+                keterangan_pembayaran: @js($keterangan_pembayaran),
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
                     return (val).toString().replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -208,24 +214,25 @@
                 },
                 updateBarang(index) {
                     let row = this.barang[index];
-                    let selectedBarang = this.dataBarang.find(g => g.id == row.id);
-                    if (selectedBarang) {
-                        row.harga = selectedBarang.harga;
-                        row.kode_akun_id = selectedBarang.kode_akun_id;
-                        row.kode_akun_penjualan_id = selectedBarang.kode_akun_penjualan_id;
+                    let selected = this.dataBarang.find(b => b.id == row.id);
+                    if (selected) {
+                        row.harga = selected.harga;
+                        row.kode_akun_id = selected.kode_akun_id;
+                        row.kode_akun_penjualan_id = selected.kode_akun_penjualan_id;
                     } else {
                         row.harga = 0;
+                        row.kode_akun_id = '';
+                        row.kode_akun_penjualan_id = '';
                     }
                     this.calculateBarang(index);
                 },
                 calculateBarang(index) {
                     let row = this.barang[index];
-                    row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.harga) || 0) || 0;
-                    this.total_harga_barang = this.barang.reduce((total, row) => total + (parseFloat(row.subtotal) || 0),
-                        0);
+                    row.subtotal = (parseFloat(row.qty) || 0) * (parseFloat(row.harga) || 0);
                     this.hitungTotal();
                 },
                 syncToLivewire() {
+                    // sinkronkan data ke livewire
                     if (window.Livewire && window.Livewire.find) {
                         let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
                         if (componentId) {
@@ -237,16 +244,13 @@
                                 $wire.set('cash', this.cash, true);
                                 $wire.set('metode_bayar', this.metode_bayar, true);
                                 $wire.set('total_tagihan', this.total_tagihan, true);
-                                $wire.set('kode_akun_id', this.kode_akun_id, true);
-                                $wire.set('kode_akun_penjualan_id', this.kode_akun_penjualan_id, true);
                             }
                         }
                     }
-                    this.hitungTotal();
                 },
                 init() {
                     this.hitungTotal();
-
+                    // perhatikan perubahan barang, update total jika perlu
                     this.$watch('barang', () => {
                         this.hitungTotal();
                     }, {

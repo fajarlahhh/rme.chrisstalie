@@ -7,9 +7,11 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous, $dataKodeAkun = [], $dataKodeAkunPenjualan = [];
     public $nama;
     public $satuan;
@@ -40,13 +42,21 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'kode_akun_id' => 'required',
             'kode_akun_penjualan_id' => 'required',
             'satuan' => 'required',
-            'harga' => 'required',
+            'harga' => 'required|numeric',
             'nama' => 'required',
             'unit_bisnis' => 'required',
+        ], [
+            'kode_akun_id.required' => 'Kode akun pembelian wajib dipilih.',
+            'kode_akun_penjualan_id.required' => 'Kode akun penjualan wajib dipilih.',
+            'satuan.required' => 'Satuan barang wajib diisi.',
+            'harga.required' => 'Harga barang wajib diisi.',
+            'harga.numeric' => 'Harga barang harus berupa angka.',
+            'nama.required' => 'Nama barang wajib diisi.',
+            'unit_bisnis.required' => 'Unit bisnis wajib dipilih.',
         ]);
 
         DB::transaction(function () {

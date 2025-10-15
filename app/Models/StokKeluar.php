@@ -24,4 +24,14 @@ class StokKeluar extends Model
     {
         return $this->belongsTo(Pengguna::class);
     }
+    
+    public function pembayaran(): BelongsTo
+    {
+        return $this->belongsTo(Pembayaran::class);
+    }
+
+    public function barangSatuan(): BelongsTo
+    {
+        return $this->belongsTo(BarangSatuan::class);
+    }
 }

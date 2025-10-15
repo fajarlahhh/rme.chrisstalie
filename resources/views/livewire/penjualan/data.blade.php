@@ -27,12 +27,13 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>ID</th>
-                        <th>Tanggal</th>
+                        <th>Waktu Bayar</th>
                         <th>Keterangan</th>
                         <th>Barang</th>
                         <th class="text-end">Total Harga Barang</th>
                         <th class="text-end">Diskon</th>
                         <th class="text-end">Total Tagihan</th>
+                        <th>Pembayaran</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -45,7 +46,7 @@
                             <td>{{ $row->keterangan }}</td>
                             <td>
                                 <ul class="mb-0 ps-3">
-                                    @foreach ($row->penjualanDetail as $subRow)
+                                    @foreach ($row->stokKeluar as $subRow)
                                         <li>
                                             {{ $subRow->barang->nama ?? '-' }} ({{ $subRow->qty }}
                                             {{ $subRow->barangSatuan->nama }} x {{ number_format($subRow->harga, 2) }})
@@ -61,6 +62,13 @@
                             </td>
                             <td class="text-end">
                                 {{ number_format($row->total_tagihan, 2) }}
+                            </td>
+                            <td>
+                                <ul>
+                                    <li>Metode Bayar: {{ $row->metode_bayar }}</li>
+                                    <li>Keterangan Pembayaran: {{ $row->keterangan_pembayaran }}</li>
+                                    <li>Kasir: {{ $row->pengguna->nama }}</li>
+                                </ul>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator')
@@ -92,6 +100,7 @@
                                 {{ number_format($data->sum('total_tagihan'), 2) }}
                             </strong>
                         </td>
+                        <td></td>
                         <td></td>
                     </tr>
                 </tbody>

@@ -16,7 +16,7 @@
 </table>
 <hr>
 <table class="table table-borderless fs-11px">
-    @foreach ($data->penjualanDetail as $detail)
+    @foreach ($data->stokKeluar as $detail)
         <tr>
             <th class="p-0">Barang<br><br></th>
             <th class="p-0 text-end">Qty<br><br></th>

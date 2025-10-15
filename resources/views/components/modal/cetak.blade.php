@@ -20,7 +20,6 @@
     @push('scripts')
         @if (Session::has('cetak'))
             <script>
-                console.log('tes')
                 document.addEventListener('livewire:initialized', () => {
                     setTimeout(() => {
                         $('#modal-cetak').modal('show')
