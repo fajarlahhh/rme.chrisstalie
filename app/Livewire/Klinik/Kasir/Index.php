@@ -3,10 +3,10 @@
 namespace App\Livewire\Klinik\Kasir;
 
 use Livewire\Component;
-use App\Models\Penjualan;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\Registrasi;
+use App\Models\Pembayaran;
 
 class Index extends Component
 {
@@ -22,7 +22,17 @@ class Index extends Component
 
     public function delete($id)
     {
-        Penjualan::where('id', $id)->delete();
+        Registrasi::findOrFail($id)->pembayaran->delete();
+    }
+
+    public function print($id)
+    {
+        $data = Registrasi::findOrFail($id);
+        $cetak = view('livewire.klinik.kasir.cetak', [
+            'cetak' => true,
+            'data' => $data,
+        ])->render();
+        session()->flash('cetak', $cetak);
     }
 
     public function render()

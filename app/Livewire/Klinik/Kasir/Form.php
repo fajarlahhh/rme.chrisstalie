@@ -4,12 +4,14 @@ namespace App\Livewire\Klinik\Kasir;
 
 use App\Models\Nakes;
 use Livewire\Component;
+use App\Models\Tindakan;
+use App\Models\ResepObat;
+use App\Class\BarangClass;
 use App\Models\Pembayaran;
 use App\Models\Registrasi;
 use App\Models\MetodeBayar;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
-use App\Class\BarangClass;
+use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -19,11 +21,14 @@ class Form extends Component
     public $data;
     public $tindakan = [], $dataTindakan = [], $dataNakes = [], $resep = [], $dataMetodeBayar = [];
     public $metode_bayar = 1, $cash = 0, $keterangan, $dataBarang = [];
-    public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0;
+    public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0;
 
     public function mount(Registrasi $data)
     {
         $this->data = $data;
+        if ($data->pembayaran_id) {
+            abort(404);
+        }
         $this->dataBarang = BarangClass::getBarang('apotek');
 
         $this->dataMetodeBayar = MetodeBayar::orderBy('nama')->get(['id', 'nama'])->toArray();
@@ -56,6 +61,8 @@ class Form extends Component
                     'barang' => $group->map(function ($r) {
                         return [
                             'id' => $r->barang_satuan_id,
+                            'nama' => collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id)['nama'],
+                            'satuan' => collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id)['satuan'],
                             'harga' => $r->harga,
                             'qty' => $r->qty,
                             'subtotal' => $r->harga * $r->qty,
@@ -72,30 +79,78 @@ class Form extends Component
             'cash' => $this->metode_bayar == 1 ? 'required|numeric|min:' . $this->total_tagihan : 'nullable',
             'keterangan_pembayaran' => $this->metode_bayar != 1 ? 'required|string|max:1000' : 'nullable',
             'tindakan.*.dokter_id' => 'required|exists:nakes,id',
-            'tindakan.*.perawat_id' => 'required|exists:nakes,id',
             'resep.*.barang.*.id' => 'required',
-            'resep.*.barang.*.qty' => 'required',
+            // 'resep.*.barang.*.qty' => [
+            //     'required',
+            //     'numeric',
+            //     'min:1',
+            //     function ($attribute, $value, $fail) {
+            //         $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
+            //         $resepIndex = $parts[1] ?? null;
+            //         $barangIndex = $parts[3] ?? null;
+
+            //         if (
+            //             !is_numeric($resepIndex) ||
+            //             !isset($this->resep[$resepIndex]['barang'][$barangIndex])
+            //         ) {
+            //             return;
+            //         }
+            //         $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
+
+            //         $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
+            //         if (!$barang) return;
+
+            //         $stokTersedia = \App\Models\Stok::where('barang_id', $barang['id'])
+            //             ->available()
+            //             ->count();
+
+            //         $rasio = $barang['rasio_dari_terkecil'] ?? 1;
+            //         if (($value / $rasio) > $stokTersedia) {
+            //             $stokAvailable = $stokTersedia * $rasio;
+            //             $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
+            //         }
+            //     }
+            // ],
         ]);
         DB::transaction(function () {
-            $registrasi = $this->data;
-            $id = (string) Str::uuid();
+            $dataTerakhir = Pembayaran::where('created_at', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
 
+            $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
+
+            if ($dataTerakhir) {
+                $id = $dataTerakhir->id + 1;
+            } else {
+                $id = date('Ym') . '00001';
+            }
             $pembayaran = new Pembayaran();
             $pembayaran->id = $id;
-            $pembayaran->jumlah = $total_jumlah;
-            $pembayaran->registrasi_id = $registrasi->id; // asumsikan foreign key
-            $pembayaran->metode = $this->metode_bayar;
-            $pembayaran->keterangan_pembayaran = $this->keterangan_pembayaran;
+            $pembayaran->keterangan = $this->keterangan_pembayaran;
+            $pembayaran->metode_bayar = $metodeBayar->nama;
+            $pembayaran->bayar = $metodeBayar->nama == 'Cash' ? $this->cash : ($this->total_tagihan);
+            $pembayaran->total_resep = $this->total_resep;
+            $pembayaran->total_tindakan = $this->total_tindakan;
+            $pembayaran->diskon = $this->diskon;
+            $pembayaran->total_tagihan = $this->total_tagihan;
+            $pembayaran->pengguna_id = auth()->id();
             $pembayaran->save();
 
-            // Ambil metode bayar aktif, gunakan eager query
-            $metodeBayar = collect($this->dataMetodeBayar)->firstWhere('id', $this->metode_bayar);
+            foreach ($this->tindakan as $tindakan) {
+                Tindakan::where('tarif_tindakan_id', $tindakan['id'])->update(['diskon' => $tindakan['diskon']]);
+            }
 
-            // Jurnal pendapatan, lempar objek registrasi & metode bayar
-            $this->jurnalPendapatan($registrasi, $metodeBayar);
+            Registrasi::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
+            Tindakan::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
+            ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
+            
+            $data = Registrasi::findOrFail($this->data->id);
+            $cetak = view('livewire.klinik.kasir.cetak', [
+                'cetak' => true,
+                'data' => $data,
+            ])->render();
+            session()->flash('cetak', $cetak);
+            session()->flash('success', 'Berhasil menyimpan data');
         });
 
-        session()->flash('success', 'Berhasil menyimpan data');
         return redirect()->to('/klinik/kasir'); // pengalihan lebih eksplisit
     }
 

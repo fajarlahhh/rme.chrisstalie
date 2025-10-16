@@ -58,8 +58,6 @@ class Index extends Component
                 //     }
                 // ],
             ],
-            $this->getValidationMessages(),
-            $this->getValidationAttributes()
         );
 
         DB::transaction(function () {
@@ -178,40 +176,4 @@ class Index extends Component
         return view('livewire.penjualan.index');
     }
 
-    /**
-     * Custom validation messages berbahasa Indonesia
-     */
-    protected function getValidationMessages()
-    {
-        return [
-            'metode_bayar.required' => 'Metode pembayaran wajib dipilih.',
-            'cash.required' => 'Jumlah uang tunai wajib diisi.',
-            'cash.numeric' => 'Jumlah uang tunai harus berupa angka.',
-            'cash.min' => 'Jumlah uang tunai minimal Rp ' . number_format($this->total_tagihan, 0, ',', '.') . '.',
-            'barang.required' => 'Tidak ada barang yang dipilih.',
-            'barang.array' => 'Format data barang tidak valid.',
-            'barang.*.id.required' => 'ID barang wajib diisi.',
-            'barang.*.id.distinct' => 'Terdapat barang yang duplikat dalam daftar.',
-            'barang.*.harga.required' => 'Harga barang wajib diisi.',
-            'barang.*.harga.numeric' => 'Harga barang harus berupa angka.',
-            'barang.*.qty.required' => 'Jumlah barang wajib diisi.',
-            'barang.*.qty.numeric' => 'Jumlah barang harus berupa angka.',
-            'barang.*.qty.min' => 'Jumlah barang minimal 1.',
-        ];
-    }
-
-    /**
-     * Custom validation attributes berbahasa Indonesia
-     */
-    protected function getValidationAttributes()
-    {
-        return [
-            'metode_bayar' => 'metode pembayaran',
-            'cash' => 'uang tunai',
-            'barang' => 'daftar barang',
-            'barang.*.id' => 'ID barang',
-            'barang.*.harga' => 'harga barang',
-            'barang.*.qty' => 'jumlah barang',
-        ];
-    }
 }

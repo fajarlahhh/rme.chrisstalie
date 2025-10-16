@@ -89,6 +89,10 @@
                                             :print="true" :permanentDelete="false" :restore="false" :delete="false" />
                                     @endif
                                 @endrole
+                                @role('operator')
+                                    <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                        :print="true" :permanentDelete="false" :restore="false" :delete="false" />
+                                @endrole
                             </td>
                         </tr>
                     @empty

@@ -1,0 +1,99 @@
+<div class="text-center">
+    <img src="/assets/img/login.png" class="w-200px">
+</div>
+<br>
+<br>
+<table class="table table-borderless fs-11px">
+    <tr>
+        <td class="text-nowrap w-50px p-0">Kasir</td>
+        <td class="p-0">:
+            {{ $data->pembayaran->pengguna->pegawai ? $data->pembayaran->pengguna->pegawai->nama : $data->pembayaran->pengguna->nama }}
+        </td>
+        <td class="p-0 text-end">No. {{ $data->id }}</td>
+    </tr>
+    <tr>
+        <td class="text-nowrap p-0">Tanggal</td>
+        <td class="p-0" colspan="2">: {{ $data->pembayaran->created_at }}</td>
+    </tr>
+</table>
+<hr>
+<table class="table table-borderless fs-11px">
+    <tr>
+        <th class="p-0">Item<br><br></th>
+        <th class="p-0 text-end">Qty<br><br></th>
+        <th class="p-0 text-end">Diskon<br><br></th>
+        <th class="p-0 text-end">Total<br><br></th>
+    </tr>
+    @foreach ($data->tindakan as $tindakan)
+        <tr>
+            <td class="p-0">
+                {{ $tindakan->tarifTindakan->nama }}<br>
+                x {{ $tindakan->qty }}
+            </td>
+            <td class="p-0 ps-2 text-end text-nowrap w-100px">
+                {{ number_format($tindakan->biaya) }}<br>
+
+            </td>
+            <td class="p-0 text-end">
+                {{ number_format($tindakan->diskon) }}
+            </td>
+            <td class="p-0 text-end">
+                {{ number_format($tindakan->biaya * $tindakan->qty - $tindakan->diskon) }}
+            </td>
+        </tr>
+    @endforeach
+    @foreach ($data->resepObat->groupBy('resep') as $resep)
+        <tr>
+            <td class="p-0">
+                {{ $resep->first()->nama }}<br>
+                x 1
+            </td>
+            <td class="p-0 ps-2 text-end text-nowrap w-100px">
+                {{ number_format($resep->sum('harga')) }}<br>
+            </td>
+            <td class="p-0 text-end">
+                0
+            </td>
+            <td class="p-0 text-end">
+                {{ number_format($resep->sum(function ($q) {return $q->harga * $q->qty;})) }}
+            </td>
+        </tr>
+    @endforeach
+</table>
+<hr>
+<table class="table table-borderless fs-11px">
+    <tr>
+        <td class="p-0">Total Tindakan</td>
+        <td class="p-0 text-end">Rp. {{ number_format($data->pembayaran->total_tindakan + $data->pembayaran->diskon) }}
+        </td>
+    </tr>
+    <tr>
+        <td class="p-0">Total Resep</td>
+        <td class="p-0 text-end">Rp. {{ number_format($data->pembayaran->total_resep) }}</td>
+    </tr>
+    <tr>
+        <td class="p-0">Diskon</td>
+        <td class="p-0 text-end">Rp. {{ number_format($data->pembayaran->diskon) }}</td>
+    </tr>
+    <tr>
+        <th class="p-0">Total</th>
+        <th class="p-0 text-end">Rp.
+            {{ number_format($data->pembayaran->total_tagihan) }}
+        </th>
+    </tr>
+    <tr>
+        <td class="p-0">Metode Bayar</td>
+        <td class="p-0 text-end">{{ $data->pembayaran->metode_bayar }}</td>
+    </tr>
+    <tr>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <tr>
+        <td colspan="2" class="text-center">
+            <h3>TERIMA KASIH</h3>
+        </td>
+    </tr>
+</table>
+<br>
+<br>

@@ -16,12 +16,12 @@
 </table>
 <hr>
 <table class="table table-borderless fs-11px">
+    <tr>
+        <th class="p-0">Barang<br><br></th>
+        <th class="p-0 text-end">Qty<br><br></th>
+        <th class="p-0 text-end">Harga<br><br></th>
+    </tr>
     @foreach ($data->stokKeluar as $detail)
-        <tr>
-            <th class="p-0">Barang<br><br></th>
-            <th class="p-0 text-end">Qty<br><br></th>
-            <th class="p-0 text-end">Harga<br><br></th>
-        </tr>
         <tr>
             <td class="p-0">
                 {{ $detail->barang->nama }}<br>

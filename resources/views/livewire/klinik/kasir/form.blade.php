@@ -24,8 +24,10 @@
                             <th>No.</th>
                             <th>Jenis</th>
                             <th>Item</th>
+                            <th>Qty</th>
                             <th class=" w-150px">Diskon <small class="text-muted">(Rp.)</small></th>
                             <th class="bg-info-subtle text-end">Sub Total</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -34,14 +36,10 @@
                                 <td x-text="index + 1"></td>
                                 <td>Tindakan</td>
                                 <td>
-                                    <span x-text="row.nama"></span> <br>
-                                    <b>
-                                        <small class="text-muted">&nbsp;&nbsp;&nbsp;- Rp.
-                                            <span x-text="new Intl.NumberFormat('id-ID').format(row.biaya)"></span> x
-                                            <span x-text="row.qty"></span>
-                                        </small>
-                                    </b><br>
-                                    &nbsp;&nbsp;&nbsp;- Catatan : <span x-text="row.catatan"></span>
+                                    <span x-text="row.nama"></span>
+                                    <br>
+                                    &nbsp;&nbsp;&nbsp;- Biaya : <span
+                                        x-text="new Intl.NumberFormat('id-ID').format(row.biaya)"></span>
                                     <br>
                                     &nbsp;&nbsp;&nbsp;- Dokter : <span
                                         x-text="row.dokter_id ? dataNakes.find(n => n.id == row.dokter_id)?.nama : 'Tidak Ada Dokter'"></span>
@@ -71,8 +69,14 @@
                                                 </template>
                                             </select>
                                         </div>
+                                    </div>
+                                    &nbsp;&nbsp;&nbsp;<small>Catatan : <span x-text="row.catatan"></span></small>
+                                    <br>
                                 </td>
-                                <td class="align-middle">
+                                <td class="w-100px">
+                                    <input type="number" class="form-control" x-model.number="row.qty" disabled>
+                                </td>
+                                <td>
                                     <input type="number" class="form-control" @keyup="hitungTotalTagihan()"
                                         x-model.number="row.diskon">
                                 </td>
@@ -80,64 +84,45 @@
                                     <span
                                         x-text="new Intl.NumberFormat('id-ID').format(row.biaya * row.qty - row.diskon)"></span>
                                 </th>
+                                <th></th>
                             </tr>
                         </template>
                         <tr class="bg-light">
-                            <th colspan="4" class="text-end">
+                            <th colspan="5">
                                 BIAYA TINDAKAN
                             </th>
-                            <th class="bg-info-subtle text-end">
+                            <th class=" text-end">
                                 <span x-text="new Intl.NumberFormat('id-ID').format(total_tindakan)"></span>
                             </th>
+                            <th></th>
                         </tr>
                         <template x-for="(row, index) in resep" :key="`resep-${index}`">
                             <tr>
                                 <td x-text="tindakan.length + index + 1"></td>
-                                <td>Resep Obat <span x-text="row.resep"></span><br>&nbsp;&nbsp;&nbsp;<small
-                                        class="text-muted" x-text="row.nama"></small></td>
-                                <td>
-                                    <div class="border bg-white rounded">
-                                        <table class="table bg-white mb-0">
-                                            <template x-for="(barang, barangIndex) in row.barang"
-                                                :key="barangIndex">
-                                                <tr>
-                                                    <td>
-                                                        <select class="form-control" x-model="barang.id"
-                                                            x-init="$($el).select2({
-                                                                width: 'auto',
-                                                                dropdownAutoWidth: true
-                                                            });
-                                                            $($el).on('change', function(e) {
-                                                                barang.id = e.target.value;
-                                                                updateBarang(resepIndex, barangIndex);
-                                                            });
-                                                            $watch('barang.id', (value) => {
-                                                                if (value !== $($el).val()) {
-                                                                    $($el).val(value).trigger('change');
-                                                                }
-                                                            });">
-                                                            <option value="" selected>-- Tidak Ada Barang --
-                                                            </option>
-                                                            <template x-for="item in dataBarang" :key="item.id">
-                                                                <option :value="item.id"
-                                                                    :selected="barang.id == item.id"
-                                                                    x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.harga)} / ${item.satuan})`">
-                                                                </option>
-                                                            </template>
-                                                        </select>
-                                                    </td>
-                                                    <td class="w-100px pe-2">
-                                                        <input type="number" class="form-control" min="0"
-                                                            placeholder="Qty" step="1"
-                                                            @keyup="hitungTotalTagihan()" x-model.number="barang.qty"
-                                                            autocomplete="off">
-                                                    </td>
-                                                </tr>
-                                            </template>
-                                        </table>
-                                        <small class="text-muted">&nbsp;&nbsp;&nbsp;Catatan : <span
-                                                x-text="row.catatan"></span></small>
-                                    </div>
+                                <td>Resep Obat <span x-text="row.resep"></span><br>&nbsp;&nbsp;&nbsp;<span
+                                        class="text-muted" x-text="row.nama"></span>
+                                    <br>
+                                    <small class="text-muted">&nbsp;&nbsp;&nbsp;Catatan : <span
+                                            x-text="row.catatan"></span></small>
+                                </td>
+                                <td class="text-nowrap" colspan="2">
+                                    <table class="table mb-0 table-bordered">
+                                        <template x-for="(barang, barangIndex) in row.barang" :key="barangIndex">
+                                            <tr>
+                                                <td>
+                                                    <span x-text="row.barang[barangIndex].nama"></span>
+                                                    <br>
+                                                    &nbsp;&nbsp;&nbsp; -<small
+                                                        x-text="row.barang[barangIndex].satuan"></small>
+                                                </td>
+                                                <td class="w-90px">
+                                                    <input type="number" class="form-control" min="0"
+                                                        placeholder="Qty" step="1" @keyup="hitungTotalTagihan()"
+                                                        x-model.number="barang.qty" autocomplete="off">
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </table>
                                 </td>
                                 <td class="align-middle">
                                     &nbsp;
@@ -146,23 +131,37 @@
                                     <span
                                         x-text="new Intl.NumberFormat('id-ID').format(row.barang.reduce((sum, b) => sum + (b.harga * b.qty), 0))"></span>
                                 </th>
+                                <td class="align-middle w-10px">
+                                    <button type="button" class="btn btn-danger btn-sm" @click="hapusResep(index)">
+                                        X
+                                    </button>
+                                </td>
                             </tr>
                         </template>
                         <tr class="bg-light">
-                            <th colspan="4" class="text-end">
+                            <th colspan="5">
                                 BIAYA RESEP
                             </th>
-                            <th class="bg-info-subtle text-end">
+                            <th class="text-end">
                                 <span x-text="new Intl.NumberFormat('id-ID').format(total_resep)"></span>
                             </th>
+                            <th></th>
                         </tr>
                     </tbody>
                     <tfoot>
                         <tr class="bg-light">
-                            <th colspan="4" class="text-end">TOTAL TAGIHAN</th>
-                            <th class="bg-info-subtle text-end">
+                            <th colspan="5">TOTAL TAGIHAN</th>
+                            <th class=" text-end">
                                 <span x-text="new Intl.NumberFormat('id-ID').format(total_tagihan)"></span>
                             </th>
+                            <th></th>
+                        </tr>
+                        <tr class="bg-red-100">
+                            <th colspan="5">TOTAL DISKON</th>
+                            <th class="text-end">
+                                <span x-text="new Intl.NumberFormat('id-ID').format(diskon)"></span>
+                            </th>
+                            <th></th>
                         </tr>
                     </tfoot>
                 </table>
@@ -233,9 +232,10 @@
                 dataBarang: @js($dataBarang),
                 metode_bayar: @js($metode_bayar),
                 cash: @js($cash),
-                total_tagihan: 0,
-                total_tindakan: 0,
-                total_resep: 0,
+                diskon: @js($diskon),
+                total_tagihan: @js($total_tagihan),
+                total_tindakan: @js($total_tindakan),
+                total_resep: @js($total_resep),
                 keterangan_pembayaran: @js($keterangan_pembayaran),
                 formatNumber(val) {
                     if (val === null || val === undefined || isNaN(val)) return '0';
@@ -252,6 +252,14 @@
                     }, 0);
 
                     this.total_tagihan = this.total_tindakan + this.total_resep;
+                    this.diskon = this.tindakan.reduce((sum, row) => {
+                        return sum + row.diskon;
+                    }, 0);
+                },
+
+                hapusResep(index) {
+                    this.resep.splice(index, 1);
+                    this.hitungTotalTagihan();
                 },
 
                 syncToLivewire() {
@@ -264,6 +272,7 @@
                                 $wire.set('tindakan', JSON.parse(JSON.stringify(this.tindakan)), false);
                                 $wire.set('resep', JSON.parse(JSON.stringify(this.resep)), false);
                                 $wire.set('total_tindakan', this.total_tindakan, false);
+                                $wire.set('diskon', this.diskon, false);
                                 $wire.set('total_resep', this.total_resep, false);
                                 $wire.set('total_tagihan', this.total_tagihan, false);
                                 $wire.set('metode_bayar', this.metode_bayar, false);

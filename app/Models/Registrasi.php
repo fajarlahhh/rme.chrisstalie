@@ -62,9 +62,9 @@ class Registrasi extends Model
         return $this->hasMany(SiteMarking::class, 'id');
     }
 
-    public function pembayaran(): HasOne
+    public function pembayaran(): BelongsTo
     {
-        return $this->hasOne(Pembayaran::class, 'id');
+        return $this->belongsTo(Pembayaran::class);
     }
 
     public function informedConsent(): HasOne

@@ -75,15 +75,25 @@
                                                 $row->pembayaran->updated_at .
                                                 '</a>';
                                         @endphp
-                                        @if ($row->pembayaran)
-                                            <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="false" :information="false" :print="false" :permanentDelete="false"
-                                                :restore="false" :delete="false" />
-                                        @else
-                                            <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="true" :information="false" :print="false" :permanentDelete="false" :restore="false"
-                                                :delete="true" />
-                                        @endif
+                                        @role('administrator')
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="true" :permanentDelete="false" :restore="false" :delete="true" />
+                                        @endrole
+                                        @role('supervisor')
+                                            @if (substr($row->created_at, 0, 10) == date('Y-m-d'))
+                                                <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                    :print="true" :permanentDelete="false" :restore="false"
+                                                    :delete="true" />
+                                            @else
+                                                <x-action :row="$row" custom="" :detail="false"
+                                                    :edit="false" :print="true" :permanentDelete="false" :restore="false"
+                                                    :delete="false" />
+                                            @endif
+                                        @endrole
+                                        @role('operator')
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="true" :permanentDelete="false" :restore="false" :delete="false" />
+                                        @endrole
                                     @endif
                                 @endrole
                             </td>
@@ -97,4 +107,5 @@
         </div>
     </div>
     <x-alert />
+    <x-modal.cetak judul='Nota' />
 </div>
