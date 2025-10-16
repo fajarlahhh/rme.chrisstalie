@@ -144,7 +144,7 @@ class Form extends Component
         $this->previous = url()->previous();
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '15100')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->whereIn('parent_id', ['15100', '20000'])->get()->toArray();
         $this->dataKodeAkunSumberDana = KodeAkun::detail()->where('parent_id', '11100')->get()->toArray();
     }
 
