@@ -44,7 +44,9 @@ class Index extends Component
     {
         return view('livewire.datamaster.asetinventaris.index', [
             'data' => Aset::with([
-                'pengguna'
+                'pengguna', 
+                'kodeAkun',
+                'kodeAkunSumberDana'
             ])
                 ->when($this->kode_akun_id, function ($q) {
                     $q->where('kode_akun_id', $this->kode_akun_id);

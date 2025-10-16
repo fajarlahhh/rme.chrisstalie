@@ -18,7 +18,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.pasien.index', [
-            'data' => Pasien::where(fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%')->orWhere('id', 'like', '%' . $this->cari . '%'))
+            'data' => Pasien::with('pengguna')->where(fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%')->orWhere('id', 'like', '%' . $this->cari . '%'))
                 ->orderBy('id')->paginate(10)
         ]);
     }

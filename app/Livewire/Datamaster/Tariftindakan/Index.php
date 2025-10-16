@@ -36,7 +36,7 @@ class Index extends Component
         return view('livewire.datamaster.tariftindakan.index', [
             'data' => TarifTindakan::with([
                 'pengguna',
-                
+                'kodeAkun',
                 'tarifTindakanAlatBarang',
             ])
                 ->when($this->kode_akun_id, function($q) {

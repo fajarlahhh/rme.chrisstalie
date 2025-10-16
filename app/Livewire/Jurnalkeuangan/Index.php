@@ -32,7 +32,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.jurnalkeuangan.index', [
-            'data' => Jurnal::with(['jurnalDetail.kodeAkun'])
+            'data' => Jurnal::with(['jurnalDetail.kodeAkun','pengguna'])
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
