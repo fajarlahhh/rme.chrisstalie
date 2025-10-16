@@ -14,11 +14,6 @@ class Pembayaran extends Model
     public $incrementing = false;
     protected $keyType = 'string';
 
-    public function registrasi(): BelongsTo
-    {
-        return $this->belongsTo(Registrasi::class);
-    }
-
     public function penjualan(): BelongsTo
     {
         return $this->belongsTo(Penjualan::class);

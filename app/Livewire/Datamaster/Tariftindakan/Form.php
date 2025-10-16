@@ -51,33 +51,27 @@ class Form extends Component
             $this->data->save();
 
             $alatBahan = collect(collect($this->alat)->map(fn($q) => [
-                'barang_id' => null,
                 'aset_id' => $q['id'],
                 'tarif_tindakan_id' => $this->data->id,
                 'qty' => $q['qty'],
                 'jenis' => 'Alat',
                 'barang_satuan_id' => null,
-                'rasio_dari_terkecil' => null,
                 'biaya' => $q['biaya'],
             ]))->merge(collect($this->barang)->map(fn($q) => [
-                'barang_id' => collect($this->dataBarang)->firstWhere('id', $q['id'])['barang_id'],
                 'aset_id' => null,
                 'tarif_tindakan_id' => $this->data->id,
                 'qty' => $q['qty'],
                 'jenis' => 'Barang',
                 'barang_satuan_id' => $q['id'],
-                'rasio_dari_terkecil' => collect($this->dataBarang)->firstWhere('id', $q['id'])['rasio_dari_terkecil'],
                 'biaya' => $q['biaya'],
             ]));
 
             $this->data->tarifTindakanAlatBarang()->delete();
             $this->data->tarifTindakanAlatBarang()->insert(collect($alatBahan)->map(fn($q) => [
-                'barang_id' => $q['barang_id'],
                 'aset_id' => $q['aset_id'],
                 'tarif_tindakan_id' => $this->data->id,
                 'qty' => $q['qty'],
                 'barang_satuan_id' => $q['barang_satuan_id'],
-                'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'biaya' => $q['biaya'],
             ])->toArray());
 
@@ -95,7 +89,7 @@ class Form extends Component
         $this->data = $data;
         $this->fill($this->data->toArray());
         if ($this->data->exists) {
-            $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_id')->whereIn('barang_satuan_id', collect($this->dataBarang)->pluck('id'))->values()->map(fn($q) => [
+            $this->barang = $this->data->tarifTindakanAlatBarang->whereNotNull('barang_satuan_id')->whereIn('barang_satuan_id', collect($this->dataBarang)->pluck('id'))->values()->map(fn($q) => [
                 'id' => $q->barang_satuan_id,
                 'biaya' => collect($this->dataBarang)->firstWhere('id', $q->barang_satuan_id)['biaya'],
                 'qty' => $q->qty,

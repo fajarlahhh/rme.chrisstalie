@@ -198,7 +198,7 @@
                         })" wire:model.live="registrasi_id"
                             data-width="100%" @if (isset($updating) && $updating === 'registrasi_id') disabled @endif
                             wire:loading.attr="disabled" wire:target="registrasi_id">
-                            <option selected value="">-- Pilih Data Registrasi --</option>
+                            <option selected value="">-- Tidak Ada Data Registrasi --</option>
                             @foreach ($dataRegistrasi as $row)
                                 <option value="{{ $row->id }}">
                                     {{ $row->pasien_id }} - {{ $row->pasien->nama }}

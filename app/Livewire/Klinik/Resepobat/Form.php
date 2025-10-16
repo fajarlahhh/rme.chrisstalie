@@ -7,9 +7,11 @@ use App\Models\ResepObat;
 use App\Models\Registrasi;
 use Illuminate\Support\Facades\DB;
 use App\Class\BarangClass;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $dataBarang = [];
     public $dataMetodeBayar = [];
     public $barang = [];
@@ -23,7 +25,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'resep' => 'required|array|min:1',
             'resep.*.barang' => 'required|array|min:1',
             'resep.*.barang.*.id' => 'required|integer',
@@ -51,6 +53,7 @@ class Form extends Component
                         'barang_satuan_id' => $barang['id'],
                         'resep' => $i + 1,
                         'qty' => $barang['qty'],
+                        'qty_asli' => $barang['qty_asli'],
                         'harga' => collect($this->dataBarang)->firstWhere('id', $barang['id'])['harga'],
                         'catatan' => $catatan,
                         'pengguna_id' => $userId,

@@ -29,7 +29,7 @@
                         styleBase: 'form-control'
                     })"
                         wire:model.live="pembelian_id" data-width="100%" required>
-                        <option selected value="" hidden>-- Pilih Permintaan Pembelian --</option>
+                        <option selected value="" hidden>-- Tidak Ada Permintaan Pembelian --</option>
                         @foreach ($dataPembelian as $row)
                             <option value="{{ $row['id'] }}" data-subtext="{{ $row['tanggal'] }}">
                                 {{ $row['uraian'] }} (Supplier : {{ $row['supplier']['nama'] }})

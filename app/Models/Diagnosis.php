@@ -15,7 +15,7 @@ class Diagnosis extends Model
 
     public function registrasi()
     {
-        return $this->belongsTo(Registrasi::class);
+        return $this->belongsTo(Registrasi::class, 'id');
     }
 
     public function pengguna()

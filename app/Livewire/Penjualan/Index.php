@@ -7,12 +7,12 @@ use App\Models\Barang;
 use Livewire\Component;
 use App\Models\Penjualan;
 use App\Class\JurnalClass;
+use App\Models\Pembayaran;
 use App\Models\StokKeluar;
 use App\Models\MetodeBayar;
 use Illuminate\Support\Str;
 use App\Models\PenjualanDetail;
 use App\Class\BarangClass;
-use App\Models\Pembayaran;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 

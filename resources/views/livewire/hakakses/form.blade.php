@@ -45,7 +45,7 @@
                                     styleBase: 'form-control'
                                 })" class="form-control" wire:model="pegawai_id"
                                     data-width="100%">
-                                    <option selected value="">-- Pilih Pegawai --</option>
+                                    <option selected value="">-- Tidak Ada Pegawai --</option>
                                     @foreach ($pegawaiData as $item)
                                         <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                                     @endforeach
@@ -69,7 +69,7 @@
                                 x-init="$($el).on('change', function() {
                                     $wire.changeRole($($el).val())
                                 })" data-width="100%">
-                                <option selected hidden>-- Pilih Role --</option>
+                                <option selected hidden>-- Tidak Ada Role --</option>
                                 @foreach ($dataRole as $row)
                                     <option value="{{ $row['name'] }}">{{ ucfirst($row['name']) }}</option>
                                 @endforeach

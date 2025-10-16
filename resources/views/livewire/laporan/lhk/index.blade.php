@@ -20,7 +20,7 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-control" wire:model.lazy="office" data-width="100%">
-                        <option selected value="">-- Pilih Unit Bisnis --</option>
+                        <option selected value="">-- Tidak Ada Unit Bisnis --</option>
                         <option value="Klinik">Klinik</option>
                         <option value="Apotek">Apotek</option>
                     </select>&nbsp;

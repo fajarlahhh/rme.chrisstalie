@@ -34,7 +34,7 @@
                         <div class="mb-3">
                             <label class="form-label">Tarif</label>
                             <input class="form-control" type="number" step="1" min="0" wire:model="tarif"
-                                x-model.number="tarif" @change="hitungKeuntungan()" />
+                                x-model.number="tarif" @keyup="hitungKeuntungan()" />
                             @error('tarif')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
@@ -51,7 +51,7 @@
                                     showSubtext: true,
                                     styleBase: 'form-control'
                                 })" data-width="100%">
-                                <option hidden selected>-- Pilih Kode Akun --</option>
+                                <option hidden selected>-- Tidak Ada Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)
                                     <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
                                     </option>
@@ -300,7 +300,7 @@
                                 <label class="form-label">Biaya Jasa Dokter</label>
                                 <input class="form-control" type="number" step="1" min="0"
                                     wire:model="biaya_jasa_dokter" x-model.number="biaya_jasa_dokter"
-                                    @change="hitungKeuntungan()" />
+                                    @keyup="hitungKeuntungan()" />
                                 @error('biaya_jasa_dokter')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -309,7 +309,7 @@
                                 <label class="form-label">Biaya Jasa Perawat</label>
                                 <input class="form-control" type="number" step="1" min="0"
                                     wire:model="biaya_jasa_perawat" x-model.number="biaya_jasa_perawat"
-                                    @change="hitungKeuntungan()" />
+                                    @keyup="hitungKeuntungan()" />
                                 @error('biaya_jasa_perawat')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror

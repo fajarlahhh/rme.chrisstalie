@@ -29,7 +29,7 @@
                         styleBase: 'form-control'
                     })"
                         wire:model.live="permintaan_pembelian_id" data-width="100%" required>
-                        <option selected value="">-- Pilih Permintaan Pembelian --</option>
+                        <option selected value="">-- Tidak Ada Permintaan Pembelian --</option>
                         @foreach ($dataPermintaanPembelian as $row)
                             <option value="{{ $row['id'] }}">
                                 {{ $row['deskripsi'] }}
@@ -69,7 +69,7 @@
                                 styleBase: 'form-control'
                             })"
                                 wire:model="supplier_id" data-width="100%" required>
-                                <option selected value="" hidden>-- Pilih Supplier --</option>
+                                <option selected value="" hidden>-- Tidak Ada Supplier --</option>
                                 @foreach ($dataSupplier as $row)
                                     <option value="{{ $row['id'] }}">
                                         {{ $row['nama'] }}

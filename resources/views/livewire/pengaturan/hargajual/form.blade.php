@@ -30,7 +30,7 @@
                             styleBase: 'form-control'
                         })" data-width="100%"
                         @if ($data->rasio_dari_terkecil == 1) disabled @endif>
-                        <option hidden selected>-- Pilih Barang --</option>
+                        <option hidden selected>-- Tidak Ada Barang --</option>
                         @foreach ($dataBarang as $item)
                             <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                         @endforeach
@@ -68,7 +68,7 @@
                                     showSubtext: true,
                                     styleBase: 'form-control'
                                 })">
-                                <option hidden selected>-- Pilih Satuan Konversi --</option>
+                                <option hidden selected>-- Tidak Ada Satuan Konversi --</option>
                                 @foreach ($dataBarangSatuan as $item)
                                     <option data-subtext="Rp. {{ number_format($item['harga_jual'], 0, ',', '.') }}"
                                         value="{{ $item['id'] }}">

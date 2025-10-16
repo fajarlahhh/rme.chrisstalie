@@ -42,7 +42,7 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })" wire:model.live="kategori" data-width="100%">
-                        <option hidden selected>-- Pilih Kategori --</option>
+                        <option hidden selected>-- Tidak Ada Kategori --</option>
                         <option value="Aktiva">Aktiva</option>
                         <option value="Kewajiban">Kewajiban</option>
                         <option value="Ekuitas">Ekuitas</option>
@@ -64,7 +64,7 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })" wire:model.live="parent_id" data-width="100%">
-                        <option hidden selected>-- Pilih Parent --</option>
+                        <option hidden selected>-- Tidak Ada Parent --</option>
                         @foreach ($dataParent as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach

@@ -73,7 +73,7 @@
                                     <label class="form-label">Jenis Kelamin</label>
                                     <select data-container="body" class="form-control " wire:model="jenis_kelamin"
                                         data-width="100%">
-                                        <option selected hidden>-- Pilih Jenis Kelamin --</option>
+                                        <option selected hidden>-- Tidak Ada Jenis Kelamin --</option>
                                         <option value="Laki-laki">Laki-laki</option>
                                         <option value="Perempuan">Perempuan</option>
                                     </select>
@@ -213,7 +213,7 @@
                                 styleBase: 'form-control'
                             })"
                                 wire:model="nakes_id" data-width="100%">
-                                <option selected value="">-- Pilih Dokter --</option>
+                                <option selected value="">-- Tidak Ada Dokter --</option>
                                 @foreach ($dataNakes as $row)
                                     <option value="{{ $row['id'] }}">
                                         {{ $row['nama'] }}

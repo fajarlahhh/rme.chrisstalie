@@ -47,7 +47,7 @@
                                                 styleBase: 'form-control'
                                             })"
                                                 wire:model.live="barang.{{ $index }}.id">
-                                                <option value="">-- Pilih Barang --</option>
+                                                <option value="">-- Tidak Ada Barang --</option>
                                                 @foreach ($dataBarang as $subRow)
                                                     <option value="{{ $subRow['id'] }}">
                                                         {{ $subRow['nama'] }}
@@ -69,7 +69,7 @@
                                                 styleBase: 'form-control'
                                             })"
                                                 wire:model="barang.{{ $index }}.satuan">
-                                                <option value="">-- Pilih Satuan --</option>
+                                                <option value="">-- Tidak Ada Satuan --</option>
                                                 @foreach ($row['barangSatuan'] as $subRow)
                                                     <option value="{{ $subRow['id'] }}" data-subtext="{{ $subRow['konversi_satuan'] }}">
                                                         {{ $subRow['nama'] }}
@@ -126,7 +126,7 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })" wire:model="verifikator_id">
-                        <option value="">-- Pilih Verifikator --</option>
+                        <option value="">-- Tidak Ada Verifikator --</option>
                         @foreach ($dataPengguna as $subRow)
                             <option value="{{ $subRow['id'] }}">
                                 {{ $subRow['nama'] }}

@@ -27,7 +27,7 @@
                     showSubtext: true,
                     styleBase: 'form-control'
                 })" class="form-control" wire:model.live="information_id" data-width="100%">
-                    <option hidden selected>-- Pilih Data --</option>
+                    <option hidden selected>-- Tidak Ada Data --</option>
                     @foreach ($informationData as $item)
                         <option value="{{ $item['id'] }}" data-subtext="{{ $item['type'] }}">{{ $item['nama'] }}
                         </option>

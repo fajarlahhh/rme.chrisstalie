@@ -6,14 +6,17 @@ use App\Models\Nakes;
 use Livewire\Component;
 use App\Models\Tindakan;
 use App\Models\Registrasi;
+use App\Models\BarangSatuan;
 use App\Models\TarifTindakan;
+use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use App\Models\TarifTindakanAlatBarang;
 
 class Form extends Component
 {
     use CustomValidationTrait;
-    
+
     public $tindakan = [], $dataTindakan = [], $dataNakes = [];
     public $data;
 
@@ -90,6 +93,7 @@ class Form extends Component
 
         DB::transaction(function () {
             Tindakan::where('id', $this->data->id)->delete();
+            TindakanAlatBarang::where('id', $this->data->id)->delete();
             $tindakan = collect($this->tindakan)->map(fn($q) => [
                 'id' => $this->data->id,
                 'tarif_tindakan_id' => $q['id'],
@@ -101,13 +105,34 @@ class Form extends Component
                 'biaya_jasa_dokter' => $q['biaya_jasa_dokter'],
                 'biaya_jasa_perawat' => $q['biaya_jasa_perawat'],
                 'dokter_id' => $q['dokter_id'],
-                'perawat_id' => $q['perawat_id'],
+                'perawat_id' => $q['perawat_id'] != '' ? $q['perawat_id'] : null,
                 'pengguna_id' => auth()->id(),
                 'qty' => $q['qty'],
                 'created_at' => now(),
                 'updated_at' => now(),
             ])->toArray();
+            $tindakanAlatBarang = [];
+            $dataTarifTindakanAlatBarang = TarifTindakanAlatBarang::whereIn('tarif_tindakan_id', collect($tindakan)->pluck('tarif_tindakan_id'))->get();
+            $dataBarangSatuan = BarangSatuan::whereIn('id', collect($dataTarifTindakanAlatBarang)->pluck('barang_satuan_id'))->get();
+            foreach ($tindakan as $q) {
+                $tarifTindakanAlatBarang = $dataTarifTindakanAlatBarang->where('tarif_tindakan_id', $q['tarif_tindakan_id']);
+                foreach ($tarifTindakanAlatBarang as $r) {
+                    $barangSatuan = $r->aset_id ? null : $dataBarangSatuan->firstWhere('id', $r->barang_satuan_id);
+
+                    $tindakanAlatBarang[] = [
+                        'id' => $q['id'],
+                        'aset_id' => $r->aset_id,
+                        'barang_id' => $barangSatuan ? $barangSatuan['barang_id'] : null,
+                        'qty' => $q['qty'] * $r->qty,
+                        'biaya' => $q['qty'] * $r->biaya,
+                        'barang_satuan_id' => $r->barang_satuan_id,
+                        'rasio_dari_terkecil' => $barangSatuan ? $barangSatuan['rasio_dari_terkecil'] : null,
+                        'tarif_tindakan_id' => $q['tarif_tindakan_id'],
+                    ];
+                }
+            }
             Tindakan::insert($tindakan);
+            TindakanAlatBarang::insert($tindakanAlatBarang);
             session()->flash('success', 'Berhasil menyimpan data');
         });
     }

@@ -9,40 +9,9 @@
 
 
     <h1 class="page-header">Tindakan <small>Input</small></h1>
+    
+    @include('livewire.klinik.informasipasien', ['data' => $data])
 
-    <div class="note alert-primary mb-2">
-        <div class="note-content">
-            <h5>Data Pasien</h5>
-            <hr>
-            <table class="w-100">
-                <tr>
-                    <td class="w-200px">No. Registrasi</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->urutan }}</td>
-                </tr>
-                <tr>
-                    <td class="w-200px">No. RM</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien_id }}</td>
-                </tr>
-                <tr>
-                    <td>Nama</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->nama }}</td>
-                </tr>
-                <tr>
-                    <td>Usia</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->umur }} Tahun</td>
-                </tr>
-                <tr>
-                    <td>Jenis Kelamin</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->jenis_kelamin }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
     <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
         <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
             <div class="panel-heading ui-sortable-handle">
@@ -79,7 +48,7 @@
                                                             $($el).val(value).trigger('change');
                                                         }
                                                     });">
-                                                    <option value="" selected>-- Pilih Tindakan --</option>
+                                                    <option value="" selected>-- Tidak Ada Tindakan --</option>
                                                     <template x-for="item in dataTindakan" :key="item.id">
                                                         <option :value="item.id" :selected="row.id == item.id"
                                                             x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.tarif)})`">
@@ -98,7 +67,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Dokter</label>
                                             <select class="form-control" x-model="row.dokter_id">
-                                                <option value="">-- Pilih Dokter --</option>
+                                                <option value="">-- Tidak Ada Dokter --</option>
                                                 <template x-for="nakes in dataNakes.filter(n => n.dokter == 1)" :key="nakes.id">
                                                     <option :value="nakes.id" :selected="row.dokter_id == nakes.id" x-text="nakes.nama"></option>
                                                 </template>
@@ -109,7 +78,7 @@
                                         <div class="mb-3">
                                             <label class="form-label">Perawat</label>
                                             <select class="form-control" x-model="row.perawat_id">
-                                                <option value="">-- Pilih Perawat --</option>
+                                                <option value="">-- Tidak Ada Perawat --</option>
                                                 <template x-for="nakes in dataNakes" :key="nakes.id">
                                                     <option :value="nakes.id" :selected="row.perawat_id == nakes.id" x-text="nakes.nama"></option>
                                                 </template>

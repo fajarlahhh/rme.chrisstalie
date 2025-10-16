@@ -9,151 +9,78 @@
 
     <h1 class="page-header">Site Marking</h1>
 
-    <x-alert />
+    @include('livewire.klinik.informasipasien', ['data' => $data])
 
-    @if ($data)
-        <div class="note alert-primary mb-2">
-            <div class="note-content">
-                <h5>Data Pasien</h5>
-                <hr>
-                <table class="w-100">
-                    <tr>
-                        <td class="w-200px">No. RM</td>
-                        <td class="w-10px">:</td>
-                        <td>{{ $data->pasien_id }}</td>
-                    </tr>
-                    <tr>
-                        <td>Nama</td>
-                        <td class="w-10px">:</td>
-                        <td>{{ $data->pasien->nama }}</td>
-                    </tr>
-                    <tr>
-                        <td>Usia</td>
-                        <td class="w-10px">:</td>
-                        <td>{{ $data->pasien->umur }} Tahun</td>
-                    </tr>
-                    <tr>
-                        <td>Jenis Kelamin</td>
-                        <td class="w-10px">:</td>
-                        <td>{{ $data->pasien->jenis_kelamin }}</td>
-                    </tr>
-                </table>
-            </div>
-        </div>
-    @endif
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading ui-sortable-handle">
             <h4 class="panel-title">Form</h4>
         </div>
-        @if ($data)
-            <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
-                <div class="panel-body">
-                    <div class="border p-3 mb-3">
-                        <strong>Tindakan :</strong>
-                        <ul>
-                            @foreach ($data->tindakan as $row)
-                                @if ($row->membutuhkan_sitemarking)
-                                    <li>{{ $row->tarifTindakan->nama }} ({{ $row->qty }}x)</li>
-                                @endif
-                            @endforeach
-                        </ul>
-
-                    </div>
-                    <div class="form-container">
-                        <fieldset>
-                            <div class="form-group">
-                                <div class="interactive-diagram-container">
-                                    <div class="overflow-auto">
-                                        <canvas id="imgCanvas" width="550" height="700" 
-                                                @click="addMarker($event)"></canvas>
-                                    </div>
+        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
+            <div class="panel-body">
+                <div class="border p-3 mb-3">
+                    <strong>Tindakan :</strong>
+                    <ul>
+                        @foreach ($data->tindakan as $row)
+                            @if ($row->membutuhkan_sitemarking)
+                                <li>{{ $row->tarifTindakan->nama }} ({{ $row->qty }}x)</li>
+                            @endif
+                        @endforeach
+                    </ul>
+                </div>
+                <div class="form-container">
+                    <fieldset>
+                        <div class="form-group">
+                            <div class="interactive-diagram-container">
+                                <div class="overflow-auto">
+                                    <canvas id="imgCanvas" width="550" height="700"
+                                        @click="addMarker($event)"></canvas>
                                 </div>
                             </div>
-                            <table class="table">
-                                <template x-if="markers.length > 0">
-                                    <tbody>
+                        </div>
+                        <table class="table">
+                            <template x-if="markers.length > 0">
+                                <tbody>
+                                    <tr>
+                                        <th>Label</th>
+                                        <th>Catatan</th>
+                                        <th></th>
+                                    </tr>
+                                    <template x-for="(marker, index) in markers" :key="index">
                                         <tr>
-                                            <th>Label</th>
-                                            <th>Catatan</th>
-                                            <th></th>
+                                            <td class="w-20px" x-text="marker.label"></td>
+                                            <td>
+                                                <input type="text" class="form-control" x-model="marker.catatan">
+                                            </td>
+                                            <td class="w-10px align-middle">
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    @click="removeMarker(index)">
+                                                    X
+                                                </button>
+                                            </td>
                                         </tr>
-                                        <template x-for="(marker, index) in markers" :key="index">
-                                            <tr>
-                                                <td class="w-20px" x-text="marker.label"></td>
-                                                <td>
-                                                    <input type="text" class="form-control"
-                                                        x-model="marker.catatan">
-                                                </td>
-                                                <td class="w-10px align-middle">
-                                                    <button type="button" class="btn btn-danger btn-sm"
-                                                        @click="removeMarker(index)">
-                                                        X
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </template>
-                                    </tbody>
-                                </template>
-                            </table>
-                        </fieldset>
-                    </div>
-                </div>
-                <div class="panel-footer">
-                    @role('administrator|supervisor|operator')
-                        <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                            <span wire:loading class="spinner-border spinner-border-sm"></span>
-                            Simpan
-                        </button>
-                    @endrole
-                    <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='/klinik/sitemarking'">
-                        <span wire:loading class="spinner-border spinner-border-sm"></span>
-                        Data
-                    </button>
-                    @error('catatan')
-                        <div class="text-danger">{{ $message }}</div>
-                    @enderror
-                </div>
-            </form>
-        @else
-            <div class="panel-body">
-                <div class="row">
-                    <div class="form-group">
-                        <label class="form-label">Cari Data Registrasi</label>
-                        <select class="form-control" x-init="$($el).selectpicker({
-                            liveSearch: true,
-                            width: 'auto',
-                            size: 10,
-                            container: 'body',
-                            style: '',
-                            showSubtext: true,
-                            styleBase: 'form-control'
-                        })" wire:model.live="registrasi_id"
-                            data-width="100%" @if (isset($updating) && $updating === 'registrasi_id') disabled @endif
-                            wire:loading.attr="disabled" wire:target="registrasi_id">
-                            <option selected value="">-- Pilih Data Registrasi --</option>
-                            @foreach ($dataRegistrasi as $row)
-                                <option value="{{ $row->id }}">
-                                    {{ $row->pasien_id }} - {{ $row->pasien->nama }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('registrasi_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
+                                    </template>
+                                </tbody>
+                            </template>
+                        </table>
+                    </fieldset>
                 </div>
             </div>
             <div class="panel-footer">
+                @role('administrator|supervisor|operator')
+                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
+                        Simpan
+                    </button>
+                @endrole
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='/klinik/sitemarking/data'">
+                    onclick="window.location.href='/klinik/sitemarking'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
+                <x-alert />
             </div>
-        @endif
+        </form> 
     </div>
-    <x-alert />
 </div>
 
 @push('scripts')
@@ -165,22 +92,23 @@
                 frontCtx: null,
                 gambarImg: null,
                 imgSrc: "{{ asset('assets/img/sitemarking.jpg') }}",
-                
+
                 init() {
                     this.$nextTick(() => {
                         this.imgCanvas = document.getElementById('imgCanvas');
                         if (this.imgCanvas) {
                             this.frontCtx = this.imgCanvas.getContext('2d');
                         }
-                        
+
                         this.gambarImg = new Image();
                         this.gambarImg.onload = () => this.redrawCanvas();
                         this.gambarImg.onerror = () => {
                             console.error("Gambar sitemarking.jpg tidak ditemukan.");
-                            alert("Error: Gagal memuat gambar diagram. Pastikan file 'sitemarking.jpg' ada di dalam folder 'assets/img'.");
+                            alert(
+                                "Error: Gagal memuat gambar diagram. Pastikan file 'sitemarking.jpg' ada di dalam folder 'assets/img'.");
                         };
                         this.gambarImg.src = this.imgSrc;
-                        
+
                         // Initialize existing markers
                         if (this.markers && this.markers.length > 0) {
                             this.markers.forEach(marker => {
@@ -189,7 +117,7 @@
                         }
                     });
                 },
-                
+
                 addMarker(event) {
                     const rect = event.target.getBoundingClientRect();
                     const scaleX = event.target.width / rect.width;
@@ -207,10 +135,10 @@
                         label: label,
                         catatan: ''
                     });
-                    
+
                     this.redrawCanvas();
                 },
-                
+
                 removeMarker(index) {
                     this.markers.splice(index, 1);
                     // Update labels for remaining markers
@@ -219,19 +147,20 @@
                     });
                     this.redrawCanvas();
                 },
-                
+
                 redrawCanvas() {
                     if (!this.frontCtx || !this.imgCanvas) return;
-                    
+
                     this.frontCtx.clearRect(0, 0, this.imgCanvas.width, this.imgCanvas.height);
-                    
+
                     if (this.gambarImg && this.gambarImg.complete && this.gambarImg.naturalWidth > 0) {
                         this.frontCtx.drawImage(this.gambarImg, 0, 0, this.imgCanvas.width, this.imgCanvas.height);
                     } else {
                         this.frontCtx.fillStyle = '#666';
                         this.frontCtx.font = '14px Arial';
                         this.frontCtx.textAlign = 'center';
-                        this.frontCtx.fillText('Memuat gambar diagram...', this.imgCanvas.width / 2, this.imgCanvas.height / 2);
+                        this.frontCtx.fillText('Memuat gambar diagram...', this.imgCanvas.width / 2, this.imgCanvas.height /
+                            2);
                     }
 
                     this.markers.forEach(marker => {
@@ -248,14 +177,14 @@
                         this.frontCtx.fillText(marker.label, marker.x, marker.y - 10);
                     });
                 },
-                
+
                 syncToLivewire() {
                     // Prepare catatan object for Livewire
                     let catatanObj = {};
                     this.markers.forEach((marker, index) => {
                         catatanObj[marker.label] = marker.catatan || '';
                     });
-                    
+
                     // Sync data to Livewire
                     if (window.Livewire && window.Livewire.find) {
                         let componentId = this.$root.closest('[wire\\:id]')?.getAttribute('wire:id');
@@ -263,7 +192,7 @@
                             let $wire = window.Livewire.find(componentId);
                             if ($wire && typeof $wire.set === 'function') {
                                 $wire.set('marker', JSON.stringify(this.markers), false);
-                                $wire.set('catatan', catatanObj, false);
+                                $wire.set('siteMarking', catatanObj, false);
                             }
                         }
                     }

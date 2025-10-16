@@ -55,7 +55,7 @@
                             <label class="form-label">Jenis Kelamin</label>
                             <select data-container="body" class="form-control " wire:model="jenis_kelamin"
                                 data-width="100%" @if ($status == 'Non Aktif') disabled @endif>
-                                <option selected hidden>-- Pilih Jenis Kelamin --</option>
+                                <option selected hidden>-- Tidak Ada Jenis Kelamin --</option>
                                 <option value="Laki-laki">Laki-laki</option>
                                 <option value="Perempuan">Perempuan</option>
                             </select>

@@ -8,39 +8,9 @@
     @endsection
 
     <h1 class="page-header">Diagnosis <small>Input</small></h1>
-    <div class="note alert-primary mb-2">
-        <div class="note-content">
-            <h5>Data Pasien</h5>
-            <hr>
-            <table class="w-100">
-                <tr>
-                    <td class="w-200px">No. Registrasi</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->urutan }}</td>
-                </tr>
-                <tr>
-                    <td class="w-200px">No. RM</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien_id }}</td>
-                </tr>
-                <tr>
-                    <td>Nama</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->nama }}</td>
-                </tr>
-                <tr>
-                    <td>Usia</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->umur }} Tahun</td>
-                </tr>
-                <tr>
-                    <td>Jenis Kelamin</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->jenis_kelamin }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    
+    @include('livewire.klinik.informasipasien', ['data' => $data])
+
     <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
         <div class="panel panel-inverse">
             <div class="panel-heading">

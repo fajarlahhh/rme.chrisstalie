@@ -37,7 +37,7 @@
                         styleBase: 'form-control'
                     })"
                         data-width="100%">
-                        <option hidden selected>-- Pilih Kode Akun --</option>
+                        <option hidden selected>-- Tidak Ada Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach

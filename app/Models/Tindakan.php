@@ -12,7 +12,7 @@ class Tindakan extends Model
 
     public function registrasi(): BelongsTo
     {
-        return $this->belongsTo(Registrasi::class);
+        return $this->belongsTo(Registrasi::class, 'id');
     }
 
     public function tarifTindakan(): BelongsTo

@@ -50,7 +50,7 @@
                                                     $($el).val(value).trigger('change');
                                                 }
                                             });">
-                                                <option value="" selected>-- Pilih Barang --</option>
+                                                <option value="" selected>-- Tidak Ada Barang --</option>
                                                 <template x-for="item in dataBarang" :key="item.id">
                                                     <option :value="item.id" :selected="row.id == item.id"
                                                         x-text="`${item.nama} (Rp. ${new Intl.NumberFormat('id-ID').format(item.harga)} / ${item.satuan})`">
@@ -108,7 +108,7 @@
                 <br>
                 <div class="mb-3">
                     <label class="form-label">Diskon <small>(Rp.)</small></label>
-                    <input class="form-control text-end" type="text" wire:model="diskon" @change="hitungTotal()"
+                    <input class="form-control text-end" type="text" wire:model="diskon" @keyup="hitungTotal()"
                         x-model.number="diskon" />
                 </div>
                 <div class="mb-3">
@@ -124,7 +124,7 @@
                             <label class="form-label">Metode Bayar</label>
                             <select class="form-control" wire:model="metode_bayar" x-model="metode_bayar"
                                 data-width="100%">
-                                <option hidden>-- Pilih Metode Bayar --</option>
+                                <option hidden>-- Tidak Ada Metode Bayar --</option>
                                 <template x-for="item in dataMetodeBayar" :key="item.id">
                                     <option :value="item.id" x-text="item.nama"
                                         :selected="metode_bayar == item.id"></option>

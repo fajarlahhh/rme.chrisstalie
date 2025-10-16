@@ -4,17 +4,17 @@ namespace App\Livewire\Klinik\Sitemarking;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
-use Livewire\WithPagination;
 use App\Models\Registrasi;
 use App\Models\SiteMarking;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     #[Url]
-    public $id;
-    public $registrasi_id, $marker, $catatan = [];
-    public $dataRegistrasi = [], $data;
+    public $marker, $siteMarking = [];
+    public $data;
 
     public function mount(Registrasi $data)
     {
@@ -29,7 +29,7 @@ class Form extends Component
                     'catatan' => $q->catatan,
                 ])->toArray());
                 foreach ($this->data->siteMarking as $key => $value) {
-                    $this->catatan[$key] = $value->catatan;
+                    $this->siteMarking[$key] = $value->catatan;
                 }
             }
         }
@@ -37,9 +37,9 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'marker' => 'required',
-            'catatan' => [
+            'siteMarking' => [
                 'required',
                 'array',
                 function ($attribute, $value, $fail) {

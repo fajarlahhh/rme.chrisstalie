@@ -58,7 +58,7 @@
                         styleBase: 'form-control'
                     })" wire:model.live="kode_akun_id"
                         @if ($data->exists) disabled @endif data-width="100%">
-                        <option hidden selected>-- Pilih Kode Akun --</option>
+                        <option hidden selected>-- Tidak Ada Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
@@ -79,7 +79,7 @@
                         styleBase: 'form-control'
                     })" wire:model.live="kode_akun_sumber_dana_id"
                         @if ($data->exists) disabled @endif data-width="100%">
-                        <option hidden selected>-- Pilih Kode Akun --</option>
+                        <option hidden selected>-- Tidak Ada Kode Akun --</option>
                         @foreach ($dataKodeAkunSumberDana as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
@@ -92,7 +92,7 @@
                     <label class="form-label">Metode Penyusutan</label>
                     <select class="form-control" @if ($data->exists) disabled @endif
                         wire:model.live="metode_penyusutan" data-width="100%">
-                        <option hidden selected>-- Pilih Metode Penyusutan --</option>
+                        <option hidden selected>-- Tidak Ada Metode Penyusutan --</option>
                         <option value="Garis Lurus">Garis Lurus</option>
                         <option value="Satuan Hasil Produksi">Satuan Hasil Produksi</option>
                     </select>
@@ -133,7 +133,7 @@
                     <div class="mb-3">
                         <label class="form-label">Status</label>
                         <select class="form-control" wire:model="status" data-width="100%">
-                            <option hidden selected>-- Pilih Status --</option>
+                            <option hidden selected>-- Tidak Ada Status --</option>
                             <option value="Aktif">Aktif</option>
                             <option value="Tidak Aktif">Tidak Aktif</option>
                         </select>

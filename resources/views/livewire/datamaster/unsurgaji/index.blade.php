@@ -56,7 +56,7 @@
                                     <td>
                                         <select class="form-control" :name="'unsurGaji[' + index + '][kode_akun_id]'"
                                             x-model="row.kode_akun_id">
-                                            <option value="">-- Pilih Kode Akun --</option>
+                                            <option value="">-- Tidak Ada Kode Akun --</option>
                                             @foreach ($dataKodeAkun as $subRow)
                                                 <option value="{{ $subRow['id'] }}">
                                                     {{ $subRow['id'] }} - {{ $subRow['nama'] }}

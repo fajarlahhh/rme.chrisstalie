@@ -20,7 +20,7 @@
                 <div class="mb-3">
                     <label class="form-label">Persediaan</label>
                     <select class="form-control" wire:model.live="persediaan" data-width="100%">
-                        <option hidden selected>-- Pilih Unit Bisnis --</option>
+                        <option hidden selected>-- Tidak Ada Unit Bisnis --</option>
                         <option value="Apotek">Apotek</option>
                         <option value="Klinik">Klinik</option>
                     </select>
@@ -63,7 +63,7 @@
                         styleBase: 'form-control'
                     })" wire:model.live="kode_akun_id"
                         data-width="100%">
-                        <option hidden selected>-- Pilih Kode Akun --</option>
+                        <option hidden selected>-- Tidak Ada Kode Akun --</option>
                         @foreach ($dataKodeAkun as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
@@ -84,7 +84,7 @@
                         styleBase: 'form-control'
                     })" wire:model.live="kode_akun_penjualan_id"
                         data-width="100%">
-                        <option hidden selected>-- Pilih Kode Akun --</option>
+                        <option hidden selected>-- Tidak Ada Kode Akun --</option>
                         @foreach ($dataKodeAkunPenjualan as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
