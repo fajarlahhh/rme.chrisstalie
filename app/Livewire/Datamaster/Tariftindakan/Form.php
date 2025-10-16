@@ -68,10 +68,10 @@ class Form extends Component
 
             $this->data->tarifTindakanAlatBarang()->delete();
             $this->data->tarifTindakanAlatBarang()->insert(collect($alatBahan)->map(fn($q) => [
-                'aset_id' => $q['aset_id'],
+                'aset_id' => $q['aset_id'] != '' ? $q['aset_id'] : null,
                 'tarif_tindakan_id' => $this->data->id,
                 'qty' => $q['qty'],
-                'barang_satuan_id' => $q['barang_satuan_id'],
+                'barang_satuan_id' => $q['barang_satuan_id'] != '' ? $q['barang_satuan_id'] : null,
                 'biaya' => $q['biaya'],
             ])->toArray());
 
