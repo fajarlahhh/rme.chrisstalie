@@ -11,29 +11,29 @@ trait CustomValidationTrait
     {
         return [
             // Pesan umum
-            'required' => 'Field :attribute wajib diisi.',
-            'string' => 'Field :attribute harus berupa teks.',
-            'numeric' => 'Field :attribute harus berupa angka.',
-            'email' => 'Field :attribute harus berupa alamat email yang valid.',
-            'unique' => 'Field :attribute sudah ada yang menggunakan.',
+            'required' => ':ATTRIBUTE wajib diisi.',
+            'string' => ':ATTRIBUTE harus berupa teks.',
+            'numeric' => ':ATTRIBUTE harus berupa angka.',
+            'email' => ':ATTRIBUTE harus berupa alamat email yang valid.',
+            'unique' => ':ATTRIBUTE sudah ada yang menggunakan.',
             'min' => [
-                'numeric' => 'Field :attribute minimal :min.',
-                'string' => 'Field :attribute minimal :min karakter.',
+                'numeric' => ':ATTRIBUTE minimal :min.',
+                'string' => ':ATTRIBUTE minimal :min karakter.',
             ],
             'max' => [
-                'numeric' => 'Field :attribute maksimal :max.',
-                'string' => 'Field :attribute maksimal :max karakter.',
+                'numeric' => ':ATTRIBUTE maksimal :max.',
+                'string' => ':ATTRIBUTE maksimal :max karakter.',
             ],
-            'confirmed' => 'Konfirmasi :attribute tidak cocok.',
-            'date' => 'Field :attribute harus berupa tanggal yang valid.',
-            'array' => 'Field :attribute harus berupa array.',
-            'distinct' => 'Field :attribute memiliki nilai yang duplikat.',
-            'required_if' => 'Field :attribute wajib diisi.',
-            'boolean' => 'Field :attribute harus berupa boolean.',
-            'integer' => 'Field :attribute harus berupa angka bulat.',
-            'float' => 'Field :attribute harus berupa angka desimal.',
-            'email' => 'Field :attribute harus berupa alamat email yang valid.',
-            'email' => 'Field :attribute harus berupa alamat email yang valid.',
+            'confirmed' => 'Konfirmasi :ATTRIBUTE tidak cocok.',
+            'date' => ':ATTRIBUTE harus berupa tanggal yang valid.',
+            'array' => ':ATTRIBUTE harus berupa array.',
+            'distinct' => ':ATTRIBUTE memiliki nilai yang duplikat.',
+            'required_if' => ':ATTRIBUTE wajib diisi.',
+            'boolean' => ':ATTRIBUTE harus berupa boolean.',
+            'integer' => ':ATTRIBUTE harus berupa angka bulat.',
+            'float' => ':ATTRIBUTE harus berupa angka desimal.',
+            'email' => ':ATTRIBUTE harus berupa alamat email yang valid.',
+            'email' => ':ATTRIBUTE harus berupa alamat email yang valid.',
         ];
     }
 

@@ -82,39 +82,46 @@ class Form extends Component
             'metode_bayar' => 'required',
             'cash' => $this->metode_bayar == 1 ? 'required|numeric|min:' . $this->total_tagihan : 'nullable',
             'keterangan_pembayaran' => $this->metode_bayar != 1 ? 'required|string|max:1000' : 'nullable',
-            'tindakan.*.dokter_id' => 'required|exists:nakes,id',
-            'resep.*.barang.*.id' => 'required',
-            // 'resep.*.barang.*.qty' => [
-            //     'required',
-            //     'numeric',
-            //     'min:1',
-            //     function ($attribute, $value, $fail) {
-            //         $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
-            //         $resepIndex = $parts[1] ?? null;
-            //         $barangIndex = $parts[3] ?? null;
-
-            //         if (
-            //             !is_numeric($resepIndex) ||
-            //             !isset($this->resep[$resepIndex]['barang'][$barangIndex])
-            //         ) {
-            //             return;
-            //         }
-            //         $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
-
-            //         $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
-            //         if (!$barang) return;
-
-            //         $stokTersedia = \App\Models\Stok::where('barang_id', $barang['id'])
-            //             ->available()
-            //             ->count();
-
-            //         $rasio = $barang['rasio_dari_terkecil'] ?? 1;
-            //         if (($value / $rasio) > $stokTersedia) {
-            //             $stokAvailable = $stokTersedia * $rasio;
-            //             $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
-            //         }
+            // 'tindakan.*.dokter_id' => function ($attribute, $value, $fail) {
+            //     $index = explode('.', $attribute)[1];
+            //     if (
+            //         !isset($this->tindakan[$index]['dokter_id'])
+            //     ) {
+            //         $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama'] . '.');
             //     }
-            // ],
+            // },
+            'tindakan.*.perawat_id' => 'required',
+            'resep.*.barang.*.qty' => [
+                'required',
+                'numeric',
+                'min:1',
+                function ($attribute, $value, $fail) {
+                    $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
+                    $resepIndex = $parts[1] ?? null;
+                    $barangIndex = $parts[3] ?? null;
+
+                    if (
+                        !is_numeric($resepIndex) ||
+                        !isset($this->resep[$resepIndex]['barang'][$barangIndex])
+                    ) {
+                        return;
+                    }
+                    $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
+
+                    $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
+                    if (!$barang) return;
+
+                    $stokTersedia = \App\Models\Stok::where('barang_id', $barang['id'])
+                        ->available()
+                        ->count();
+
+                    $rasio = $barang['rasio_dari_terkecil'] ?? 1;
+                    if (($value / $rasio) > $stokTersedia) {
+                        $stokAvailable = $stokTersedia * $rasio;
+                        $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
+                    }
+                }
+            ],
         ]);
         DB::transaction(function () {
             $dataTerakhir = Pembayaran::where('created_at', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
@@ -145,7 +152,7 @@ class Form extends Component
             Registrasi::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
             Tindakan::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
             ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
-            
+
             $data = Registrasi::findOrFail($this->data->id);
             $cetak = view('livewire.klinik.kasir.cetak', [
                 'cetak' => true,
