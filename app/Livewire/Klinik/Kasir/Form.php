@@ -49,7 +49,11 @@ class Form extends Component
             ];
         })->toArray();
 
-        $this->dataNakes = Nakes::orderBy('nama')->get(['id', 'nama', 'dokter'])->toArray();
+        $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
+            'id' => $q->id,
+            'dokter' => $q->dokter,
+            'nama' => $q->pegawai ? $q->pegawai->nama : $q->nama,
+        ])->toArray();
 
         $this->resep = collect($data->resepobat)
             ->groupBy('resep')

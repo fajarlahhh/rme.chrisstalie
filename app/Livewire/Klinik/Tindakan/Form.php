@@ -52,10 +52,10 @@ class Form extends Component
                 'biaya' => 0,
             ];
         }
-        $this->dataNakes = Nakes::orderBy('nama')->get()->map(fn($q) => [
+        $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
-            'nama' => $q->nama,
             'dokter' => $q->dokter,
+            'nama' => $q->pegawai ? $q->pegawai->nama : $q->nama,
         ])->toArray();
         $this->dataTindakan = TarifTindakan::orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
