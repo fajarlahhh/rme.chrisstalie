@@ -23,7 +23,6 @@ class Form extends Component
 
         DB::transaction(function () {
             $this->data->nama = $this->nama;
-            $this->data->deskripsi = $this->deskripsi;
             $this->data->alamat = $this->alamat;
             $this->data->no_hp = $this->no_hp;
             $this->data->konsinyator = $this->konsinyator ? 1 : 0;
