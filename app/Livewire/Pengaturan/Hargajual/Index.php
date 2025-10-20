@@ -31,7 +31,7 @@ class Index extends Component
             $data->forceDelete();
             session()->flash('success', 'Berhasil menghapus data');
         } catch (\Throwable $th) {
-            session()->flash('error', 'Gagal menghapus data');
+            session()->flash('danger', 'Gagal menghapus data');
         };
     }
 
