@@ -9,6 +9,30 @@
 
     <h1 class="page-header">Pembelian <small>Tambah</small></h1>
 
+    <div class="note alert-primary mb-2">
+        <div class="note-content">
+            <h5>Detail Permintaan</h5>
+            <hr>
+            <table class="w-100">
+                <tr>
+                    <td class="w-150px">Deskripsi</td>
+                    <td class="w-10px">:</td>
+                    <td>{{ $data->deskripsi }}</td>
+                </tr>
+                <tr>
+                    <td class="w-150px">Tanggal</td>
+                    <td class="w-10px">:</td>
+                    <td>{{ $data->created_at }}</td>
+                </tr>
+                <tr>
+                    <td class="w-150px">Pengguna</td>
+                    <td class="w-10px">:</td>
+                    <td>{{ $data->pengguna->nama }}</td>
+                </tr>
+            </table>
+        </div>
+    </div>
+
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
@@ -17,29 +41,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <div class="mb-3">
-                    <label class="form-label">Cari Permintaan Pembelian</label>
-                    <select data-container="body" class="form-control" x-init="$($el).selectpicker({
-                        liveSearch: true,
-                        width: 'auto',
-                        size: 10,
-                        container: 'body',
-                        style: '',
-                        showSubtext: true,
-                        styleBase: 'form-control'
-                    })"
-                        wire:model.live="permintaan_pembelian_id" data-width="100%" required>
-                        <option selected value="">-- Tidak Ada Permintaan Pembelian --</option>
-                        @foreach ($dataPermintaanPembelian as $row)
-                            <option value="{{ $row['id'] }}">
-                                {{ $row['deskripsi'] }}
-                            </option>
-                        @endforeach
-                    </select>
-                    @error('permintaan_pembelian_id')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
+
                 <div class="mb-3">
                     <label class="form-label">Tanggal</label>
                     <input class="form-control" type="date" wire:model="tanggal" max="{{ now()->format('Y-m-d') }}"
@@ -55,7 +57,7 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="note alert-primary mb-2">
+                <div class="note alert-secondary mb-0">
                     <div class="note-content">
                         <div class="mb-3">
                             <label class="form-label">Supplier</label>
@@ -99,46 +101,44 @@
                                 @enderror
                             </div>
                         @endif
-                    </div>
-                </div>
-                <div class="note alert-secondary mb-0">
-                    <div class="note-content table-responsive">
-                        <table class="table table-borderless">
-                            <thead>
-                                <tr>
-                                    <th>Barang/Item</th>
-                                    <th class="w-200px">Satuan</th>
-                                    <th class="w-150px">Qty</th>
-                                    <th class="w-150px">Harga Beli</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @foreach ($barang as $index => $row)
+                        <div class="table-responsive">
+                            <table class="table table-borderless">
+                                <thead>
                                     <tr>
-                                        <td>
-                                            <input type="text" class="form-control" min="0" step="1"
-                                                value="{{ $row['nama'] }}" disabled autocomplete="off">
-                                        </td>
-                                        <td>
-                                            <input type="text" class="form-control" min="0" step="1"
-                                                value="{{ $row['satuan'] }}" disabled autocomplete="off">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                value="{{ $row['qty'] }}" disabled autocomplete="off">
-                                        </td>
-                                        <td>
-                                            <input type="number" class="form-control" min="0" step="1"
-                                                wire:model.lazy="barang.{{ $index }}.harga_beli"
-                                                autocomplete="off">
-                                            @error('barang.' . $index . '.harga_beli')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
-                                        </td>
+                                        <th>Barang/Item</th>
+                                        <th class="w-200px">Satuan</th>
+                                        <th class="w-150px">Qty</th>
+                                        <th class="w-150px">Harga Beli</th>
                                     </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
+                                </thead>
+                                <tbody>
+                                    @foreach ($barang as $index => $row)
+                                        <tr>
+                                            <td>
+                                                <input type="text" class="form-control" min="0" step="1"
+                                                    value="{{ $row['nama'] }}" disabled autocomplete="off">
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" min="0" step="1"
+                                                    value="{{ $row['satuan'] }}" disabled autocomplete="off">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control" min="0" step="1"
+                                                    value="{{ $row['qty'] }}" disabled autocomplete="off">
+                                            </td>
+                                            <td>
+                                                <input type="number" class="form-control" min="0" step="1"
+                                                    wire:model.lazy="barang.{{ $index }}.harga_beli"
+                                                    autocomplete="off">
+                                                @error('barang.' . $index . '.harga_beli')
+                                                    <span class="text-danger">{{ $message }}</span>
+                                                @enderror
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                 </div>
                 <br>
@@ -163,14 +163,14 @@
                         autocomplete="off" />
                 </div>
             </div>
-            <div class="panel-footer" wire:loading.remove wire:target="submit">
+            <div class="panel-footer">
                 @unlessrole('guest')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
                 @endunlessrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
             </div>
         </form>
     </div>

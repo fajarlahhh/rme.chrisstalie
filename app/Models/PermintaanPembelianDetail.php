@@ -14,11 +14,6 @@ class PermintaanPembelianDetail extends Model
         return $this->belongsTo(PermintaanPembelian::class);
     }
 
-    public function barang()
-    {
-        return $this->belongsTo(Barang::class);
-    }
-
     public function barangSatuan()
     {
         return $this->belongsTo(BarangSatuan::class);

@@ -70,8 +70,15 @@
                                     <tbody>
                                         @foreach ($item->permintaanPembelianDetail as $detail)
                                             <tr>
-                                                <td class="text-nowrap w-300px">{{ $detail->barang->nama }}</td>
-                                                <td class="text-nowrap w-80px">{!! $detail->barangSatuan?->nama . '<small> (' . $detail->barangSatuan?->konversi_satuan . ')</small>' !!}</td>
+                                                <td class="text-nowrap w-300px">
+                                                    {{ $detail->barangSatuan->barang->nama }}</td>
+                                                <td class="text-nowrap w-80px">
+                                                    @if ($detail->barangSatuan->konversi_satuan)
+                                                        {{ $detail->barangSatuan->nama . '<small> (' . $detail->barangSatuan->konversi_satuan . ')</small>' }}
+                                                    @else
+                                                        {{ $detail->barangSatuan->nama }}
+                                                    @endif
+                                                </td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_permintaan }}
                                                 </td>
                                                 <td class="text-nowrap text-end w-80px">{{ $detail->qty_disetujui }}

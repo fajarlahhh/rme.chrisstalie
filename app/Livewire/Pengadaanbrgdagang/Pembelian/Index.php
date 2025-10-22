@@ -3,16 +3,17 @@
 namespace App\Livewire\Pengadaanbrgdagang\Pembelian;
 
 use Livewire\Component;
-use Livewire\WithPagination;
-use Livewire\Attributes\Url;
 use App\Models\Pembelian;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
+use App\Models\PermintaanPembelian;
 
 class Index extends Component
 {
     use WithPagination;
 
     #[Url]
-    public $cari, $bulan;
+    public $cari, $bulan, $status = 1;
 
 
     public function mount()
@@ -33,7 +34,21 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pengadaanbrgdagang.pembelian.index', [
-            'data' => Pembelian::with(['pembelianDetail.barang', 'pengguna', 'stokMasuk'])
+            'data' => $this->status == 1 ? PermintaanPembelian::with([
+                'pengguna',
+                'permintaanPembelianDetail',
+            ])->with(['verifikasi' => fn($q) => $q->whereNotNull('status')])
+                ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasi', function ($q) {
+                    $q->whereNull('status');
+                }))
+                ->whereHas('verifikasi', function ($q) {
+                    $q->whereNotNull('status');
+                })
+                ->where(fn($q) => $q
+                    ->where('deskripsi', 'like', '%' . $this->cari . '%'))
+                ->orderBy('created_at', 'desc')
+                ->paginate(10) :
+                Pembelian::with(['pembelianDetail.barangSatuan.barang', 'pengguna', 'stokMasuk'])
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')

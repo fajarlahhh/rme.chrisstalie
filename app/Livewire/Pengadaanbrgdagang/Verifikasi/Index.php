@@ -20,7 +20,7 @@ class Index extends Component
         return view('livewire.pengadaanbrgdagang.verifikasi.index', [
             'data' => PermintaanPembelian::with([
                 'pengguna',
-                'permintaanPembelianDetail',
+                'permintaanPembelianDetail.barangSatuan.barang',
             ])->with(['verifikasi' => fn($q) => $q->whereNotNull('status')])
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('verifikasi', function ($q) {
                     $q->whereNull('status');

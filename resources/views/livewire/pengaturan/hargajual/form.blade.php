@@ -100,7 +100,7 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove>Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
             </div>
         </form>
     </div>

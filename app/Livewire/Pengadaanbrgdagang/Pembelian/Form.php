@@ -16,38 +16,28 @@ use App\Models\KodeAkun;
 class Form extends Component
 {
     public $data, $previous, $dataSupplier = [], $dataPermintaanPembelian = [], $barang = [], $dataKodeAkun = [];
-    public $tanggal, $uraian, $jatuh_tempo, $permintaan_pembelian_id, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
+    public $tanggal, $uraian, $jatuh_tempo, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
 
     public function updatedBarang()
     {
         $this->totalHargaBeli = collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']);
     }
 
-    public function updatedPermintaanPembelianId()
+    public function mount(PermintaanPembelian $data)
     {
-        $this->barang = [];
-        $this->barang = PermintaanPembelianDetail::where('permintaan_pembelian_id', $this->permintaan_pembelian_id)->with('barang', 'barangSatuan')->get()->map(fn($q) => [
-            'id' => $q->barang_id,
-            'nama' => $q->barang->nama,
-            'satuan' => $q->barangSatuan?->nama . ' (' . $q->barangSatuan?->konversi_satuan . ')',
-            'qty' => $q->qty_disetujui,
-            'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-            'barang_satuan_id' => $q->barang_satuan_id,
-            'harga_beli' => 0,
-            'kode_akun_id' => $q->barang->kode_akun_id,
-        ])->toArray();
-    }
-
-    public function mount()
-    {
+        $this->data = $data;
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
         $this->previous = url()->previous();
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
-        $this->dataPermintaanPembelian = PermintaanPembelian::whereNotIn(
-            'id',
-            Pembelian::pluck('permintaan_pembelian_id')->filter()->all()
-        )->whereHas('verifikasiDisetujui')->orderBy('created_at')->get()->toArray();
-        $this->dataKodeAkun = KodeAkun::where('kategori', 'Aktiva')->where('parent_id', '11100')->detail()->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
+        $this->barang = $this->data->permintaanPembelianDetail->map(fn($q) => [
+            'id' => $q->barang_satuan_id,
+            'nama' => $q->barangSatuan->barang->nama,
+            'satuan' => $q->barangSatuan->nama,
+            'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
+            'qty' => $q->qty_disetujui,
+            'harga_beli' => 0,
+        ])->toArray();
     }
 
     public function submit()
@@ -94,31 +84,30 @@ class Form extends Component
             ])->toArray());
 
 
-            $id = Str::uuid();
+            // $id = Str::uuid();
 
-            $jurnal = new Jurnal();
-            $jurnal->id = $id;
-            $jurnal->jenis = 'Pembelian Barang Dagang';
-            $jurnal->tanggal = $this->tanggal;
-            $jurnal->uraian = $this->uraian;
-            $jurnal->referensi_id = $data->id;
-            $jurnal->pengguna_id = auth()->id();
-            $jurnal->save();
+            // $jurnal = new Jurnal();
+            // $jurnal->id = $id;
+            // $jurnal->jenis = 'Pembelian Barang Dagang';
+            // $jurnal->tanggal = $this->tanggal;
+            // $jurnal->uraian = $this->uraian;
+            // $jurnal->referensi_id = $data->id;
+            // $jurnal->pengguna_id = auth()->id();
+            // $jurnal->save();
 
-            $jurnal->jurnalDetail()->delete();
-            $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
-                'jurnal_id' => $id,
-                'debet' => 0,
-                'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
-                'kode_akun_id' => $this->pembayaran == "Jatuh Tempo" ? '21110' : $this->pembayaran
-            ])->toArray());
-            $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
-                'jurnal_id' => $id,
-                'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
-                'kredit' => 0,
-                'kode_akun_id' => '11420'
-            ])->toArray());
-
+            // $jurnal->jurnalDetail()->delete();
+            // $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
+            //     'jurnal_id' => $id,
+            //     'debet' => 0,
+            //     'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
+            //     'kode_akun_id' => $this->pembayaran == "Jatuh Tempo" ? '21110' : $this->pembayaran
+            // ])->toArray());
+            // $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
+            //     'jurnal_id' => $id,
+            //     'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
+            //     'kredit' => 0,
+            //     'kode_akun_id' => '11420'
+            // ])->toArray());
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect($this->previous);

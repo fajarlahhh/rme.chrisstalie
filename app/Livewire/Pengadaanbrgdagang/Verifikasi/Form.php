@@ -21,7 +21,6 @@ class Form extends Component
                 'status' => 'required',
                 'deskripsi' => 'required',
                 'barang' => 'required|array',
-                'barang.*.id' => 'required',
                 'barang.*.qty_disetujui' => 'required|numeric|min:1',
             ]);
         }else{
@@ -37,10 +36,9 @@ class Form extends Component
                 $this->data->permintaanPembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
                     'qty_permintaan' => $q['qty'],
                     'qty_disetujui' => $q['qty_disetujui'],
-                    'barang_satuan_id' => $q['barang_satuan_id'],
+                    'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                     'permintaan_pembelian_id' => $this->data->id,
-                    'barang_id' => $q['id'],
                 ])->toArray());
             }
             $verifikasi = Verifikasi::where('referensi_id', $this->data->id)->where('jenis', 'Permintaan Pembelian')->whereNull('status')->first();
@@ -60,10 +58,9 @@ class Form extends Component
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->barang = $data->permintaanPembelianDetail->map(fn($q) => [
-            'id' => $q->barang_id,
-            'nama' => $q->barang->nama,
-            'satuan' => BarangSatuan::find($q->barang_satuan_id)->nama,
-            'barang_satuan_id' => $q->barang_satuan_id,
+            'id' => $q->barang_satuan_id,
+            'nama' => $q->barangSatuan->barang->nama,
+            'satuan' => $q->barangSatuan->nama,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
             'qty' => $q->qty_permintaan,
             'qty_disetujui' => 0,

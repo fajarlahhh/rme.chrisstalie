@@ -90,7 +90,7 @@
                                 <tr>
                                     <td colspan="5">
                                         <div class="text-center">
-                                            <button type="button" class="btn btn-secondary " @click="addBarang">
+                                            <button type="button" class="btn btn-secondary " @click="tambahBarang">
                                                 Tambah Barang
                                             </button>
                                             <br>
@@ -197,7 +197,7 @@
                     }, 0);
                     this.total_tagihan = this.total_harga_barang - (parseInt(this.diskon) || 0);
                 },
-                addBarang() {
+                tambahBarang() {
                     this.barang.push({
                         id: '',
                         qty: 1,

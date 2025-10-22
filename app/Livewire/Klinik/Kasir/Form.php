@@ -153,6 +153,19 @@ class Form extends Component
             Tindakan::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
             ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
 
+            foreach ($this->resep as $resep) {
+                $barang = collect($resep['barang'])->map(function ($q) {
+                    $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
+                    return [
+                        'qty' => $q['qty'],
+                        'harga' => $q['harga'],
+                        'barang_id' => $brg['barang_id'],
+                        'barang_satuan_id' => $q['id'],
+                        'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
+                    ];
+                })->toArray();
+                BarangClass::stokKeluar($barang, $pembayaran->id);
+            }
             $data = Registrasi::findOrFail($this->data->id);
             $cetak = view('livewire.klinik.kasir.cetak', [
                 'cetak' => true,

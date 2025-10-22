@@ -91,26 +91,7 @@ class Index extends Component
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                 ];
             })->toArray();
-            foreach ($barang as $brg) {
-                $stokKeluarId = Str::uuid();
-                StokKeluar::insert([
-                    'id' => $stokKeluarId,
-                    'tanggal' => now(),
-                    'qty' => $brg['qty'],
-                    'pembayaran_id' => $pembayaran->id,
-                    'barang_id' => $brg['barang_id'],
-                    'harga' => $brg['harga'],
-                    'pengguna_id' => auth()->id(),
-                    'barang_satuan_id' => $brg['barang_satuan_id'],
-                    'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ]);
-                Stok::where('barang_id', $brg['barang_id'])->available()->orderBy('tanggal_kedaluarsa', 'asc')->limit($brg['qty'])->update([
-                    'tanggal_keluar' => now(),
-                    'stok_keluar_id' => $stokKeluarId,
-                ]);
-            }
+            BarangClass::stokKeluar($barang, $pembayaran->id);
 
             $this->jurnalPendapatan($pembayaran, $metodeBayar);
 

@@ -17,7 +17,7 @@ class Index extends Component
 
     public function mount()
     {
-        $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '151%')->where('kategori', 'Aktiva')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '151%')->get()->toArray();
     }
 
     public function print($id)

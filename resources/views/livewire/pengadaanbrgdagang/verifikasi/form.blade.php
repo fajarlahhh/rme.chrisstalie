@@ -46,11 +46,8 @@
                                     <tr>
                                         <td>
                                             <input type="text" class="form-control"
-                                                wire:model="barang.{{ $index }}.nama" autocomplete="off"
+                                                value="{{ $row['nama'] . ' - ' . $row['satuan'] }}" autocomplete="off"
                                                 disabled>
-                                            @error('barang.' . $index . '.nama')
-                                                <span class="text-danger">{{ $message }}</span>
-                                            @enderror
                                         </td>
                                         <td>
                                             <input type="text" class="form-control"
@@ -93,14 +90,14 @@
                     </div>
                 @endif
             </div>
-            <div class="panel-footer" wire:loading.remove wire:target="submit">
+            <div class="panel-footer" >
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore>Batal</a>
             </div>
         </form>
     </div>
