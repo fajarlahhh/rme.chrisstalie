@@ -27,7 +27,7 @@
                 <tr>
                     <td class="w-150px">Pengguna</td>
                     <td class="w-10px">:</td>
-                    <td>{{ $data->pengguna->nama }}</td>
+                    <td>{{ $data->pengguna?->nama }}</td>
                 </tr>
             </table>
         </div>
