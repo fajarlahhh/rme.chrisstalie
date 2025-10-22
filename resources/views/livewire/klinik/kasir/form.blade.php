@@ -57,7 +57,7 @@
                                                 $($el).val(value).trigger('change');
                                             }
                                         });">
-                                            <option value="">-- Pilih Perawat --</option>
+                                            <option value="">-- Tidak Ada Perawat --</option>
                                             <template x-for="nakes in dataNakes" :key="nakes.id">
                                                 <option :value="nakes.id" :selected="row.perawat_id == nakes.id"
                                                     x-text="nakes.nama">
