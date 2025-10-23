@@ -39,10 +39,12 @@ class Index extends Component
                 ->groupBy('pembelian.id', 'tanggal', 'supplier_id', 'uraian')
                 ->havingRaw('SUM(pembelian_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pembelian_id = pembelian.id )')
                 ->get()->count(),
-            'data' => StokMasuk::with(['pengguna', 'barangSatuan.barang', 'pembelian', 'keluar'])
+            'data' => StokMasuk::with(['pengguna', 'barangSatuan.barang', 'pembelian'])
                 ->where('created_at', 'like', $this->bulan . '%')
-                ->whereHas('barangSatuan.barang', fn($q) => $q->where('khusus', 0)->where('persediaan', 'Apotek')->where('nama', 'like', '%' . $this->cari . '%'))
-                ->whereHas('pembelian', fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
+                ->whereHas('pembelian', fn($q) => $q->where('jenis', 'Barang Dagang'))
+                ->where(fn($q) => $q
+                    ->whereHas('barangSatuan.barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
+                    ->orWhereHas('pembelian', fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%')))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)
         ]);
