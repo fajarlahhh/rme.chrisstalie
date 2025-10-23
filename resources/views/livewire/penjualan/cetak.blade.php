@@ -17,14 +17,14 @@
 <hr>
 <table class="table table-borderless fs-11px">
     <tr>
-        <th class="p-0">Barang<br><br></th>
+        <th class="p-0">Item<br><br></th>
         <th class="p-0 text-end">Qty<br><br></th>
         <th class="p-0 text-end">Harga<br><br></th>
     </tr>
     @foreach ($data->stokKeluar as $detail)
         <tr>
             <td class="p-0">
-                {{ $detail->barang->nama }}<br>
+                {{ $detail->barangSatuan->barang->nama }}<br>
                 &nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }}</small>
             </td>
             <td class="p-0 ps-2 text-end text-nowrap w-100px">

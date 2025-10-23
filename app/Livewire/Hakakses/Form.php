@@ -9,15 +9,17 @@ use Illuminate\Support\Facades\DB;
 use Spatie\Permission\Models\Role;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous, $dataRole = [], $pegawaiData = [];
     public $uid, $nama, $pegawai_id, $password, $role, $hakAkses = [];
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'hakAkses' => 'required',
             'role' => 'required',
             'uid' => 'required|unique:pengguna,uid,' . $this->data->id,

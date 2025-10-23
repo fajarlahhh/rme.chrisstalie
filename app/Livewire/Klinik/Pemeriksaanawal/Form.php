@@ -152,7 +152,7 @@ class Form extends Component
             'catatan'         => 'required',
         ];
 
-        $validated = $this->validate($rules);
+        $this->validateWithCustomMessages($rules);
 
         DB::transaction(function () {
             Tug::where('id', $this->data->id)->delete();

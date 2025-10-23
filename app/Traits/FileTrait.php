@@ -5,12 +5,14 @@ namespace App\Traits;
 use Intervention\Image\Facades\Image;
 use Illuminate\Support\Facades\Storage;
 use App\Models\File;
+use App\Traits\CustomValidationTrait;
 
 /**
  *
  */
 trait FileTrait
 {
+    use CustomValidationTrait;
     public $fileDihapus = [], $fileDiupload = [];
 
     public function uploadFile($foreignKey, $path)
@@ -85,7 +87,7 @@ trait FileTrait
     public function validateFile()
     {
         if (collect($this->fileDiupload)->where('id', null)->count() > 0) {
-            $this->validate([
+            $this->validateWithCustomMessages([
                 'fileDiupload.*.file' => 'required',
                 'fileDiupload.*.judul' => 'required',
             ]);

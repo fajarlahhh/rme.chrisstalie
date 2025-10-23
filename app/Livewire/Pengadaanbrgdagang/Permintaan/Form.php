@@ -10,16 +10,18 @@ use App\Models\Verifikasi;
 use Illuminate\Support\Str;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
-use App\Models\PermintaanPembelian;
+use App\Models\PermintaanPembelian; 
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $dataBarang = [], $dataPengguna = [], $barang = [], $previous;
     public $deskripsi, $data, $verifikator_id;
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'deskripsi' => 'required',
             'barang' => 'required|array',
             'barang.*.id' => 'required',

@@ -9,10 +9,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\Diagnosis;
 use App\Traits\FileTrait;
 use Livewire\WithFileUploads;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
-    use FileTrait, WithFileUploads;
+    use FileTrait, WithFileUploads, CustomValidationTrait;
 
     public $data;
     public $dataIcd10 = [];
@@ -47,7 +48,7 @@ class Form extends Component
 
     public function submit()
     {   
-        $this->validate([
+        $this->validateWithCustomMessages([
             'diagnosis' => 'required|array|min:1',
             'diagnosis.*.icd10' => 'required',
             'diagnosis_banding' => 'required',

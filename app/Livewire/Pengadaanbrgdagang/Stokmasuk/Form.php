@@ -12,9 +12,11 @@ use App\Models\JurnalDetail;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
 use Livewire\Attributes\On;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $dataPembelian = [], $barang = [];
     public $pembelian_id;
 
@@ -55,7 +57,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'pembelian_id' => 'required',
             'barang' => 'required|array',
             'barang.*.qty_masuk' => [

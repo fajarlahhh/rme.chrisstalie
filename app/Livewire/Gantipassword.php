@@ -5,14 +5,16 @@ namespace App\Livewire;
 use App\Models\Pengguna;
 use Livewire\Component;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\CustomValidationTrait;
 
 class Gantipassword extends Component
 {
+    use CustomValidationTrait;
     public $oldPassword, $newPassword;
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'newPassword' => 'required',
             'oldPassword' => ['required', function ($attribute, $value, $fail) {
                 if (!Hash::check($value, auth()->user()->password)) {

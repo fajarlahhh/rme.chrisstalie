@@ -6,15 +6,17 @@ use Livewire\Component;
 use App\Models\Pegawai;
 use Illuminate\Support\Facades\DB;
 use App\Models\UnsurGaji;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous, $unsurGaji = [];
     public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status;
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'nama' => 'required',
             'alamat' => 'required',
             'no_hp' => 'required',

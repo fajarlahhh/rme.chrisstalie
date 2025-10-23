@@ -41,7 +41,7 @@ class Index extends Component
                 ->get()->count(),
             'data' => StokMasuk::with(['pengguna', 'barangSatuan.barang', 'pembelian', 'keluar'])
                 ->where('created_at', 'like', $this->bulan . '%')
-                ->whereHas('barangSatuan.barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
+                ->whereHas('barangSatuan.barang', fn($q) => $q->where('khusus', 0)->where('persediaan', 'Apotek')->where('nama', 'like', '%' . $this->cari . '%'))
                 ->whereHas('pembelian', fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10)

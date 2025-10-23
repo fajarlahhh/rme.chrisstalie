@@ -17,7 +17,7 @@ class BarangClass
         //
     }
 
-    public static function getBarang($persediaan = null)
+    public static function getBarang($persediaan = null, $khusus = null)
     {
         return Barang::select(
             'barang.id as barang_id',
@@ -30,6 +30,7 @@ class BarangClass
             'kode_akun_penjualan_id'
         )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')
             ->with('barangSatuan.satuanKonversi')
+            ->when($khusus, fn($q) => $q->where('khusus', $khusus))
             ->when($persediaan, fn($q) => $q->where('persediaan', $persediaan))
             ->orderBy('barang.nama')->get()->map(fn($q) => [
                 'id' => $q['barang_satuan_id'],
@@ -44,7 +45,7 @@ class BarangClass
             ])->toArray();
     }
 
-    public static function getBarangBySatuanUtama($persediaan = null)
+    public static function getBarangBySatuanUtama($persediaan = null, $khusus = 0)
     {
         return Barang::select(
             'barang.id as barang_id',
@@ -58,6 +59,7 @@ class BarangClass
         )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')
             ->with('barangSatuan.satuanKonversi')
             ->where('barang_satuan.utama', 1)
+            ->where('khusus', $khusus)
             ->when($persediaan, fn($q) => $q->where('persediaan', $persediaan))
             ->orderBy('barang.nama')->get()->map(fn($q) => [
                 'id' => $q['barang_satuan_id'],

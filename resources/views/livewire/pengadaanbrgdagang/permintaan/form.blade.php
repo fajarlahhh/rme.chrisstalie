@@ -37,7 +37,7 @@
                                 @endphp
                                 <template x-for="(row, index) in barang" :key="index">
                                     <tr>
-                                        <td wire:ignore>
+                                        <td>
                                             <div wire:ignore>
                                                 <select class="form-control" x-model="row.id" required
                                                     x-init="$($el).select2({
@@ -169,7 +169,6 @@
                 let id = this.barang[index].id;
                 let selectedBarang = this.dataBarang.find(i => i.id == id);
                 this.barang[index].satuan = '';
-                this.barang[index].barangSatuan = selectedBarang ? selectedBarang.barangSatuan : [];
             },
             init() {},
             syncToLivewire() {

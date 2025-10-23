@@ -7,9 +7,11 @@ use App\Models\Registrasi;
 use Livewire\Attributes\Url;
 use Illuminate\Support\Facades\DB;
 use App\Models\InformedConsent;
+use App\Traits\CustomValidationTrait;
 
 class Index extends Component
 {
+    use CustomValidationTrait;
     #[Url]
     public $id;
     public $registrasi_id, $marker, $catatan = [], $ttd_pasien, $ttd_saksi;
@@ -32,12 +34,12 @@ class Index extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'status' => 'required',
         ]);
 
         if ($this->status == 'menyetujui') {
-            $this->validate([
+            $this->validateWithCustomMessages([
                 'ttd_pasien' => 'required',
                 'ttd_saksi' => 'required',
             ]);

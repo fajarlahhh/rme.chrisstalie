@@ -78,6 +78,7 @@ class Index extends Component
             $pembayaran->total_harga_barang = $this->total_tagihan + $this->diskon;
             $pembayaran->diskon = $this->diskon;
             $pembayaran->total_tagihan = $this->total_tagihan;
+            $pembayaran->bebas = 1;
             $pembayaran->pengguna_id = auth()->id();
             $pembayaran->save();
 

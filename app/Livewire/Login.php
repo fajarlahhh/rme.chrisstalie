@@ -5,13 +5,15 @@ namespace App\Livewire;
 use Livewire\Component;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use App\Traits\CustomValidationTrait;
 
 class Login extends Component
 {
+    use CustomValidationTrait;
     public $uid, $password, $remember;
 
     public function login() {
-        $this->validate([
+        $this->validateWithCustomMessages([
             "uid" => "required|min:3",
             "password" => "required"
         ]);

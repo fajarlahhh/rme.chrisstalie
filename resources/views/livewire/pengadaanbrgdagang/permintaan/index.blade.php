@@ -73,27 +73,27 @@
                                 <table class="table table-bordered fs-11px">
                                     <thead>
                                         <tr>
-                                            <th>Barang</th>
-                                            <th>Satuan</th>
-                                            <th>Qty Permintaan</th>
-                                            <th>Qty Disetujui</th>
+                                            <th class="p-1">Barang</th>
+                                            <th class="p-1">Satuan</th>
+                                            <th class="p-1">Qty Permintaan</th>
+                                            <th class="p-1">Qty Disetujui</th>
                                         </tr>
                                     </thead>
                                     <tbody>
                                         @foreach ($item->permintaanPembelianDetail as $detail)
                                             <tr>
-                                                <td class="text-nowrap w-300px">
+                                                <td class="text-nowrap w-300px p-1">
                                                     {{ $detail->barangSatuan->barang->nama }}</td>
-                                                <td class="text-nowrap w-80px">
+                                                <td class="text-nowrap w-80px p-1">
                                                     @if ($detail->barangSatuan->konversi_satuan)
                                                         {{ $detail->barangSatuan->nama . '<small> (' . $detail->barangSatuan->konversi_satuan . ')</small>' }}
                                                     @else
                                                         {{ $detail->barangSatuan->nama }}
                                                     @endif
                                                 </td>
-                                                <td class="text-nowrap text-end w-80px">{{ $detail->qty_permintaan }}
+                                                <td class="text-nowrap text-end w-80px p-1">{{ $detail->qty_permintaan }}
                                                 </td>
-                                                <td class="text-nowrap text-end w-80px">{{ $detail->qty_disetujui }}
+                                                <td class="text-nowrap text-end w-80px p-1">{{ $detail->qty_disetujui }}
                                                 </td>
                                             </tr>
                                         @endforeach

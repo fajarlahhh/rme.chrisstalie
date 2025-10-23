@@ -6,9 +6,11 @@ use Livewire\Component;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pegawai;
 use App\Models\Nakes;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous, $dataPegawai = [], $pegawai;
     public $nama, $ihs, $nik, $alamat, $no_hp, $dokter = false, $pegawai_id;
 
@@ -30,7 +32,7 @@ class Form extends Component
     public function submit()
     {
         if (!$this->pegawai_id) {
-            $this->validate([
+            $this->validateWithCustomMessages([
                 'nama' => 'required',
                 'nik' => 'required',
                 'alamat' => 'required',

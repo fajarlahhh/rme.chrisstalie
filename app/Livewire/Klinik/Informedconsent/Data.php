@@ -9,10 +9,11 @@ use Livewire\WithPagination;
 use Livewire\WithFileUploads;
 use App\Models\InformedConsent;
 use Illuminate\Support\Facades\Storage;
+use App\Traits\CustomValidationTrait;
 
 class Data extends Component
 {
-    use WithPagination, WithFileUploads;
+    use WithPagination, WithFileUploads, CustomValidationTrait;
 
     #[Url]
     public $cari, $tanggal, $file, $status = 1;
@@ -20,7 +21,7 @@ class Data extends Component
 
     public function submitInformedConsent($id)
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'file' => 'required|file|mimes:jpeg,png,jpg,gif,svg',
         ]);
         $this->dataInformConsent->uploaded_at = now();

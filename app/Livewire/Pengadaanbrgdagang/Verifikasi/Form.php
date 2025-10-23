@@ -9,22 +9,24 @@ use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
 use App\Models\PermintaanPembelian;
 use App\Models\PermintaanPembelianDetail;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $dataBarang = [], $dataPengguna = [], $barang = [], $previous, $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan;
 
     public function submit()
     {
         if ($this->status == 'Disetujui') {
-            $this->validate([
+            $this->validateWithCustomMessages([
                 'status' => 'required',
                 'deskripsi' => 'required',
                 'barang' => 'required|array',
                 'barang.*.qty_disetujui' => 'required|numeric|min:1',
             ]);
         }else{
-            $this->validate([
+            $this->validateWithCustomMessages([
                 'status' => 'required',
                 'catatan' => 'required',
             ]);

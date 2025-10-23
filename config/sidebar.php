@@ -69,7 +69,7 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
-                    "title" => "Jam Kerja",
+                    "title" => "Shift Pegawai",
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
@@ -239,24 +239,40 @@ return [
             "method" => ["Index", "Form"],
             "icon" => "<i class='fas fa-book'></i>"
         ],
-        // [
-        //     "title" => "Penjualan",
-        //     "icon" => "<i class='fas fa-cash-register'></i>",
-        //     "sub_menu" => [
-        //         [
-        //             "title" => "Data",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Bebas",
-        //             "method" => ["Index"],
-        //         ],
-        //         [
-        //             "title" => "Resep",
-        //             "method" => ["Index"],
-        //         ]
-        //     ]
-        // ],
+        [
+            "title" => "Kepegawaian",
+            "icon" => "<i class='fas fa-users'></i>",
+            "urutkan" => false,
+            "sub_menu" => [
+                [
+                    "title" => "Absensi",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Izin",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Tidak Hadir",
+                    "method" => ["Index"],
+                ]
+            ]
+        ],
+        [
+            "title" => "Pengadaan Brg. Lainnya",
+            "icon" => "<i class='fas fa-cubes'></i>",
+            "urutkan" => false,
+            "sub_menu" => [
+                [
+                    "title" => "Alat Dan Bahan",
+                    "method" => ["Index", "Form"],
+                ],
+                [
+                    "title" => "Barang Khusus",
+                    "method" => ["Index", "Form"],
+                ]
+            ]
+        ],
         [
             "icon" => "<i class='fas fa-info-circle'></i>",
             "title" => "Informasi Harga",

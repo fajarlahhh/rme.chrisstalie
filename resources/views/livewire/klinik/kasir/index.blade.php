@@ -14,8 +14,8 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select data-container="body" class="form-control" wire:model.lazy="status">
-                        <option value="1">Belum Proses</option>
-                        <option value="2">Sudah Proses</option>
+                        <option value="1">Belum Bayar</option>
+                        <option value="2">Sudah Bayar</option>
                     </select>&nbsp;
                     @if ($status == 2)
                         <input class="form-control" type="date" wire:model.lazy="tanggal"
@@ -32,7 +32,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Tiket</th>
+                        <th>No. Registrasi</th>
                         <th>RM</th>
                         <th>Nama</th>
                         <th>NIK</th>
@@ -41,6 +41,9 @@
                         <th>Alamat</th>
                         <th>No. Telp.</th>
                         <th>Catatan</th>
+                        @if ($status == 2)
+                            <th>Pembayaran</th>
+                        @endif
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -59,6 +62,16 @@
                             <td>{{ $row->pasien->alamat }}</td>
                             <td>{{ $row->pasien->no_hp }}</td>
                             <td>{{ $row->catatan }}</td>
+                            @if ($status == 2)
+                                <td>No. Nota : <b>{{ $row->pembayaran->id }}</b>
+                                    <br>Metode Bayar :
+                                    <b>{{ $row->pembayaran->metode_bayar }}</b>
+                                    <br>Kasir :
+                                    <b>{{ $row->pembayaran->pengguna->nama }}</b>
+                                    <br>Waktu :
+                                    <b>{{ $row->pembayaran->created_at }}</b>
+                                </td>
+                            @endif
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     @if ($status == 1)

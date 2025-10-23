@@ -6,9 +6,11 @@ use App\Models\Barang;
 use Livewire\Component;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data;
     public $previous;
     public $barang_id;
@@ -22,14 +24,14 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'barang_id' => 'required|numeric',
             'nama' => 'required',
             'harga_jual' => 'required|numeric',
         ]);
 
         if ($this->data->rasio_dari_terkecil != 1) {
-            $this->validate([
+            $this->validateWithCustomMessages([
                 'faktor_konversi' => 'required|numeric',
                 'satuan_konversi_id' => 'required|numeric',
             ]);

@@ -12,9 +12,11 @@ use Illuminate\Support\Facades\DB;
 use App\Models\PermintaanPembelian;
 use App\Models\PermintaanPembelianDetail;
 use App\Models\KodeAkun;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $previous, $dataSupplier = [], $barang = [], $dataKodeAkun = [];
     public $tanggal, $uraian, $jatuh_tempo, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
 
@@ -37,7 +39,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'tanggal' => 'required',
             'uraian' => 'required',
             'supplier_id' => 'required|integer|exists:supplier,id',
@@ -63,6 +65,7 @@ class Form extends Component
             $data->permintaan_pembelian_id = $this->data->id;
             $data->ppn = $this->ppn;
             $data->diskon = $this->diskon;
+            $data->jenis = 'Barang Dagang';
             $data->pengguna_id = auth()->id();
             $data->save();
             $data->pembelianDetail()->delete();
