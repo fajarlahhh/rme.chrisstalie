@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaanbrglainnya\Barangkhusus;
+namespace App\Livewire\Pengadaanbrgdagang\Lainnya\Barangkhusus;
 
 use Livewire\Component;
 use App\Models\KodeAkun;
@@ -162,6 +162,6 @@ class Form extends Component
 
     public function render()
     {
-        return view('livewire.pengadaanbrglainnya.barangkhusus.form');
+        return view('livewire.pengadaanbrgdagang.lainnya.barangkhusus.form');
     }
 }

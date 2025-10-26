@@ -49,8 +49,18 @@ class StokMasuk extends Model
         return $this->belongsTo(Pembelian::class);
     }
 
-    public function jurnal(): HasOne
+    public function jurnalBarangDagang(): HasOne
     {
         return $this->hasOne(Jurnal::class, 'referensi_id')->where('jenis', 'Stok Masuk Barang Dagang');
+    }
+
+    public function jurnalAlatDanBahan(): HasOne
+    {
+        return $this->hasOne(Jurnal::class, 'referensi_id')->where('jenis', 'Stok Masuk Alat dan Bahan');
+    }
+
+    public function jurnalBarangKhusus(): HasOne
+    {
+        return $this->hasOne(Jurnal::class, 'referensi_id')->where('jenis', 'Stok Masuk Barang Khusus');
     }
 }

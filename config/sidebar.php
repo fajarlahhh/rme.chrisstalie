@@ -167,7 +167,21 @@ return [
                     "title" => "Stok Masuk",
                     "urutkan" => false,
                     "method" => ["Index", "Form"],
-                ]
+                ],
+                [
+                    "title" => "Lainnya",
+                    "urutkan" => false,
+                    "sub_menu" => [
+                        [
+                            "title" => "Alat Dan Bahan",
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Barang Khusus",
+                            "method" => ["Index", "Form"],
+                        ]
+                    ]
+                ],
             ]
         ],
         [
@@ -255,21 +269,6 @@ return [
                 [
                     "title" => "Tidak Hadir",
                     "method" => ["Index"],
-                ]
-            ]
-        ],
-        [
-            "title" => "Pengadaan Brg. Lainnya",
-            "icon" => "<i class='fas fa-cubes'></i>",
-            "urutkan" => false,
-            "sub_menu" => [
-                [
-                    "title" => "Alat Dan Bahan",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Barang Khusus",
-                    "method" => ["Index", "Form"],
                 ]
             ]
         ],

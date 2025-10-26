@@ -188,15 +188,16 @@ class Form extends Component
 
             ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
 
-            foreach ($this->alatBahan as $alatBarang) {
-                BarangClass::stokKeluar([
-                    'qty' => $alatBarang['qty'],
-                    'harga' => $alatBarang['biaya'],
-                    'barang_id' => $alatBarang['barang_id'],
-                    'barang_satuan_id' => $alatBarang['barang_satuan_id'],
-                    'rasio_dari_terkecil' => $alatBarang['rasio_dari_terkecil'],
-                ], $pembayaran->id);
-            }
+            BarangClass::stokKeluar(collect($this->alatBahan)->map(function ($q) {
+                return [
+                    'qty' => $q['qty'],
+                    'harga' => $q['biaya'],
+                    'barang_id' => $q['barang_id'],
+                    'barang_satuan_id' => $q['barang_satuan_id'],
+                    'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
+                ];
+            }), $pembayaran->id);
+
             foreach ($this->resep as $resep) {
                 $barang = collect($resep['barang'])->map(function ($q) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);

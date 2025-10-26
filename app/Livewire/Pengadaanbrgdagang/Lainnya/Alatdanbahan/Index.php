@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaanbrglainnya\Alatdanbahan;
+namespace App\Livewire\Pengadaanbrgdagang\Lainnya\Alatdanbahan;
 
 use Livewire\Component;
 use App\Models\StokMasuk;
@@ -26,7 +26,7 @@ class Index extends Component
         DB::transaction(function () use ($id) {
             $data = StokMasuk::find($id);
             if ($data->keluar->count() == 0) {
-                $data->jurnal->delete();
+                $data->jurnalAlatDanBahan->delete();
                 $data->delete();
 
                 if (StokMasuk::where('pembelian_id', $data->pembelian_id)->count() == 0) {
@@ -39,7 +39,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pengadaanbrglainnya.alatdanbahan.index', [
+        return view('livewire.pengadaanbrgdagang.lainnya.alatdanbahan.index', [
             'data' => StokMasuk::with(['pengguna', 'barangSatuan.barang', 'pembelian'])
                 ->where('created_at', 'like', $this->bulan . '%')
                 ->whereHas('pembelian', fn($q) => $q->where('jenis', 'Alat dan Bahan'))

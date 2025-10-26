@@ -2,7 +2,8 @@
     @section('title', 'Barang Khusus')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Pengadaan Barang Lainnya</li>
+        <li class="breadcrumb-item">Pengadaan Barang Dagang</li>
+        <li class="breadcrumb-item">Lainnya</li>
         <li class="breadcrumb-item">Barang Khusus</li>
         <li class="breadcrumb-item active">Tambah</li>
     @endsection

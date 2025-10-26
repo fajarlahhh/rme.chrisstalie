@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengadaanbrglainnya\Barangkhusus;
+namespace App\Livewire\Pengadaanbrgdagang\Lainnya\Barangkhusus;
 
 use Livewire\Component;
 use App\Models\Pembelian;
@@ -26,7 +26,7 @@ class Index extends Component
         DB::transaction(function () use ($id) {
             $data = StokMasuk::find($id);
             if ($data->keluar->count() == 0) {
-                $data->jurnal->delete();
+                $data->jurnalBarangKhusus->delete();
                 $data->delete();
 
                 if (StokMasuk::where('pembelian_id', $data->pembelian_id)->count() == 0) {
@@ -39,7 +39,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pengadaanbrglainnya.barangkhusus.index', [
+        return view('livewire.pengadaanbrgdagang.lainnya.barangkhusus.index', [
             'data' => StokMasuk::with(['pengguna', 'barangSatuan.barang', 'pembelian'])
                 ->where('created_at', 'like', $this->bulan . '%')
                 ->whereHas('pembelian', fn($q) => $q->where('jenis', 'Barang Khusus'))
