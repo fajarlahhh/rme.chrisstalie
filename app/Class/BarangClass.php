@@ -26,6 +26,7 @@ class BarangClass
             'barang_satuan.nama as barang_satuan_nama',
             'barang_satuan.rasio_dari_terkecil',
             'barang_satuan.harga_jual',
+            'persediaan',
             'kode_akun_id',
             'kode_akun_penjualan_id'
         )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')
@@ -40,6 +41,7 @@ class BarangClass
                 'harga' => $q['harga_jual'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'satuan' => $q['barang_satuan_nama'],
+                'persediaan' => $q['persediaan'],
                 'kode_akun_id' => $q['kode_akun_id'],
                 'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
             ])->toArray();

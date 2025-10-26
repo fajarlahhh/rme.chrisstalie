@@ -31,8 +31,9 @@ class Form extends Component
         if ($data->pembayaran_id) {
             abort(404);
         }
-        $this->dataBarang = BarangClass::getBarang('Apotek');
-        $barangKlinik = BarangClass::getBarang('Klinik');
+        $barang = collect(BarangClass::getBarang());
+        $this->dataBarang = $barang->where('persediaan', 'Apotek')->toArray();
+        $barangKlinik = $barang->where('persediaan', 'Klinik')->toArray();
 
         $this->dataMetodeBayar = MetodeBayar::orderBy('nama')->get(['id', 'nama'])->toArray();
 
