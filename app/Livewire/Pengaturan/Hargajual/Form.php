@@ -12,7 +12,7 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data;
-    public $previous;
+    
     public $barang_id;
     public $nama;
     public $harga_jual;
@@ -55,7 +55,7 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('pengaturan/hargajual');
     }
 
     public function updatedBarangId()
@@ -67,7 +67,7 @@ class Form extends Component
     {
         $this->data = $data;
 
-        $this->previous = url()->previous();
+        
         $this->fill($data->toArray());
         $this->dataBarang = Barang::persediaan()->with(['barangSatuanTerkecil'])->orderBy('nama')->get()->toArray();
         if ($data->rasio_dari_terkecil != 1) {

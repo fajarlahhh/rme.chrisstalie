@@ -14,7 +14,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $dataBarang = [], $dataPengguna = [], $barang = [], $previous, $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan;
+    public $dataBarang = [], $dataPengguna = [], $barang = [], $deskripsi, $data, $verifikator_id, $status = 'Ditolak', $catatan;
 
     public function submit()
     {
@@ -51,12 +51,12 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('pengadaanbrgdagang/verifikasi');
     }
 
     public function mount(PermintaanPembelian $data)
     {
-        $this->previous = url()->previous();
+        
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->barang = $data->permintaanPembelianDetail->map(fn($q) => [

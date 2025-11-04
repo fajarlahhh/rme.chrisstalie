@@ -17,7 +17,7 @@ class Form extends Component
     use CustomValidationTrait;
     public $data;
     public $dataBarang = [], $dataKodeAkun = [], $dataAlat = [];
-    public $previous;
+    
     public $nama;
     public $kode_akun_id;
     public $icd_9_cm;
@@ -77,12 +77,12 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('datamaster/tariftindakan');
     }
 
     public function mount(TarifTindakan $data)
     {
-        $this->previous = url()->previous();
+        
         $this->dataBarang = BarangClass::getBarang('klinik');
         $this->dataAlat = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();

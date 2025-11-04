@@ -17,14 +17,14 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $dataSupplier = [], $barang = [], $dataKodeAkun = [];
+    public $data, $dataSupplier = [], $barang = [], $dataKodeAkun = [];
     public $tanggal, $uraian, $jatuh_tempo, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
 
     public function mount(PermintaanPembelian $data)
     {
         $this->data = $data;
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
-        $this->previous = url()->previous();
+        
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
         $this->barang = $this->data->permintaanPembelianDetail->map(fn($q) => [
@@ -104,7 +104,7 @@ class Form extends Component
             // ])->toArray());
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('pengadaanbrgdagang/pembelian');
     }
 
     public function render()

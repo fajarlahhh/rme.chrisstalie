@@ -11,7 +11,7 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data;
-    public $previous;
+    
     public $kode;
     public $nama;
     public $kategori;
@@ -54,12 +54,12 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('datamaster/kodeakun');
     }
 
     public function mount(KodeAkun $data)
     {
-        $this->previous = url()->previous();
+        
         $this->data = $data;
         $this->kode = $this->data->id;
         $this->fill($this->data->toArray());

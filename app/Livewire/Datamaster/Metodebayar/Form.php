@@ -11,7 +11,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $dataKodeAkun = [];
+    public $data, $dataKodeAkun = [];
     public $nama, $kode_akun_id;
 
     public function submit()
@@ -28,12 +28,12 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('datamaster/metodebayar');
     }
 
     public function mount(MetodeBayar $data)
     {
-        $this->previous = url()->previous();
+        
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '111%')->get()->toArray();

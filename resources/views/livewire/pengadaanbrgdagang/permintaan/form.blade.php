@@ -137,8 +137,8 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" class="btn btn-danger" onclick="window.history.back()"
-                    wire:loading.attr="disabled">
+                <button type="button" onclick="window.location.href='pengadaanbrgdagang/permintaan'"
+                    class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>

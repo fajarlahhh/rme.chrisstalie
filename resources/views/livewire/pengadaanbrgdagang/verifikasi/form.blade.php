@@ -68,8 +68,8 @@
                                         <td>
                                             <input type="number" class="form-control w-200px" min="0"
                                                 step="1" min="0" max="{{ $row['qty'] }}"
-                                                wire:model="barang.{{ $index }}.qty_disetujui"
-                                                autocomplete="off" @if ($status == 'Ditolak') disabled @endif>
+                                                wire:model="barang.{{ $index }}.qty_disetujui" autocomplete="off"
+                                                @if ($status == 'Ditolak') disabled @endif>
                                             @error('barang.' . $index . '.qty_disetujui')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -90,15 +90,15 @@
                     </div>
                 @endif
             </div>
-            <div class="panel-footer" >
+            <div class="panel-footer">
                 @role('administrator|supervisor|operator')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
                 @endrole
-                <button type="button" class="btn btn-danger" onclick="window.history.back()"
-                    wire:loading.attr="disabled">
+                <button type="button" onclick="window.location.href='pengadaanbrgdagang/verifikasi'"
+                    class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>

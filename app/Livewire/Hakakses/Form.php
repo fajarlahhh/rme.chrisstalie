@@ -14,7 +14,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $dataRole = [], $pegawaiData = [];
+    public $data, $dataRole = [], $pegawaiData = [];
     public $uid, $nama, $pegawai_id, $password, $role, $hakAkses = [];
 
     public function submit()
@@ -44,7 +44,7 @@ class Form extends Component
             $this->data->syncRoles($this->role);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('hakakses');
     }
 
     public function mount(Pengguna $data)
@@ -53,7 +53,7 @@ class Form extends Component
         if ($data->uid == 'administrator') {
             abort(404);
         }
-        $this->previous = url()->previous();
+        
         $this->dataRole = Role::all()->toArray();
         $this->pegawaiData = Pegawai::aktif()->orderBy('nama')->get()->toArray();
         $this->fill($this->data->toArray());

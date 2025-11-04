@@ -10,7 +10,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous;
+    public $data;
     public $nama, $ihs, $nik, $rm, $jenis_kelamin, $birth_place, $tanggal_lahir, $tanggal_daftar, $alamat, $no_hp;
 
     public function submit()
@@ -36,12 +36,12 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('datamaster/pasien');
     }
 
     public function mount(Pasien $data)
     {
-        $this->previous = url()->previous();
+        
         $this->data = $data;
         $this->rm = $this->data->id;
         $this->fill($this->data->toArray());

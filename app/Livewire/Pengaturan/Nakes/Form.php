@@ -11,7 +11,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $dataPegawai = [], $pegawai;
+    public $data, $dataPegawai = [], $pegawai;
     public $nama, $ihs, $nik, $alamat, $no_hp, $dokter = false, $pegawai_id;
 
     public function updatedPegawaiId($value)
@@ -54,12 +54,12 @@ class Form extends Component
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('pengaturan/nakes');
     }
 
     public function mount(Nakes $data)
     {
-        $this->previous = url()->previous();
+        
         $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());

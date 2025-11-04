@@ -95,7 +95,11 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <button type="button" onclick="window.location.href='pengaturan/nakes'" class="btn btn-danger"
+                    wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Batal
+                </button>
             </div>
         </form>
     </div>

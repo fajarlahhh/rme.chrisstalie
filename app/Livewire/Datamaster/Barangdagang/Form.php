@@ -12,7 +12,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $dataKodeAkun = [], $dataKodeAkunPenjualan = [];
+    public $data, $dataKodeAkun = [], $dataKodeAkunPenjualan = [];
     public $nama;
     public $satuan;
     public $kode_akun_id;
@@ -101,12 +101,12 @@ class Form extends Component
             }
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('datamaster/barangdagang');
     }
 
     public function mount(Barang $data)
     {
-        $this->previous = url()->previous();
+        
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->barangSatuan = $this->data->barangSatuan->sortByDesc('rasio_dari_terkecil')->toArray();

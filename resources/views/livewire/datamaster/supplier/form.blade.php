@@ -12,7 +12,7 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
-            
+
             <h4 class="panel-title">Form</h4>
         </div>
         <form wire:submit.prevent="submit">
@@ -60,7 +60,11 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="{{ $previous }}" class="btn btn-danger" wire:ignore wire:loading.remove >Batal</a>
+                <button type="button" onclick="window.location.href='datamaster/supplier'" class="btn btn-danger"
+                    wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Batal
+                </button>
                 <x-alert />
             </div>
         </form>

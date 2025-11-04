@@ -18,12 +18,12 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $dataBarang = [], $dataSupplier = [], $barang = [], $dataKodeAkun = [];
+    public $data, $dataBarang = [], $dataSupplier = [], $barang = [], $dataKodeAkun = [];
     public $tanggal, $uraian, $jatuh_tempo, $pembayaran = "Jatuh Tempo", $ppn, $diskon, $totalHargaBeli, $supplier_id;
     
     public function mount()
     {
-        $this->previous = url()->previous();
+        
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
         $this->dataBarang = BarangClass::getBarangBySatuanUtama('Apotek', 1);
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
@@ -157,7 +157,7 @@ class Form extends Component
             }
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('pengadaanbrgdagang/lainnya/barangkhusus');
     }
 
     public function render()

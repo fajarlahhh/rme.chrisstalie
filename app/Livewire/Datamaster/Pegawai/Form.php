@@ -11,7 +11,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $unsurGaji = [];
+    public $data, $unsurGaji = [];
     public $nama, $alamat, $no_hp, $tanggal_masuk, $tanggal_lahir, $jenis_kelamin, $nik, $npwp, $no_bpjs, $gaji, $tunjangan, $tunjangan_transport, $tunjangan_bpjs, $office, $satuan_tugas, $status, $upload = false, $panggilan;
 
     public function upload($pegawai)
@@ -93,12 +93,12 @@ class Form extends Component
                 session()->flash('success', 'Berhasil menyimpan data');
             }
         });
-        $this->redirect($this->previous);
+        $this->redirect('datamaster/pegawai');
     }
 
     public function mount(Pegawai $data)
     {
-        $this->previous = url()->previous();
+        
         $this->data = $data;
         $this->fill($this->data->toArray());
         $dataUnsurGaji =  UnsurGaji::all()->map(fn($q) => [

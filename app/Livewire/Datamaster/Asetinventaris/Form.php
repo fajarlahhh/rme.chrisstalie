@@ -17,7 +17,7 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $previous, $dataKodeAkun = [], $dataKodeAkunSumberDana = [];
+    public $data, $dataKodeAkun = [], $dataKodeAkunSumberDana = [];
     public $nama;
     public $tanggal_perolehan;
     public $harga_perolehan;
@@ -136,12 +136,12 @@ class Form extends Component
             session()->flash('cetak', $cetak);
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect($this->previous);
+        $this->redirect('datamaster/asetinventaris');
     }
 
     public function mount(Aset $data)
     {
-        $this->previous = url()->previous();
+        
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '15100')->get()->toArray();

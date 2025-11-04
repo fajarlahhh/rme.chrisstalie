@@ -154,8 +154,8 @@
                                             </td>
                                             <td>
                                                 <input type="date" class="form-control"
-                                                    min="{{ now()->format('Y-m-d') }}" x-model="row.tanggal_kedaluarsa"
-                                                    autocomplete="off" required>
+                                                    min="{{ now()->format('Y-m-d') }}"
+                                                    x-model="row.tanggal_kedaluarsa" autocomplete="off" required>
                                                 @error('barang.' . $index . '.tanggal_kedaluarsa')
                                                     <span class="text-danger">{{ $message }}</span>
                                                 @enderror
@@ -236,8 +236,8 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" class="btn btn-danger" onclick="window.history.back()"
-                    wire:loading.attr="disabled">
+                <button type="button" onclick="window.location.href='pengadaanbrgdagang/lainnya/barangkhusus'"
+                    class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>

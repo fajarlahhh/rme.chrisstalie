@@ -134,8 +134,8 @@
                                                     :value="row.qty" disabled autocomplete="off">
                                             </td>
                                             <td>
-                                                <input type="number" class="form-control" min="0"
-                                                    step="1" x-model="row.harga_beli" @input="hitungTotal()">
+                                                <input type="number" class="form-control" min="0" step="1"
+                                                    x-model="row.harga_beli" @input="hitungTotal()">
                                                 <template x-if="errors && errors[`barang.${index}.harga_beli`]">
                                                     <span class="text-danger"
                                                         x-text="errors[`barang.${index}.harga_beli`]"></span>
@@ -194,8 +194,8 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" class="btn btn-danger" onclick="window.history.back()"
-                    wire:loading.attr="disabled">
+                <button type="button" onclick="window.location.href='pengadaanbrgdagang/pembelian'"
+                    class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>

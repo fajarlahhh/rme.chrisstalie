@@ -331,11 +331,11 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='{{ $previous }}'" class="btn btn-danger"
-                    wire:loading.attr="disabled">
+                <button type="button" onclick="window.location.href='datamaster/tariftindakan'"
+                    class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
-                </button>                
+                </button>
                 <x-alert />
             </div>
         </form>
