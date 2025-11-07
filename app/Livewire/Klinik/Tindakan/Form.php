@@ -35,6 +35,7 @@ class Form extends Component
                 'perawat_id' => $q->perawat_id,
                 'biaya_jasa_dokter' => $q->biaya_jasa_dokter > 0 ? 1 : ($q->dokter_id ? 1 : 0),
                 'biaya_jasa_perawat' => $q->biaya_jasa_perawat > 0 ? 1 : ($q->perawat_id ? 1 : 0),
+                'biaya_alat_barang' => $q->tarifTindakan->biaya_alat_barang,
                 'biaya' => $q->biaya,
             ])->toArray();
         } else {
@@ -49,6 +50,7 @@ class Form extends Component
                 'perawat_id' => null,
                 'biaya_jasa_dokter' => 0,
                 'biaya_jasa_perawat' => 0,
+                'biaya_alat_barang' => 0,
                 'biaya' => 0,
             ];
         }
@@ -62,6 +64,7 @@ class Form extends Component
             'nama' => $q->nama,
             'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
             'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+            'biaya_alat_barang' => $q->biaya_alat_barang,
             'tarif' => $q->tarif
         ])->toArray();
     }
@@ -104,6 +107,7 @@ class Form extends Component
                 'membutuhkan_sitemarking' => $q['membutuhkan_sitemarking'],
                 'biaya_jasa_dokter' => $q['biaya_jasa_dokter'],
                 'biaya_jasa_perawat' => $q['biaya_jasa_perawat'],
+                'biaya_alat_barang' => $q['biaya_alat_barang'],
                 'dokter_id' => $q['dokter_id'],
                 'perawat_id' => $q['perawat_id'] != '' ? $q['perawat_id'] : null,
                 'pengguna_id' => auth()->id(),

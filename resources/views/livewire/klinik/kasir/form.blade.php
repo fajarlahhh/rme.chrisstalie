@@ -31,6 +31,9 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @php
+                            $index = 0;
+                        @endphp
                         <template x-for="(row, index) in tindakan" :key="index">
                             <tr>
                                 <td x-text="index + 1"></td>
@@ -65,6 +68,10 @@
                                             </template>
                                         </select>
                                     </div>
+                                    @error('tindakan.' . $index . '.perawat_id')
+                                        <span class="text-danger">{{ $message }}</span>
+                                        <br>
+                                    @enderror
                                     &nbsp;&nbsp;&nbsp;<small>Catatan : <span x-text="row.catatan"></span></small>
                                     <br>
                                 </td>
@@ -81,6 +88,7 @@
                                 </th>
                                 <th></th>
                             </tr>
+                            @php
                         </template>
                         <tr class="bg-light">
                             <th colspan="5">

@@ -13,6 +13,7 @@ use App\Models\Pembayaran;
 use App\Models\Registrasi;
 use App\Models\MetodeBayar;
 use Illuminate\Support\Str;
+use App\Models\PembayaranDetail;
 use App\Models\TindakanAlatBarang;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -38,6 +39,12 @@ class Form extends Component
 
         $this->dataMetodeBayar = MetodeBayar::orderBy('nama')->get(['id', 'nama'])->toArray();
 
+        $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
+            'id' => $q->id,
+            'dokter' => $q->dokter,
+            'nama' => $q->pegawai ? $q->pegawai->nama : $q->nama,
+        ])->toArray();
+
         $this->tindakan = $data->tindakan->map(function ($q) {
             return [
                 'id' => $q->tarif_tindakan_id,
@@ -54,12 +61,6 @@ class Form extends Component
                 'biaya' => $q->biaya,
             ];
         })->toArray();
-
-        $this->dataNakes = Nakes::with('pegawai')->orderBy('nama')->get()->map(fn($q) => [
-            'id' => $q->id,
-            'dokter' => $q->dokter,
-            'nama' => $q->pegawai ? $q->pegawai->nama : $q->nama,
-        ])->toArray();
 
         $this->resep = collect($data->resepobat)
             ->groupBy('resep')
@@ -87,6 +88,7 @@ class Form extends Component
                 'barang_id' => $barang['barang_id'],
                 'nama' => $barang['nama'],
                 'satuan' => $barang['satuan'],
+                'kode_akun_id' => $barang['kode_akun_penjualan_id'],
                 'qty' => $q->qty,
                 'biaya' => $q->biaya,
                 'barang_satuan_id' => $q->barang_satuan_id,
@@ -100,6 +102,7 @@ class Form extends Component
                 'nama' => $q->alat->nama,
                 'qty' => $q->qty,
                 'biaya' => $q->biaya,
+                'kode_akun_id' => $q->alat->kode_akun_penjualan_id,
             ];
         })->toArray();
     }
@@ -118,7 +121,7 @@ class Form extends Component
             //         $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama'] . '.');
             //     }
             // },
-            'tindakan.*.perawat_id' => 'required',
+            'tindakan.*.perawat_id' => 'nullable|numeric',
             'bahan.*.qty' => [
                 'required',
                 'numeric',
@@ -137,36 +140,36 @@ class Form extends Component
                     }
                 }
             ],
-            'resep.*.barang.*.qty' => [
-                'required',
-                'numeric',
-                'min:1',
-                function ($attribute, $value, $fail) {
-                    $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
-                    $resepIndex = $parts[1] ?? null;
-                    $barangIndex = $parts[3] ?? null;
+            // 'resep.*.barang.*.qty' => [
+            //     'required',
+            //     'numeric',
+            //     'min:1',
+            //     function ($attribute, $value, $fail) {
+            //         $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
+            //         $resepIndex = $parts[1] ?? null;
+            //         $barangIndex = $parts[3] ?? null;
 
-                    if (
-                        !is_numeric($resepIndex) ||
-                        !isset($this->resep[$resepIndex]['barang'][$barangIndex])
-                    ) {
-                        return;
-                    }
-                    $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
+            //         if (
+            //             !is_numeric($resepIndex) ||
+            //             !isset($this->resep[$resepIndex]['barang'][$barangIndex])
+            //         ) {
+            //             return;
+            //         }
+            //         $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
 
-                    $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
-                    if (!$barang) return;
+            //         $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
+            //         if (!$barang) return;
 
-                    $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
-                        ->available()
-                        ->count();
+            //         $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
+            //             ->available()
+            //             ->count();
 
-                    if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
-                        $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
-                        $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
-                    }
-                }
-            ],
+            //         if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
+            //             $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
+            //             $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
+            //         }
+            //     }
+            // ],
         ]);
         DB::transaction(function () {
             $dataTerakhir = Pembayaran::where('created_at', 'like',  date('Y-m') . '%')->orderBy('id', 'desc')->first();
@@ -196,8 +199,29 @@ class Form extends Component
             }
 
             Registrasi::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
-            Tindakan::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
+            $tindakan = Tindakan::with('tarifTindakan')->where('id', $this->data->id)->get();
+            PembayaranDetail::insert(collect($tindakan)->whereNotNull('dokter_id')->map(function ($q) use ($pembayaran) {
+                return [
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => '23000',
+                    'nilai' => $q['biaya_jasa_dokter'] * $q['qty'],
+                ];
+            })->toArray());
 
+            PembayaranDetail::insert(collect($tindakan)->whereNotNull('perawat_id')->map(function ($q) use ($pembayaran) {
+                return [
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => '24000',
+                    'nilai' => $q['biaya_jasa_perawat'] * $q['qty'],
+                ];
+            })->toArray());
+            PembayaranDetail::insert(collect($tindakan)->map(function ($q) use ($pembayaran) {
+                return [
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => $q['tarifTindakan']->kode_akun_id,
+                    'nilai' => ($q['biaya'] - $this->diskon - $q['biaya_alat_barang'] - ($q['dokter_id'] ? $q['biaya_jasa_dokter'] : 0) - ($q['perawat_id'] ? $q['biaya_jasa_perawat'] : 0)) * $q['qty'],
+                ];
+            })->toArray());
             ResepObat::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
 
             BarangClass::stokKeluar(collect($this->bahan)->map(function ($q) {
@@ -209,21 +233,50 @@ class Form extends Component
                     'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 ];
             }), $pembayaran->id);
-
+            PembayaranDetail::insert(collect($this->bahan)->map(function ($q) use ($pembayaran) {
+                return [
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => $q['kode_akun_id'],
+                    'nilai' => $q['biaya'] * $q['qty'],
+                ];
+            })->toArray());
+            PembayaranDetail::insert(collect($this->alat)->map(function ($q) use ($pembayaran) {
+                return [
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => $q['kode_akun_id'],
+                    'nilai' => $q['biaya'] * $q['qty'],
+                ];
+            })->toArray());
+            if ($this->diskon > 0) {
+                PembayaranDetail::insert([
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => '66300',
+                    'nilai' => $this->diskon,
+                ]);
+            }
             foreach ($this->resep as $resep) {
                 $barang = collect($resep['barang'])->map(function ($q) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                     return [
                         'qty' => $q['qty'],
                         'harga' => $q['harga'],
+                        'kode_akun_id' => $brg['kode_akun_penjualan_id'],
                         'barang_id' => $brg['barang_id'],
                         'barang_satuan_id' => $q['id'],
                         'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                     ];
                 })->toArray();
                 BarangClass::stokKeluar($barang, $pembayaran->id);
+                PembayaranDetail::insert(collect($barang)->map(function ($q) use ($pembayaran) {
+                    return [
+                        'pembayaran_id' => $pembayaran->id,
+                        'kode_akun_id' => $q['kode_akun_id'],
+                        'nilai' => $q['harga'] * $q['qty'],
+                    ];
+                })->toArray());
             }
 
+            Tindakan::where('id', $this->data->id)->update(['pembayaran_id' => $pembayaran->id]);
             $data = Registrasi::findOrFail($this->data->id);
             $cetak = view('livewire.klinik.kasir.cetak', [
                 'cetak' => true,
@@ -233,7 +286,7 @@ class Form extends Component
             session()->flash('success', 'Berhasil menyimpan data');
         });
 
-        return redirect()->to('/klinik/kasir'); // pengalihan lebih eksplisit
+        return redirect()->to('/klinik/kasir');
     }
 
     private function jurnalPendapatan($pembayaran, $metodeBayar)
@@ -264,7 +317,7 @@ class Form extends Component
                 'jurnal_id' => $id,
                 'debet' => collect($this->tindakan)->sum('diskon'),
                 'kredit' => 0,
-                'kode_akun_id' => '44100'
+                'kode_akun_id' => '66300'
             ];
         }
         $jurnalDetail[] = [

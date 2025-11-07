@@ -13,6 +13,7 @@ use App\Models\MetodeBayar;
 use Illuminate\Support\Str;
 use App\Models\PenjualanDetail;
 use App\Class\BarangClass;
+use App\Models\PembayaranDetail;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -38,25 +39,25 @@ class Index extends Component
                 'barang' => 'required|array',
                 'barang.*.id' => 'required|distinct',
                 'barang.*.harga' => 'required|numeric',
-                'barang.*.qty' => [
-                    'required',
-                    'numeric',
-                    'min:1',
-                    function ($attribute, $value, $fail) {
-                        $index = explode('.', $attribute)[1];
-                        $barang = $this->barang[$index] ?? null;
-                        if (!$barang) return;
+                // 'barang.*.qty' => [
+                //     'required',
+                //     'numeric',
+                //     'min:1',
+                //     function ($attribute, $value, $fail) {
+                //         $index = explode('.', $attribute)[1];
+                //         $barang = $this->barang[$index] ?? null;
+                //         if (!$barang) return;
 
-                        $barang = collect($this->dataBarang)->firstWhere('id', $barang['id']);
-                        $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
-                            ->available()
-                            ->count();
-                        if (($value * ($barang['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
-                            $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
-                            $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
-                        }
-                    }
-                ],
+                //         $barang = collect($this->dataBarang)->firstWhere('id', $barang['id']);
+                //         $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
+                //             ->available()
+                //             ->count();
+                //         if (($value * ($barang['rasio_dari_terkecil'] ?? 1)) > $stokTersedia) {
+                //             $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
+                //             $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
+                //         }
+                //     }
+                // ],
             ],
         );
 
@@ -78,8 +79,9 @@ class Index extends Component
             $pembayaran->total_harga_barang = $this->total_tagihan + $this->diskon;
             $pembayaran->diskon = $this->diskon;
             $pembayaran->total_tagihan = $this->total_tagihan;
+            $pembayaran->kode_akun_id = $metodeBayar->kode_akun_id;
             $pembayaran->bebas = 1;
-            $pembayaran->pengguna_id = auth()->id();
+            $pembayaran->pengguna_id = auth()->user()->id;
             $pembayaran->save();
 
             $barang = collect($this->barang)->map(function ($q) {
@@ -87,14 +89,29 @@ class Index extends Component
                 return [
                     'qty' => $q['qty'],
                     'harga' => $q['harga'],
+                    'kode_akun_id' => $brg['kode_akun_penjualan_id'],
                     'barang_id' => $brg['barang_id'],
                     'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                 ];
             })->toArray();
+            PembayaranDetail::insert(collect($barang)->map(function ($q) use ($pembayaran) {
+                return [
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => $q['kode_akun_id'],
+                    'nilai' => $q['harga'] * $q['qty'],
+                ];
+            })->toArray());
+            if ($this->diskon > 0) {
+                PembayaranDetail::insert([
+                    'pembayaran_id' => $pembayaran->id,
+                    'kode_akun_id' => '66300',
+                    'nilai' => $this->diskon,
+                ]);
+            }
             BarangClass::stokKeluar($barang, $pembayaran->id);
 
-            $this->jurnalPendapatan($pembayaran, $metodeBayar);
+            // $this->jurnalPendapatan($pembayaran, $metodeBayar);
 
             $cetak = view('livewire.penjualan.cetak', [
                 'cetak' => true,
@@ -129,7 +146,7 @@ class Index extends Component
                 'jurnal_id' => $id,
                 'debet' => $this->diskon,
                 'kredit' => 0,
-                'kode_akun_id' => '44100'
+                'kode_akun_id' => '66300'
             ];
         }
         $jurnalDetail[] = [

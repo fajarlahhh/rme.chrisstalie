@@ -12,6 +12,10 @@ class Registrasi extends Model
     //
     protected $table = 'registrasi';
 
+    protected $fillable = [
+        'pembayaran_id',
+    ];
+
     public function pasien(): BelongsTo
     {
         return $this->belongsTo(Pasien::class);
