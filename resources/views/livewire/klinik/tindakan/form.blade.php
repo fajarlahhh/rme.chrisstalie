@@ -127,13 +127,13 @@
                 @endrole
                 @if (isset($data->tindakan) && $data->tindakan->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='//klinik/resepobat/form/{{ $data->id }}'">
+                        onclick="window.location.href='/klinik/resepobat/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Lanjut Resep Obat
                     </button>
                 @endif
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='//klinik/tindakan'">
+                    onclick="window.location.href='/klinik/tindakan'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
@@ -163,6 +163,7 @@
                         perawat_id: null,
                         biaya_jasa_dokter: 0,
                         biaya_jasa_perawat: 0,
+                        biaya_alat_barang: 0,
                         biaya: 0,
                     });
                 },
@@ -178,11 +179,13 @@
                         row.harga = selected.tarif;
                         row.biaya_jasa_dokter = selected.biaya_jasa_dokter;
                         row.biaya_jasa_perawat = selected.biaya_jasa_perawat;
+                        row.biaya_alat_barang = selected.biaya_alat_barang;
                         row.biaya = selected.tarif;
                     } else {
                         row.harga = null;
                         row.biaya_jasa_dokter = 0;
                         row.biaya_jasa_perawat = 0;
+                        row.biaya_alat_barang = 0;
                         row.biaya = 0;
                     }
                 },

@@ -12,12 +12,13 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $dataKodeAkun = [], $dataKodeAkunPenjualan = [];
+    public $data, $dataKodeAkun = [], $dataKodeAkunPenjualan = [], $dataKodeAkunModal = [];
     public $nama;
     public $satuan;
     public $kode_akun_id;
     public $kfa;
     public $kode_akun_penjualan_id;
+    public $kode_akun_modal_id;
     public $indikasi;
     public $harga;
     public $perlu_resep = 0;
@@ -54,6 +55,7 @@ class Form extends Component
         $this->validateWithCustomMessages([
             'kode_akun_id' => 'required',
             'kode_akun_penjualan_id' => 'required',
+            'kode_akun_modal_id' => 'required',
             'satuan' => 'required',
             'harga' => 'required|numeric',
             'nama' => 'required',
@@ -61,6 +63,7 @@ class Form extends Component
         ], [
             'kode_akun_id.required' => 'Kode akun pembelian wajib dipilih.',
             'kode_akun_penjualan_id.required' => 'Kode akun penjualan wajib dipilih.',
+            'kode_akun_modal_id.required' => 'Kode akun modal wajib dipilih.',
             'satuan.required' => 'Satuan barang wajib diisi.',
             'harga.required' => 'Harga barang wajib diisi.',
             'harga.numeric' => 'Harga barang harus berupa angka.',
@@ -76,6 +79,7 @@ class Form extends Component
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->khusus = $this->khusus;
             $this->data->kode_akun_penjualan_id = $this->kode_akun_penjualan_id;
+            $this->data->kode_akun_modal_id = $this->kode_akun_modal_id;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
@@ -121,6 +125,7 @@ class Form extends Component
             $this->harga = $this->data->barangSatuanTerkecil->harga_jual;
         }
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();
+        $this->dataKodeAkunModal = KodeAkun::detail()->where('parent_id', '50000')->get()->toArray();
         $this->updatedPersediaan();
     }
 

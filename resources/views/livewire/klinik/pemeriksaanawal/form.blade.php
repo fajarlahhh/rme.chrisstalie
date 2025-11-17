@@ -380,13 +380,13 @@
                 @endrole
                 @if (isset($data->pemeriksaanAwal) && $data->pemeriksaanAwal->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='//klinik/diagnosis/form/{{ $data->id }}'">
+                        onclick="window.location.href='/klinik/diagnosis/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Lanjut Diagnosis
                     </button>
                 @endif
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='//klinik/pemeriksaanawal'">
+                    onclick="window.location.href='/klinik/pemeriksaanawal'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
@@ -532,13 +532,13 @@
                 @endrole
                 @if (isset($data->pemeriksaanAwal) && $data->pemeriksaanAwal->count() > 0)
                     <button type="button" class="btn btn-info m-r-3" wire:loading.attr="disabled"
-                        onclick="window.location.href='//klinik/diagnosis/form/{{ $data->id }}'">
+                        onclick="window.location.href='/klinik/diagnosis/form/{{ $data->id }}'">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Lanjut Diagnosis
                     </button>
                 @endif
                 <button type="button" class="btn btn-warning m-r-3" wire:loading.attr="disabled"
-                    onclick="window.location.href='//klinik/pemeriksaanawal'">
+                    onclick="window.location.href='/klinik/pemeriksaanawal'">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>

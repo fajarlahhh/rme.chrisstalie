@@ -97,7 +97,11 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <a href="/pengadaanbrgdagang/stokmasuk" class="btn btn-danger" wire:ignore>Kembali</a>
+                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/stokmasuk'"
+                    class="btn btn-danger" wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Kembali
+                </button>
             </div>
         </form>
     </div>

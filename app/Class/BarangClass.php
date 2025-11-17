@@ -2,10 +2,11 @@
 
 namespace App\Class;
 
-use App\Models\Barang;
 use App\Models\Stok;
+use App\Models\Barang;
 use App\Models\StokKeluar;
 use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class BarangClass
 {
@@ -28,7 +29,8 @@ class BarangClass
             'barang_satuan.harga_jual',
             'persediaan',
             'kode_akun_id',
-            'kode_akun_penjualan_id'
+            'kode_akun_penjualan_id',
+            'kode_akun_modal_id'
         )->leftJoin('barang_satuan', 'barang.id', '=', 'barang_satuan.barang_id')
             ->with('barangSatuan.satuanKonversi')
             ->when($khusus, fn($q) => $q->where('khusus', $khusus))
@@ -44,6 +46,7 @@ class BarangClass
                 'persediaan' => $q['persediaan'],
                 'kode_akun_id' => $q['kode_akun_id'],
                 'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
+                'kode_akun_modal_id' => $q['kode_akun_modal_id'],
             ])->toArray();
     }
 
@@ -76,15 +79,16 @@ class BarangClass
             ])->toArray();
     }
 
-    public static function stokKeluar($barang, $pembayaran)
+    public static function stokKeluar($barang, $pembayaranId, $jenis)
     {
+        $detail = [];
         foreach ($barang as $brg) {
             $stokKeluarId = Str::uuid();
             StokKeluar::insert([
                 'id' => $stokKeluarId,
                 'tanggal' => now(),
                 'qty' => $brg['qty'],
-                'pembayaran_id' => $pembayaran,
+                'pembayaran_id' => $pembayaranId,
                 'barang_id' => $brg['barang_id'],
                 'harga' => $brg['harga'],
                 'pengguna_id' => auth()->id(),
@@ -97,6 +101,32 @@ class BarangClass
                 'tanggal_keluar' => now(),
                 'stok_keluar_id' => $stokKeluarId,
             ]);
+
+            $id = Str::uuid();
+            $hargaBeli = Stok::where('barang_id', $brg['barang_id'])
+                ->where('stok_keluar_id', $stokKeluarId)
+                ->sum('harga_beli');
+
+            $detail[] = [
+                'jurnal_id' => $id,
+                'kode_akun_id' => $brg['kode_akun_id'],
+                'debet' => 0,
+                'kredit' => $hargaBeli,
+            ];
+            $detail[] = [
+                'jurnal_id' => $id,
+                'kode_akun_id' => $brg['kode_akun_modal_id'],
+                'debet' => $hargaBeli,
+                'kredit' => 0,
+            ];
+
+            JurnalClass::insert($id, $jenis, [
+                'tanggal' => now(),
+                'uraian' => 'Modal ' . strtolower($jenis) . ' ' . $pembayaranId,
+                'referensi_id' => $pembayaranId,
+                'pengguna_id' => auth()->id(),
+            ], $detail);
+
         }
     }
 }

@@ -91,10 +91,13 @@ class Barang extends Model
         return $this->belongsTo(KodeAkun::class);
     }
 
-
-
     public function kodeAkunPenjualan(): BelongsTo
     {
         return $this->belongsTo(KodeAkun::class, 'kode_akun_penjualan_id');
+    }
+
+    public function kodeAkunModal(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class, 'kode_akun_modal_id');
     }
 }

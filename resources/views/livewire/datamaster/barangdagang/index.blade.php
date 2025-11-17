@@ -41,7 +41,9 @@
                         <th class="w-10px">No.</th>
                         <th>Nama</th>
                         <th>Satuan</th>
-                        <th>Kategori</th>
+                        <th>Kategori Persediaan</th>
+                        <th>Kategori Penjualan</th>
+                        <th>Kategori Modal</th>
                         <th>KFA</th>
                         <th>Perlu Resep</th>
                         <th>Persediaan</th>
@@ -73,6 +75,8 @@
                                 </table>
                             </td>
                             <td>{{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
+                            <td>{{ $item->kode_akun_penjualan_id }} - {{ $item->kodeAkunPenjualan?->nama }}</td>
+                            <td>{{ $item->kode_akun_modal_id }} - {{ $item->kodeAkunModal?->nama }}</td>
                             <td>{{ $item->kfa }}</td>
                             <td>{{ $item->perlu_resep ? 'Ya' : '' }}</td>
                             <td>{{ $item->persediaan }}</td>

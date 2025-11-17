@@ -143,7 +143,6 @@
                                     <input class="form-control text-end" type="text" disabled
                                         :value="formatNumber((parseInt(cash || 0)) - (total_tagihan || 0))" />
                                 </div>
-
                             </div>
                         </template>
                         <div class="mb-3">
@@ -161,7 +160,10 @@
                         Simpan
                     </button>
                 @endrole
-                <a href="/penjualan/data" class="btn btn-warning">Data</a>
+                <button type="button" onclick="window.location.href='/penjualan/data'" class="btn btn-warning" wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Data
+                </button>
                 <x-alert />
             </div>
         </form>
@@ -205,6 +207,7 @@
                         subtotal: 0,
                         kode_akun_id: '',
                         kode_akun_penjualan_id: '',
+                        kode_akun_modal_id: '',
                     });
                     this.hitungTotal();
                 },
@@ -219,10 +222,12 @@
                         row.harga = selected.harga;
                         row.kode_akun_id = selected.kode_akun_id;
                         row.kode_akun_penjualan_id = selected.kode_akun_penjualan_id;
+                        row.kode_akun_modal_id = selected.kode_akun_modal_id;
                     } else {
                         row.harga = 0;
                         row.kode_akun_id = '';
                         row.kode_akun_penjualan_id = '';
+                        row.kode_akun_modal_id = '';
                     }
                     this.calculateBarang(index);
                 },

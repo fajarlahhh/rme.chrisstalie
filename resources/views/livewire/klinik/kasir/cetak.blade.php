@@ -7,7 +7,9 @@
     <tr>
         <td class="text-nowrap w-50px p-0">Kasir</td>
         <td class="p-0">:
-            {{ $data->pembayaran->pengguna->pegawai ? $data->pembayaran->pengguna->pegawai->nama : $data->pembayaran->pengguna->nama }}
+            {{ $data->pembayaran->pengguna->pegawai
+                ? $data->pembayaran->pengguna->pegawai?->nama
+                : $data->pembayaran->pengguna->nama }}
         </td>
         <td class="p-0 text-end">No. {{ $data->pembayaran->id }}</td>
     </tr>

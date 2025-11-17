@@ -33,6 +33,7 @@
                         <th>Jenis</th>
                         <th>Tanggal</th>
                         <th>Uraian</th>
+                        <th>Total</th>
                         <th>Detail</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -45,8 +46,11 @@
                             <td>{{ $row->jenis }}</td>
                             <td>{{ $row->tanggal }}</td>
                             <td>{{ $row->uraian }}</td>
+                            <td class="text-end p-1 text-nowrap">
+                                {{ number_format($row->jurnalDetail->sum(fn($q) => $q->debet)) }}
+                            </td>
                             <td class="w-400px">
-                                <table class="table-bordered fs-10px">
+                                <table class="table table-bordered fs-10px">
                                     <tr class="bg-gray-100">
                                         <th class="text-nowrap ">Kode Akun</th>
                                         <th class="text-end w-100px p-1">Debet</th>
@@ -63,12 +67,6 @@
                                                 {{ number_format($subRow->kredit) }}</td>
                                         </tr>
                                     @endforeach
-                                    <tr>
-                                        <th>Total</th>
-                                        <th class="text-end p-1  text-nowrap" colspan="2">
-                                            {{ number_format($row->jurnalDetail->sum(fn($q) => $q->debet)) }}
-                                        </th>
-                                    </tr>
                                 </table>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
