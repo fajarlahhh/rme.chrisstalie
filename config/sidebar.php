@@ -305,7 +305,7 @@ return [
         ],
         [
             "icon" => "<i class='fas fa-info-circle'></i>",
-            "title" => "Informasi Harga",
+            "title" => "Informasi Pasien",
             "urutkan" => true,
             "method" => ["Index"],
         ],

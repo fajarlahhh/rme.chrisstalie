@@ -13,6 +13,10 @@ class Diagnosis extends Model
     protected $primaryKey = 'id';
     public $incrementing = false;
 
+    protected $casts = [
+        'icd10' => 'array',
+    ];
+
     public function registrasi()
     {
         return $this->belongsTo(Registrasi::class, 'id');
@@ -26,7 +30,7 @@ class Diagnosis extends Model
     public function getIcd10UraianAttribute()
     {
         // Ambil array kode dari kolom icd10 (JSON)
-        $codes = collect(json_decode($this->icd10, true))
+        $codes = collect($this->icd10)
             ->pluck('icd10')
             ->filter()
             ->unique()

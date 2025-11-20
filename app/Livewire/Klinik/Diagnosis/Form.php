@@ -26,7 +26,7 @@ class Form extends Component
         $this->data = $data;
         if ($data->diagnosis) {
             $this->fill($data->diagnosis->toArray());
-            $this->diagnosis = json_decode($data->diagnosis->icd10, true) ?: [['icd10' => null]];
+            $this->diagnosis = $data->diagnosis->icd10 ?: [['icd10' => null]];
 
             if ($data->diagnosis->file && method_exists($data->diagnosis->file, 'map')) {
                 $this->fileDiupload = $data->diagnosis->file->map(function ($q) {
@@ -61,7 +61,7 @@ class Form extends Component
             $diagnosis->id = $this->data->id;
             $diagnosis->pasien_id = $this->data->pasien_id;
             $diagnosis->pengguna_id = auth()->id();
-            $diagnosis->icd10 = json_encode($this->diagnosis);
+            $diagnosis->icd10 = $this->diagnosis;
             $diagnosis->diagnosis_banding = $this->diagnosis_banding;
             $diagnosis->save();
 

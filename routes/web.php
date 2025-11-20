@@ -60,7 +60,12 @@ Route::middleware(['auth'])->group(function () {
 
     Route::prefix('cari')->group(function () {
         Route::get('pasien', function (Request $req) {
-            return Pasien::where(fn($q) => $q->where('nik', 'like', "%$req->cari%")->orWhere('alamat', 'like', "%$req->cari%")->orWhere('nama', 'like', "%$req->cari%"))->orderBy('nama', 'asc')->get()
+            return Pasien::where(
+                fn($q) => $q
+                    ->where('nik', 'like', "%$req->cari%")
+                    ->orWhere('id', 'like', "%$req->cari%")->orWhere('alamat', 'like', "%$req->cari%")
+                    ->orWhere('nama', 'like', "%$req->cari%")
+            )->orderBy('nama', 'asc')->get()
                 ->map(fn($q) => [
                     'id' => $q->id,
                     'text' => $q->id . ' - ' . $q->nama . ', ' . $q->alamat,

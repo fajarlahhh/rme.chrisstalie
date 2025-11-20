@@ -77,7 +77,7 @@
                                         @endphp
                                         @if ($row->pembayaran)
                                             <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="false" :information="false" :print="false" :permanentDelete="false"
+                                                :edit="true" :information="false" :print="false" :permanentDelete="false"
                                                 :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row" :custom="$custom" :detail="false"

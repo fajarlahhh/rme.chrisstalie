@@ -9,39 +9,7 @@
 
     <h1 class="page-header">Pemeriksaan Awal <small>Input</small></h1>
 
-    <div class="note alert-primary mb-2">
-        <div class="note-content">
-            <h5>Data Pasien</h5>
-            <hr>
-            <table class="w-100">
-                <tr>
-                    <td class="w-200px">No. Registrasi</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->urutan }}</td>
-                </tr>
-                <tr>
-                    <td class="w-200px">No. RM</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien_id }}</td>
-                </tr>
-                <tr>
-                    <td>Nama</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->nama }}</td>
-                </tr>
-                <tr>
-                    <td>Usia</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->umur }} Tahun</td>
-                </tr>
-                <tr>
-                    <td>Jenis Kelamin</td>
-                    <td class="w-10px">:</td>
-                    <td>{{ $data->pasien->jenis_kelamin }}</td>
-                </tr>
-            </table>
-        </div>
-    </div>
+    @include('livewire.klinik.informasipasien', ['data' => $data])
     <ul class="nav nav-tabs" role="tablist">
         <li class="nav-item" role="presentation" wire:ignore>
             <a href="#default-tab-0" data-bs-toggle="tab" class="nav-link active" aria-selected="true" role="tab">
@@ -471,7 +439,7 @@
                                 <div class="col-{{ $opt['col'] }}">
                                     <div class="form-check">
                                         <input class="form-check-input" type="checkbox" id="{{ $opt['id'] }}"
-                                            value="{{ $opt['value'] }}" wire:model="observasi" />
+                                            value="{{ $opt['value'] }}" wire:model="observasi_kualitatif" />
                                         <label class="form-check-label" for="{{ $opt['id'] }}">
                                             {{ $opt['label'] }}
                                         </label>
@@ -479,7 +447,7 @@
                                 </div>
                             @endforeach
                         </div>
-                        @error('observasi')
+                        @error('observasi_kualitatif')
                             <span class="text-danger">{{ $message }}</span>
                         @enderror
                     </div>

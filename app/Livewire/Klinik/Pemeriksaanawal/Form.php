@@ -14,7 +14,7 @@ class Form extends Component
     use CustomValidationTrait;
     public $data;
     public $waktu_tes_detik;
-    public $observasi = [];
+    public $observasi_kualitatif = [];
     public $risiko_jatuh;
     public $catatan;
     public $keluhan_utama;
@@ -59,7 +59,7 @@ class Form extends Component
         }
         if ($data->tug) {
             $this->fill($data->tug->toArray());
-            $this->observasi = is_string($data->tug->observasi_kualitatif)
+            $this->observasi_kualitatif = is_string($data->tug->observasi_kualitatif)
                 ? (json_decode($data->tug->observasi_kualitatif, true) ?? [])
                 : (is_array($data->tug->observasi_kualitatif) ? $data->tug->observasi_kualitatif : []);
         }
@@ -90,7 +90,6 @@ class Form extends Component
             'kesadaran'        => 'required',
             'kesan_sakit'      => 'required',
             'status_gizi'      => 'required',
-            'observasi'        => 'array|nullable',
             'diagnosis_kerja'  => 'required',
             'rencana_awal'     => 'required',
         ];
@@ -147,7 +146,7 @@ class Form extends Component
     {
         $rules = [
             'waktu_tes_detik' => 'required',
-            'observasi'       => 'required|array',
+            'observasi_kualitatif'       => 'required|array',
             'risiko_jatuh'    => 'required',
             'catatan'         => 'required',
         ];
@@ -157,14 +156,13 @@ class Form extends Component
         DB::transaction(function () {
             Tug::where('id', $this->data->id)->delete();
 
-            $tug = new Tug([
-                'id' => $this->data->id,
-                'waktu_tes_detik' => $this->waktu_tes_detik,
-                'observasi_kualitatif' => json_encode($this->observasi),
-                'risiko_jatuh' => is_array($this->risiko_jatuh) ? json_encode($this->risiko_jatuh) : $this->risiko_jatuh,
-                'catatan' => $this->catatan,
-                'pengguna_id' => auth()->id(),
-            ]);
+            $tug = new Tug();
+            $tug->id = $this->data->id;
+            $tug->waktu_tes_detik = $this->waktu_tes_detik;
+            $tug->observasi_kualitatif = json_encode($this->observasi_kualitatif);
+            $tug->risiko_jatuh = is_array($this->risiko_jatuh) ? json_encode($this->risiko_jatuh) : $this->risiko_jatuh;
+            $tug->catatan = $this->catatan;
+            $tug->pengguna_id = auth()->id();
             $tug->save();
 
             session()->flash('success', 'Berhasil menyimpan data TUG');

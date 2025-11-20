@@ -10,6 +10,16 @@ class ResepObat extends Model
     //
     protected $table = 'resep_obat';
 
+    public function pengguna(): BelongsTo
+    {
+        return $this->belongsTo(Pengguna::class);
+    }
+
+    public function barangSatuan(): BelongsTo
+    {
+        return $this->belongsTo(BarangSatuan::class);
+    }
+
     public function registrasi(): BelongsTo
     {
         return $this->belongsTo(Registrasi::class, 'id');

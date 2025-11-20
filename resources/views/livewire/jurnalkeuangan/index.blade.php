@@ -10,9 +10,20 @@
         <!-- begin panel-heading -->
         <div class="panel-heading">
             @role('administrator|supervisor|operator')
-                <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
-                    class="btn btn-primary">
-                    Tambah</a>
+                <div class="btn-group my-n1">
+                    <button type="button" class="btn btn-outline-secondary btn-block" disabled>Tambah</button>
+                    <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle"
+                        data-bs-toggle="dropdown"><b class="caret"></b></button>
+                    <div class="dropdown-menu dropdown-menu-start">
+                        <a class="dropdown-item"
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=Pembelian'">Pembelian</a>
+                        <a class="dropdown-item"
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=Pembayaran Pengadaan'">Pembayaran
+                            Pengadaan</a>
+                        <a class="dropdown-item"
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=Umum'">Umum</a>
+                    </div>
+                </div>
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
