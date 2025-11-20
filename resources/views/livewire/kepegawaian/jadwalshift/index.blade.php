@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Shift Kerja')
+    @section('title', 'Jadwal Shift')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Pengaturan</li>
-        <li class="breadcrumb-item active">Shift Kerja</li>
+        <li class="breadcrumb-item">Kepegawaian</li>
+        <li class="breadcrumb-item active">Jadwal Shift</li>
     @endsection
 
-    <h1 class="page-header">Shift Kerja </h1>
+    <h1 class="page-header">Jadwal Shift </h1>
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <div class="panel-heading">
@@ -23,7 +23,7 @@
                             <input class="form-control w-auto" type="month" autocomplete="off"
                                 wire:model.lazy="bulan" />
                             <select class="form-control w-auto" wire:model.lazy="pegawai_id">
-                                <option value="">Pilih Pegawai</option>
+                                <option value="">-- Pilih Pegawai --</option>
                                 @foreach ($dataPegawai as $pegawai)
                                     <option value="{{ $pegawai['id'] }}">{{ $pegawai['nama'] }}</option>
                                 @endforeach

@@ -9,9 +9,11 @@ use App\Models\KodeAkun;
 use App\Class\JurnalClass;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $dataPegawai = [], $pegawai_id, $pegawai, $unsurGaji = [], $dataKodeAkun = [], $metode_bayar;
     public $tanggal;
 
@@ -34,7 +36,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'pegawai_id' => 'required',
             'tanggal' => 'required',
         ]);

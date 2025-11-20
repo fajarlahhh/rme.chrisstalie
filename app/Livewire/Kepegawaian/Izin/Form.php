@@ -5,9 +5,11 @@ namespace App\Livewire\Kepegawaian\Izin;
 use Livewire\Component;
 use App\Models\Pegawai;
 use App\Models\Absensi;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
+    use CustomValidationTrait;
     public $data, $dataPegawai = [];
     public $pegawai_id, $tanggal, $keterangan, $izin;
 
@@ -18,7 +20,7 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate([
+        $this->validateWithCustomMessages([
             'pegawai_id' => ['required'],
             'tanggal' => ['required'],
             'keterangan' => 'required',

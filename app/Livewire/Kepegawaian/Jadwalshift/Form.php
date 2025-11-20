@@ -1,23 +1,26 @@
 <?php
 
-namespace App\Livewire\Pengaturan\Jadwalshift;
+namespace App\Livewire\Kepegawaian\Jadwalshift;
 
 use App\Models\JadwalShift;
 use App\Models\Pegawai;
 use App\Models\Absensi;
 use Livewire\Component;
 use Illuminate\Support\Carbon;
+use App\Models\Shift;
+use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
-    public $data, $dataPegawai = [], $detail = [];
+    use CustomValidationTrait;
+    public $data, $dataPegawai = [], $detail = [], $dataShift = [];
     public $pegawai_id, $bulan, $keterangan;
 
     public function mount(JadwalShift $data)
     {
         $this->bulan = $this->bulan ?: date('Y-m');
         $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
-
+        $this->dataShift = Shift::orderBy('nama')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->bulan = $this->data->tahun . '-' . $this->data->bulan;
@@ -62,22 +65,27 @@ class Form extends Component
 
     public function submit()
     {
-        $this->validate(
+        $this->validateWithCustomMessages(
             [
                 'pegawai_id' => 'required',
+                'bulan' => 'required',
             ]
         );
+        
         foreach (
-            collect($this->detail)->where('masuk', true)->map(fn($q) => [
-                'id' => $q['tanggal'] . '-' . $this->pegawai_id,
-                'pegawai_id' => $this->pegawai_id,
-                'tanggal' => $q['tanggal'],
-                'jam_masuk' => $q['jam_masuk'],
-                'jam_pulang' => $q['jam_pulang'],
-                'shift' => 1,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ])->toArray() as $q
+            collect($this->detail)->where('masuk', true)->map(function ($q) {
+                $shift = collect($this->dataShift)->where('id', $q['shift_id'])->first();
+                return [
+                    'id' => $q['tanggal'] . '-' . $this->pegawai_id,
+                    'pegawai_id' => $this->pegawai_id,
+                    'tanggal' => $q['tanggal'],
+                    'jam_masuk' => $shift['jam_masuk'],
+                    'jam_pulang' => $shift['jam_pulang'],
+                    'shift' => 1,
+                    'created_at' => now(),
+                    'updated_at' => now(),
+                ];
+            })->toArray() as $q
         ) {
             if (Absensi::where('id', $q['id'])->exists()) {
                 Absensi::where('id', $q['id'])->update([
@@ -90,11 +98,11 @@ class Form extends Component
             }
         }
         session()->flash('success', 'Berhasil menyimpan data');
-        $this->redirect('/pengaturan/jadwalshift');
+        $this->redirect('/kepegawaian/jadwalshift');
     }
 
     public function render()
     {
-        return view('livewire.pengaturan.jadwalshift.form');
+        return view('livewire.kepegawaian.jadwalshift.form');
     }
 }

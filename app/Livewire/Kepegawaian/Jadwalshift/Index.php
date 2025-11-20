@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Pengaturan\Jadwalshift;
+namespace App\Livewire\Kepegawaian\Jadwalshift;
 
 use Livewire\Component;
 use App\Models\Absensi;
@@ -18,7 +18,7 @@ class Index extends Component
     public function mount()
     {
         $this->bulan = $this->bulan ?: date('Y-m');
-        $this->dataPegawai = Pegawai::all()->toArray();
+        $this->dataPegawai = Pegawai::orderBy('nama')->get()->toArray();
     }
 
     public function updated()
@@ -39,10 +39,10 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.pengaturan.jadwalshift.index', [
+        return view('livewire.kepegawaian.jadwalshift.index', [
             'data' => $this->pegawai_id ? Absensi::with(['pegawai'])->whereNotNull('shift')
                 ->where('pegawai_id', $this->pegawai_id)
-                ->where('tanggal', 'like', $this->bulan . '%')->orderBy('tanggal', 'asc')->get() : collect([]),
+                ->where('tanggal', 'like', $this->bulan . '%')->orderBy('tanggal', 'asc')->paginate(10) : collect([]),
         ]);
     }
 }

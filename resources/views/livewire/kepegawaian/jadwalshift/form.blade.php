@@ -1,8 +1,8 @@
-<div x-data="penjualanForm()" x-init="init()" x-ref="alpineRoot">
+<div>
     @section('title', 'Jadwal Shift')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item">Pengaturan</li>
+        <li class="breadcrumb-item">Kepegawaian</li>
         <li class="breadcrumb-item">Jadwal Shift</li>
         <li class="breadcrumb-item active">Tambah</li>
     @endsection
@@ -76,15 +76,12 @@
                                             </p>
                                             <template x-if="isChecked">
                                                 <div>
-                                                    <input type="time" class="form-control"
-                                                        wire:model="detail.{{ $i }}.jam_masuk"
-                                                        x-model="$wire.detail[{{ $i }}].jam_masuk" required>
-                                                    <br>
-                                                    s/d
-                                                    <input type="time" class="form-control"
-                                                        wire:model="detail.{{ $i }}.jam_pulang"
-                                                        x-model="$wire.detail[{{ $i }}].jam_pulang"
-                                                        required>
+                                                    <select class="form-control" wire:model="detail.{{ $i }}.shift_id">
+                                                        <option value="">-- Pilih Shift --</option>
+                                                        @foreach ($dataShift as $row)
+                                                            <option value="{{ $row['id'] }}">{{ $row['nama'] }} ({{ $row['jam_masuk'] }} s/d {{ $row['jam_pulang'] }})</option>
+                                                        @endforeach
+                                                    </select>
                                                 </div>
                                             </template>
                                         </div>

@@ -64,16 +64,11 @@ return [
             "urutkan" => true,
             "sub_menu" => [
                 [
-                    "title" => "Jadwal Shift",
+                    "title" => "Shift",
                     "method" => ["Index", "Form"],
                 ],
                 [
                     "title" => "Harga Jual",
-                    "urutkan" => true,
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Shift Pegawai",
                     "urutkan" => true,
                     "method" => ["Index", "Form"],
                 ],
@@ -234,6 +229,10 @@ return [
             "icon" => "<i class='fas fa-users'></i>",
             "urutkan" => true,
             "sub_menu" => [
+                [
+                    "title" => "Jadwal Shift",
+                    "method" => ["Index", "Form"],
+                ],
                 [
                     "title" => "Absensi",
                     "method" => ["Index"],
