@@ -132,6 +132,7 @@ class Form extends Component
                         'id' => Str::uuid(),
                         'barang_id' => $value['id'],
                         'no_batch' => $value['no_batch'],
+                        'pembelian_id' => $this->pembelian_id,
                         'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                         'stok_masuk_id' => $id,
                         'tanggal_masuk' => now(),

@@ -151,13 +151,20 @@ class Index extends Component
                 'debet' =>  $q['debet'],
                 'kredit' => $q['kredit'],
             ];
-        })->all());
+        })->toArray());
         JurnalClass::insert($id, 'Penjualan Barang Bebas', [
             'tanggal' => now(),
             'uraian' => 'Penjualan Barang Bebas ' . $pembayaran->id,
             'referensi_id' => $pembayaran->id,
             'pengguna_id' => auth()->id(),
-        ], $jurnalDetail);
+        ], collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
+            return [
+                'jurnal_id' => $q->first()['jurnal_id'],
+                'debet' => $q->sum('debet'),
+                'kredit' => $q->sum('kredit'),
+                'kode_akun_id' => $q->first()['kode_akun_id'],
+            ];
+        })->toArray());
     }
 
     public function mount()

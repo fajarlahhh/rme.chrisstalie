@@ -43,4 +43,14 @@ class Pembelian extends Model
     {
         return $this->hasOne(Jurnal::class, 'referensi_id')->where('jenis', 'Pembelian Barang Dagang');
     }
+
+    public function stok(): HasMany
+    {
+        return $this->hasMany(Stok::class);
+    }
+
+    public function stokKeluar(): HasMany
+    {
+        return $this->hasMany(Stok::class)->whereNotNull('stok_keluar_id');
+    }
 }

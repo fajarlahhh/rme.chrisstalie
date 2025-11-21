@@ -6,6 +6,7 @@ use Livewire\Component;
 use App\Models\StokMasuk;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
+use App\Models\Jurnal;
 use Illuminate\Support\Facades\DB;
 use App\Models\Pembelian;
 
@@ -29,29 +30,17 @@ class Index extends Component
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
-            $data = StokMasuk::find($id);
-            if ($data->keluar->count() == 0) {
-                $data->jurnalAlatDanBahan->delete();
-                $data->delete();
-
-                if (StokMasuk::where('pembelian_id', $data->pembelian_id)->count() == 0) {
-                    Pembelian::find($data->pembelian_id)->delete();
-                }
-                session()->flash('success', 'Berhasil menghapus data');
-            }
+            StokMasuk::where('pembelian_id', $id)->delete();
+            Jurnal::where('referensi_id', $id)->where('jenis', 'Stok Masuk Alat dan Bahan')->delete();
+            Pembelian::find($id)->delete();
         });
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()
     {
         return view('livewire.pengadaanbrgdagang.lainnya.alatdanbahan.index', [
-            'data' => StokMasuk::with(['pengguna', 'barangSatuan.barang', 'pembelian'])
-                ->where('created_at', 'like', $this->bulan . '%')
-                ->whereHas('pembelian', fn($q) => $q->where('jenis', 'Alat dan Bahan'))
-                ->where(fn($q) => $q
-                    ->whereHas('barangSatuan.barang', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                    ->orWhereHas('pembelian', fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%')))
-                ->orderBy('created_at', 'desc')
+            'data' => Pembelian::where('jenis', 'Alat dan Bahan')->with(['pembelianDetail.barangSatuan.barang', 'pengguna'])
                 ->paginate(10)
         ]);
     }

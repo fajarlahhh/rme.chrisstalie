@@ -307,7 +307,7 @@ class Form extends Component
                     //Pendapatan Penjualan Barang
                 }
             }
-            
+
             // Stok keluar & detail bahan/alat diinsert batch
             $hppBahan = BarangClass::stokKeluar(collect($this->bahan)->map(function ($q) {
                 return [
@@ -359,7 +359,14 @@ class Form extends Component
             'uraian' => 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
             'referensi_id' => $pembayaran->id,
             'pengguna_id' => auth()->id(),
-        ], $jurnalDetail);
+        ], collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
+            return [
+                'jurnal_id' => $q->first()['jurnal_id'],
+                'debet' => $q->sum('debet'),
+                'kredit' => $q->sum('kredit'),
+                'kode_akun_id' => $q->first()['kode_akun_id'],
+            ];
+        })->toArray());
     }
 
     public function render()

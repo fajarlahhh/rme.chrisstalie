@@ -32,12 +32,10 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Tanggal</th>
-                        <th>Barang</th>
-                        <th>Qty</th>
-                        <th>Satuan</th>
-                        <th>No. Batch</th>
-                        <th>Tanggal Kedaluarsa</th>
-                        <th>Pembelian</th>
+                        <th>Uraian</th>
+                        <th>Supplier</th>
+                        <th>Pembayaran</th>
+                        <th class="w-600px">Detail</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -46,25 +44,49 @@
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
                             <td>{{ $row->created_at }}</td>
-                            <td>{{ $row->barangSatuan->barang->nama }}</td>
-                            <td>{{ $row->qty }}</td>
-                            <td>{{ $row->barangSatuan->nama }}</td>
-                            <td>{{ $row->no_batch }}</td>
-                            <td>{{ $row->tanggal_kedaluarsa }}</td>
+                            <td>{{ $row->uraian }}</td>
+                            <td>{{ $row->supplier?->nama }}</td>
+                            <td>{!! $row->pembayaran == 'Jatuh Tempo'
+                                ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . '</span>'
+                                : '<span class="badge bg-success">Lunas</span>' !!}
+                            </td>
                             <td>
-                                <small>
-                                    <ul>
-                                        <li><strong>{{ $row->pembelian->uraian }}</strong></li>
-                                        <li>Supplier : {{ $row->pembelian->supplier?->nama }}</li>
-                                        <li>Tanggal : {{ $row->pembelian->tanggal }}</li>
-                                    </ul>
-                                </small>
+                                <table class="table table-bordered fs-11px">
+                                    <thead>
+                                        <tr>
+                                            <th>Barang</th>
+                                            <th>Satuan</th>
+                                            <th>Qty</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @foreach ($row->pembelianDetail as $detail)
+                                            <tr>
+                                                <td class="text-nowrap w-300px">
+                                                    {{ $detail->barangSatuan->barang->nama }}</td>
+                                                <td class="text-nowrap w-80px">
+                                                    @if ($detail->barangSatuan->konversi_satuan)
+                                                        {{ $detail->barangSatuan->nama . '<small> (' . $detail->barangSatuan->konversi_satuan . ')</small>' }}
+                                                    @else
+                                                        {{ $detail->barangSatuan->nama }}
+                                                    @endif
+                                                </td>
+                                                <td class="text-nowrap text-end w-80px">
+                                                    {{ $detail->qty }}
+                                                </td>
+                                            </tr>
+                                        @endforeach
+                                    </tbody>
+                                </table>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($row->keluar->count() == 0)
+                                    @if ($row->stokKeluar->count() == 0)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @else
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @endif
                                 @endrole
                             </td>
