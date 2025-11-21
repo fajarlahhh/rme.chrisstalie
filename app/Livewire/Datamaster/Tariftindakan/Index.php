@@ -3,11 +3,10 @@
 namespace App\Livewire\Datamaster\Tariftindakan;
 
 use Livewire\Component;
-use App\Models\KodeAkun;
+use App\Models\TarifTindakan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
-use App\Models\TarifTindakan;
-use Illuminate\Support\Facades\DB;
+use App\Models\KodeAkun;
 
 class Index extends Component
 {
@@ -44,8 +43,8 @@ class Index extends Component
                 'pengguna',
                 'kodeAkun',
                 'tarifTindakanAlatBarang',
-            ])->select('*', DB::raw('(select count(*) from tarif_tindakan_alat_barang where aset_id is null and barang_satuan_id is null and tarif_tindakan_id = tarif_tindakan.id) as masalah'))
-                ->when($this->kode_akun_id, function ($q) {
+            ])
+                ->when($this->kode_akun_id, function($q) {
                     $q->where('kode_akun_id', $this->kode_akun_id);
                 })
                 ->where(fn($q) => $q

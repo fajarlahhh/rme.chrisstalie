@@ -68,7 +68,6 @@
                                         $item->biaya_alat_barang,
                                 ) }}
                             </th>
-                            <td class="text-end">{!! $item->masalah == 0 ? '' : '<span class="badge bg-warning">Perlu Update</span>' !!}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="true"
