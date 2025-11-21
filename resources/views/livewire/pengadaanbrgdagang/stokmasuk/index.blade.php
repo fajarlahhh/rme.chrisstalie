@@ -66,6 +66,9 @@
                                     @if ($row->keluar->count() == 0)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @else
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @endif
                                 @endrole
                             </td>

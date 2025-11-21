@@ -4,15 +4,17 @@ namespace App\Livewire\Pengadaanbrgdagang\Pembelian;
 
 use App\Models\Jurnal;
 use Livewire\Component;
+use App\Models\KodeAkun;
 use App\Models\Supplier;
 use App\Models\Pembelian;
+use App\Class\BarangClass;
+use App\Class\JurnalClass;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Models\PermintaanPembelian;
-use App\Models\PermintaanPembelianDetail;
-use App\Models\KodeAkun;
 use App\Traits\CustomValidationTrait;
+use App\Models\PermintaanPembelianDetail;
 
 class Form extends Component
 {
@@ -24,7 +26,7 @@ class Form extends Component
     {
         $this->data = $data;
         $this->tanggal = $this->tanggal ?: date('Y-m-d');
-        
+
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
         $this->barang = $this->data->permintaanPembelianDetail->map(fn($q) => [
@@ -39,6 +41,7 @@ class Form extends Component
 
     public function submit()
     {
+
         $this->validateWithCustomMessages([
             'tanggal' => 'required',
             'uraian' => 'required',
@@ -77,31 +80,21 @@ class Form extends Component
                 'pembelian_id' => $data->id,
             ])->toArray());
 
+            JurnalClass::pembelianPersediaan([
+                'id' => $data->id,
+                'tanggal' => $this->tanggal,
+                'uraian' => $this->uraian,
+                'referensi_id' => $data->id,
+                'pengguna_id' => auth()->id(),
+                'ppn' => $this->ppn,
+                'diskon' => $this->diskon,
+                'kode_akun_id' => $data->kode_akun_id,
+            ], collect([[
+                'kode_akun_id' => '11340',
+                'qty' => collect($this->barang)->sum(fn($q) => $q['qty']),
+                'harga_beli' => collect($this->barang)->sum(fn($q) => $q['harga_beli']),
+            ]]), 'Pembelian Barang Dagang');
 
-            // $id = Str::uuid();
-
-            // $jurnal = new Jurnal();
-            // $jurnal->id = $id;
-            // $jurnal->jenis = 'Pembelian Barang Dagang';
-            // $jurnal->tanggal = $this->tanggal;
-            // $jurnal->uraian = $this->uraian;
-            // $jurnal->referensi_id = $data->id;
-            // $jurnal->pengguna_id = auth()->id();
-            // $jurnal->save();
-
-            // $jurnal->jurnalDetail()->delete();
-            // $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
-            //     'jurnal_id' => $id,
-            //     'debet' => 0,
-            //     'kredit' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
-            //     'kode_akun_id' => $this->pembayaran == "Jatuh Tempo" ? '21110' : $this->pembayaran
-            // ])->toArray());
-            // $jurnal->jurnalDetail()->insert(collect($this->barang)->map(fn($q, $index) => [
-            //     'jurnal_id' => $id,
-            //     'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
-            //     'kredit' => 0,
-            //     'kode_akun_id' => '11420'
-            // ])->toArray());
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect('/pengadaanbrgdagang/pembelian');

@@ -22,11 +22,10 @@
                     $($el).on('change', function(e) {
                         $wire.set('pembelian_id', e.target.value);
                     });" wire:model="pembelian_id">
-                        <option selected value="" hidden>-- Tidak Ada Permintaan Pembelian --</option>
+                        <option selected value="" hidden>-- Cari Data Pembelian --</option>
                         @foreach ($dataPembelian as $row)
                             <option value="{{ $row['id'] }}">
-                                {{ $row['tanggal'] }} - No. Nota/Faktur :{{ $row['uraian'] }}, Supplier :
-                                {{ $row['supplier']['nama'] }}
+                                {{ $row['tanggal'] }} - {{ $row['uraian'] }}, Supplier : 2{{ $row['supplier']['nama'] }}
                             </option>
                         @endforeach
                     </select>

@@ -7,11 +7,12 @@ use App\Models\Jurnal;
 use Livewire\Component;
 use App\Models\Pembelian;
 use App\Models\StokMasuk;
+use App\Class\JurnalClass;
 use Illuminate\Support\Str;
+use Livewire\Attributes\On;
 use App\Models\JurnalDetail;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
-use Livewire\Attributes\On;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -107,11 +108,8 @@ class Form extends Component
             $stokMasuk = [];
             $stok = [];
 
-            $jurnal = [];
-            $jurnalDetail = [];
             foreach ($this->barang as $key => $value) {
                 $id = Str::uuid();
-                $idJurnal = Str::uuid();
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk[] = [
                         'id' => $id,
@@ -126,56 +124,38 @@ class Form extends Component
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
-                }
-                for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty_masuk']; $i++) {
-                    $stok[] = [
-                        'id' => Str::uuid(),
-                        'barang_id' => $value['id'],
-                        'no_batch' => $value['no_batch'],
-                        'pembelian_id' => $this->pembelian_id,
-                        'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
-                        'stok_masuk_id' => $id,
-                        'tanggal_masuk' => now(),
-                        'harga_beli' => $value['harga_beli'],
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
-                }
-                $pembelian = Pembelian::find($this->pembelian_id);
-                $jurnal[] = [
-                    'id' => $idJurnal,
-                    'jenis' => 'Stok Masuk Barang Dagang',
-                    'tanggal' => now(),
-                    'uraian' => 'Stok Masuk Barang Dagang ' . $value['nama'],
-                    'referensi_id' => $id,
-                    'pengguna_id' => auth()->id(),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-                $jurnalDetail = [
-                    [
-                        'jurnal_id' => $idJurnal,
-                        'debet' => 0,
-                        'kredit' => $value['harga_beli'] * $value['qty_masuk'],
-                        'kode_akun_id' => $pembelian->kode_akun_id,
-                    ],
-                    [
-                        'jurnal_id' => $idJurnal,
-                        'debet' => $value['harga_beli'] * $value['qty_masuk'],
-                        'kredit' => 0,
+                    for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty_masuk']; $i++) {
+                        $stok[] = [
+                            'id' => Str::uuid(),
+                            'barang_id' => $value['id'],
+                            'no_batch' => $value['no_batch'],
+                            'pembelian_id' => $this->pembelian_id,
+                            'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
+                            'stok_masuk_id' => $id,
+                            'tanggal_masuk' => now(),
+                            'harga_beli' => $value['harga_beli'],
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    }
+                    JurnalClass::pembelianPersediaan([
+                        'id' => $id,
+                        'tanggal' => now(),
+                        'uraian' => 'Stok Masuk Barang Dagang ' . collect($this->dataPembelian)->where('id', $this->pembelian_id)->first()['uraian'],
+                        'referensi_id' => $this->pembelian_id,
+                        'kode_akun_id' => '11340',
+                        'pengguna_id' => auth()->id(),
+                    ], collect([[
                         'kode_akun_id' => $value['kode_akun_id'],
-                    ]
-                ];
+                        'qty' => $value['qty_masuk'],
+                        'harga_beli' => $value['harga_beli'],
+                    ]]), 'Stok Masuk Barang Dagang');
+                }
             }
             StokMasuk::insert($stokMasuk);
             foreach (array_chunk($stok, 1000) as $chunk) {
                 Stok::insert($chunk);
             }
-            Jurnal::insert($jurnal);
-            foreach (array_chunk($jurnalDetail, 1000) as $chunk) {
-                JurnalDetail::insert($chunk);
-            }
-
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect('/pengadaanbrgdagang/stokmasuk');

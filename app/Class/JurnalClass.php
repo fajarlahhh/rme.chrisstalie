@@ -51,29 +51,33 @@ class JurnalClass
         }
 
         //PPN Masukan
-        $jurnalDetail[] = [
-            'jurnal_id' => $id,
-            'debet' => $data->ppn,
-            'kredit' => 0,
-            'kode_akun_id' => '11400'
-        ];
-
-        //Diskon
-        if ($data->diskon > 0) {
+        if (isset($data['ppn'])) {
             $jurnalDetail[] = [
                 'jurnal_id' => $id,
-                'debet' => 0,
-                'kredit' => $data->diskon,
-                'kode_akun_id' => '45000'
+                'debet' => $data['ppn'],
+                'kredit' => 0,
+                'kode_akun_id' => '11400'
             ];
+        }
+
+        //Diskon
+        if (isset($data['diskon'])) {
+            if ($data['diskon'] > 0) {
+                $jurnalDetail[] = [
+                    'jurnal_id' => $id,
+                    'debet' => 0,
+                    'kredit' => $data['diskon'],
+                    'kode_akun_id' => '45000'
+                ];
+            }
         }
 
         //Jenis Bayar
         $jurnalDetail[] = [
             'jurnal_id' => $id,
             'debet' => 0,
-            'kredit' => collect($barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - $data->diskon + $data->ppn,
-            'kode_akun_id' => $data->kode_akun_id
+            'kredit' => collect($barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - (isset($data['diskon']) ? $data['diskon'] : 0) + (isset($data['ppn']) ? $data['ppn'] : 0),
+            'kode_akun_id' => $data['kode_akun_id']
         ];
 
         self::insert($id, $jenis, [
