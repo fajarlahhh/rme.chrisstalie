@@ -2,13 +2,16 @@
 
 namespace App\Livewire\Pengadaanbrgdagang\Lainnya\Alatdanbahan;
 
+use App\Models\Stok;
 use Livewire\Component;
 use App\Class\StokClass;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
 use App\Models\Pembelian;
+use App\Models\StokMasuk;
 use App\Class\BarangClass;
 use App\Class\JurnalClass;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -68,7 +71,8 @@ class Form extends Component
                     'pembelian_id' => $pembelian->id,
                 ];
             })->toArray());
-
+            
+            $stok = [];
             foreach (
                 collect($this->barang)->map(function ($q) use ($pembelian) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
@@ -86,18 +90,37 @@ class Form extends Component
                     ];
                 })->toArray() as $key => $value
             ) {
-                if ($value['qty'] > 0) {
-                    StokClass::insert([
-                        'qty' => $value['qty'],
-                        'no_batch' => $value['no_batch'],
-                        'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
-                        'barang_id' => $value['barang_id'],
-                        'pembelian_id' => $pembelian->id,
-                        'barang_satuan_id' => $value['barang_satuan_id'],
-                        'rasio_dari_terkecil' => $value['rasio_dari_terkecil'],
-                        'harga_beli' => $value['harga_beli'],
-                    ]);
+                if ($value['qty'] > 0) {                    
+                    $stokMasuk = new StokMasuk();
+                    $stokMasuk->qty = $value['qty'];
+                    $stokMasuk->no_batch = $value['no_batch'];
+                    $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
+                    $stokMasuk->barang_id = $value['barang_id'];
+                    $stokMasuk->pembelian_id = $value['pembelian_id'];
+                    $stokMasuk->barang_satuan_id = $value['barang_satuan_id'];
+                    $stokMasuk->rasio_dari_terkecil = $value['rasio_dari_terkecil'];
+                    $stokMasuk->pengguna_id = auth()->id();
+                    $stokMasuk->save();
+                    
+                    for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty']; $i++) {
+                        $stok[] = [
+                            'id' => Str::uuid(),
+                            'pembelian_id' => $value['pembelian_id'],
+                            'barang_id' => $value['barang_id'],
+                            'no_batch' => $value['no_batch'],
+                            'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
+                            'stok_masuk_id' => $stokMasuk->id,
+                            'tanggal_masuk' => now(),
+                            'harga_beli' => $value['harga_beli'],
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ];
+                    }                    
                 }
+            }
+
+            foreach (array_chunk($stok, 2000) as $chunk) {
+                Stok::insert($chunk);
             }
 
             $detail = collect($this->barang)->map(function ($q) use ($pembelian) {
@@ -121,8 +144,8 @@ class Form extends Component
             ];
             $detail[] = [
                 'kode_akun_id' => '11400',
-                'debet' => 0,
-                'kredit' => $this->ppn,
+                'debet' => $this->ppn,
+                'kredit' => 0,
             ];
             $detail[] = [
                 'kode_akun_id' => '45000',
