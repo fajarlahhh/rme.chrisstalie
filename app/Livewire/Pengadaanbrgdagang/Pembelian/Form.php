@@ -80,19 +80,20 @@ class Form extends Component
                 'pembelian_id' => $data->id,
             ])->toArray());
 
-            JurnalClass::pembelianPersediaan([
-                'jenis' => 'Pembelian Barang Dagang',
-                'tanggal' => $this->tanggal,
-                'uraian' => $this->uraian,
-                'referensi_id' => $data->id,
-                'ppn' => $this->ppn,
-                'diskon' => $this->diskon,
-                'kode_akun_id' => $data->kode_akun_id,
-            ], [[
-                'kode_akun_id' => '11340',
-                'qty' => collect($this->barang)->sum(fn($q) => $q['qty']),
-                'harga_beli' => collect($this->barang)->sum(fn($q) => $q['harga_beli']),
-            ]]);
+            JurnalClass::pembelianPersediaan(
+                jenis: 'Pembelian Barang Dagang',
+                tanggal: $this->tanggal,
+                uraian: $this->uraian,
+                ppn: $this->ppn,
+                diskon: $this->diskon,
+                kode_akun_id: $data->kode_akun_id,
+                referensi_id: $data->id,
+                barang: collect($this->barang)->map(fn($q) => [
+                    'kode_akun_id' => '11340',
+                    'qty' => $q['qty'],
+                    'harga_beli' => $q['harga_beli'],
+                ])->toArray()
+            );
 
             session()->flash('success', 'Berhasil menyimpan data');
         });

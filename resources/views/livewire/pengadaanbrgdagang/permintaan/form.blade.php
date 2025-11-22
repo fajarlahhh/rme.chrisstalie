@@ -117,7 +117,7 @@
                             }
                         });"
                             wire:model="verifikator_id">
-                            <option value="">-- Tidak Ada Verifikator --</option>
+                            <option value="">-- Pilih Verifikator --</option>
                             @foreach ($dataPengguna as $subRow)
                                 <option value="{{ $subRow['id'] }}">
                                     {{ $subRow['nama'] }}

@@ -40,7 +40,7 @@ class JurnalClass
         ])->toArray());
     }
 
-    public static function pembelianPersediaan($data, $barang)
+    public static function pembelianPersediaan($jenis, $tanggal, $uraian, $ppn, $diskon, $kode_akun_id, $referensi_id, $barang)
     {
         $id = Str::uuid();
         $jurnalDetail = [];
@@ -61,22 +61,22 @@ class JurnalClass
         }
 
         //PPN Masukan
-        if (isset($data['ppn'])) {
+        if (isset($ppn)) {
             $jurnalDetail[] = [
                 'jurnal_id' => $id,
-                'debet' => $data['ppn'],
+                'debet' => $ppn,
                 'kredit' => 0,
                 'kode_akun_id' => '11400'
             ];
         }
 
         //Diskon
-        if (isset($data['diskon'])) {
-            if ($data['diskon'] > 0) {
+        if (isset($diskon)) {
+            if ($diskon > 0) {
                 $jurnalDetail[] = [
                     'jurnal_id' => $id,
                     'debet' => 0,
-                    'kredit' => $data['diskon'],
+                    'kredit' => $diskon,
                     'kode_akun_id' => '45000'
                 ];
             }
@@ -86,10 +86,10 @@ class JurnalClass
         $jurnalDetail[] = [
             'jurnal_id' => $id,
             'debet' => 0,
-            'kredit' => collect($barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - (isset($data['diskon']) ? $data['diskon'] : 0) + (isset($data['ppn']) ? $data['ppn'] : 0),
-            'kode_akun_id' => $data['kode_akun_id']
+            'kredit' => collect($barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']) - (isset($diskon) ? $diskon : 0) + (isset($ppn) ? $ppn : 0),
+            'kode_akun_id' => $kode_akun_id
         ];
 
-        self::insert($data, $jurnalDetail);
+        self::insert($jenis, $tanggal, $uraian, 1, null, $referensi_id, null, $jurnalDetail);
     }
 }
