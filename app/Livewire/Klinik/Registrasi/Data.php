@@ -42,7 +42,7 @@ class Data extends Component
                 'pengguna'
             ])->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
                 ->where('tanggal', $this->tanggal)
-                ->orderBy('urutan', 'asc')
+                ->orderBy('id', 'asc')
                 ->paginate(10)
         ]);
     }

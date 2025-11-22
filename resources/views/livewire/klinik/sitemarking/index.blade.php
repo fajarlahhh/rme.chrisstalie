@@ -51,7 +51,7 @@
                             <td>
                                 {{ ($data->currentpage() - 1) * $data->perpage() + $loop->index + 1 }}
                             </td>
-                            <td>{{ $row->urutan }}</td>
+                            <td>{{ $row->id }}</td>
                             <td>{{ $row->pasien->id }}</td>
                             <td>{{ $row->pasien->nama }}</td>
                             <td>{{ $row->pasien->nik }}</td>

@@ -15,22 +15,32 @@ class JurnalClass
         //
     }
 
-    public static function insert($id, $jenis, $data, $detail)
+    public static function insert($jenis, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $detail)
     {
+        $id = Str::uuid();
+
         $jurnal = new Jurnal();
         $jurnal->id = $id;
         $jurnal->jenis = $jenis;
-        $jurnal->tanggal = $data['tanggal'];
-        $jurnal->uraian = $data['uraian'];
-        $jurnal->referensi_id = isset($data['referensi_id']) ? $data['referensi_id'] : null;
+        $jurnal->tanggal = $tanggal;
+        $jurnal->uraian = $uraian;
+        $jurnal->system = $system;
+        $jurnal->aset_id = $aset_id;
+        $jurnal->pembelian_id = $pembelian_id;
+        $jurnal->stok_masuk_id = $stok_masuk_id;
         $jurnal->pengguna_id = auth()->id();
         $jurnal->save();
 
         $jurnal->jurnalDetail()->delete();
-        $jurnal->jurnalDetail()->insert($detail);
+        $jurnal->jurnalDetail()->insert(collect($detail)->map(fn($q) => [
+            'jurnal_id' => $id,
+            'debet' => $q['debet'],
+            'kredit' => $q['kredit'],
+            'kode_akun_id' => $q['kode_akun_id'],
+        ])->toArray());
     }
 
-    public static function pembelianPersediaan($data, $barang, $jenis)
+    public static function pembelianPersediaan($data, $barang)
     {
         $id = Str::uuid();
         $jurnalDetail = [];
@@ -80,10 +90,6 @@ class JurnalClass
             'kode_akun_id' => $data['kode_akun_id']
         ];
 
-        self::insert($id, $jenis, [
-            'tanggal' => $data['tanggal'],
-            'uraian' => $data['uraian'],
-            'referensi_id' => $data['id'],
-        ], $jurnalDetail);
+        self::insert($data, $jurnalDetail);
     }
 }

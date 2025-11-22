@@ -59,24 +59,28 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <template x-for="(row, index) in diagnosis" :key="index">
+                        <template x-for="(row, index) in icd10" :key="index">
                             <tr>
                                 <th class="p-0" wire:ignore>
-                                    <select class="form-control" x-model="row.icd10" x-init="$($el).select2({
+                                    <select class="form-control" x-model="row.id" x-init="
+                                    $($el).select2({ 
                                         width: '100%',
-                                        dropdownAutoWidth: true
+                                        dropdownAutoWidth: true 
                                     });
                                     $($el).on('change', function(e) {
-                                        row.icd10 = e.target.value;
+                                        row.id = e.target.value;
+                                        updateRow(index);
                                     });
-                                    $watch('row.icd10', (value) => {
+                                    $watch('row.id', (value) => {
                                         if (value !== $($el).val()) {
                                             $($el).val(value).trigger('change');
                                         }
-                                    });">
+                                    });
+                                ">
+                                
                                         <option value="" selected>-- Pilih ICD 10 --</option>
                                         <template x-for="item in dataIcd10" :key="item.id">
-                                            <option :value="item.id" :selected="row.icd10 == item.id"
+                                            <option :value="item.id" :selected="row.id == item.id"
                                                 x-text="`${item.id} - ${item.uraian}`">
                                             </option>
                                         </template>
@@ -85,7 +89,7 @@
                                 <th class="align-middle w-5px pt-0 pb-0 pr-0">
                                     <template x-if="index > 0">
                                         <button type="button" class="btn btn-danger btn-sm"
-                                            @click="diagnosis.splice(index, 1)">
+                                            @click="hapusDiagnosis(index)">
                                             <span x-show="$wire.__instance.loading"
                                                 class="spinner-border spinner-border-sm"></span>
                                             <span x-show="!$wire.__instance.loading">x</span>
@@ -147,22 +151,34 @@
     <script>
         function diagnosisForm() {
             return {
-                diagnosis: @js($diagnosis).map(row => ({
-                    ...row
+                icd10: @js($icd10).map(row => ({
+                    ...row,
                 })),
                 dataIcd10: @js($dataIcd10),
                 diagnosis_banding: @js($diagnosis_banding),
                 fileDiupload: @js($fileDiupload),
                 addDiagnosis() {
-                    this.diagnosis.push({
-                        icd10: '',
-                    });
-                },
-                hapusDiagnosis(index) {
-                    this.diagnosis.splice(index, 1);
+                    this.icd10.push({
+                        id: '',
+                    }); 
                     this.$nextTick(() => {
                         this.refreshSelect2();
                     });
+                },
+                hapusDiagnosis(index) {
+                    this.icd10.splice(index, 1);
+                    this.$nextTick(() => {
+                        this.refreshSelect2();
+                    });
+                },
+                updateRow(index) {
+                    let row = this.icd10[index];
+                    let selectedIcd10 = this.dataIcd10.find(i => i.id == row.id);
+                    if (selectedIcd10) {
+                        row.uraian = selectedIcd10.uraian;
+                    } else {
+                        row.uraian = '';
+                    }
                 },
                 refreshSelect2() {
                     let root = this.$root ?? document;
@@ -184,7 +200,7 @@
                         if (componentId) {
                             let $wire = window.Livewire.find(componentId);
                             if ($wire && typeof $wire.set === 'function') {
-                                $wire.set('diagnosis', JSON.parse(JSON.stringify(this.diagnosis)), true);
+                                $wire.set('icd10', JSON.parse(JSON.stringify(this.icd10)), true);
                             }
                         }
                     }

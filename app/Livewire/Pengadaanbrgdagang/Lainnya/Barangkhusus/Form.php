@@ -58,7 +58,7 @@ class Form extends Component
             $pembelian->permintaan_pembelian_id = null;
             $pembelian->ppn = $this->ppn;
             $pembelian->diskon = $this->diskon;
-            $pembelian->jenis = 'Barang Khusus';
+            $pembelian->jenis = 'Alat dan Bahan';
             $pembelian->pengguna_id = auth()->id();
             $pembelian->save();
             $pembelian->pembelianDetail()->delete();
@@ -72,10 +72,6 @@ class Form extends Component
                     'pembelian_id' => $pembelian->id,
                 ];
             })->toArray());
-
-            $stokMasuk = [];
-            $stok = [];
-
             foreach (
                 collect($this->barang)->map(function ($q) use ($pembelian) {
                     $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
@@ -93,10 +89,8 @@ class Form extends Component
                     ];
                 })->toArray() as $key => $value
             ) {
-                $id = Str::uuid();
                 if ($value['qty'] > 0) {
-                    $stokMasuk[] = [
-                        'id' => $id,
+                    StokClass::insert([
                         'qty' => $value['qty'],
                         'no_batch' => $value['no_batch'],
                         'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
@@ -104,39 +98,27 @@ class Form extends Component
                         'pembelian_id' => $pembelian->id,
                         'barang_satuan_id' => $value['barang_satuan_id'],
                         'rasio_dari_terkecil' => $value['rasio_dari_terkecil'],
-                        'pengguna_id' => auth()->id(),
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
-                }
-                for ($i = 0; $i < $value['rasio_dari_terkecil'] * $value['qty']; $i++) {
-                    $stok[] = [
-                        'id' => Str::uuid(),
-                        'pembelian_id' => $pembelian->id,
-                        'barang_id' => $value['barang_id'],
-                        'no_batch' => $value['no_batch'],
-                        'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
-                        'stok_masuk_id' => $id,
-                        'tanggal_masuk' => now(),
                         'harga_beli' => $value['harga_beli'],
-                        'created_at' => now(),
-                        'updated_at' => now(),
-                    ];
+                    ]);
                 }
             }
-            StokMasuk::insert($stokMasuk);
-            foreach (array_chunk($stok, 1000) as $chunk) {
-                Stok::insert($chunk);
-            }
-
-            JurnalClass::pembelianPersediaan($pembelian, collect($this->barang)->map(function ($q) use ($pembelian) {
+            JurnalClass::pembelianPersediaan([
+                'jenis' => 'Stok Masuk Alat dan Bahan',
+                'tanggal' => now(),
+                'uraian' => 'Stok Masuk Alat dan Bahan ' . $pembelian->uraian,
+                'kode_akun_id' => $pembelian->kode_akun_id,
+                'pembelian_id' => $pembelian->id,
+                'ppn' => $pembelian->ppn,
+                'diskon' => $pembelian->diskon,
+                'system' => 1,
+            ], collect($this->barang)->map(function ($q) use ($pembelian) {
                 $brg = collect($this->dataBarang)->firstWhere('id', $q['id']);
                 return [
                     'kode_akun_id' => $brg['kode_akun_id'],
                     'qty' => $q['qty'],
                     'harga_beli' => $q['harga_beli'],
                 ];
-            })->toArray(), 'Stok Masuk Barang Khusus');
+            })->toArray());
 
             session()->flash('success', 'Berhasil menyimpan data');
         });

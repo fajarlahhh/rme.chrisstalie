@@ -14,7 +14,6 @@ class Index extends Component
     #[Url]
     public $cari, $bulan;
 
-
     public function mount()
     {
         $this->bulan = $this->bulan ?: date('Y-m');

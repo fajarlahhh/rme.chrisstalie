@@ -71,7 +71,7 @@ class Data extends Component
                 ->when($this->status == 2, fn($q) => $q->whereHas('informedConsent', fn($q) => $q->where('uploaded_at', 'like', $this->tanggal . '%')))
                 ->when($this->status == 1, fn($q) => $q->whereHas('informedConsent', fn($q) => $q->whereNull('uploaded_at')))
                 ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('urutan', 'asc')->paginate(10)
+                ->orderBy('id', 'asc')->paginate(10)
         ]);
     }
 }

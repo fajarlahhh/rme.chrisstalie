@@ -41,20 +41,17 @@ class Pengeluaran extends Component
             'nilai' => 'required|numeric|min:0',
         ]);
         DB::transaction(function () {
-            $id = Str::uuid();
-            JurnalClass::insert($id, 'Pengeluaran', [
+            JurnalClass::insert('Pengeluaran', [
                 'tanggal' => $this->tanggal,
                 'uraian' => $this->uraian . '(' . collect($this->dataJenisPengeluaran)->firstWhere('id', $this->jenis_pengeluaran_id)['nama'] . ')',
                 'nilai' => $this->nilai,
             ], [
                 [
-                    'jurnal_id' => $id,
                     'debet' => $this->nilai,
                     'kredit' => 0,
                     'kode_akun_id' => $this->jenis_pengeluaran_id,
                 ],
                 [
-                    'jurnal_id' => $id,
                     'debet' => 0,
                     'kredit' => $this->nilai,
                     'kode_akun_id' => $this->sumber_dana_id,

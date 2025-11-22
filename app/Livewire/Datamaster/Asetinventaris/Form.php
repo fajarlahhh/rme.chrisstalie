@@ -2,22 +2,17 @@
 
 namespace App\Livewire\Datamaster\Asetinventaris;
 
-use Carbon\Carbon;
 use App\Models\Aset;
-use App\Models\Jurnal;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use Illuminate\Support\Str;
-use App\Models\JurnalDetail;
+use App\Class\JurnalClass;
 use Illuminate\Support\Facades\DB;
-use App\Models\AsetPenyusutanGarisLurus;
-use App\Models\AsetPenyusutanUnitProduksi;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $data, $dataKodeAkun = [], $dataKodeAkunSumberDana = [];
+    public $data, $dataKodeAkun = [], $dataKodeAkunSumberDana = [], $dataKodeAkunPenyusutan = [];
     public $nama;
     public $tanggal_perolehan;
     public $harga_perolehan;
@@ -26,10 +21,12 @@ class Form extends Component
     public $satuan;
     public $deskripsi;
     public $lokasi;
+    public $nilai_residu;
     public $kode_akun_id;
     public $kode_akun_sumber_dana_id;
+    public $kode_akun_penyusutan_id;
     public $detail;
-    public $metode_penyusutan;
+    public $metode_penyusutan = 'Garis Lurus';
 
     public function submit()
     {
@@ -47,15 +44,13 @@ class Form extends Component
 
         DB::transaction(function () {
             if (!$this->data->exists) {
-                $terakhir = Aset::where('created_at', 'like', date('Y-m') . '%')
-                    ->where('kode_akun_id', $this->kode_akun_id)
+                $terakhir = Aset::where('kode_akun_id', $this->kode_akun_id)
                     ->orderBy('created_at', 'desc')
                     ->first();
-        
-                $nomor = $terakhir ? (int)substr($terakhir->nomor, 6,4) : 0;
-                $this->data->nomor = $this->kode_akun_id . '.'. sprintf('%04d', $nomor + 1);
+                $nomor = $terakhir ? (int)substr($terakhir->nomor, 6, 4) : 0;
+                $this->data->nomor = $this->kode_akun_id . '.' . sprintf('%04d', $nomor + 1);
             }
-            
+
             $this->data->nama = $this->nama;
             $this->data->tanggal_perolehan = $this->tanggal_perolehan;
             $this->data->harga_perolehan = $this->harga_perolehan;
@@ -66,69 +61,62 @@ class Form extends Component
             $this->data->kode_akun_id = $this->kode_akun_id;
             $this->data->detail = $this->detail;
             $this->data->kode_akun_sumber_dana_id = $this->kode_akun_sumber_dana_id;
+            $this->data->kode_akun_penyusutan_id = collect($this->dataKodeAkunPenyusutan)->where('nama', 'Akumulasi Penyusutan '. collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()['nama'])->first()['id'];
             $this->data->metode_penyusutan = $this->metode_penyusutan;
             $this->data->status = !$this->data->exists ? 'Aktif' : $this->status;
+            $this->data->nilai_penyusutan = $this->harga_perolehan / $this->masa_manfaat;
+            $this->data->nilai_residu = $this->nilai_residu;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
-
-            if ($this->metode_penyusutan == 'Garis Lurus') {
-                if ($this->data->asetPenyusutanGarisLurus->count() == 0) {
-                    $penyusutan = [];
-                    for ($i = 1; $i <= $this->masa_manfaat; $i++) {
-                        $penyusutan[] = [
-                            'aset_id' => $this->data->id,
-                            'tanggal' => Carbon::now()->addMonths($i)->format('Y-m-01'),
-                            'nilai' => $this->harga_perolehan / $this->masa_manfaat,
-                            'jurnal_id' => null,
-                        ];
-                    }
-                    AsetPenyusutanGarisLurus::insert($penyusutan);
-                }
-            }
-
-            if ($this->metode_penyusutan == 'Satuan Hasil Produksi') {
-                if ($this->data->asetPenyusutanUnitProduksi->count() == 0) {
-                    $penyusutan = [];
-                    for ($i = 1; $i <= $this->masa_manfaat; $i++) {
-                        $penyusutan[] = [
-                            'aset_id' => $this->data->id,
-                            'nilai' => $this->harga_perolehan / $this->masa_manfaat,
-                            'jurnal_id' => null,
-                        ];
-                    }
-                    foreach (array_chunk($penyusutan, 1000) as $chunk) {
-                        AsetPenyusutanUnitProduksi::insert($chunk);
-                    }
-                }
-            }
-
-            if ($this->data->jurnal) {
-                $id = Str::uuid();
-                $jurnal = new Jurnal();
-                $jurnal->id = $id;
-                $jurnal->jenis = 'Pembelian Aset';
-                $jurnal->tanggal = $this->tanggal_perolehan;
-                $jurnal->uraian = 'Pembelian Aset ' . $this->nama;
-                $jurnal->referensi_id = $this->data->id;
-                $jurnal->pengguna_id = auth()->id();
-                $jurnal->save();
-                $jurnalDetail = [
+            
+            JurnalClass::insert(
+                jenis: 'Pembelian Aset',
+                tanggal: $this->tanggal_perolehan,
+                uraian: 'Pembelian Aset ' . $this->nama,
+                system: 1,
+                aset_id: $this->data->id,
+                pembelian_id: null,
+                stok_masuk_id: null,
+                detail: [
                     [
-                        'jurnal_id' => $id,
                         'debet' => 0,
                         'kredit' => $this->harga_perolehan,
                         'kode_akun_id' => $this->kode_akun_sumber_dana_id
                     ],
                     [
-                        'jurnal_id' => $id,
                         'debet' => $this->harga_perolehan,
                         'kredit' => 0,
                         'kode_akun_id' => $this->kode_akun_id
                     ]
-                ];
-                JurnalDetail::insert($jurnalDetail);
+                ]
+            );
+            
+            if ($this->metode_penyusutan == 'Garis Lurus') {
+                JurnalClass::insert(
+                    jenis: 'Penyusutan Aset',
+                    tanggal: $this->tanggal_perolehan,
+                    uraian: 'Penyusutan Aset ' . $this->nama,
+                    system: 1,
+                    aset_id: $this->data->id,
+                    pembelian_id: null,
+                    stok_masuk_id: null,
+                    detail: [
+                        [
+                            'debet' => 0,
+                            'kredit' => $this->data->nilai_penyusutan,
+                            'kode_akun_id' => $this->data->kode_akun_penyusutan_id
+                        ],
+                        [
+                            'debet' => $this->data->nilai_penyusutan,
+                            'kredit' => 0,
+                            'kode_akun_id' => $this->data->kode_akun_penyusutan_id
+                        ]
+                    ]
+                );
             }
+
             $data = Aset::findOrFail($this->data->id);
+
             $cetak = view('livewire.datamaster.asetinventaris.qr', [
                 'cetak' => true,
                 'data' => $data,
@@ -141,11 +129,12 @@ class Form extends Component
 
     public function mount(Aset $data)
     {
-        
+        $this->tanggal_perolehan = date('Y-m-d');
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '15100')->get()->toArray();
         $this->dataKodeAkunSumberDana = KodeAkun::detail()->whereIn('parent_id', ['11100', '20000'])->get()->toArray();
+        $this->dataKodeAkunPenyusutan = KodeAkun::detail()->whereIn('parent_id', ['15200'])->get()->toArray();
     }
 
     public function render()

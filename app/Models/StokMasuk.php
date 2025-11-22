@@ -15,9 +15,6 @@ class StokMasuk extends Model
     use HasFactory;
 
     protected $table = 'stok_masuk';
-    protected $primaryKey = 'id';
-    public $incrementing = false;
-    protected $keyType = 'string';
 
     public function barangSatuan(): BelongsTo
     {

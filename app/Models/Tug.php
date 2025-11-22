@@ -11,6 +11,7 @@ class Tug extends Model
     protected $table = 'tug';
     public $incrementing = false;
     protected $primaryKey = 'id';
+    protected $keyType = 'string';
 
     protected $casts = [
         'observasi_kualitatif' => 'array',

@@ -43,20 +43,20 @@ class Form extends Component
 
         DB::transaction(function () {
             Jurnal::where('referensi_id', 'gaji' . $this->pegawai_id . substr($this->tanggal, 0, 7))->delete();
-            $id = Str::uuid();
+
             $detail = collect($this->unsurGaji)->map(fn($q) => [
-                'jurnal_id' => $id,
                 'debet' => $q['nilai'],
                 'kredit' => 0,
                 'kode_akun_id' => $q['kode_akun_id'],
             ])->toArray();
             $detail[] = [
-                'jurnal_id' => $id,
                 'debet' => 0,
                 'kredit' => collect($this->unsurGaji)->sum('nilai'),
                 'kode_akun_id' => $this->metode_bayar,
             ];
-            JurnalClass::insert($id, 'Gaji', [
+            JurnalClass::insert([
+                'jenis' => 'Gaji',
+                'system' => 1,
                 'tanggal' => $this->tanggal,
                 'uraian' => 'Gaji ' . $this->pegawai['nama'] . ' bulan ' . substr($this->tanggal, 0, 7),
                 'referensi_id' => 'gaji' . $this->pegawai_id . substr($this->tanggal, 0, 7),

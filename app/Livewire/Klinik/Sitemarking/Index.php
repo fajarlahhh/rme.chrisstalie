@@ -56,7 +56,7 @@ class Index extends Component
             });
         }
 
-        return $query->orderBy('urutan', 'asc');
+        return $query->orderBy('id', 'asc');
     }
 
     public function render()

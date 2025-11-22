@@ -29,11 +29,7 @@ class Index extends Component
 
     public function delete($id)
     {
-        DB::transaction(function () use ($id) {
-            StokMasuk::where('pembelian_id', $id)->delete();
-            Jurnal::where('referensi_id', $id)->where('jenis', 'Stok Masuk Barang Khusus')->delete();
-            Pembelian::find($id)->delete();
-        });
+        Pembelian::find($id)->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 

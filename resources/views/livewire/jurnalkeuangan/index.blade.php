@@ -16,10 +16,10 @@
                         data-bs-toggle="dropdown"><b class="caret"></b></button>
                     <div class="dropdown-menu dropdown-menu-start">
                         <a class="dropdown-item"
-                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pelunasanpengadaanbrgdagang'">Pelunasan
-                            Pengadaan Brg. Dagang</a>
-                        <a class="dropdown-item"
                             href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pengeluaran'">Pengeluaran</a>
+                        <a class="dropdown-item"
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'">Jurnal
+                            Umum</a>
                     </div>
                 </div>
             @endrole
@@ -76,7 +76,7 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($row->referensi_id != null)
+                                    @if ($row->system)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else

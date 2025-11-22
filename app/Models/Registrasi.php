@@ -11,6 +11,9 @@ class Registrasi extends Model
 {
     //
     protected $table = 'registrasi';
+    public $incrementing = false;
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
 
     protected $fillable = [
         'pembayaran_id',

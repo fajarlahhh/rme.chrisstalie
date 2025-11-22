@@ -290,7 +290,7 @@ return [
         // Lain-lain
         'kode' => 'Kode',
         'deskripsi' => 'Deskripsi',
-        'urutan' => 'Urutan',
+        'id' => 'Urutan',
         'prioritas' => 'Prioritas',
     ],
 

@@ -41,6 +41,7 @@
                         <th class="text-end">Harga Perolehan</th>
                         <th>Sumber Dana</th>
                         <th>Masa Manfaat</th>
+                        <th>Nilai Penyusutan</th>
                         <th>Lokasi</th>
                         <th>Status</th>
                         <th></th>
@@ -67,6 +68,7 @@
                                     {{ $item->masa_manfaat }} <small>bulan</small>
                                 @endif
                             </td>
+                            <td class="text-end">{{ number_format($item->nilai_penyusutan) }}</td>
                             <td>{{ $item->lokasi }}</td>
                             <td>
                                 @switch($item->status)

@@ -18,7 +18,7 @@ class Form extends Component
     public $data;
     public $dataIcd10 = [];
     public $diagnosis_banding;
-    public $diagnosis = [];
+    public $icd10 = [];
     public $fileDiupload = [];
 
     public function mount(Registrasi $data)
@@ -26,8 +26,7 @@ class Form extends Component
         $this->data = $data;
         if ($data->diagnosis) {
             $this->fill($data->diagnosis->toArray());
-            $this->diagnosis = $data->diagnosis->icd10 ?: [['icd10' => null]];
-
+            $this->icd10 = $data->diagnosis->icd10 ? collect($data->diagnosis->icd10)->map(fn($q) => ['id' => $q])->toArray() : [['id' => null]];
             if ($data->diagnosis->file && method_exists($data->diagnosis->file, 'map')) {
                 $this->fileDiupload = $data->diagnosis->file->map(function ($q) {
                     return [
@@ -41,17 +40,17 @@ class Form extends Component
                 })->all();
             }
         } else {
-            $this->diagnosis = [['icd10' => null]];
+            $this->icd10 = [['id' => null]];
         }
         $this->dataIcd10 = Icd10::orderBy('uraian')->get()->toArray();
     }
 
     public function submit()
-    {   
+    {
         $this->validateWithCustomMessages([
-            'diagnosis' => 'required|array|min:1',
-            'diagnosis.*.icd10' => 'required',
-            'diagnosis_banding' => 'required',
+            'icd10' => 'required|array|min:1',
+            'icd10.*.id' => 'required',
+            'icd10' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -61,7 +60,7 @@ class Form extends Component
             $diagnosis->id = $this->data->id;
             $diagnosis->pasien_id = $this->data->pasien_id;
             $diagnosis->pengguna_id = auth()->id();
-            $diagnosis->icd10 = $this->diagnosis;
+            $diagnosis->icd10 = collect($this->icd10)->pluck('id')->toArray();
             $diagnosis->diagnosis_banding = $this->diagnosis_banding;
             $diagnosis->save();
 

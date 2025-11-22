@@ -81,19 +81,18 @@ class Form extends Component
             ])->toArray());
 
             JurnalClass::pembelianPersediaan([
-                'id' => $data->id,
+                'jenis' => 'Pembelian Barang Dagang',
                 'tanggal' => $this->tanggal,
                 'uraian' => $this->uraian,
                 'referensi_id' => $data->id,
-                'pengguna_id' => auth()->id(),
                 'ppn' => $this->ppn,
                 'diskon' => $this->diskon,
                 'kode_akun_id' => $data->kode_akun_id,
-            ], collect([[
+            ], [[
                 'kode_akun_id' => '11340',
                 'qty' => collect($this->barang)->sum(fn($q) => $q['qty']),
                 'harga_beli' => collect($this->barang)->sum(fn($q) => $q['harga_beli']),
-            ]]), 'Pembelian Barang Dagang');
+            ]]);
 
             session()->flash('success', 'Berhasil menyimpan data');
         });

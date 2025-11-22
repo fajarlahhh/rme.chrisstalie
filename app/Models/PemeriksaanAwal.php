@@ -12,20 +12,11 @@ class PemeriksaanAwal extends Model
     protected $table = 'pemeriksaan_awal';
     public $incrementing = false;
     protected $primaryKey = 'id';
+    protected $keyType = 'string';
 
     public function registrasi(): BelongsTo
     {
         return $this->belongsTo(Registrasi::class, 'id');
-    }
-
-    public function pemeriksaanAwalFisik(): HasMany
-    {
-        return $this->hasMany(PemeriksaanAwalFisik::class);
-    }
-
-    public function pemeriksaanAwalTandaTandaVital(): HasMany
-    {
-        return $this->hasMany(PemeriksaanAwalTandaTandaVital::class);
     }
 
     public function pengguna()

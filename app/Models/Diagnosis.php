@@ -10,8 +10,9 @@ class Diagnosis extends Model
 {
     //
     protected $table = 'diagnosis';
-    protected $primaryKey = 'id';
     public $incrementing = false;
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
 
     protected $casts = [
         'icd10' => 'array',

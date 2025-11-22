@@ -195,6 +195,7 @@ class Form extends Component
             $pembayaran->total_tagihan = $this->total_tagihan;
             $pembayaran->kode_akun_id = $metodeBayar->kode_akun_id;
             $pembayaran->bebas = 0;
+            $pembayaran->registrasi_id = $this->data->id;
             $pembayaran->pengguna_id = auth()->id();
             $pembayaran->save();
 
@@ -261,6 +262,7 @@ class Form extends Component
                 ];
             })->all());
 
+            // Diskon
             if ($this->diskon > 0) {
                 $detail[] = [
                     'kode_akun_id' => '44000',
@@ -268,7 +270,6 @@ class Form extends Component
                     'kredit' => 0,
                 ];
             }
-            // Diskon
             // Diskon
 
             //Pembayaran Barang Bebas

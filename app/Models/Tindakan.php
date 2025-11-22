@@ -9,7 +9,10 @@ class Tindakan extends Model
 {
     //
     protected $table = 'tindakan';
-
+    public $incrementing = false;
+    protected $primaryKey = 'id';
+    protected $keyType = 'string';
+    
     protected $casts = [
         'created_at' => 'datetime',
     ];

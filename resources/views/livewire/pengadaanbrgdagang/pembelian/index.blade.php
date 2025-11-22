@@ -15,7 +15,7 @@
                 <div class="panel-heading-btn float-end">
                     <select class="form-select" wire:model.lazy="status">
                         <option value="1">Belum Dibeli</option>
-                        <option value="2">Pembelian</option>
+                        <option value="2">Sudah Dibeli</option>
                     </select>&nbsp;
                     @if ($status == 2)
                         <input type="month" class="form-control w-auto" wire:model.lazy="bulan"

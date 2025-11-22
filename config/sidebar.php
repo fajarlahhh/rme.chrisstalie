@@ -164,6 +164,10 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Pelunasan",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Lainnya",
                     "urutkan" => true,
                     "sub_menu" => [

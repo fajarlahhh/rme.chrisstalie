@@ -84,7 +84,7 @@ class Form extends Component
     {
         
         $this->dataBarang = BarangClass::getBarang('klinik');
-        $this->dataAlat = Aset::where('kode_akun_id', '15120')->orderBy('nama')->get()->toArray();
+        $this->dataAlat = Aset::where('kode_akun_id', '15130')->orderBy('nama')->get()->toArray();
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '42000')->get()->toArray();
         $this->data = $data;
         $this->fill($this->data->toArray());

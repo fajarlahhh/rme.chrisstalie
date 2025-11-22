@@ -146,7 +146,7 @@ class Index extends Component
                 $registrasi->baru = 1;
             }
             $registrasi->tanggal = $this->tanggal;
-            $registrasi->urutan = str_replace(['/', ':', '-', ' '], '', $this->tanggal . date(' H:i:s'));
+            $registrasi->id = str_replace(['/', ':', '-', ' '], '', $this->tanggal . date(' H:i:s'));
             $registrasi->keluhan_awal = $this->keluhan_awal;
             $registrasi->nakes_id = $this->nakes_id;
             $registrasi->pasien_id = $this->pasien_id ?: $pasien->id;

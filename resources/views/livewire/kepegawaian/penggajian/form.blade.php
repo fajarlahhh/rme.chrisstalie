@@ -9,7 +9,6 @@
 
     <h1 class="page-header">Penggajian <small>Tambah</small></h1>
 
-    <x-alert />
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
@@ -93,6 +92,7 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>
+                <x-alert />
             </div>
     </div>
     </form>

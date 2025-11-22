@@ -51,7 +51,7 @@ class Index extends Component
             $query->whereDoesntHave('diagnosis');
         }
 
-        return $query->orderBy('urutan', 'asc');
+        return $query->orderBy('id', 'asc');
     }
 
     public function render()
