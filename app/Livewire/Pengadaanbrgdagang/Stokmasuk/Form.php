@@ -155,7 +155,7 @@ class Form extends Component
                             'kredit' => 0,
                         ], 
                         [
-                            'kode_akun_id' => '11340',
+                            'kode_akun_id' => '12000',
                             'debet' => 0,
                             'kredit' => $value['harga_beli'] * $value['qty_masuk'],
                         ]]

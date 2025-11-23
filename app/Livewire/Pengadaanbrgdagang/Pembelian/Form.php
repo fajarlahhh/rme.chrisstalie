@@ -96,7 +96,7 @@ class Form extends Component
                     [
                         'debet' => collect($this->barang)->sum(fn($q) => $q['harga_beli'] * $q['qty']),
                         'kredit' => 0,
-                        'kode_akun_id' => '11340'
+                        'kode_akun_id' => '12000'
                     ],
                     [
                         'debet' => 0,
