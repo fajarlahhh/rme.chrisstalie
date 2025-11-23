@@ -3,7 +3,7 @@
 </div>
 <br>
 <br>
-<table class="table table-borderless fs-11px">
+<table class="table table-borderless fs-10px">
     <tr>
         <td class="text-nowrap w-50px p-0">No.</td>
         <td class="p-0">: {{ $data->id }}</td>
@@ -18,7 +18,7 @@
     </tr>
 </table>
 <hr>
-<table class="table table-borderless fs-11px">
+<table class="table table-borderless fs-10px">
     <tr>
         <th class="p-0">Item<br><br></th>
         <th class="p-0 text-end">Qty<br><br></th>
@@ -41,7 +41,7 @@
     @endforeach
 </table>
 <hr>
-<table class="table table-borderless fs-11px">
+<table class="table table-borderless fs-10px">
     <tr>
         <td class="p-0">Total Harga Barang</td>
         <td class="p-0 text-end">{{ number_format($data->total_harga_barang) }}</td>
@@ -70,5 +70,3 @@
         </td>
     </tr>
 </table>
-<br>
-<br>
