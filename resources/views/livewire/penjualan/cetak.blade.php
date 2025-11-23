@@ -1,25 +1,31 @@
-<style>
-@media print {
-    body, html {
-        height: auto !important;
-        min-height: 0 !important;
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    .custom-print-container {
-        width: 80mm !important;
-        max-width: 100% !important;
-        margin: 0 auto !important;
-        padding: 0 !important;
-        height: auto !important;
-        box-sizing: border-box;
-    }
-    @page {
-        size: auto !important;
-        margin: 0 !important;
-    }
-}
-</style>
+@push('styles')
+    <style>
+        @media print {
+
+            body,
+            html {
+                height: auto !important;
+                min-height: 0 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .custom-print-container {
+                width: 80mm !important;
+                max-width: 100% !important;
+                margin: 0 auto !important;
+                padding: 0 !important;
+                height: auto !important;
+                box-sizing: border-box;
+            }
+
+            @page {
+                size: auto !important;
+                margin: 0 !important;
+            }
+        }
+    </style>
+@endpush
 <div class="custom-print-container">
     <div class="text-center">
         <img src="/assets/img/login.png" class="w-200px">
@@ -33,7 +39,8 @@
         </tr>
         <tr>
             <td class="text-nowrap w-50px p-0">Kasir</td>
-            <td class="p-0">: {{ $data->pengguna->pegawai ? $data->pengguna->pegawai->nama : $data->pengguna->nama }}</td>
+            <td class="p-0">: {{ $data->pengguna->pegawai ? $data->pengguna->pegawai->nama : $data->pengguna->nama }}
+            </td>
         </tr>
         <tr>
             <td class="text-nowrap p-0">Tanggal</td>
@@ -51,7 +58,8 @@
             <tr>
                 <td class="p-0">
                     {{ $detail->barangSatuan->barang->nama }}<br>
-                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }} - {{ number_format($detail->harga) }}</small>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>{{ $detail->barangSatuan->nama }} -
+                        {{ number_format($detail->harga) }}</small>
                 </td>
                 <td class="p-0 ps-2 text-center w-10px" nowrap>
                     {{ $detail->qty }}
