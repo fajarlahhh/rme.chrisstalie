@@ -40,7 +40,7 @@
                 {{ $tindakan->qty }}<br>
 
             </td>
-            <td class="p-0 text-end w-100px" nowrap>
+            <td class="p-0 text-end w-50px" nowrap>
                 {{ number_format(($tindakan->biaya - $tindakan->diskon) * $tindakan->qty) }}
             </td>
         </tr>
@@ -54,7 +54,7 @@
             <td class="p-0 ps-2 text-center w-10px" nowrap>
                 1
             </td>
-            <td class="p-0 text-end w-100px" nowrap>
+            <td class="p-0 text-end w-50px" nowrap>
                 {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
             </td>
         </tr>

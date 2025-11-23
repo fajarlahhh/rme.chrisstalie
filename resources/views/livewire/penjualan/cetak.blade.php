@@ -33,7 +33,7 @@
             <td class="p-0 ps-2 text-center w-10px" nowrap>
                 {{ $detail->qty }}
             </td>
-            <td class="p-0 text-end w-100px" nowrap>
+            <td class="p-0 text-end w-50px" nowrap>
                 {{ number_format($detail->qty * $detail->harga) }}
             </td>
         </tr>
