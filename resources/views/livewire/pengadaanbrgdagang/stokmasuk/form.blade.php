@@ -37,7 +37,7 @@
                                 <tr>
                                     <th>Barang/Item</th>
                                     <th class="w-150px">Satuan</th>
-                                    <th class="w-100px">Qty</th>
+                                    <th class="w-100px">Qty Beli</th>
                                     <th class="w-100px">Qty Masuk</th>
                                     <th class="w-150px">No. Batch</th>
                                     <th class="w-150px">Tanggal Kedaluarsa</th>
