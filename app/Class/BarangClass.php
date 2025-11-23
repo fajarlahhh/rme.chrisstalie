@@ -35,7 +35,7 @@ class BarangClass
             ->with('barangSatuan.satuanKonversi')
             ->when($khusus, fn($q) => $q->where('khusus', $khusus))
             ->when($persediaan, fn($q) => $q->where('persediaan', $persediaan))
-            ->when($resep, fn($q) => $q->where('resep', $resep))
+            ->when($resep == '0' || $resep == '1', fn($q) => $q->where('perlu_resep', $resep))
             ->orderBy('barang.nama')->get()->map(fn($q) => [
                 'id' => $q['barang_satuan_id'],
                 'nama' => $q['barang_nama'],

@@ -49,7 +49,7 @@
                             <td class="text-nowrap w-100px">{{ $row->id }}</td>
                             <td class="text-nowrap w-100px">{{ $row->created_at }}</td>
                             <td>{{ $row->keterangan }}</td>
-                            <td>
+                            <td nowrap>
                                 <ul class="mb-0 ps-3">
                                     @foreach ($row->stokKeluar as $subRow)
                                         <li>
@@ -68,12 +68,12 @@
                             <td class="text-end">
                                 {{ number_format($row->total_tagihan, 2) }}
                             </td>
-                            <td>
-                                <ul>
+                            <td nowrap>
+                                <small><ul>
                                     <li>Metode Bayar: {{ $row->metode_bayar }}</li>
                                     <li>Keterangan Pembayaran: {{ $row->keterangan_pembayaran }}</li>
                                     <li>Kasir: {{ $row->pengguna->nama }}</li>
-                                </ul>
+                                </ul></small>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator')
