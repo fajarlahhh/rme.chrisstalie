@@ -51,7 +51,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">SP</label>
+                    <label class="form-label">Uraian/No. Faktur</label>
                     <input class="form-control" type="text" wire:model="uraian" x-model="uraian" required />
                     @error('uraian')
                         <span class="text-danger">{{ $message }}</span>
