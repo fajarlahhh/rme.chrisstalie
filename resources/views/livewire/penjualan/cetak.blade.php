@@ -4,14 +4,6 @@
         box-sizing: border-box;
     }
 
-    body {
-        font-family: 'Courier New', monospace;
-        font-size: 12px;
-        margin: 0;
-        padding: 0;
-        background: #fff;
-    }
-
     /* Wrapper agar tampilan di layar komputer tidak berantakan */
     .struk-wrapper {
         width: 100%;
@@ -170,5 +162,6 @@
         <h3 style="font-size: 12pt; margin: 0;">TERIMA KASIH</h3>
     </div>
 
-    <div style="height: 10px;"></div>
+    <br>
+    <br>
 </div>
