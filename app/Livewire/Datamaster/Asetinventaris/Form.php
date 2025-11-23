@@ -117,7 +117,7 @@ class Form extends Component
                         [
                             'debet' => $this->data->nilai_penyusutan,
                             'kredit' => 0,
-                            'kode_akun_id' => $this->data->kode_akun_penyusutan_id
+                            'kode_akun_id' => '65900'
                         ]
                     ]
                 );

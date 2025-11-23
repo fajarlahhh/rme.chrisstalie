@@ -28,14 +28,8 @@ class Index extends Component
 
     public function delete($id)
     {
-        DB::transaction(function () use ($id) {
-            $idPembayaran = Registrasi::findOrFail($id)->pembayaran->id;
-            $data = Pembayaran::findOrFail($idPembayaran);
-            $data->jurnalPembayaranPasienKlinik()->delete();
-            $data->delete();
-            Registrasi::findOrFail($id)->update(['pembayaran_id' => null]);
-            session()->flash('success', 'Berhasil menghapus data');
-        });
+        Pembayaran::findOrFail($id)->delete();
+        session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function print($id)

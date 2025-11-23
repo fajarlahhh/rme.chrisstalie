@@ -5,6 +5,7 @@ namespace App\Livewire\Klinik\Kasir;
 use App\Models\Stok;
 use App\Models\Nakes;
 use Livewire\Component;
+use App\Models\KodeAkun;
 use App\Models\Tindakan;
 use App\Models\ResepObat;
 use App\Class\BarangClass;
@@ -26,9 +27,10 @@ class Form extends Component
     public $tindakan = [], $dataTindakan = [], $dataNakes = [], $resep = [], $dataMetodeBayar = [];
     public $metode_bayar = 1, $cash = 0, $keterangan, $dataBarang = [];
     public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0, $bahan = [], $alat = [];
-
+    public $dataKodeAkunPenyusutan = [];
     public function mount(Registrasi $data)
     {
+        $this->dataKodeAkunPenyusutan = KodeAkun::where('parent_id', '15200')->detail()->get()->toArray();
         $this->data = $data;
         if ($data->pembayaran_id) {
             abort(404);
@@ -105,6 +107,8 @@ class Form extends Component
             return [
                 'id' => $q->aset_id,
                 'nama' => $q->alat->nama,
+                'metode_penyusutan' => $q->alat->metode_penyusutan,
+                'kode_akun_penyusutan_id' => $q->alat->kode_akun_penyusutan_id,
                 'qty' => $q->qty,
                 'biaya' => $q->biaya,
                 'kode_akun_id' => $q->alat->kode_akun_id,
@@ -178,6 +182,7 @@ class Form extends Component
         ]);
         DB::transaction(function () {
             // Ambil data pembayaran terakhir di bulan berjalan
+
             $dataTerakhir = Pembayaran::where('created_at', 'like', date('Y-m') . '%')->orderByDesc('id')->first();
 
             $metodeBayar = MetodeBayar::findOrFail($this->metode_bayar);
@@ -222,14 +227,15 @@ class Form extends Component
 
             // Ambil data tindakan sekali query
             $tindakan = Tindakan::with('tarifTindakan')->where('id', $this->data->id)->get();
-
+            
+            //Jurnal Kas
             $detail[] = [
                 'debet' => $this->total_tagihan,
                 'kredit' => 0,
                 'kode_akun_id' => $metodeBayar->kode_akun_id
             ];
 
-            //Kewajiban Biaya Dokter & Perawat
+            //Jurnal Kewajiban Biaya Dokter & Perawat
             $detail = array_merge($detail, $tindakan->whereNotNull('dokter_id')->map(function ($q) {
                 return [
                     'kode_akun_id' => '23000',
@@ -244,8 +250,8 @@ class Form extends Component
                     'kredit' => $q['biaya_jasa_perawat'] * $q['qty'],
                 ];
             })->all());
-            //Kewajiban Biaya Dokter & Perawat
 
+            //Jurnal Pendapatan Tindakan
             $detail = array_merge($detail, $tindakan->map(function ($q) {
                 return [
                     'kode_akun_id' => $q['tarifTindakan']->kode_akun_id,
@@ -254,23 +260,28 @@ class Form extends Component
                 ];
             })->all());
 
-            $detail = array_merge($detail, collect($this->alat)->map(function ($q) {
+            //Jurnal Penyusutan Alat
+            $detail = array_merge($detail, collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
                 return [
-                    'kode_akun_id' => $q['kode_akun_id'],
+                    'kode_akun_id' => $q['kode_akun_penyusutan_id'],
                     'debet' => 0,
                     'kredit' => $q['biaya'] * $q['qty'],
                 ];
             })->all());
-
-            // Diskon
-            if ($this->diskon > 0) {
-                $detail[] = [
-                    'kode_akun_id' => '44000',
-                    'debet' => $this->diskon,
+            $detail = array_merge($detail, collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
+                return [
+                    'kode_akun_id' => '65900',
+                    'debet' => $q['biaya'] * $q['qty'],
                     'kredit' => 0,
                 ];
-            }
+            })->all());
+
             // Diskon
+            $detail[] = [
+                'kode_akun_id' => '44000',
+                'debet' => $this->diskon,
+                'kredit' => 0,
+            ];
 
             //Pembayaran Barang Bebas
             foreach ($this->resep as $resep) {
@@ -305,7 +316,6 @@ class Form extends Component
                             'kredit' => $q['harga'] * $q['qty'],
                         ];
                     })->all());
-                    //Pendapatan Penjualan Barang
                 }
             }
 
@@ -355,19 +365,27 @@ class Form extends Component
                 'kode_akun_id' => $q['kode_akun_id'],
             ];
         })->all();
-        JurnalClass::insert($id, 'Pembayaran Pasien Klinik', [
-            'tanggal' => now(),
-            'uraian' => 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
-            'referensi_id' => $pembayaran->id,
-            'pengguna_id' => auth()->id(),
-        ], collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
-            return [
-                'jurnal_id' => $q->first()['jurnal_id'],
-                'debet' => $q->sum('debet'),
-                'kredit' => $q->sum('kredit'),
-                'kode_akun_id' => $q->first()['kode_akun_id'],
-            ];
-        })->toArray());
+        // JurnalClass::insert(
+        //     jenis: 'Pembayaran Pasien Klinik',
+        //     sub_jenis: 'Pembayaran',
+        //     tanggal: now(),
+        //     uraian: 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
+        //     system: 1,
+        //     pembayaran_id: $pembayaran->id,
+        //     pengguna_id: auth()->id(),
+        //     detail: collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
+        //     'tanggal' => now(),
+        //     'uraian' => 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
+        //     'referensi_id' => $pembayaran->id,
+        //     'pengguna_id' => auth()->id(),
+        // ], collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
+        //     return [
+        //         'jurnal_id' => $q->first()['jurnal_id'],
+        //         'debet' => $q->sum('debet'),
+        //         'kredit' => $q->sum('kredit'),
+        //         'kode_akun_id' => $q->first()['kode_akun_id'],
+        //     ];
+        // })->toArray());
     }
 
     public function render()
