@@ -25,7 +25,7 @@
 <table class="table table-borderless fs-10px">
     <tr>
         <th class="p-0">Item<br><br></th>
-        <th class="p-0 text-center">Qty<br><br></th>
+        <th class="p-0 text-center w-10px" nowrap>Qty<br><br></th>
         <th class="p-0 text-end">Total<br><br></th>
     </tr>
     @foreach ($data->tindakan as $tindakan)
