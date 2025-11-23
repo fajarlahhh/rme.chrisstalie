@@ -121,15 +121,15 @@ class Form extends Component
         $this->validateWithCustomMessages([
             'metode_bayar' => 'required',
             'cash' => $this->metode_bayar == 1 ? 'required|numeric|min:' . $this->total_tagihan : 'nullable',
-            'keterangan_pembayaran' => $this->metode_bayar != 1 ? 'required|string|max:1000' : 'nullable',
-            // 'tindakan.*.dokter_id' => function ($attribute, $value, $fail) {
-            //     $index = explode('.', $attribute)[1];
-            //     if (
-            //         !isset($this->tindakan[$index]['dokter_id'])
-            //     ) {
-            //         $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama'] . '.');
-            //     }
-            // },
+            'keterangan_pembayaran' => $this->metode_bayar != 1 ? 'required|max:1000' : 'nullable',
+            'tindakan.*.dokter_id' => function ($attribute, $value, $fail) {
+                $index = explode('.', $attribute)[1];
+                if (
+                    !isset($this->tindakan[$index]['dokter_id'])
+                ) {
+                    $fail('Dokter wajib dipilih untuk tindakan ' . $this->tindakan[$index]['nama'] . '.');
+                }
+            },
             'tindakan.*.perawat_id' => 'nullable|numeric',
             'bahan.*.qty' => [
                 'required',
@@ -149,36 +149,36 @@ class Form extends Component
                     }
                 }
             ],
-            'resep.*.barang.*.qty' => [
-                'required',
-                'numeric',
-                'min:1',
-                function ($attribute, $value, $fail) {
-                    $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
-                    $resepIndex = $parts[1] ?? null;
-                    $barangIndex = $parts[3] ?? null;
+            // 'resep.*.barang.*.qty' => [
+            //     'required',
+            //     'numeric',
+            //     'min:1',
+            //     function ($attribute, $value, $fail) {
+            //         $parts = explode('.', $attribute); // ['resep', '0', 'barang', '1', 'qty']
+            //         $resepIndex = $parts[1] ?? null;
+            //         $barangIndex = $parts[3] ?? null;
 
-                    if (
-                        !is_numeric($resepIndex) ||
-                        !isset($this->resep[$resepIndex]['barang'][$barangIndex])
-                    ) {
-                        return;
-                    }
-                    $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
+            //         if (
+            //             !is_numeric($resepIndex) ||
+            //             !isset($this->resep[$resepIndex]['barang'][$barangIndex])
+            //         ) {
+            //             return;
+            //         }
+            //         $barangResep = $this->resep[$resepIndex]['barang'][$barangIndex];
 
-                    $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
-                    if (!$barang) return;
+            //         $barang = collect($this->dataBarang)->firstWhere('id', $barangResep['id']);
+            //         if (!$barang) return;
 
-                    $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
-                        ->available()
-                        ->count();
+            //         $stokTersedia = Stok::where('barang_id', $barang['barang_id'])
+            //             ->available()
+            //             ->count();
 
-                    if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
-                        $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
-                        $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
-                    }
-                }
-            ],
+            //         if (($value * $barang['rasio_dari_terkecil']) > $stokTersedia) {
+            //             $stokAvailable = $stokTersedia / $barang['rasio_dari_terkecil'];
+            //             $fail("Stok {$barang['nama']} tidak mencukupi. Tersisa {$stokAvailable} {$barang['satuan']}.");
+            //         }
+            //     }
+            // ],
         ]);
         DB::transaction(function () {
             // Ambil data pembayaran terakhir di bulan berjalan
@@ -227,7 +227,7 @@ class Form extends Component
 
             // Ambil data tindakan sekali query
             $tindakan = Tindakan::with('tarifTindakan')->where('id', $this->data->id)->get();
-            
+
             //Jurnal Kas
             $detail[] = [
                 'debet' => $this->total_tagihan,
@@ -365,27 +365,27 @@ class Form extends Component
                 'kode_akun_id' => $q['kode_akun_id'],
             ];
         })->all();
-        // JurnalClass::insert(
-        //     jenis: 'Pembayaran Pasien Klinik',
-        //     sub_jenis: 'Pembayaran',
-        //     tanggal: now(),
-        //     uraian: 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
-        //     system: 1,
-        //     pembayaran_id: $pembayaran->id,
-        //     pengguna_id: auth()->id(),
-        //     detail: collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
-        //     'tanggal' => now(),
-        //     'uraian' => 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
-        //     'referensi_id' => $pembayaran->id,
-        //     'pengguna_id' => auth()->id(),
-        // ], collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
-        //     return [
-        //         'jurnal_id' => $q->first()['jurnal_id'],
-        //         'debet' => $q->sum('debet'),
-        //         'kredit' => $q->sum('kredit'),
-        //         'kode_akun_id' => $q->first()['kode_akun_id'],
-        //     ];
-        // })->toArray());
+        
+        JurnalClass::insert(
+            jenis: 'Pembayaran Pasien Klinik',
+            sub_jenis: 'Pembayaran',
+            tanggal: now(),
+            uraian: 'Pembayaran Pasien Klinik No. Registrasi ' . Registrasi::where('pembayaran_id', $pembayaran->id)->first()->no_registrasi,
+            system: 1,
+            pembayaran_id: $pembayaran->id,
+            penggajian_id: null,
+            pelunasan_pembelian_id: null,
+            aset_id: null,
+            pembelian_id: null,
+            stok_masuk_id: null,
+            detail: collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
+                return [
+                    'debet' => $q->sum('debet'),
+                    'kredit' => $q->sum('kredit'),
+                    'kode_akun_id' => $q->first()['kode_akun_id'],
+                ];
+            })->values()->toArray()
+        );
     }
 
     public function render()
