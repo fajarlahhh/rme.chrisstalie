@@ -1,32 +1,106 @@
-@push('styles')
-    <style>
-        @media print {
+<style>
+    /* Reset umum */
+    * {
+        box-sizing: border-box;
+    }
 
-            body,
-            html {
-                height: auto !important;
-                min-height: 0 !important;
-                margin: 0 !important;
-                padding: 0 !important;
-            }
+    body {
+        font-family: 'Courier New', monospace;
+        font-size: 12px;
+        margin: 0;
+        padding: 0;
+        background: #fff;
+    }
 
-            .custom-print-container {
-                width: 80mm !important;
-                max-width: 100% !important;
-                margin: 0 auto !important;
-                padding: 0 !important;
-                height: auto !important;
-                box-sizing: border-box;
-            }
+    /* Wrapper agar tampilan di layar komputer tidak berantakan */
+    .struk-wrapper {
+        width: 100%;
+        max-width: 80mm;
+        margin: 0 auto;
+        padding: 5px;
+        background: white;
+    }
 
-            @page {
-                size: auto !important;
-                margin: 0 !important;
-            }
+    /* --- SETTING KHUSUS PRINT --- */
+    @media print {
+
+        /* Memaksa ukuran kertas menjadi roll (jika browser mendukung) */
+        @page {
+            margin: 0;
+            size: 80mm auto;
+            /* Lebar 80mm, Tinggi Otomatis */
         }
-    </style>
-@endpush
-<div class="custom-print-container">
+
+        /* KUNCI: Memaksa HTML dan Body hanya setinggi kontennya */
+        html,
+        body {
+            width: 80mm;
+            height: max-content;
+            /* Penting: Tinggi mengikuti isi, bukan tinggi kertas */
+            margin: 0 !important;
+            padding: 0 !important;
+            overflow: hidden;
+        }
+
+        .struk-wrapper {
+            width: 100%;
+            margin: 0;
+            padding-bottom: 5mm;
+            /* Jarak sedikit di bawah agar tidak terpotong pas */
+            border: none;
+        }
+
+        /* Sembunyikan header/footer browser default */
+        header,
+        footer,
+        .no-print {
+            display: none !important;
+        }
+    }
+
+    /* Helper classes */
+    .text-center {
+        text-align: center;
+    }
+
+    .text-end {
+        text-align: right;
+    }
+
+    .text-nowrap {
+        white-space: nowrap;
+    }
+
+    .p-0 {
+        padding: 0;
+    }
+
+    .fw-bold {
+        font-weight: bold;
+    }
+
+    .fs-10px {
+        font-size: 10pt;
+    }
+
+    table {
+        width: 100%;
+        border-collapse: collapse;
+    }
+
+    td,
+    th {
+        vertical-align: top;
+    }
+
+    /* Garis putus-putus */
+    hr {
+        border: none;
+        border-top: 1px dashed #000;
+        margin: 8px 0;
+    }
+</style>
+<div class="struk-wrapper">
     <div class="text-center">
         <img src="/assets/img/login.png" class="w-200px">
     </div>
@@ -90,14 +164,11 @@
             <td class="p-0">Metode Bayar</td>
             <td class="p-0 text-end">{{ $data->metode_bayar }}</td>
         </tr>
-        <tr>
-            <td>&nbsp;</td>
-            <td>&nbsp;</td>
-        </tr>
-        <tr>
-            <td colspan="2" class="text-center">
-                <h3>TERIMA KASIH</h3>
-            </td>
-        </tr>
-    </table>
+    </table><br>
+
+    <div class="text-center">
+        <h3 style="font-size: 12pt; margin: 0;">TERIMA KASIH</h3>
+    </div>
+
+    <div style="height: 10px;"></div>
 </div>
