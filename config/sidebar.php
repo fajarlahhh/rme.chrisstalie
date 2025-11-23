@@ -251,61 +251,61 @@ return [
                 ]
             ]
         ],
-        [
-            "title" => "Laporan",
-            "icon" => "<i class='fas fa-file-alt'></i>",
-            "urutkan" => true,
-            "sub_menu" => [
-                [
-                    "title" => "Penggunaan Aset",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Neraca",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Arus Kas",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Laba Rugi",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Laporan Harian Kas",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Stok Barang",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Penerimaan Tindakan",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Persediaan Barang",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Penjualan",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Pengeluaran",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Pengadaan",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Barang Keluar",
-                    "method" => ["Index"],
-                ]
-            ]
-        ],
+        // [
+        //     "title" => "Laporan",
+        //     "icon" => "<i class='fas fa-file-alt'></i>",
+        //     "urutkan" => true,
+        //     "sub_menu" => [
+        //         [
+        //             "title" => "Penggunaan Aset",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Neraca",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Arus Kas",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Laba Rugi",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Laporan Harian Kas",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Stok Barang",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Penerimaan Tindakan",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Persediaan Barang",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Penjualan",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Pengeluaran",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Pengadaan",
+        //             "method" => ["Index"],
+        //         ],
+        //         [
+        //             "title" => "Barang Keluar",
+        //             "method" => ["Index"],
+        //         ]
+        //     ]
+        // ],
         [
             "icon" => "<i class='fas fa-info-circle'></i>",
             "title" => "Informasi Pasien",
