@@ -30,7 +30,6 @@ class Form extends Component
     // public function updatedPersediaan()
     // {
     //     if ($this->persediaan == 'Apotek') {
-    //         $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '41000')->get()->toArray();
     //     } else {
     //         $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '50000')->get()->toArray();
     //     }
@@ -117,7 +116,7 @@ class Form extends Component
         }
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '11300')->get()->toArray();
         $this->dataKodeAkunModal = KodeAkun::detail()->where('parent_id', '50000')->get()->toArray();
-        $this->updatedPersediaan();
+        $this->dataKodeAkunPenjualan = KodeAkun::detail()->where('parent_id', '41000')->get()->toArray();
     }
 
     public function render()
