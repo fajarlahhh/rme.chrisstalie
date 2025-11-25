@@ -10,66 +10,74 @@
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <div class="panel-heading">
-            <div class="row w-100">
-                <div class="col-md-2">
-                    @unlessrole(config('app.name') . '-guest')
-                        <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
-                            class="btn btn-outline-secondary btn-block">Tambah</a>
-                    @endunlessrole
-                </div>
-                <div class="col-md-10">
-                    <div class="panel-heading-btn float-end">
-                        <div class="input-group w-100">
-                            <input class="form-control w-auto" type="month" autocomplete="off"
-                                wire:model.lazy="bulan" />
-                            <select class="form-control w-auto" wire:model.lazy="pegawai_id">
-                                <option value="">-- Pilih Pegawai --</option>
-                                @foreach ($dataPegawai as $pegawai)
-                                    <option value="{{ $pegawai['id'] }}">{{ $pegawai['nama'] }}</option>
-                                @endforeach
-                            </select>
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <h4 class="panel-title">Form</h4>
         </div>
         <div class="panel-body">
-            <div class="table-responsive">
-                <table class="table table-hover">
-                    <thead>
-                        <tr>
-                            <th>No.</th>
-                            <th>Tanggal</th>
-                            <th>Jam Masuk</th>
-                            <th>Jam Pulang</th>
-                            @unlessrole(config('app.name') . '-guest')
-                                <th class="w-5px"></th>
-                            @endunlessrole
-                        </tr>
-                    </thead>
-                    <tbody>
-                        @foreach ($data as $i => $row)
-                            <tr>
-                                <td class=" w-5px">
-                                    {{ ++$i }}
-                                </td>
-                                <td>{{ $row->tanggal }}</td>
-                                <td>{{ $row->jam_masuk }}</td>
-                                <td>{{ $row->jam_pulang }}</td>
-                                @unlessrole(config('app.name') . '-guest')
-                                    <td class="text-end text-nowrap">
-                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
-                                    </td>
-                                @endunlessrole
-                            </tr>
-                        @endforeach
-                    </tbody>
-                </table>
+            <div class="mb-3">
+                <label class="form-label" for="bulan">Bulan</label>
+                <input type="month" class="form-control" wire:model.live="bulan" id="bulan">
+                @error('bulan')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="mb-3">
+                <label class="form-label" for="pegawai_id">Pegawai</label>
+                <select wire:model.live="pegawai_id" id="pegawai_id" class="form-control">
+                    <option value="">-- Pilih Pegawai --</option>
+                    @foreach ($dataPegawai as $row)
+                        <option value="{{ $row['id'] }}">
+                            {{ $row['nama'] }}
+                        </option>
+                    @endforeach
+                </select>
+                @error('pegawai_id')
+                    <span class="text-danger">{{ $message }}</span>
+                @enderror
+            </div>
+            <div class="row">
+                @foreach ($detail as $i => $row)
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div
+                            class="card text-center  @if ($detail[$i]['masuk'] == 1) border-1 bg-cyan-100 border-secondary @else border-1 bg-yellow-100 border-secondary @endif mb-3">
+                            <div class="card-body" x-data="{
+                                get isChecked() {
+                                    return $wire.detail[{{ $i }}].masuk == 1 || $wire.detail[{{ $i }}].masuk === true;
+                                }
+                            }">
+                                <input class="form-check-input mb-1" type="checkbox" value="1"
+                                    wire:model.live="detail.{{ $i }}.masuk"
+                                    x-model="$wire.detail[{{ $i }}].masuk"
+                                    @if (!$pegawai_id) disabled @endif />
+                                <p class="card-text">
+                                    {{ \Carbon\Carbon::parse($row['tanggal'])->format('d M Y') }}
+                                </p>
+                                <template x-if="isChecked">
+                                    <div>
+                                        <select class="form-control" wire:model="detail.{{ $i }}.shift_id">
+                                            <option value="">-- Pilih Shift --</option>
+                                            @foreach ($dataShift as $row)
+                                                <option value="{{ $row['id'] }}">
+                                                    {{ $row['nama'] }}
+                                                    ({{ substr($row['jam_masuk'], 0, 5) }} s/d
+                                                    {{ substr($row['jam_pulang'], 0, 5) }})
+                                                </option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </template>
+                            </div>
+                        </div>
+                    </div>
+                @endforeach
             </div>
         </div>
         <div class="panel-footer">
-            {{ $data->links() }}
+            @unlessrole(config('app.name') . '-guest')
+                <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <span wire:loading class="spinner-border spinner-border-sm"></span>
+                    Simpan
+                </button>
+            @endunlessrole
         </div>
     </div>
 

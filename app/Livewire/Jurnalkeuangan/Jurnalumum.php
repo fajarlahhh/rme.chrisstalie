@@ -72,25 +72,27 @@ class Jurnalumum extends Component
         }
 
         DB::transaction(function () {
-            $terakhir = Jurnal::where('tanggal', 'like', substr($this->tanggal, 0, 7) . '%')
-                ->orderBy('id', 'desc')
-                ->first();
-            $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 15, 5) : 0;
-            $nomor = 'JURNAL/' . str_replace('-', '/', substr($this->tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
+            if (!$this->data->exists) {
 
-            $jurnal = new Jurnal();
-            $jurnal->id = str_replace('/', '', $nomor);
-            $jurnal->nomor = $nomor;
-            $jurnal->jenis = 'Jurnal Umum';
-            $jurnal->sub_jenis = null;
-            $jurnal->uraian = ucfirst($this->uraian);
-            $jurnal->tanggal = $this->tanggal;
-            $jurnal->system = 0;
-            $jurnal->save();
+                $terakhir = Jurnal::where('tanggal', 'like', substr($this->tanggal, 0, 7) . '%')
+                    ->orderBy('id', 'desc')
+                    ->first();
+                $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 15, 5) : 0;
+                $nomor = 'JURNAL/' . str_replace('-', '/', substr($this->tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
+                $this->data->id = str_replace('/', '', $nomor);
+                $this->data->nomor = $nomor;
+            }
 
-            $jurnal->jurnalDetail()->delete();
-            $jurnal->jurnalDetail()->insert(collect($this->detail)->map(fn($q) => [
-                'jurnal_id' => $jurnal->id,
+            $this->data->jenis = 'Jurnal Umum';
+            $this->data->sub_jenis = null;
+            $this->data->uraian = ucfirst($this->uraian);
+            $this->data->tanggal = $this->tanggal;
+            $this->data->system = 0;
+            $this->data->save();
+
+            $this->data->jurnalDetail()->delete();
+            $this->data->jurnalDetail()->insert(collect($this->detail)->map(fn($q) => [
+                'jurnal_id' => $this->data->id,
                 'debet' => $q['debet'],
                 'kredit' => $q['kredit'],
                 'kode_akun_id' => $q['id'],

@@ -46,7 +46,7 @@ class Registrasi extends Model
 
     public function tindakan(): HasMany
     {
-        return $this->hasMany(Tindakan::class, 'id');
+        return $this->hasMany(Tindakan::class);
     }
 
     public function tindakanBelumPenugasan(): HasMany

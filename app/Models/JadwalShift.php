@@ -11,6 +11,12 @@ class JadwalShift extends Model
     //
     protected $table = 'jadwal_shift';
 
+    protected $casts = [
+        'tanggal' => 'date',
+        'jam_masuk' => 'time',
+        'jam_pulang' => 'time',
+    ];
+
     public function pegawai(): BelongsTo
     {
         return $this->belongsTo(Pegawai::class);

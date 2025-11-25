@@ -5,8 +5,10 @@ namespace App\Livewire\Datamaster\Asetinventaris;
 use App\Models\Aset;
 use Livewire\Component;
 use App\Models\KodeAkun;
+use App\Class\JurnalClass;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use App\Models\AsetPenyusutan;
 
 class Index extends Component
 {

@@ -9,14 +9,7 @@ class Tindakan extends Model
 {
     //
     protected $table = 'tindakan';
-    public $incrementing = false;
-    protected $primaryKey = 'id';
-    protected $keyType = 'string';
     
-    protected $casts = [
-        'created_at' => 'datetime',
-    ];
-
     public function pengguna(): BelongsTo
     {
         return $this->belongsTo(Pengguna::class);
@@ -24,7 +17,7 @@ class Tindakan extends Model
 
     public function registrasi(): BelongsTo
     {
-        return $this->belongsTo(Registrasi::class, 'id');
+        return $this->belongsTo(Registrasi::class);
     }
 
     public function barangSatuan(): BelongsTo

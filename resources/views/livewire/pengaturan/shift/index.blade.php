@@ -43,7 +43,7 @@
                             <td>{{ $item->jam_pulang }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                    <x-action :row="$item" custom="" :detail="false" :edit="false"
                                         :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                 @endrole
                             </td>

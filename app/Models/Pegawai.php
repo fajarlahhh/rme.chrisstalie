@@ -33,4 +33,9 @@ class Pegawai extends Model
     {
         return $query->where('status', 'Non Aktif');
     }
+
+    public function absensi(): HasMany
+    {
+        return $this->hasMany(Absensi::class);
+    }
 }

@@ -48,6 +48,6 @@ class Aset extends Model
 
     public function jurnal(): HasOne
     {
-        return $this->hasOne(Jurnal::class, 'referensi_id')->where('jenis', 'Pembelian Aset');
+        return $this->hasOne(Jurnal::class);
     }
 }

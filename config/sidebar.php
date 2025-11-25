@@ -235,7 +235,7 @@ return [
             "sub_menu" => [
                 [
                     "title" => "Jadwal Shift",
-                    "method" => ["Index", "Form"],
+                    "method" => ["Index"],
                 ],
                 [
                     "title" => "Absensi",

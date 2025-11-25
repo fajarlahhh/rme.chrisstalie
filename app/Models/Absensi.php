@@ -12,6 +12,7 @@ class Absensi extends Model
     protected $keyType = 'string';
     protected $fillable = ['pegawai_id', 'tanggal', 'masuk', 'pulang', 'izin'];
 
+
     public function pegawai(): BelongsTo
     {
         return $this->belongsTo(Pegawai::class);

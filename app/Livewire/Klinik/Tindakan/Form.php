@@ -97,34 +97,35 @@ class Form extends Component
         DB::transaction(function () {
             Tindakan::where('id', $this->data->id)->delete();
             TindakanAlatBarang::where('id', $this->data->id)->delete();
-            $tindakan = collect($this->tindakan)->map(fn($q) => [
-                'id' => $this->data->id,
-                'tarif_tindakan_id' => $q['id'],
-                'pasien_id' => $this->data->pasien_id,
-                'biaya' => collect($this->dataTindakan)->firstWhere('id', $q['id'])['tarif'],
-                'catatan' => $q['catatan'],
-                'membutuhkan_inform_consent' => $q['membutuhkan_inform_consent'],
-                'membutuhkan_sitemarking' => $q['membutuhkan_sitemarking'],
-                'biaya_jasa_dokter' => $q['biaya_jasa_dokter'],
-                'biaya_jasa_perawat' => $q['biaya_jasa_perawat'],
-                'biaya_alat_barang' => $q['biaya_alat_barang'],
-                'dokter_id' => $q['dokter_id'],
-                'perawat_id' => $q['perawat_id'] ? $q['perawat_id'] : null,
-                'pengguna_id' => auth()->id(),
-                'qty' => $q['qty'],
-                'created_at' => now(),
-                'updated_at' => now(),
-            ])->toArray();
+
             $tindakanAlatBarang = [];
-            $dataTarifTindakanAlatBarang = TarifTindakanAlatBarang::whereIn('tarif_tindakan_id', collect($tindakan)->pluck('tarif_tindakan_id'))->get();
+            $dataTarifTindakanAlatBarang = TarifTindakanAlatBarang::whereIn('tarif_tindakan_id', collect($this->tindakan)->pluck('tarif_tindakan_id'))->get();
             $dataBarangSatuan = BarangSatuan::whereIn('id', collect($dataTarifTindakanAlatBarang)->pluck('barang_satuan_id'))->get();
-            foreach ($tindakan as $q) {
+
+            foreach (collect($this->tindakan) as $q) {
+                $tindakan = new Tindakan();
+                $tindakan->registrasi_id = $this->data->id;
+                $tindakan->tarif_tindakan_id = $q['tarif_tindakan_id'];
+                $tindakan->pasien_id = $this->data->pasien_id;
+                $tindakan->biaya = $q['biaya'];
+                $tindakan->catatan = $q['catatan'];
+                $tindakan->membutuhkan_inform_consent = $q['membutuhkan_inform_consent'];
+                $tindakan->membutuhkan_sitemarking = $q['membutuhkan_sitemarking'];
+                $tindakan->biaya_jasa_dokter = $q['biaya_jasa_dokter'];
+                $tindakan->biaya_jasa_perawat = $q['biaya_jasa_perawat'];
+                $tindakan->biaya_alat_barang = $q['biaya_alat_barang'];
+                $tindakan->dokter_id = $q['dokter_id'];
+                $tindakan->perawat_id = $q['perawat_id'] ? $q['perawat_id'] : null;
+                $tindakan->qty = $q['qty'];
+                $tindakan->pengguna_id = auth()->id();
+                $tindakan->save();
+
                 $tarifTindakanAlatBarang = $dataTarifTindakanAlatBarang->where('tarif_tindakan_id', $q['tarif_tindakan_id']);
                 foreach ($tarifTindakanAlatBarang as $r) {
                     $barangSatuan = $r->aset_id ? null : $dataBarangSatuan->firstWhere('id', $r->barang_satuan_id);
 
                     $tindakanAlatBarang[] = [
-                        'id' => $q['id'],
+                        'tindakan_id' => $q['id'],
                         'aset_id' => $r->aset_id,
                         'qty' => $q['qty'] * $r->qty,
                         'biaya' => $q['qty'] * $r->biaya,
@@ -134,7 +135,6 @@ class Form extends Component
                     ];
                 }
             }
-            Tindakan::insert($tindakan);
             TindakanAlatBarang::insert($tindakanAlatBarang);
             session()->flash('success', 'Berhasil menyimpan data');
         });

@@ -20,9 +20,9 @@ class JurnalClass
         $terakhir = Jurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
             ->first();
-        $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 15, 5) : 0;
+        $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 12, 5) : 0;
         $nomor = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
-
+        
         $jurnal = new Jurnal();
         $jurnal->id = str_replace('/', '', $nomor);
         $jurnal->nomor = $nomor;
@@ -42,7 +42,7 @@ class JurnalClass
 
         $jurnal->jurnalDetail()->delete();
         $jurnal->jurnalDetail()->insert(collect($detail)->map(fn($q) => [
-            'jurnal_id' => $id,
+            'jurnal_id' => $jurnal->id,
             'debet' => $q['debet'],
             'kredit' => $q['kredit'],
             'kode_akun_id' => $q['kode_akun_id'],
