@@ -28,7 +28,7 @@ class Form extends Component
             $this->fill($data->diagnosis->toArray());
             $this->icd10 = $data->diagnosis->icd10 ? collect($data->diagnosis->icd10)->map(fn($q) => ['id' => $q])->toArray() : [['id' => null]];
             if ($data->diagnosis->file && method_exists($data->diagnosis->file, 'map')) {
-                $this->fileDiupload = $data->diagnosis->file->map(function ($q) {
+                $this->fileDiupload = $data->file->where('jenis', 'Diagnosis')->map(function ($q) {
                     return [
                         'id' => $q['id'] ?? null,
                         'file' => $q['link'] ?? null,

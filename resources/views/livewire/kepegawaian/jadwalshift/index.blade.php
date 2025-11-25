@@ -8,78 +8,83 @@
 
     <h1 class="page-header">Jadwal Shift </h1>
 
-    <div class="panel panel-inverse" data-sortable-id="table-basic-2">
-        <div class="panel-heading">
-            <h4 class="panel-title">Form</h4>
-        </div>
-        <div class="panel-body">
-            <div class="mb-3">
-                <label class="form-label" for="bulan">Bulan</label>
-                <input type="month" class="form-control" wire:model.live="bulan" id="bulan">
-                @error('bulan')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
+    <form wire:submit.prevent="submit">
+        <div class="panel panel-inverse" data-sortable-id="table-basic-2">
+            <div class="panel-heading">
+                <h4 class="panel-title">Form</h4>
             </div>
-            <div class="mb-3">
-                <label class="form-label" for="pegawai_id">Pegawai</label>
-                <select wire:model.live="pegawai_id" id="pegawai_id" class="form-control">
-                    <option value="">-- Pilih Pegawai --</option>
-                    @foreach ($dataPegawai as $row)
-                        <option value="{{ $row['id'] }}">
-                            {{ $row['nama'] }}
-                        </option>
-                    @endforeach
-                </select>
-                @error('pegawai_id')
-                    <span class="text-danger">{{ $message }}</span>
-                @enderror
-            </div>
-            <div class="row">
-                @foreach ($detail as $i => $row)
-                    <div class="col-xl-3 col-lg-4 col-md-6">
-                        <div
-                            class="card text-center  @if ($detail[$i]['masuk'] == 1) border-1 bg-cyan-100 border-secondary @else border-1 bg-yellow-100 border-secondary @endif mb-3">
-                            <div class="card-body" x-data="{
-                                get isChecked() {
-                                    return $wire.detail[{{ $i }}].masuk == 1 || $wire.detail[{{ $i }}].masuk === true;
-                                }
-                            }">
-                                <input class="form-check-input mb-1" type="checkbox" value="1"
-                                    wire:model.live="detail.{{ $i }}.masuk"
-                                    x-model="$wire.detail[{{ $i }}].masuk"
-                                    @if (!$pegawai_id) disabled @endif />
-                                <p class="card-text">
-                                    {{ \Carbon\Carbon::parse($row['tanggal'])->format('d M Y') }}
-                                </p>
-                                <template x-if="isChecked">
-                                    <div>
-                                        <select class="form-control" wire:model="detail.{{ $i }}.shift_id">
-                                            <option value="">-- Pilih Shift --</option>
-                                            @foreach ($dataShift as $row)
-                                                <option value="{{ $row['id'] }}">
-                                                    {{ $row['nama'] }}
-                                                    ({{ substr($row['jam_masuk'], 0, 5) }} s/d
-                                                    {{ substr($row['jam_pulang'], 0, 5) }})
-                                                </option>
-                                            @endforeach
-                                        </select>
-                                    </div>
-                                </template>
+            <div class="panel-body">
+                <div class="mb-3">
+                    <label class="form-label" for="bulan">Bulan</label>
+                    <input type="month" class="form-control" wire:model.live="bulan" id="bulan">
+                    @error('bulan')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="pegawai_id">Pegawai</label>
+                    <select wire:model.live="pegawai_id" id="pegawai_id" class="form-control">
+                        <option value="">-- Pilih Pegawai --</option>
+                        @foreach ($dataPegawai as $row)
+                            <option value="{{ $row['id'] }}">
+                                {{ $row['nama'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('pegawai_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="row">
+                    @foreach ($detail as $i => $row)
+                        <div class="col-xl-3 col-lg-4 col-md-6">
+                            <div
+                                class="card text-center  @if ($detail[$i]['absen'] !== false) border-1 bg-cyan-100 border-secondary @else border-1 bg-yellow-100 border-secondary @endif mb-3">
+                                <div class="card-body" x-data="{
+                                    get isChecked() {
+                                        return $wire.detail[{{ $i }}].absen !== false;
+                                    }
+                                }">
+                                    <input class="form-check-input mb-1" type="checkbox" value="1"
+                                        wire:model.live="detail.{{ $i }}.absen"
+                                        x-model="$wire.detail[{{ $i }}].absen"
+                                        @if (!$pegawai_id) disabled @endif />
+                                    <p class="card-text">
+                                        {{ \Carbon\Carbon::parse($row['tanggal'])->format('d M Y') }}
+                                    </p>
+                                    <template x-if="isChecked">
+                                        <div>
+                                            <select class="form-control"
+                                                wire:model="detail.{{ $i }}.shift_id" required>
+                                                <option value="">-- Pilih Shift --</option>
+                                                @foreach ($dataShift as $row)
+                                                    <option value="{{ $row['id'] }}">
+                                                        {{ $row['nama'] }}
+                                                        ({{ substr($row['jam_masuk'], 0, 5) }} s/d
+                                                        {{ substr($row['jam_pulang'], 0, 5) }})
+                                                    </option>
+                                                @endforeach
+                                            </select>
+                                            @error('detail.' . $i . '.shift_id')
+                                                <span class="text-danger">{{ $message }}</span>
+                                            @enderror
+                                        </div>
+                                    </template>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                @endforeach
+                    @endforeach
+                </div>
+            </div>
+            <div class="panel-footer">
+                @unlessrole(config('app.name') . '-guest')
+                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                        <span wire:loading class="spinner-border spinner-border-sm"></span>
+                        Simpan
+                    </button>
+                @endunlessrole
+                <x-alert />
             </div>
         </div>
-        <div class="panel-footer">
-            @unlessrole(config('app.name') . '-guest')
-                <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
-                    <span wire:loading class="spinner-border spinner-border-sm"></span>
-                    Simpan
-                </button>
-            @endunlessrole
-        </div>
-    </div>
-
-    <x-alert />
+    </form>
 </div>

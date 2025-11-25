@@ -15,7 +15,7 @@ trait FileTrait
     use CustomValidationTrait;
     public $fileDihapus = [], $fileDiupload = [];
 
-    public function uploadFile($foreignKey, $path)
+    public function uploadFile($registrasi_id, $path)
     {
         $data = [];
         foreach (collect($this->fileDiupload)->where('id', null)->all() as $key => $row) {
@@ -35,7 +35,7 @@ trait FileTrait
                 }
 
                 $data[] = [
-                    'referensi_id' => $foreignKey,
+                    'registrasi_id' => $registrasi_id,
                     'jenis' => $path,
                     'link' => strtolower($path) . '/' . $namaFile,
                     'judul' => $row['judul'],

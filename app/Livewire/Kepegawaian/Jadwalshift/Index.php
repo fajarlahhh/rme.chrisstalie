@@ -2,15 +2,18 @@
 
 namespace App\Livewire\Kepegawaian\Jadwalshift;
 
-use Livewire\Component;
-use App\Models\Absensi;
-use Livewire\Attributes\Url;
-use App\Models\Pegawai;
-use Illuminate\Support\Carbon;
 use App\Models\Shift;
+use App\Models\Absensi;
+use App\Models\Pegawai;
+use Livewire\Component;
+use Livewire\Attributes\Url;
+use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
+use App\Traits\CustomValidationTrait;
 
 class Index extends Component
 {
+    use CustomValidationTrait;
     #[Url]
     public $cari, $bulan, $pegawai_id;
     public $dataPegawai = [], $dataShift = [], $detail = [];
@@ -51,17 +54,17 @@ class Index extends Component
 
             $data = $absensi->firstWhere('tanggal', $tanggal);
             $this->detail[] = $data ? [
-                'masuk' =>true,
                 'jam_masuk' => $data->jam_masuk,
                 'jam_pulang' => $data->jam_pulang,
                 'tanggal' => $data->tanggal,
                 'shift_id' => $data->shift_id,
+                'absen' => $data->shift_id ? true : false,
             ] : [
-                'masuk' => false,
                 'jam_masuk' => null,
                 'jam_pulang' => null,
                 'tanggal' => $tanggal,
                 'shift_id' => null,
+                'absen' => false,
             ];
         }
     }
@@ -72,44 +75,58 @@ class Index extends Component
             [
                 'pegawai_id' => 'required',
                 'bulan' => 'required',
+                'detail.*.shift_id' => 'required_if:detail.*.absen,true',
             ]
         );
 
-        foreach (
-            collect($this->detail)->where('masuk', true)->map(function ($q) {
-                $shift = collect($this->dataShift)->where('id', $q['shift_id'])->first();
-                return [
-                    'id' => $q['tanggal'] . '-' . $this->pegawai_id,
-                    'pegawai_id' => $this->pegawai_id,
-                    'tanggal' => $q['tanggal'],
-                    'jam_masuk' => $shift['jam_masuk'],
-                    'jam_pulang' => $shift['jam_pulang'],
-                    'shift_id' => $this->shift_id,
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            })->toArray() as $q
-        ) {
-            if (Absensi::where('id', $q['id'])->exists()) {
-                Absensi::where('id', $q['id'])->update([
-                    'jam_masuk' => $q['jam_masuk'],
-                    'jam_pulang' => $q['jam_pulang'],
-                    'shift_id' => $q['shift_id'],
-                ]);
-            } else {
-                Absensi::insert($q);
+        DB::transaction(function () {
+            foreach (
+                collect($this->detail)->map(function ($q) {
+                    $shift = collect($this->dataShift)->where('id', $q['shift_id'])->first();
+                    return [
+                        'id' => $q['tanggal'] . '-' . $this->pegawai_id,
+                        'pegawai_id' => $this->pegawai_id,
+                        'tanggal' => $q['tanggal'],
+                        'jam_masuk' => $q['absen'] === false ? null : $shift['jam_masuk'],
+                        'jam_pulang' => $q['absen'] === false ? null : $shift['jam_pulang'],
+                        'shift_id' => $q['absen'] === false ? null : $q['shift_id'],
+                        'absen' => $q['absen'],
+                        'created_at' => now(),
+                        'updated_at' => now(),
+                    ];
+                })->toArray() as $q
+            ) {
+                if (Absensi::where('id', $q['id'])->exists()) {
+                    if ($q['absen'] === false) {
+                        Absensi::where('id', $q['id'])->delete();
+                    } else {
+                        Absensi::where('id', $q['id'])->update([
+                            'jam_masuk' => $q['jam_masuk'],
+                            'jam_pulang' => $q['jam_pulang'],
+                            'shift_id' => $q['shift_id'],
+                        ]);
+                    }
+                } else {
+                    if ($q['absen'] === true) {
+                        Absensi::insert([
+                            'id' => $q['id'],
+                            'pegawai_id' => $q['pegawai_id'],
+                            'tanggal' => $q['tanggal'],
+                            'jam_masuk' => $q['jam_masuk'],
+                            'jam_pulang' => $q['jam_pulang'],
+                            'shift_id' => $q['shift_id'],
+                            'created_at' => now(),
+                            'updated_at' => now(),
+                        ]);
+                    }
+                }
             }
-        }
+        });
         session()->flash('success', 'Berhasil menyimpan data');
-        $this->redirect('/kepegawaian/jadwalshift');
     }
 
     public function render()
     {
-        return view('livewire.kepegawaian.jadwalshift.index', [
-            'data' => Pegawai::where('nama', 'like', '%' . $this->cari . '%')->with('absensi')->whereHas('absensi', function ($query) {
-                $query->where('tanggal', 'like', $this->bulan . '%');
-            })->get()
-        ]);
+        return view('livewire.kepegawaian.jadwalshift.index');
     }
 }

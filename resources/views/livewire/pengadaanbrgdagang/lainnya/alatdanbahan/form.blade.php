@@ -187,7 +187,7 @@
                                         </td>
                                     </tr>
                                     <tr>
-                                        <td colspan="4">
+                                        <td colspan="7">
                                             <div class="text-center">
                                                 <a class="btn btn-secondary" href="javascript:;"
                                                     @click="tambahBarang">

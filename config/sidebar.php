@@ -86,7 +86,7 @@ return [
             "icon" => "<i class='fas fa-shopping-cart'></i>",
         ],
         [
-            "title" => "Rekapitulasi Stok",
+            "title" => "Rekapitulasi Bulanan",
             "urutkan" => true,
             "method" => ["Index"],
             "icon" => "<i class='fa fa-legal'></i>",
@@ -218,7 +218,7 @@ return [
                 ],
                 [
                     "title" => "Upload",
-                    "method" => ["Index"],
+                    "method" => ["Index", "Form"],
                 ],
             ]
         ],
@@ -309,12 +309,6 @@ return [
         [
             "icon" => "<i class='fas fa-info-circle'></i>",
             "title" => "Informasi Pasien",
-            "urutkan" => true,
-            "method" => ["Index"],
-        ],
-        [
-            "icon" => "<i class='fas fa-money-bill'></i>",
-            "title" => "Rekonsiliasi Kas",
             "urutkan" => true,
             "method" => ["Index"],
         ],

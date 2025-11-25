@@ -39,6 +39,16 @@ class Registrasi extends Model
         return $this->hasOne(PemeriksaanAwal::class, 'id');
     }
 
+    public function file(): HasMany
+    {
+        return $this->hasMany(File::class);
+    }
+
+    public function upload(): HasOne
+    {
+        return $this->hasOne(Upload::class, 'id');
+    }
+
     public function tug(): HasOne
     {
         return $this->hasOne(Tug::class, 'id');

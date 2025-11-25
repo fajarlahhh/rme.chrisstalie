@@ -2,6 +2,7 @@
 
 use App\Models\Icd10;
 use App\Models\Pasien;
+use App\Models\Registrasi;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -74,6 +75,23 @@ Route::middleware(['auth'])->group(function () {
                     'nama' => $q->nama,
                     'alamat' => $q->alamat,
                 ])->toArray();
+        });
+        Route::get('registrasi', function (Request $req) {
+            return Registrasi::whereHas('pasien', function ($query) use ($req) {
+                $query->where(
+                    fn($q) => $q
+                        ->where('nik', 'like', "%$req->cari%")
+                        ->orWhere('id', 'like', "%$req->cari%")->orWhere('alamat', 'like', "%$req->cari%")
+                        ->orWhere('nama', 'like', "%$req->cari%")
+                );
+            })->get()->map(fn($q) => [
+                'id' => $q->id,
+                'text' => $q->id . ' - ' . $q->pasien->nama . ', ' . $q->pasien->alamat,
+                'rm' => $q->pasien->id,
+                'nik' => $q->pasien->nik ?: '',
+                'nama' => $q->pasien->nama,
+                'alamat' => $q->pasien->alamat,
+            ])->toArray();
         });
     });
 
