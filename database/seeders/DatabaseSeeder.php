@@ -8,7 +8,7 @@ use Spatie\Permission\Models\Role;
 
 class DatabaseSeeder extends Seeder
 {
-    private $replace = [' ', '&', '/', '\''];
+    private $replace = [' ', '&', '\'', '.', '/'];
     /**
      * Seed the application's database.
      */
