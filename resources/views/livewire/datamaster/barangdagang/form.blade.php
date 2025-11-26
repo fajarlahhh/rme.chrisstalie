@@ -72,30 +72,28 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                @if ($persediaan == 'Apotek')
-                    <div class="mb-3">
-                        <label class="form-label">Kategori Penjualan</label>
-                        <select class="form-control" x-init="$($el).selectpicker({
-                            liveSearch: true,
-                            width: 'auto',
-                            size: 10,
-                            container: 'body',
-                            style: '',
-                            showSubtext: true,
-                            styleBase: 'form-control'
-                        })" wire:model.live="kode_akun_penjualan_id"
-                            data-width="100%">
-                            <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                            @foreach ($dataKodeAkunPenjualan as $item)
-                                <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
-                                </option>
-                            @endforeach
-                        </select>
-                        @error('kode_akun_penjualan_id')
-                            <span class="text-danger">{{ $message }}</span>
-                        @enderror
-                    </div>
-                @endif
+                <div class="mb-3">
+                    <label class="form-label">Kategori Penjualan</label>
+                    <select class="form-control" x-init="$($el).selectpicker({
+                        liveSearch: true,
+                        width: 'auto',
+                        size: 10,
+                        container: 'body',
+                        style: '',
+                        showSubtext: true,
+                        styleBase: 'form-control'
+                    })" wire:model.live="kode_akun_penjualan_id"
+                        data-width="100%">
+                        <option hidden selected>-- Tidak Ada Kode Akun --</option>
+                        @foreach ($dataKodeAkunPenjualan as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                            </option>
+                        @endforeach
+                    </select>
+                    @error('kode_akun_penjualan_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
                 <div class="mb-3">
                     <label class="form-label">Kategori Modal</label>
                     <select class="form-control" x-init="$($el).selectpicker({

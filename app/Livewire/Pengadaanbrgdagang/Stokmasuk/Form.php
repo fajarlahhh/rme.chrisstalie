@@ -105,7 +105,6 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            $stokMasuk = [];
             $stok = [];
 
             foreach ($this->barang as $key => $value) {
