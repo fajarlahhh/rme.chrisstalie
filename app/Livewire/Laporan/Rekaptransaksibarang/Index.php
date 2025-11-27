@@ -24,13 +24,21 @@ class Index extends Component
 
     private function getData()
     {
-        return Barang::with(['barangSatuanUtama', 'kodeAkun'])
-            ->with(
-                ['stokAwal' => fn($q) => $q->where('tanggal', 'like', $this->bulan . '%')],
-                ['stokMasuk' => fn($q) => $q->where('tanggal', 'like', $this->bulan . '%')],
-                ['stokKeluar' => fn($q) => $q->where('tanggal', 'like', $this->bulan . '%')]
-            )
-            ->get();
+        return Barang::with([
+            'barangSatuanUtama',
+            'kodeAkun',
+            'stokAwal' => function($q) { $q->where('tanggal', 'like', $this->bulan . '%'); },
+            'stokMasuk' => function($q) { $q->where('tanggal', 'like', $this->bulan . '%'); },
+            'stokKeluar' => function($q) { $q->where('tanggal', 'like', $this->bulan . '%'); },
+        ])
+        ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
+        ->when($this->kode_akun_id, function ($q) {
+            $q->where('kode_akun_id', $this->kode_akun_id);
+        })
+        ->where(fn($q) => $q
+            ->where('nama', 'like', '%' . $this->cari . '%'))
+        ->orderBy('nama')
+        ->get();
     }
 
     public function render()

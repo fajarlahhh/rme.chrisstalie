@@ -12,12 +12,12 @@
         <div class="panel-heading">
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="date" class="form-control w-auto" wire:model.lazy="bulan">
+                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan">
                     &nbsp;
                     <select class="form-control w-auto" wire:model.lazy="persediaan">
                         <option value="">Semua Persediaan</option>
-                        <option value="Apotek">Apotek</option>
-                        <option value="Klinik">Klinik</option>
+                        <option value="Apotek">Persediaan Apotek</option>
+                        <option value="Klinik">Persediaan Klinik</option>
                     </select>&nbsp;
                     <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                         <option value="">Semua Kategori</option>

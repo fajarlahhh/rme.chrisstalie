@@ -20,8 +20,8 @@
                 <div class="panel-heading-btn float-end">
                     <select class="form-control w-auto" wire:model.lazy="persediaan">
                         <option value="">Semua Persediaan</option>
-                        <option value="Apotek">Apotek</option>
-                        <option value="Klinik">Klinik</option>
+                        <option value="Apotek">Persediaan Apotek</option>
+                        <option value="Klinik">Persediaan Klinik</option>
                     </select>&nbsp;
                     <select class="form-control w-auto" wire:model.lazy="kode_akun_id">
                         <option value="">Semua Kategori</option>
