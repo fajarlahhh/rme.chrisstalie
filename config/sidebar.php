@@ -97,7 +97,7 @@ return [
             "urutkan" => true,
             "sub_menu" => [
                 [
-                    "title" => "Laporan Keuangan Bulanan",
+                    "title" => "Keuangan Bulanan",
                     "urutkan" => true,
                     "sub_menu" => [
                         [
@@ -111,6 +111,28 @@ return [
                         [
                             "title" => "Arus Kas",
                             "method" => ["Index"],
+                        ]
+                    ]
+                ],
+                [
+                    "title" => "Barang Dagang",
+                    "urutkan" => true,
+                    "sub_menu" => [
+                        [
+                            "title" => "Barang Masuk",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Barang Keluar",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Rekap Transaksi",
+                            "method" => ["Index"],
+                        ],
+                        [
+                            "title" => "Persediaan",
+                            "method" => ["Index"],
                         ],
                     ]
                 ],
@@ -122,14 +144,6 @@ return [
                     "title" => "LHK",
                     "method" => ["Index"],
                 ],
-                [
-                    "title" => "Rekap Transaksi Barang",
-                    "method" => ["Index"],
-                ],
-                [
-                    "title" => "Persediaan",
-                    "method" => ["Index"],
-                ]
             ]
         ],
         [

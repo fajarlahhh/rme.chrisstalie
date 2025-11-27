@@ -36,9 +36,9 @@
             </div>
         </div>
         <div class="panel-body table-responsive">            
-            @include('livewire.laporan.persediaan.cetak', ['cetak' => false])
+            @include('livewire.laporan.barangdagang.persediaan.cetak', ['cetak' => false])
         </div>
     </div>
     <x-alert />
-    <x-modal.cetak judul="Laporan Persediaan" />
+    <x-modal.cetak judul="Laporan Persediaan Barang Dagang" />
 </div>

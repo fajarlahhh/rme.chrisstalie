@@ -3,7 +3,7 @@
         <img src="/assets/img/login.png" class="w-200px" alt="" />
         <br>
         <br>
-        <h5>Laporan Rekap Transaksi Barang</h5>
+        <h5>Laporan Rekap Transaksi Barang Dagang</h5>
         <hr>
     </div>
     <br>

@@ -1,13 +1,12 @@
 <?php
 
-namespace App\Livewire\Laporan\Persediaan;
+namespace App\Livewire\Laporan\Barangdagang\Persediaan;
 
 use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use Livewire\Attributes\Url;
-use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
@@ -44,7 +43,7 @@ class Index extends Component
     public function print()
     {
         $this->getData();
-        $cetak = view('livewire.laporan.persediaan.cetak', [
+        $cetak = view('livewire.laporan.barangdagang.persediaan.cetak', [
             'cetak' => true,
             'data' => $this->data,
             'dataStok' => $this->dataStok,
@@ -58,6 +57,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.laporan.persediaan.index');
+        return view('livewire.laporan.barangdagang.persediaan.index');
     }
 }
