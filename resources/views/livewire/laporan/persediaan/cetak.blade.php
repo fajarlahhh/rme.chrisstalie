@@ -2,10 +2,33 @@
     <div class="w-100 text-center">
         <img src="/assets/img/login.png" class="w-200px" alt="" />
         <br>
-        <h4>Laporan Persediaan</h4>
-        <small>Per {{ now() }}</small>
+        <br>
+        <h5>Laporan Persediaan</h5>
+        <hr>
     </div>
     <br>
+    <table>
+        <tr>
+            <th class="w-100px">Periode</th>
+            <th class="w-10px">:</th>
+            <td>{{ now() }}</td>
+        </tr>
+        <tr>
+            <th>Persediaan</th>
+            <th class="w-10px">:</th>
+            <td>{{ $persediaan ?? 'Semua Persediaan' }}</td>
+        </tr>
+        <tr>
+            <th>Kategori</th>
+            <th class="w-10px">:</th>
+            <td>{{ $kode_akun ?? 'Semua Kategori' }}</td>
+        </tr>
+        <tr>
+            <th>Kata Kunci</th>
+            <th class="w-10px">:</th>
+            <td>{{ $cari }}</td>
+        </tr>
+    </table>
 @endif
 <table class="table table-bordered table-hover">
     <thead>
@@ -23,16 +46,14 @@
     <tbody>
         @foreach ($data as $item)
             @php
-                $stok = $dataStok
-                    ->where('barang_id', $item->id)
-                    ->map(function ($q) use ($item) {
-                        return [
-                            'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                            'harga_beli' => $q->harga_beli,
-                            'stok' => $q->stok / $item->barangSatuanUtama?->rasio_dari_terkecil,
-                            'total' => $q->harga_beli * $q->stok,
-                        ];
-                    });
+                $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($item) {
+                    return [
+                        'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
+                        'harga_beli' => $q->harga_beli,
+                        'stok' => $q->stok / $item->barangSatuanUtama?->rasio_dari_terkecil,
+                        'total' => $q->harga_beli * $q->stok,
+                    ];
+                });
             @endphp
             <tr @if ($stok->count() > 0) class="bg-green-100" @endif>
                 <td @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>

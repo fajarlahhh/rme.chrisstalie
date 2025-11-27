@@ -48,6 +48,9 @@ class Index extends Component
             'cetak' => true,
             'data' => $this->data,
             'dataStok' => $this->dataStok,
+            'persediaan' => $this->persediaan,
+            'kode_akun' => $this->kode_akun_id ? collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()?->nama : '',
+            'cari' => $this->cari,
         ])->render();
         session()->flash('cetak', $cetak);
     }
