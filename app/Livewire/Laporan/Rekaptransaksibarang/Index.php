@@ -14,7 +14,7 @@ class Index extends Component
 {
     #[Url]
     public $cari, $persediaan, $kode_akun_id, $bulan;
-    public $cetak, $dataKodeAkun = [];
+    public $dataKodeAkun = [];
 
     public function mount()
     {

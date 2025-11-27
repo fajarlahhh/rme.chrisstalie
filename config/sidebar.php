@@ -97,7 +97,7 @@ return [
             "urutkan" => true,
             "sub_menu" => [
                 [
-                    "title" => "Laporan Keuangan",
+                    "title" => "Laporan Keuangan Bulanan",
                     "urutkan" => true,
                     "sub_menu" => [
                         [
@@ -113,6 +113,10 @@ return [
                             "method" => ["Index"],
                         ],
                     ]
+                ],
+                [
+                    "title" => "Absensi Pegawai",
+                    "method" => ["Index"],
                 ],
                 [
                     "title" => "LHK",

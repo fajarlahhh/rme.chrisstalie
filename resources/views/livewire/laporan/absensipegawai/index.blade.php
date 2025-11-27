@@ -1,0 +1,50 @@
+<div>
+    @section('title', 'Laporan Absensi Pegawai')
+
+    @section('breadcrumb')
+        <li class="breadcrumb-item">Laporan</li>
+        <li class="breadcrumb-item active">Laporan Absensi Pegawai</li>
+    @endsection
+
+    <!-- BEGIN page-header -->
+    <h1 class="page-header">Laporan Absensi Pegawai</h1>
+    <!-- END page-header -->
+
+    <div class="panel panel-inverse" data-sortable-id="table-basic-2">
+        <!-- BEGIN panel-heading -->
+        <div class="panel-heading">
+            <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
+                setTimeout(() => {
+                    $('#modal-cetak').modal('show')
+                }, 1000)
+            })" class="btn btn-warning">
+                Cetak</a>
+            <div class="w-100">
+                <div class="panel-heading-btn float-end">
+                    <select class="form-control" wire:model.lazy="jenis">
+                        <option value="Rekap">Rekap</option>
+                        <option value="Per Pegawai">Per Pegawai</option>
+                    </select>
+                    &nbsp;
+                    <input type="date" autocomplete="off" wire:model.debounce.500ms="tanggal1" id="tanggal"
+                        class="form-control w-auto">&nbsp;s/d&nbsp;
+                    <input type="date" autocomplete="off" wire:model.debounce.500ms="tanggal2" id="tanggal"
+                        class="form-control w-auto">&nbsp;
+                    @if ($jenis == 'Per Pegawai')
+                        <select class="form-control" wire:model.lazy="pegawai_id">
+                            <option value="">-- Pilih Pegawai --</option>
+                            @foreach ($dataPegawai as $row)
+                                <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
+                            @endforeach
+                        </select>
+                    @endif
+                </div>
+            </div>
+        </div>
+        <div class="panel-body table-responsive">
+            @include('livewire.laporan.absensipegawai.cetak', ['cetak' => false])
+        </div>
+    </div>
+    <x-alert />
+    <x-modal.cetak judul="Laporan Absensi Pegawai" />
+</div>

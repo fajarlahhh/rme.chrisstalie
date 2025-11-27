@@ -36,7 +36,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">            
-            @include('livewire.laporan.persediaan.cetak')
+            @include('livewire.laporan.persediaan.cetak', ['cetak' => false])
         </div>
     </div>
     <x-alert />

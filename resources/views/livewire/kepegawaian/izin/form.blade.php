@@ -48,7 +48,6 @@
                         <option value="">-- Pilih Jenis Izin --</option>
                         <option value="Sakit">Sakit</option>
                         <option value="Izin">Izin</option>
-                        <option value="Cuti">Cuti</option>
                     </select>
                     @error('izin')
                         <span class="text-danger">{{ $message }}</span>
