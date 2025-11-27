@@ -76,7 +76,7 @@
                     <td nowrap class="text-end">0</td>
                 @endif
             </tr>
-            @foreach ($stok as $subItem)
+            @foreach ($stok->sortBy('tanggal_kedaluarsa') as $subItem)
                 <tr class="bg-green-100">
                     <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
                     <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
