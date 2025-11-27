@@ -22,23 +22,42 @@ class Index extends Component
         $this->bulan = $this->bulan ?: date('Y-m');
     }
 
+    public function print()
+    {
+        $cetak = view('livewire.laporan.rekaptransaksibarang.cetak', [
+            'cetak' => true,
+            'bulan' => $this->bulan,
+            'persediaan' => $this->persediaan,
+            'kode_akun' => $this->kode_akun_id ? collect($this->dataKodeAkun)->where('id', $this->kode_akun_id)->first()?->nama : '',
+            'cari' => $this->cari,
+            'data' => $this->getData(),
+        ])->render();
+        session()->flash('cetak', $cetak);
+    }
+
     private function getData()
     {
         return Barang::with([
             'barangSatuanUtama',
             'kodeAkun',
-            'stokAwal' => function($q) { $q->where('tanggal', 'like', $this->bulan . '%'); },
-            'stokMasuk' => function($q) { $q->where('tanggal', 'like', $this->bulan . '%'); },
-            'stokKeluar' => function($q) { $q->where('tanggal', 'like', $this->bulan . '%'); },
+            'stokAwal' => function ($q) {
+                $q->where('tanggal', 'like', $this->bulan . '%');
+            },
+            'stokMasuk' => function ($q) {
+                $q->where('tanggal', 'like', $this->bulan . '%');
+            },
+            'stokKeluar' => function ($q) {
+                $q->where('tanggal', 'like', $this->bulan . '%');
+            },
         ])
-        ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
-        ->when($this->kode_akun_id, function ($q) {
-            $q->where('kode_akun_id', $this->kode_akun_id);
-        })
-        ->where(fn($q) => $q
-            ->where('nama', 'like', '%' . $this->cari . '%'))
-        ->orderBy('nama')
-        ->get();
+            ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
+            ->when($this->kode_akun_id, function ($q) {
+                $q->where('kode_akun_id', $this->kode_akun_id);
+            })
+            ->where(fn($q) => $q
+                ->where('nama', 'like', '%' . $this->cari . '%'))
+            ->orderBy('nama')
+            ->get();
     }
 
     public function render()
