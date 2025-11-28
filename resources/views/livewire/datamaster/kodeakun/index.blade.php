@@ -13,7 +13,9 @@
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
-                    Tambah</a>
+                    Tambah</a>&nbsp;
+                <a href="javascript:;" wire:click="export" class="btn btn-success">
+                    Export</a>
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
@@ -24,39 +26,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
-            <table class="table table-hover">
-                <thead>
-                    <tr>
-                        <th class="w-10px">No.</th>
-                        <th>Kode</th>
-                        <th>Nama</th>
-                        <th>Kategori</th>
-                        <th>Parent</th>
-                        <th>Detail</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach ($data as $item)
-                        <tr>
-                            <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
-                            <td>{{ $item->id }}</td>
-                            <td>{{ $item->nama }}</td>
-                            <td>{{ $item->kategori }}</td>
-                            <td>{{ $item->parent_id }}</td>
-                            <td>{{ $item->detail ? 'Ya' : 'Tidak' }}</td>
-                            <td class="with-btn-group text-end" nowrap>
-                                @role('administrator|supervisor')
-                                    @if ($item->sistem != 1)
-                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
-                                    @endif
-                                @endrole
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
+            @include('livewire.datamaster.kodeakun.tabel', ['cetak' => false])
         </div>
         <div class="panel-footer">
             {{ $data->links() }}

@@ -6,20 +6,21 @@ use Illuminate\Contracts\View\View;
 use Maatwebsite\Excel\Concerns\FromView;
 use Maatwebsite\Excel\Concerns\Exportable;
 
-class DatamastertariftindakanExport implements FromView
+class DatamasterExport implements FromView
 {
     use Exportable;
-    public $data;
+    public $data, $jenis;
 
-    public function __construct($data)
+    public function __construct($data, $jenis)
     {
         $this->data = $data;
+        $this->jenis = $jenis;
     }
 
     public function view(): View
     {
         //
-        return view('livewire.datamaster.tariftindakan.tabel', [
+        return view('livewire.datamaster.' . $this->jenis . '.tabel', [
             'cetak' => true,
             'data' => $this->data,
         ]);

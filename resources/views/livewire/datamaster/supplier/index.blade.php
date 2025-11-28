@@ -15,6 +15,8 @@
                     class="btn btn-primary">
                     Tambah</a>
             @endrole
+            <a href="javascript:;" wire:click="export" class="btn btn-success">
+                Export</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select data-container="body" class="form-control "wire:model.lazy="exist">

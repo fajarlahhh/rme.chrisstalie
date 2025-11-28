@@ -8,7 +8,8 @@ use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\KodeAkun;
 use Maatwebsite\Excel\Facades\Excel;
-use App\Exports\DataMasterTarifTindakanExport;
+use App\Exports\DatamastertariftindakanExport;
+use App\Exports\DatamasterExport;
 
 class Index extends Component
 {
@@ -57,7 +58,7 @@ class Index extends Component
 
     public function export()
     {
-        return Excel::download(new DataMasterTarifTindakanExport($this->getData(false)), 'tarif_tindakan.xlsx');
+        return Excel::download(new DatamasterExport($this->getData(false), 'tariftindakan'), 'tarif_tindakan.xlsx');
     }
 
     public function render()

@@ -14,9 +14,9 @@
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
-                <a href="javascript:;" wire:click="export" class="btn btn-success">
-                    Export</a>
             @endrole
+            <a href="javascript:;" wire:click="export" class="btn btn-success">
+                Export</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-control w-auto" wire:model.lazy="kode_akun_id">

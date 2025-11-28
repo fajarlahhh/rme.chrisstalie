@@ -6,6 +6,8 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\KodeAkun;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DatamasterExport;
 
 class Index extends Component
 {
@@ -19,6 +21,19 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function export()
+    {
+        return Excel::download(new DatamasterExport($this->getData(false), 'kodeakun'), 'kode_akun.xlsx');
+    }
+
+    public function getData($paginate = true)
+    {
+        $query = KodeAkun::where(fn($q) => $q
+            ->where('id', 'like', '%' . $this->cari . '%')
+            ->orWhere('nama', 'like', '%' . $this->cari . '%'))
+            ->orderBy('id');
+        return $paginate ? $query->paginate(10) : $query->get();
+    }
     public function delete($id)
     {
         try {
@@ -33,11 +48,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.datamaster.kodeakun.index', [
-            'data' => KodeAkun::where(fn($q) => $q
-                ->where('id', 'like', '%' . $this->cari . '%')
-                ->orWhere('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('id')
-                ->paginate(10)
+            'data' => $this->getData(true)
         ]);
     }
 }
