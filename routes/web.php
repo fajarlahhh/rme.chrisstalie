@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Icd10;
+use App\Models\Barang;
 use App\Models\Pasien;
 use App\Models\Registrasi;
 use Illuminate\Http\Request;
@@ -75,6 +76,12 @@ Route::middleware(['auth'])->group(function () {
                     'nama' => $q->nama,
                     'alamat' => $q->alamat,
                 ])->toArray();
+        });
+        Route::get('barang', function (Request $req) {
+            return Barang::where('nama', 'like', "%$req->cari%")->get()->map(fn($q) => [
+                'id' => $q->id,
+                'text' => $q->nama,
+            ])->toArray();
         });
         Route::get('registrasi', function (Request $req) {
             return Registrasi::whereHas('pasien', function ($query) use ($req) {

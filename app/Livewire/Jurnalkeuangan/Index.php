@@ -21,7 +21,7 @@ class Index extends Component
 
     public function delete($id)
     {
-        $data = Jurnal::findOrFail($id)->delete();
+        Jurnal::findOrFail($id)->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
@@ -32,10 +32,12 @@ class Index extends Component
             ->where('tanggal', 'like', $this->bulan . '%')
             ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))
             ->orderBy('created_at', 'desc')
+            ->when(!auth()->user()->hasRole('administrator'), fn($q) => $q->where('pengguna_id', auth()->id()))
             ->paginate(10);
     }
 
-    public function getJenis(){
+    public function getJenis()
+    {
         return Jurnal::where('tanggal', 'like', $this->bulan . '%')->select('jenis')->groupBy('jenis')->orderBy('jenis', 'asc')->get()->toArray();
     }
 

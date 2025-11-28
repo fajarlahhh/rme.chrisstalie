@@ -26,9 +26,9 @@ class Barang extends Model
         return $this->belongsTo(Supplier::class, 'konsinyator_id')->withTrashed();
     }
 
-    public function availableStok(): HasMany
+    public function stokTersedia(): HasMany
     {
-        return $this->hasMany(Stok::class)->whereNull('date_out_stok')->whereNull('sale_id')->whereNull('selling_harga');
+        return $this->hasMany(Stok::class)->whereNull('stok_keluar_id');
     }
 
     public function stok(): HasMany

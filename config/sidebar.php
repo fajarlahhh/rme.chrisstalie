@@ -330,6 +330,12 @@ return [
             "urutkan" => true,
             "method" => ["Index"],
         ],
+        [
+            "icon" => "<i class='fas fa-info-circle'></i>",
+            "title" => "Informasi Barang Dagang",
+            "urutkan" => true,
+            "method" => ["Index"],
+        ],
         // [
         //     "icon" => "<i class='fas fa-users'></i>",
         //     "title" => "Informasi Pasien",
