@@ -18,7 +18,12 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan">
+                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
+                    <select class="form-control w-auto" wire:model.lazy="jenis">
+                        <option value="pertanggalkeluar">Per Tanggal Keluar</option>
+                        <option value="pertanggalkedaluarsa">Per Tanggal Kedaluarsa</option>
+                        <option value="perbarang">Per Barang</option>
+                    </select>
                 </div>
             </div>
         </div>

@@ -7,6 +7,8 @@ use App\Models\TarifTindakan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\KodeAkun;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\DataMasterTarifTindakanExport;
 
 class Index extends Component
 {
@@ -36,21 +38,36 @@ class Index extends Component
         };
     }
 
+    private function getData($paginate = true)
+    {
+        return TarifTindakan::with([
+            'pengguna',
+            'kodeAkun',
+            'tarifTindakanAlatBarang',
+        ])
+            ->when($this->kode_akun_id, function ($q) {
+                $q->where('kode_akun_id', $this->kode_akun_id);
+            })
+            ->where(fn($q) => $q
+                ->where('nama', 'like', '%' . $this->cari . '%'))
+            ->orderBy('nama')
+            ->when($paginate, function ($q) {
+                $q->paginate(10);
+            })
+            ->when(!$paginate, function ($q) {
+                $q->get();
+            });
+    }
+
+    public function export()
+    {
+        return Excel::download(new DataMasterTarifTindakanExport($this->getData(false)), 'tarif_tindakan.xlsx');
+    }
+
     public function render()
     {
         return view('livewire.datamaster.tariftindakan.index', [
-            'data' => TarifTindakan::with([
-                'pengguna',
-                'kodeAkun',
-                'tarifTindakanAlatBarang',
-            ])
-                ->when($this->kode_akun_id, function($q) {
-                    $q->where('kode_akun_id', $this->kode_akun_id);
-                })
-                ->where(fn($q) => $q
-                    ->where('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('nama')
-                ->paginate(10)
+            'data' => $this->getData(true),
         ]);
     }
 }

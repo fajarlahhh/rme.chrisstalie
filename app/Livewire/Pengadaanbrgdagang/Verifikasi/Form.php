@@ -36,6 +36,7 @@ class Form extends Component
             if ($this->status == 'Disetujui') {
                 $this->data->permintaanPembelianDetail()->delete();
                 $this->data->permintaanPembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
+                    'barang_id' => $q['barang_id'],
                     'qty_permintaan' => $q['qty'],
                     'qty_disetujui' => $q['qty_disetujui'],
                     'barang_satuan_id' => $q['id'],
@@ -61,6 +62,7 @@ class Form extends Component
         $this->fill($this->data->toArray());
         $this->barang = $data->permintaanPembelianDetail->map(fn($q) => [
             'id' => $q->barang_satuan_id,
+            'barang_id' => $q->barang_id,
             'nama' => $q->barangSatuan->barang->nama,
             'satuan' => $q->barangSatuan->nama,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,

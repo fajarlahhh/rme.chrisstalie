@@ -13,7 +13,9 @@
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
-                    Tambah</a>
+                    Tambah</a>&nbsp;
+                <a href="javascript:;" wire:click="export" class="btn btn-success">
+                    Export</a>
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
@@ -62,10 +64,7 @@
                             <td class="text-end">{{ number_format($item->biaya_jasa_perawat) }}</td>
                             <th class="text-end">
                                 {{ number_format(
-                                    $item->tarif -
-                                        $item->biaya_jasa_dokter -
-                                        $item->biaya_jasa_perawat -
-                                        $item->biaya_alat_barang,
+                                    $item->tarif - $item->biaya_jasa_dokter - $item->biaya_jasa_perawat - $item->biaya_alat_barang,
                                 ) }}
                             </th>
                             <td class="with-btn-group text-end" nowrap>

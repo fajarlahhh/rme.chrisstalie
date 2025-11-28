@@ -68,6 +68,7 @@ class Form extends Component
                     'harga_beli' => $q['harga_beli'],
                     'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
+                    'barang_id' => $brg['barang_id'],
                     'pembelian_id' => $pembelian->id,
                 ];
             })->toArray());

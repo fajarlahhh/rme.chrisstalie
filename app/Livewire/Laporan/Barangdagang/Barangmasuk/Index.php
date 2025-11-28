@@ -9,7 +9,7 @@ use App\Models\StokMasuk;
 class Index extends Component
 {
     #[Url]
-    public $bulan;
+    public $bulan, $jenis = 'pertransaksi';
 
     public function mount()
     {
