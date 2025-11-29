@@ -70,4 +70,13 @@ class Pengguna extends Authenticatable
     {
         return $this->hasOne(Nakes::class)->where('dokter', 1);
     }
+
+    public function getNamaAttribute(): string
+    {
+        if ($this->pegawai && isset($this->pegawai->nama)) {
+            return $this->pegawai->nama;
+        }
+        // Fallback: try to get original 'nama' directly from attributes
+        return $this->attributes['nama'] ?? '';
+    }
 }

@@ -25,7 +25,7 @@
                                     <input class="form-control" type="text" wire:model="nama"
                                         @if ($data->exists) disabled @endif />
                                 @else
-                                    <input class="form-control" type="text" value="{{ $data->pegawai->nama }}"
+                                    <input class="form-control" type="text" value="{{ $data->nama }}"
                                         @if ($data->exists) disabled @endif />
                                 @endif
                                 @error('nama')

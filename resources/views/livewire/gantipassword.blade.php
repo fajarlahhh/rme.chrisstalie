@@ -25,7 +25,7 @@
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
                     <input class="form-control" type="text"
-                        value="{{ auth()->user()->pegawai ? auth()->user()->pegawai->nama : auth()->user()->nama }}"
+                        value="{{ auth()->user()->nama }}"
                         disabled />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>

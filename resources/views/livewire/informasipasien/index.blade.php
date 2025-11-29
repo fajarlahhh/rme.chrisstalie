@@ -137,7 +137,7 @@
                                 <strong>Keluhan Awal : </strong>{{ $row->keluhan_awal }}
                                 <hr>
                                 <small>
-                                    {{ $row->pengguna->pegawai->nama ?? $row->pengguna->nama }}<br>
+                                    {{ $row->pengguna->nama }}<br>
                                     {{ $row->created_at->format('d F Y, H:i') }}
                                 </small>
                             </td>
@@ -204,7 +204,7 @@
                                     </strong>{{ $row->pemeriksaanAwal->rencana_awal }}
                                     <hr>
                                     <small>
-                                        {{ $row->pemeriksaanAwal->pengguna->pegawai->nama ?? $row->pemeriksaanAwal->pengguna->nama }}<br>
+                                        {{ $row->pemeriksaanAwal->pengguna->nama }}<br>
                                         {{ $row->pemeriksaanAwal->created_at->format('d F Y, H:i') }}
                                     </small>
                                 @endif
@@ -227,7 +227,7 @@
                                     </strong>{{ $row->tug->catatan }}
                                     <hr>
                                     <small>
-                                        {{ $row->tug->pengguna->pegawai->nama ?? $row->tug->pengguna->nama }}<br>
+                                        {{ $row->tug->pengguna->nama }}<br>
                                         {{ $row->tug->created_at->format('d F Y, H:i') }}
                                     </small>
                                 @endif
@@ -255,7 +255,7 @@
                                     @endforeach
                                     <hr>
                                     <small>
-                                        {{ $row->diagnosis->pengguna->pegawai->nama ?? $row->diagnosis->pengguna->nama }}<br>
+                                        {{ $row->diagnosis->pengguna->nama }}<br>
                                         {{ $row->diagnosis->created_at->format('d F Y, H:i') }}
                                     </small>
                                 @endif
@@ -284,7 +284,7 @@
                                     @endforeach
                                     <hr>
                                     <small>
-                                        {{ $row->tindakan->first()->pengguna->pegawai->nama ?? $row->tindakan->first()->pengguna->nama }}<br>
+                                        {{ $row->tindakan->first()->pengguna->nama }}<br>
                                         {{ $row->tindakan->first()->created_at->format('d F Y, H:i') }}
                                     </small>
                                 @endif
@@ -321,7 +321,7 @@
                                     @endforeach
                                     <hr>
                                     <small>
-                                        {{ $row->resepObat->first()->pengguna->pegawai->nama ?? $row->resepObat->first()->pengguna->nama }}<br>
+                                        {{ $row->resepObat->first()->pengguna->nama }}<br>
                                         {{ $row->resepObat->first()->created_at->format('d F Y, H:i') }}
                                     </small>
                                 @endif
@@ -338,7 +338,7 @@
                                     <strong>Total :</strong> {{ number_format($row->pembayaran->total_tagihan) }}
                                     <hr>
                                     <small>
-                                        {{ $row->pembayaran->pengguna->pegawai->nama ?? $row->pembayaran->pengguna->nama }}<br>
+                                        {{ $row->pembayaran->pengguna->nama }}<br>
                                         {{ $row->pembayaran->created_at->format('d F Y, H:i') }}
                                     </small>
                                 @endif

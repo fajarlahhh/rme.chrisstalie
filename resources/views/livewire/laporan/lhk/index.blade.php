@@ -24,7 +24,7 @@
                     <select class="form-control" wire:model.lazy="pengguna_id">
                         <option value="">Semua Pengguna</option>
                         @foreach ($dataPengguna as $item)
-                            <option value="{{ $item->id }}">{{ $item->pegawai?->nama ?? $item->nama }}</option>
+                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
                         @endforeach
                     </select>&nbsp;
                 </div>

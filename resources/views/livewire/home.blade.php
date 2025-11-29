@@ -16,7 +16,7 @@
         @elseif(($hour >= 19 && $hour < 24) || ($hour >= 0 && $hour < 3))
             Malam
         @endif
-        <strong>{{ auth()->user()->pegawai ? auth()->user()->pegawai->nama : auth()->user()->nama }}</strong>
+        <strong>{{ auth()->user()->nama }}</strong>
     </h1>
     <!-- END page-header -->
 

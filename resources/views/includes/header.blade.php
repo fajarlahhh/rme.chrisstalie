@@ -32,7 +32,7 @@
                 <img src="/assets/img/favicon.png" alt="" />
                 <span>
                     <span class="d-none d-md-inline">&nbsp;
-                        {{ auth()->user()->pegawai ? auth()->user()->pegawai->nama : auth()->user()->nama }}
+                        {{ auth()->user()->nama }}
                     </span>
                     <b class="caret"></b>
                 </span>

@@ -100,7 +100,7 @@
         </tr>
         <tr>
             <td class="text-nowrap w-50px p-0">Kasir</td>
-            <td class="p-0">: {{ $data->pengguna->pegawai ? $data->pengguna->pegawai->nama : $data->pengguna->nama }}
+            <td class="p-0">: {{ $data->pengguna->nama }}
             </td>
         </tr>
         <tr>
