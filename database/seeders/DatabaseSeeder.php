@@ -14,7 +14,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        foreach (collect(config('sidebar.menu'))->sortBy('name')->all() as $key => $row) {
+        foreach (collect(config('sidebar.menu'))->sortBy('title')->all() as $key => $row) {
             $menu =
                 str_replace($this->replace, '', strtolower($row['title']));
             try {
@@ -30,7 +30,7 @@ class DatabaseSeeder extends Seeder
 
         foreach ($role as $key => $subRow) {
             try {
-                Role::create(['name' => str_replace($this->replace, '', $row['name']) . '-' . $subRow]);
+                Role::create(['name' => str_replace($this->replace, '', $row['title']) . '-' . $subRow]);
             } catch (\Throwable $th) {
             }
         }

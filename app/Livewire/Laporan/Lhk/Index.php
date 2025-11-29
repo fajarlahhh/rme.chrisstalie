@@ -27,7 +27,8 @@ class Index extends Component
         $this->dataMetodeBayar = MetodeBayar::all()->toArray();
     }
 
-    public function print(){
+    public function print()
+    {
         $cetak = view('livewire.laporan.lhk.cetak', [
             'cetak' => true,
             'tanggal' => $this->tanggal,
@@ -42,19 +43,19 @@ class Index extends Component
     public function getData()
     {
         return Jurnal::with(['pengguna'])
-            ->select('jurnal.*', 'jurnal_detail.kode_akun_id as kode_akun_id', 'jurnal_detail.debet as debet', 'jurnal_detail.kredit as kredit', 'pembayaran.metode_bayar as metode_bayar')
+            ->select('jurnal.*', 'jurnal_detail.kode_akun_id as kode_akun_id', 'jurnal_detail.debet as debet', 'jurnal_detail.kredit as kredit', 'pembayaran.metode_bayar as metode_bayar', 'jurnal.pengguna_id as pengguna_id')
             ->rightJoin('jurnal_detail', 'jurnal.id', '=', 'jurnal_detail.jurnal_id')
             ->leftJoin('pembayaran', 'jurnal.pembayaran_id', '=', 'pembayaran.id')
-            ->whereIn('jurnal.id', JurnalDetail::whereIn('kode_akun_id', (collect($this->dataKodeAkun)->where('parent_id', '11100')->pluck('id')))->pluck('jurnal_id'))
-            ->when($this->pengguna_id, fn($q) => $q->where('jurnal.pengguna_id', $this->pengguna_id))
+            ->whereIn('jurnal.id', JurnalDetail::whereIn('kode_akun_id', (collect($this->dataKodeAkun)->whereIn('parent_id', ['43000', '42000', '41000'])->pluck('id')))->pluck('jurnal_id'))
             ->where('tanggal', $this->tanggal)->get();
     }
 
     public function render()
     {
+        $data = $this->getData();
         return view('livewire.laporan.lhk.index', [
-            'data' =>  $this->getData(),
-            'dataPengguna' => Pengguna::whereIn('id', Jurnal::where('tanggal', $this->tanggal)->pluck('pengguna_id'))->get()
+            'data' =>  $data->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),
+            'dataPengguna' => Pengguna::whereIn('id', $data->pluck('pengguna_id'))->get()
         ]);
     }
 }
