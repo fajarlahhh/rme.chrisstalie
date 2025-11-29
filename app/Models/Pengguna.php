@@ -79,4 +79,14 @@ class Pengguna extends Authenticatable
         // Fallback: try to get original 'nama' directly from attributes
         return $this->attributes['nama'] ?? '';
     }
+
+    public function getPanggilanAttribute(): string
+    {
+        if ($this->pegawai && isset($this->pegawai->panggilan)) {
+            return $this->pegawai->panggilan;
+        }
+        // Fallback: try to get original 'panggilan' directly from attributes
+        return $this->attributes['panggilan'] ?? '';
+    }
+    
 }

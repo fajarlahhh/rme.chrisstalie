@@ -101,9 +101,7 @@
         <tr>
             <td class="text-nowrap p-0">Kasir</td>
             <td class="p-0">:
-                {{ $data->pengguna->pegawai
-                    ? $data->pengguna->pegawai?->nama
-                    : $data->pengguna->nama }}
+                {{ $data->pengguna->panggilan }}
             </td>
         </tr>
         <tr>
