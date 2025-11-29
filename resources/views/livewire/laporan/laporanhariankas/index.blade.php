@@ -26,7 +26,7 @@
                         @foreach ($dataPengguna as $item)
                             <option value="{{ $item->id }}">{{ $item->nama }}</option>
                         @endforeach
-                    </select>&nbsp;
+                    </select>
                 </div>
             </div>
         </div>

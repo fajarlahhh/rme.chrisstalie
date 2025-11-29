@@ -158,6 +158,10 @@ return [
                     "title" => "Laporan Harian Kas",
                     "method" => ["Index"],
                 ],
+                [
+                    "title" => "Penerimaan",
+                    "method" => ["Index"],
+                ],
             ]
         ],
         [

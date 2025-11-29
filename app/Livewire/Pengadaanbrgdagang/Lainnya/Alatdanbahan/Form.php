@@ -163,10 +163,10 @@ class Form extends Component
             ];
 
             JurnalClass::insert(
-                jenis: 'Stok Masuk Alat dan Bahan',
-                sub_jenis: 'Stok Masuk',
+                jenis: 'Pembelian Alat dan Bahan',
+                sub_jenis: 'Pembelian',
                 tanggal: now(),
-                uraian: 'Stok Masuk Alat dan Bahan ' . $pembelian->uraian,
+                uraian: 'Pembelian Alat dan Bahan ' . $pembelian->uraian,
                 system: 1,
                 pembelian_id: $pembelian->id,
                 aset_id: null,
