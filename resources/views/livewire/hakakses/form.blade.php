@@ -95,7 +95,7 @@
                                             foreach ($data as $i => $row) {
                                                 $menu =
                                                     $parent .
-                                                    str_replace([' ', '/', '\''], '', strtolower($row['title']));
+                                                    str_replace([' ', '&', '\'', '.'], '', strtolower($row['title']));
                                                 $subMenu .=
                                                     "<div class='form-check mt-1'><input type='checkbox' class='form-check-input' wire:model='hakAkses' id='" .
                                                     $menu .
@@ -116,7 +116,7 @@
                                     @endphp
                                     @foreach (collect(config('sidebar.menu'))->sortBy('title')->all() as $subKey => $subRow)
                                         @php
-                                            $menu = str_replace([' ', '/', '\''], '', strtolower($subRow['title']));
+                                            $menu = str_replace([' ', '&', '\'', '.'], '', strtolower($subRow['title']));
                                         @endphp
                                         <div class="col-lg-6 mb-3">
                                             <div class="form-check">
