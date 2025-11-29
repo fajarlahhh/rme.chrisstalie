@@ -70,9 +70,10 @@
                             </td>
                             <td nowrap>
                                 <small><ul>
-                                    <li>Metode Bayar: {{ $row->metode_bayar }}</li>
-                                    <li>Keterangan Pembayaran: {{ $row->keterangan_pembayaran }}</li>
-                                    <li>Kasir: {{ $row->pengguna->nama }}</li>
+                                    <li><strong>Metode Bayar:</strong> {{ $row->metode_bayar }}</li>
+                                    <li><strong>Keterangan Pembayaran:</strong> {{ $row->keterangan_pembayaran }}</li>
+                                    <li><strong>Kasir:</strong> {{ $row->pengguna->nama }}</li>
+                                    <li><strong>Waktu Bayar:</strong> {{ $row->created_at }}</li>
                                 </ul></small>
                             </td>
                             <td class="with-btn-group text-end" nowrap>

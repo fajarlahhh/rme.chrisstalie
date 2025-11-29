@@ -66,7 +66,7 @@
                             <td>{{ $this->status == 1 ? $row->pasien->no_hp : $row->registrasi->pasien->no_hp }}</td>
                             <td>{{ $this->status == 1 ? $row->catatan : $row->registrasi->catatan }}</td>
                             @if ($status == 2)
-                                <td>
+                                <td nowrap>
                                     <small>
                                         <ul>
                                             <li>Total Tindakan : <b>{{ number_format($row->total_tindakan) }}</b></li>
@@ -78,7 +78,7 @@
                                         </ul>
                                     </small>
                                 </td>
-                                <td>
+                                <td nowrap>
                                     <small>
                                         <ul>
                                             <li>No. Nota : <b>{{ $row->id }}</b></li>
