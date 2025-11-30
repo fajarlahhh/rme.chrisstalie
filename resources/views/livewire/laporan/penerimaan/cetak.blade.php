@@ -59,8 +59,8 @@
                 <td class="text-end">{{ $cetak ? $row['diskon'] : number_format($row['diskon']) }}</td>
                 <td class="text-end">
                     {{ $cetak
-                        ? $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'] - $row['diskon']
-                        : number_format($row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'] - $row['diskon']) }}
+                        ? $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep']
+                        : number_format($row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep']) }}
                 </td>
                 @role('administrator|supervisor')
                     <td>{{ $row['pengguna']['nama'] }}</td>
@@ -82,12 +82,8 @@
             <th class="text-end">{{ $cetak ? $data->sum('diskon') : number_format($data->sum('diskon')) }}</th>
             <th class="text-end">
                 {{ $cetak
-                    ? $data->sum(fn($row) => $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'] - $row['diskon'])
-                    : number_format(
-                        $data->sum(
-                            fn($row) => $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'] - $row['diskon'],
-                        ),
-                    ) }}
+                    ? $data->sum(fn($row) => $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'])
+                    : number_format($data->sum(fn($row) => $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'])) }}
             </th>
             @role('administrator|supervisor')
                 <th colspan="3"></th>
