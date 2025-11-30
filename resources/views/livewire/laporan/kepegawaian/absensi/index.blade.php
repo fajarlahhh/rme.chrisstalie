@@ -27,9 +27,9 @@
                         <option value="Per Pegawai">Per Pegawai</option>
                     </select>
                     &nbsp;
-                    <input type="date" autocomplete="off" wire:model.debounce.500ms="tanggal1" id="tanggal"
+                    <input type="date" autocomplete="off" wire:model.lazy="tanggal1" id="tanggal"
                         class="form-control w-auto">&nbsp;s/d&nbsp;
-                    <input type="date" autocomplete="off" wire:model.debounce.500ms="tanggal2" id="tanggal"
+                    <input type="date" autocomplete="off" wire:model.lazy="tanggal2" id="tanggal"
                         class="form-control w-auto">&nbsp;
                     @if ($jenis == 'Per Pegawai')
                         <select class="form-control" wire:model.lazy="pegawai_id">
