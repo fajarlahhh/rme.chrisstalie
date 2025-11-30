@@ -54,7 +54,7 @@
                         'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                         'harga_beli' => $q->harga_beli,
                         'stok' => $q->stok / $item->barangSatuanUtama?->rasio_dari_terkecil,
-                        'total' => $q->harga_beli / $item->barangSatuanUtama?->rasio_dari_terkecil * $q->stok,
+                        'total' => ($q->harga_beli / $item->barangSatuanUtama?->rasio_dari_terkecil) * $q->stok,
                     ];
                 });
                 $total += $stok->sum(fn($q) => $q['total']);
@@ -80,7 +80,7 @@
                 <tr class="bg-green-100">
                     <td nowrap class="text-end">{{ $subItem['tanggal_kedaluarsa'] }}</td>
                     <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
-                    <td nowrap class="text-end">{{ number_format($subItem['stok']) }}</td>
+                    <td nowrap class="text-end">{{ number_format($subItem['stok'], 2) }}</td>
                     <td nowrap class="text-end">
                         {{ number_format($subItem['total']) }}</td>
                 </tr>
