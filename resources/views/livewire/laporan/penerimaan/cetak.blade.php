@@ -51,7 +51,7 @@
                 <td>
                     {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['nama']) ? $row['registrasi']['pasien']['nama'] : '' }}
                 </td>
-                <td class="text-end">{{ $cetak ? $row['total_tindakan'] : number_format($row['total_tindakan']) }}
+                <td class="text-end">{{ $cetak ? $row['total_tindakan'] + $row['diskon'] : number_format($row['total_tindakan'] + $row['diskon']) }}
                 </td>
                 <td class="text-end">
                     {{ $cetak ? $row['total_harga_barang'] : number_format($row['total_harga_barang']) }}</td>
@@ -74,7 +74,7 @@
         <tr>
             <th colspan="3">Total</th>
             <th class="text-end">
-                {{ $cetak ? $data->sum('total_tindakan') : number_format($data->sum('total_tindakan')) }}</th>
+                {{ $cetak ? $data->sum(fn($row) => $row['total_tindakan'] + $row['diskon']) : number_format($data->sum(fn($row) => $row['total_tindakan'] + $row['diskon'])) }}</th>
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_harga_barang') : number_format($data->sum('total_harga_barang')) }}</th>
             <th class="text-end">{{ $cetak ? $data->sum('total_resep') : number_format($data->sum('total_resep')) }}
