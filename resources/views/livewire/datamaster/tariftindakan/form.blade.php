@@ -365,6 +365,7 @@
                     ...row,
                     subtotal: row.subtotal ?? ((parseFloat(row.qty) || 0) * (parseFloat(row.biaya) || 0) || 0)
                 })),
+                catatan: @js($catatan),
                 dataBarang: @js($dataBarang),
                 biaya_jasa_dokter: @js($biaya_jasa_dokter),
                 biaya_jasa_perawat: @js($biaya_jasa_perawat),
@@ -396,14 +397,15 @@
                         if (componentId) {
                             let $wire = window.Livewire.find(componentId);
                             if ($wire && typeof $wire.set === 'function') {
-                                $wire.set('alat', JSON.parse(JSON.stringify(this.alat)), true);
-                                $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), true);
-                                $wire.set('nama', this.nama, true);
-                                $wire.set('kode_akun_id', this.kode_akun_id, true);
-                                $wire.set('icd_9_cm', this.icd_9_cm, true);
-                                $wire.set('tarif', this.tarif, true);
-                                $wire.set('biaya_jasa_dokter', this.biaya_jasa_dokter, true);
-                                $wire.set('biaya_jasa_perawat', this.biaya_jasa_perawat, true);
+                                $wire.set('alat', JSON.parse(JSON.stringify(this.alat)), false);
+                                $wire.set('barang', JSON.parse(JSON.stringify(this.barang)), false);
+                                $wire.set('nama', this.nama, false);
+                                $wire.set('kode_akun_id', this.kode_akun_id, false);
+                                $wire.set('icd_9_cm', this.icd_9_cm, false);
+                                $wire.set('tarif', this.tarif, false);
+                                $wire.set('biaya_jasa_dokter', this.biaya_jasa_dokter, false);
+                                $wire.set('biaya_jasa_perawat', this.biaya_jasa_perawat, false);
+                                $wire.set('catatan', this.catatan, false);
                             }
                         }
                     }
