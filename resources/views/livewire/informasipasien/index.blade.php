@@ -120,14 +120,14 @@
                 </div>
                 <table class="table table-bordered table-hover">
                     <tr>
-                        <th class="bg-secondary-subtle">No.</th>
-                        <th class="bg-secondary-subtle">Registrasi</th>
-                        <th class="bg-secondary-subtle">Hasil Pemeriksaan Awal</th>
-                        <th class="bg-secondary-subtle">Tes Up And Go</th>
-                        <th class="bg-secondary-subtle">Diagnosis</th>
-                        <th class="bg-secondary-subtle">Tindakan</th>
-                        <th class="bg-secondary-subtle">Resep Obat</th>
-                        <th class="bg-secondary-subtle">Pembayaran</th>
+                        <th class="bg-secondary-subtle" nowrap>No.</th>
+                        <th class="bg-secondary-subtle" nowrap>Registrasi</th>
+                        <th class="bg-secondary-subtle" nowrap>Hasil Pemeriksaan Awal</th>
+                        <th class="bg-secondary-subtle" nowrap>Tes Up And Go</th>
+                        <th class="bg-secondary-subtle" nowrap>Diagnosis</th>
+                        <th class="bg-secondary-subtle" nowrap>Tindakan</th>
+                        <th class="bg-secondary-subtle" nowrap>Resep Obat</th>
+                        <th class="bg-secondary-subtle" nowrap>Pembayaran</th>
                     </tr>
                     @foreach ($dataPasien->rekamMedis as $index => $row)
                         <tr>
@@ -274,7 +274,7 @@
                                             <strong>{{ number_format($item->biaya * $item->qty - $item->diskon) }}</strong>
                                         </small><br>
                                         <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- Catatan :
-                                            {{ $item->catatan }}</small><br>
+                                            &nbsp;&nbsp;&nbsp;{{ $item->catatan }}</small><br>
                                         <small>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;- @if ($item->membutuhkan_sitemarking)
                                                 <a href="/klinik/sitemarking/form/{{ $row->id }}"
                                                     target="_blank">Site
@@ -317,7 +317,7 @@
                                                 {{ number_format($barang['harga']) }} =
                                                 <strong>{{ number_format($barang['subtotal']) }}</strong></small><br>
                                         @endforeach
-                                        <small>Catatan :<br>{{ $item['catatan'] }}</small><br>
+                                        <small>Catatan :<br>&nbsp;&nbsp;&nbsp;{{ $item['catatan'] }}</small><br>
                                     @endforeach
                                     <hr>
                                     <small>
