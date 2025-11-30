@@ -63,7 +63,7 @@
                         </div>
                         <div class="mb-3">
                             <label class="form-label">Catatan</label>
-                            <textarea class="form-control" wire:model="catatan" x-model="catatan"></textarea>
+                            <textarea class="form-control" rows="8" wire:model="catatan" x-model="catatan"></textarea>
                             @error('catatan')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
