@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Tindakan extends Model
@@ -35,6 +36,11 @@ class Tindakan extends Model
         return $this->belongsTo(TarifTindakan::class);
     }
 
+    public function pembayaran(): HasOne
+    {
+        return $this->hasOne(Pembayaran::class, 'registrasi_id', 'registrasi_id');
+    }
+
     public function dokter(): BelongsTo
     {
         return $this->belongsTo(Nakes::class, 'dokter_id');
@@ -42,6 +48,6 @@ class Tindakan extends Model
 
     public function perawat(): BelongsTo
     {
-        return $this->belongsTo(Nakes::class, 'perawat_id');
+        return $this->belongsTo(Nakes::class);
     }
 }

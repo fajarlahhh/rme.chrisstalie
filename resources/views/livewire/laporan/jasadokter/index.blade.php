@@ -1,12 +1,12 @@
 <div>
-    @section('title', 'Jasa Pelayanan')
+    @section('title', 'Jasa Perawat')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Laporan</li>
-        <li class="breadcrumb-item active">Jasa Pelayanan</li>
+        <li class="breadcrumb-item active">Jasa Perawat</li>
     @endsection
 
-    <h1 class="page-header">Jasa Pelayanan</h1>
+    <h1 class="page-header">Jasa Perawat</h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
@@ -15,14 +15,14 @@
                 Export</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" wire:model.lazy="date1" />
+                    <input class="form-control" type="date" wire:model.lazy="tanggal1" />
                     &nbsp;s/d&nbsp;
-                    <input class="form-control" type="date" wire:model.lazy="date2" />
+                    <input class="form-control" type="date" wire:model.lazy="tanggal2" />
                 </div>
             </div>
         </div>
         <div class="panel-body table-responsive">
-            @include('livewire.laporan.jasapelayanan.cetak', ['cetak' => false])
+            @include('livewire.laporan.jasaperawat.cetak', ['cetak' => false])
         </div>
     </div>
     <x-alert />

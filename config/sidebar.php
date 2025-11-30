@@ -166,6 +166,14 @@ return [
                     "title" => "Pengeluaran",
                     "method" => ["Index"],
                 ],
+                [
+                    "title" => "Jasa Perawat",
+                    "method" => ["Index"],
+                ],
+                [
+                    "title" => "Jasa Dokter",
+                    "method" => ["Index"],
+                ],
             ]
         ],
         [
