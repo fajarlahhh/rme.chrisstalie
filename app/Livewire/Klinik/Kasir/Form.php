@@ -331,7 +331,7 @@ class Form extends Component
             session()->flash('success', 'Berhasil menyimpan data');
         });
 
-        // return redirect()->to('/klinik/kasir');
+        return redirect()->to('/klinik/kasir');
     }
 
     private function jurnalPendapatan($pembayaran, $metodeBayar, $detail)
