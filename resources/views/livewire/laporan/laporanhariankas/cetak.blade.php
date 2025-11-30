@@ -38,7 +38,7 @@
             <tr>
                 <td></td>
                 <td>- Pendapatan {{ $index }}</td>
-                <td class="text-end">{{ number_format($row->sum(fn($q) => $q['total_tagihan'] - $q['diskon'])) }}</td>
+                <td class="text-end">{{ number_format($row->sum('total_tagihan')) }}</td>
                 <td>
                     Diskon : {{ number_format($row->sum('diskon')) }}
                 </td>
@@ -47,7 +47,7 @@
         <tr>
             <th></th>
             <th>Total Pendapatan</th>
-            <th class="text-end">{{ number_format($dataPendapatan->sum(fn($q) => $q['total_tagihan'] - $q['diskon'])) }}</th>
+            <th class="text-end">{{ number_format($dataPendapatan->sum('total_tagihan')) }}</th>
             <th>Total Diskon : {{ number_format($dataPendapatan->sum('diskon')) }}</th>
         </tr>
         <tr>
@@ -89,7 +89,7 @@
                     <tr>
                         <td class="w-200px">Total Pendapatan</td>
                         <td class="w-10px">:</td>
-                        <td class="text-end">{{ number_format($dataPendapatan->sum(fn($q) => $q['total_tagihan'] - $q['diskon'])) }}</td>
+                        <td class="text-end">{{ number_format($dataPendapatan->sum('total_tagihan')) }}</td>
                     </tr>
                     <tr>
                         <td>Total Pengeluaran</td>
@@ -99,7 +99,7 @@
                     <tr>
                         <td>Total Keuntungan</td>
                         <td>: </td>
-                        <td class="text-end">{{ number_format($dataPendapatan->sum(fn($q) => $q['total_tagihan'] - $q['diskon']) - $dataPengeluaran->where('debet', '>', 0)->sum('debet')) }}</td>
+                        <td class="text-end">{{ number_format($dataPendapatan->sum('total_tagihan') - $dataPengeluaran->where('debet', '>', 0)->sum('debet')) }}</td>
                     </tr>
                 </table>
             </td>
