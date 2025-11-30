@@ -79,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
                 ])->toArray();
         });
         Route::get('barang', function (Request $req) {
-            return Barang::where('nama', 'like', "%$req->cari%")->get()->map(fn($q) => [
+            return Barang::where('nama', 'like', "%$req->cari%")->where('persediaan', 'Apotek')->get()->map(fn($q) => [
                 'id' => $q->id,
                 'text' => $q->nama,
             ])->toArray();
