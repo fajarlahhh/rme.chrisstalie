@@ -39,7 +39,7 @@
                         ? number_format($item->tarif - $item->biaya_jasa_dokter - $item->biaya_jasa_perawat - $item->biaya_alat_barang)
                         : $item->tarif - $item->biaya_jasa_dokter - $item->biaya_jasa_perawat - $item->biaya_alat_barang }}
                 </th>
-                <td>{{ $item->catatan }}</td>
+                <td nowrap>{!! nl2br(e($item->catatan)) !!}</td>
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>
                         @role('administrator|supervisor')

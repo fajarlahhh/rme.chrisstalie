@@ -62,7 +62,7 @@
                                     <tr>
                                         <td>Catatan</td>
                                         <td class="w-10px">:</td>
-                                        <td>{{ $dataTarifTindakan->catatan }}</td>
+                                        <td nowrap>{!! nl2br(e($dataTarifTindakan->catatan)) !!}</td>
                                     </tr>
                                 </table>
                             </div>
@@ -127,7 +127,9 @@
                             </tr>
                             <tr>
                                 <td colspan="3" class="pt-2 pb-2"><strong>Total Diskon</strong></td>
-                                <td class="pt-2 pb-2 text-end"><strong x-text="formatRupiah(nominalDiskon1 + nominalDiskon2 + nominalDiskon3)"></strong></td>
+                                <td class="pt-2 pb-2 text-end"><strong
+                                        x-text="formatRupiah(nominalDiskon1 + nominalDiskon2 + nominalDiskon3)"></strong>
+                                </td>
                             </tr>
                             <tr>
                                 <td colspan="3" class="pt-2 pb-2"><strong>Total Setelah Diskon</strong></td>
