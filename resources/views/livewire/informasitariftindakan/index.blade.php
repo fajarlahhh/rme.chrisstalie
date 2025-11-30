@@ -53,7 +53,7 @@
                                         <td>Nama</td>
                                         <td class="w-10px">:</td>
                                         <td>{{ $dataTarifTindakan->nama }}</td>
-                                    </tr>s
+                                    </tr>
                                     <tr>
                                         <td>Tarif</td>
                                         <td class="w-10px">:</td>
