@@ -43,6 +43,7 @@ class Form extends Component
                 'perawat_id' => $q->perawat_id,
                 'biaya_jasa_dokter' => $q->biaya_jasa_dokter,
                 'biaya_jasa_perawat' => $q->biaya_jasa_perawat,
+                'biaya_alat_barang' => $q->biaya_alat_barang,
                 'biaya' => $q->biaya,
             ])->toArray();
         } else {
