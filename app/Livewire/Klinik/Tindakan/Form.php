@@ -24,6 +24,10 @@ class Form extends Component
     {
         $this->data = $data;
         $this->nakes_id = $data->nakes_id;
+
+        if($this->data->pembayaran){
+            return abort(404);
+        }
         $this->dataTindakan = TarifTindakan::orderBy('nama')->get()->map(fn($q) => [
             'id' => $q->id,
             'nama' => $q->nama,

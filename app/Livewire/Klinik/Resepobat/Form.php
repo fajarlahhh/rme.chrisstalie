@@ -100,6 +100,9 @@ class Form extends Component
     public function mount(Registrasi $data)
     {
         $this->data = $data;
+        if($this->data->pembayaran){
+            return abort(404);
+        }
         $this->dataBarang = BarangClass::getBarang('Apotek');
         $resepobat = $data->resepobat;
         if (!$resepobat || $resepobat->isEmpty()) {
