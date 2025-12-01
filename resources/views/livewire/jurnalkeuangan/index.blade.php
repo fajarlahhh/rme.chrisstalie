@@ -19,6 +19,9 @@
                             href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pengeluaran'">Pengeluaran</a>
                         @role('administrator|supervisor')
                             <a class="dropdown-item"
+                                href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pindahsaldokas'">Pindah
+                                Saldo Kas</a>
+                            <a class="dropdown-item"
                                 href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'">Jurnal
                                 Umum</a>
                         @endrole
