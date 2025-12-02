@@ -2,7 +2,8 @@
     @section('title', 'Informasi Tarif Tindakan')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item active">Informasi Tarif Tindakan</li>
+        <li class="breadcrumb-item">Informasi</li>
+        <li class="breadcrumb-item active">Tarif Tindakan</li>
     @endsection
 
     <h1 class="page-header">Informasi Tarif Tindakan</h1>

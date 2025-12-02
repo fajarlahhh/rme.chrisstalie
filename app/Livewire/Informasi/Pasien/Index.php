@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Informasipasien;
+namespace App\Livewire\Informasi\Pasien;
 
 use Livewire\Component;
 use App\Models\Pasien;
@@ -53,6 +53,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.informasipasien.index');
+        return view('livewire.informasi.pasien.index');
     }
 }

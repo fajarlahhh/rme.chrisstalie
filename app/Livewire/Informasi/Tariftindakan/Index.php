@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Informasitariftindakan;
+namespace App\Livewire\Informasi\Tariftindakan;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
@@ -28,6 +28,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.informasitariftindakan.index');
+        return view('livewire.informasi.tariftindakan.index');
     }
 }

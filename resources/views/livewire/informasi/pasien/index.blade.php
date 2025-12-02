@@ -2,7 +2,8 @@
     @section('title', 'Informasi Pasien')
 
     @section('breadcrumb')
-        <li class="breadcrumb-item active">Informasi Pasien</li>
+        <li class="breadcrumb-item">Informasi</li>
+        <li class="breadcrumb-item active">Pasien</li>
     @endsection
 
     <h1 class="page-header">Informasi Pasien</h1>

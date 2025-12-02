@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Informasibarangdagang;
+namespace App\Livewire\Informasi\Barangdagang;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
@@ -29,6 +29,6 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.informasibarangdagang.index');
+        return view('livewire.informasi.barangdagang.index');
     }
 }
