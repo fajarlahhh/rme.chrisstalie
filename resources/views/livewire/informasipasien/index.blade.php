@@ -330,7 +330,7 @@
                             <td nowrap>
                                 @if ($row->pembayaran)
                                     <strong>Metode Pembayaran :</strong> {{ $row->pembayaran->metode_bayar }}<br>
-
+                                    <strong>No. Nota :</strong> {{ $row->pembayaran->id }}<br>
                                     <strong>Total Tindakan :</strong>
                                     {{ number_format($row->pembayaran->total_tindakan) }}<br>
                                     <strong>Total Resep :</strong>
