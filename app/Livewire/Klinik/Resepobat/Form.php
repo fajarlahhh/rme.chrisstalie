@@ -64,7 +64,7 @@ class Form extends Component
             $registrasiId = $this->data->getKey();
 
             // Delete all resepobat for this registrasi at once
-            ResepObat::where('id', $registrasiId)->delete();
+            ResepObat::where('registrasi_id', $registrasiId)->delete();
 
             $resepObatBatch = [];
             $userId = auth()->id();
