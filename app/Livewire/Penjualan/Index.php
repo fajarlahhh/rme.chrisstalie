@@ -110,18 +110,18 @@ class Index extends Component
     {
         $jurnalDetail = [];
 
-        foreach (
-            collect($this->barang)->groupBy('kode_akun_penjualan_id')->map(fn($q) => [
-                'kode_akun_id' => $q->first()['kode_akun_penjualan_id'],
-                'total' => $q->sum(fn($q) => $q['harga'] * $q['qty']),
-            ]) as $barang
-        ) {
-            $jurnalDetail[] = [
-                'debet' => 0,
-                'kredit' => $barang['total'],
-                'kode_akun_id' => $barang['kode_akun_id']
-            ];
-        }
+        // foreach (
+        //     collect($this->barang)->groupBy('kode_akun_penjualan_id')->map(fn($q) => [
+        //         'kode_akun_id' => $q->first()['kode_akun_penjualan_id'],
+        //         'total' => $q->sum(fn($q) => $q['harga'] * $q['qty']),
+        //     ]) as $barang
+        // ) {
+        //     $jurnalDetail[] = [
+        //         'debet' => 0,
+        //         'kredit' => $barang['total'],
+        //         'kode_akun_id' => $barang['kode_akun_id']
+        //     ];
+        // }
         if ($this->diskon > 0) {
             $jurnalDetail[] = [
                 'debet' => $this->diskon,
