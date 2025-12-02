@@ -118,6 +118,7 @@
                     <table class="table table-panel align-middle mb-0">
                         <thead>
                             <tr>
+                                <th>No. Faktur</th>
                                 <th>Vendor</th>
                                 <th>Tanggal Jatuh Tempo</th>
                                 <th>Total</th>
@@ -126,8 +127,9 @@
                         <tbody>
                             @foreach ($dataPengadaanBarangJatuhTempo as $row)
                                 <tr>
-                                    <td nowrap="">{{ $row->supplier?->nama }}</td>
-                                    <td>
+                                    <td nowrap="" nowrap>{{ $row->uraian }}</td>
+                                    <td nowrap="" nowrap>{{ $row->supplier?->nama }}</td>
+                                    <td nowrap="" nowrap>
                                         @if ($row->jatuh_tempo < date('Y-m-d'))
                                             <span class="badge bg-danger">{{ $row->jatuh_tempo }}</span>
                                         @elseif ($row->jatuh_tempo = date('Y-m-d'))
@@ -136,7 +138,7 @@
                                             <span class="badge bg-success">{{ $row->jatuh_tempo }}</span>
                                         @endif
                                     </td>
-                                    <td class="text-end">Rp. {{ number_format($row->total_harga) }}</td>
+                                    <td class="text-end" nowrap>Rp. {{ number_format($row->total_harga) }}</td>
                                 </tr>
                             @endforeach
                         </tbody>
