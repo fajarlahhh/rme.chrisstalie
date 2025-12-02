@@ -26,8 +26,10 @@ class Index extends Component
                 $q->where('periode', $bulanIni);
             }
         ])
-            ->with(['jurnalDetail.jurnal' => function ($q) use ($bulanIni) {
-                $q->where('tanggal', 'like', $bulanIni . '%');
+            ->with(['jurnalDetail' => function ($q) use ($bulanIni) {
+                $q->whereHas('jurnal', function ($q) use ($bulanIni) {
+                    $q->where('tanggal', 'like', $bulanIni . '%');
+                });
             }])->where('detail', 1)->get()->map(function ($q) {
                 return [
                     'id' => $q->id,
