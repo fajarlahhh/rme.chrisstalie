@@ -45,14 +45,22 @@ class Index extends Component
     public function render()
     {
         return view('livewire.klinik.kasir.index', [
-            'data' => $this->status == 1 ? Registrasi::with('pasien')->with('nakes')->with('pengguna')
+            'data' => $this->status == 1 ?
+                Registrasi::with('pasien')->with('nakes')->with('pengguna')
                 ->whereDoesntHave('pembayaran')
-                ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('id', 'asc')->paginate(10) : Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna')
-                ->where('id', 'like', '%' . $this->cari . '%')
-                ->where('created_at', 'like', $this->tanggal . '%')
-                ->whereHas('registrasi.pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
-                ->orderBy('id', 'asc')->paginate(10)
+                ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
+                    ->orWhereHas('pasien', fn($r) => $r
+                        ->where('nama', 'like', '%' . $this->cari . '%')
+                        ->orWhere('id', 'like', '%' . $this->cari . '%')))
+                ->orderBy('id', 'asc')->paginate(10) : (Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna')
+                    ->whereNotNull('registrasi_id')
+                    ->where('created_at', 'like', $this->tanggal . '%')
+                    ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
+                        ->orWhere('registrasi_id', 'like', '%' . $this->cari . '%')
+                        ->orWhereHas('registrasi.pasien', fn($r) => $r
+                            ->where('nama', 'like', '%' . $this->cari . '%')
+                            ->orWhere('id', 'like', '%' . $this->cari . '%')))
+                    ->orderBy('id', 'asc')->paginate(10))
         ]);
     }
 }
