@@ -33,7 +33,7 @@ class Form extends Component
     {
         $this->dataKodeAkunPenyusutan = KodeAkun::where('parent_id', '15200')->detail()->get()->toArray();
         $this->data = $data;
-        if ($data->pembayaran_id) {
+        if ($data->pembayaran) {
             abort(404);
         }
         $barang = collect(BarangClass::getBarang());
