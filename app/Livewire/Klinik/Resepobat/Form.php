@@ -50,6 +50,9 @@ class Form extends Component
 
     public function submit()
     {
+        if($this->data->pembayaran){
+            return abort(404);
+        }
         $this->validateWithCustomMessages([
             'resep' => 'required|array|min:1',
             'resep.*.barang' => 'required|array|min:1',

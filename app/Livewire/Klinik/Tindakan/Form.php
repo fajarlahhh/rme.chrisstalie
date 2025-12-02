@@ -76,6 +76,9 @@ class Form extends Component
 
     public function submit()
     {
+        if($this->data->pembayaran){
+            return abort(404);
+        }
         $this->validateWithCustomMessages([
             'tindakan' => 'required|array',
             'tindakan.*.id' => 'required|distinct',
