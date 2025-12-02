@@ -135,6 +135,7 @@ class Form extends Component
                         'qty' => $q['qty'] * $r->qty,
                         'biaya' => $q['qty'] * $r->biaya,
                         'barang_satuan_id' => $r->barang_satuan_id,
+                        'barang_id' => $barangSatuan ? $barangSatuan['barang_id'] : null,
                         'rasio_dari_terkecil' => $barangSatuan ? $barangSatuan['rasio_dari_terkecil'] : null,
                         'tarif_tindakan_id' => $q['id'],
                     ];

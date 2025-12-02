@@ -58,6 +58,7 @@ class Form extends Component
                 'jenis' => 'Alat',
                 'barang_satuan_id' => null,
                 'biaya' => $q['biaya'],
+                'barang_id' => null,
             ]))->merge(collect($this->barang)->map(fn($q) => [
                 'aset_id' => null,
                 'tarif_tindakan_id' => $this->data->id,
@@ -65,6 +66,7 @@ class Form extends Component
                 'jenis' => 'Barang',
                 'barang_satuan_id' => $q['id'],
                 'biaya' => $q['biaya'],
+                'barang_id' => collect($this->dataBarang)->firstWhere('id', $q['id'])['barang_id'],
             ]));
 
             $this->data->tarifTindakanAlatBarang()->delete();
@@ -74,6 +76,7 @@ class Form extends Component
                 'qty' => $q['qty'],
                 'barang_satuan_id' => $q['barang_satuan_id'] != '' ? $q['barang_satuan_id'] : null,
                 'biaya' => $q['biaya'],
+                'barang_id' => $q['barang_id'],
             ])->toArray());
 
             session()->flash('success', 'Berhasil menyimpan data');

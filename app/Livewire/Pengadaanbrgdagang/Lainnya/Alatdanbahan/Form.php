@@ -69,6 +69,7 @@ class Form extends Component
                     'barang_satuan_id' => $q['id'],
                     'rasio_dari_terkecil' => $brg['rasio_dari_terkecil'],
                     'barang_id' => $brg['barang_id'],
+                    'harga_beli_terkecil' => $q['harga_beli'] / $brg['rasio_dari_terkecil'],
                     'pembelian_id' => $pembelian->id,
                 ];
             })->toArray());
@@ -115,7 +116,7 @@ class Form extends Component
                             'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                             'stok_masuk_id' => $stokMasuk->id,
                             'tanggal_masuk' => now()->toDateTimeString(), // Convert ke string biar hemat memori
-                            'harga_beli' => $value['harga_beli'],
+                            'harga_beli' => $value['harga_beli'] / $value['rasio_dari_terkecil'],
                             'created_at' => now()->toDateTimeString(),
                             'updated_at' => now()->toDateTimeString(),
                         ];

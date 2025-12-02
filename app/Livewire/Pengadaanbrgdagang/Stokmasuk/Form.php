@@ -39,6 +39,7 @@ class Form extends Component
             'qty' => $q->qty - ($stokMasuk->where('id', ($q->barangSatuan->barang_id))->first()['qty_masuk'] ?? 0),
             'qty_masuk' => 0,
             'harga_beli' => $q->harga_beli,
+            'harga_beli_terkecil' => $q->harga_beli_terkecil,
             'no_batch' => null,
             'tanggal_kedaluarsa' => null,
         ])->toArray();
@@ -133,7 +134,7 @@ class Form extends Component
                             'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                             'stok_masuk_id' => $stokMasuk->id,
                             'tanggal_masuk' => now(),
-                            'harga_beli' => $value['harga_beli'],
+                            'harga_beli' => $value['harga_beli_terkecil'],
                             'created_at' => now(),
                             'updated_at' => now(),
                         ];
