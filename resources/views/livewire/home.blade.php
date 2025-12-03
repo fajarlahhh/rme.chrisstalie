@@ -42,8 +42,10 @@
                             <div class="stats-content">
                                 <div class="stats-title">PENERIMAAN BULAN INI</div>
                                 <div class="stats-number text-end fs-12px">
-                                    <small>JASA</small> : {{ number_format($dataPembayaranBulanIni->sum('total_tindakan'), 2) }}
-                                    <br><small>OBAT & PRODUK</small> : {{ number_format($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_harga_barang), 2) }}
+                                    <small>JASA</small> :
+                                    {{ number_format($dataPembayaranBulanIni->sum('total_tindakan'), 2) }}
+                                    <br><small>OBAT & PRODUK</small> :
+                                    {{ number_format($dataPembayaranBulanIni->sum(fn($q) => $q->total_resep + $q->total_harga_barang), 2) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>
@@ -91,13 +93,13 @@
                                                 <div class="col-md-6 col-sm-6 col-6">
                                                     <badge class="badge bg-success">Masuk</badge><br>
                                                     <small>
-                                                        {{ \Carbon\Carbon::parse($row['masuk'])->format('H:i') }}
+                                                        {{ $row['masuk'] ? \Carbon\Carbon::parse($row['masuk'])->format('H:i') : '' }}
                                                     </small>
                                                 </div>
                                                 <div class="col-md-6 col-sm-6 col-6">
                                                     <badge class="badge bg-danger">Pulang</badge><br>
                                                     <small>
-                                                        {{ \Carbon\Carbon::parse($row['pulang'])->format('H:i') }}
+                                                        {{ $row['pulang'] ? \Carbon\Carbon::parse($row['pulang'])->format('H:i') : '' }}
                                                     </small>
                                                 </div>
                                             </div>
