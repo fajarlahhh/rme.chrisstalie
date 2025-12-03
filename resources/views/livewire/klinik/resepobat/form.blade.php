@@ -82,10 +82,12 @@
                                         </div>
                                     </div>
                                     <div class="col-md-1 text-end">
-                                        <button type="button" wire:loading.attr="disabled" class="btn btn-danger btn-xs"
-                                            @click="hapusResep(resepIndex)">
-                                            &nbsp;x&nbsp;
-                                        </button>
+                                        <template x-if="resepIndex > 0">
+                                            <button type="button" wire:loading.attr="disabled" class="btn btn-danger btn-xs"
+                                                @click="hapusResep(resepIndex)">
+                                                &nbsp;x&nbsp;
+                                            </button>
+                                        </template>
                                     </div>
                                 </div>
                                 <table class="table table-bordered bg-gray-100 mb-3">

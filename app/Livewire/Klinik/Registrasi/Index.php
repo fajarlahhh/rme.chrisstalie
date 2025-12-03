@@ -30,6 +30,7 @@ class Index extends Component
     public $no_hp;
     public $pasien_description;
     public $keluhan_awal;
+    public $ketemu_dokter = 1;
 
     public function mount()
     {
@@ -139,6 +140,7 @@ class Index extends Component
             $pasien->tanggal_lahir = $this->tanggal_lahir;
             $pasien->no_hp = $this->no_hp;
             $pasien->tanggal_daftar = $this->tanggal;
+            $pasien->ketemu_dokter = $this->ketemu_dokter == 1 ? 1 : 0;
             $pasien->save();
 
             $registrasi = new Registrasi();

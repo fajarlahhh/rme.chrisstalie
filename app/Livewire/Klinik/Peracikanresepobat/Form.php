@@ -1,12 +1,13 @@
 <?php
 
-namespace App\Livewire\Klinik\Resepobat;
+namespace App\Livewire\Klinik\Peracikanresepobat;
 
 use Livewire\Component;
 use App\Models\ResepObat;
-use App\Models\Registrasi;
-use Illuminate\Support\Facades\DB;
 use App\Class\BarangClass;
+use App\Models\Registrasi;
+use App\Models\PeracikanResepObat;
+use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
 class Form extends Component
@@ -22,35 +23,11 @@ class Form extends Component
     public $diskon = 0;
     public $data;
     public $resep = [];
-
-
-    public function copyResep($id)
-    {
-        $data = Registrasi::find($id)->resepobat;
-        return collect($data)
-            ->groupBy('resep')
-            ->map(function ($group) {
-                $first = $group->first();
-                return [
-                    'catatan' => $first->catatan,
-                    'nama' => $first->nama,
-                    'barang' => $group->map(function ($r) {
-                        return [
-                            'id' => $r->barang_satuan_id,
-                            'harga' => $r->harga,
-                            'qty' => $r->qty,
-                            'subtotal' => $r->harga * $r->qty,
-                        ];
-                    })->toArray(),
-                ];
-            })
-            ->values()
-            ->toArray();
-    }
+    public $catatan;
 
     public function submit()
     {
-        if($this->data->peracikanResepObat){
+        if ($this->data->pembayaran) {
             return abort(404);
         }
         $this->validateWithCustomMessages([
@@ -64,7 +41,8 @@ class Form extends Component
             $registrasiId = $this->data->getKey();
 
             // Delete all resepobat for this registrasi at once
-            ResepObat::where('registrasi_id', $registrasiId)->forceDelete();
+            ResepObat::where('registrasi_id', $registrasiId)->delete();
+            PeracikanResepObat::where('id', $registrasiId)->delete();
 
             $resepObatBatch = [];
             $userId = auth()->id();
@@ -94,18 +72,25 @@ class Form extends Component
                 ResepObat::insert($resepObatBatch);
             }
 
+            $peracikan = new PeracikanResepObat();
+            $peracikan->id = $registrasiId;
+            $peracikan->catatan = $this->catatan;
+            $peracikan->pengguna_id = $userId;
+            $peracikan->save();
+
             session()->flash('success', 'Berhasil menyimpan data');
         });
 
-        return redirect('/klinik/resepobat');
+        return redirect('/klinik/peracikanresepobat');
     }
 
     public function mount(Registrasi $data)
     {
         $this->data = $data;
-        if($this->data->peracikanResepObat){
+        if ($this->data->pembayaran) {
             return abort(404);
         }
+        $this->catatan = $data->peracikanResepObat->catatan;
         $this->dataBarang = BarangClass::getBarang('Apotek');
         $resepobat = $data->resepobat;
         if (!$resepobat || $resepobat->isEmpty()) {
@@ -136,8 +121,9 @@ class Form extends Component
         }
     }
 
+
     public function render()
     {
-        return view('livewire.klinik.resepobat.form');
+        return view('livewire.klinik.peracikanresepobat.form');
     }
 }

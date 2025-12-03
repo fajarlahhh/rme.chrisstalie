@@ -98,4 +98,9 @@ class Registrasi extends Model
     {
         return $this->hasMany(ResepObat::class)->orderBy('resep');
     }
+
+    public function peracikanResepObat(): HasOne
+    {
+        return $this->hasOne(PeracikanResepObat::class, 'id');
+    }
 }

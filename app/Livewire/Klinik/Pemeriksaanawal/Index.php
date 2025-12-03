@@ -34,6 +34,7 @@ class Index extends Component
     {
         return view('livewire.klinik.pemeriksaanawal.index', [
             'data' => Registrasi::with('pasien')->with('nakes')->with('pengguna')
+                ->where('ketemu_dokter', 1)
                 ->when($this->status == 2, fn($q) => $q->whereHas('pemeriksaanAwal', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
                 ->when($this->status == 1, fn($q) => $q->whereDoesntHave('pemeriksaanAwal'))
                 ->whereHas('pasien', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))

@@ -273,6 +273,10 @@ return [
                     "method" => ["Index", "Form"],
                 ],
                 [
+                    "title" => "Peracikan Resep Obat",
+                    "method" => ["Index", "Form"],
+                ],
+                [
                     "title" => "Kasir",
                     "method" => ["Index", "Form"],
                 ],

@@ -29,6 +29,7 @@ class Form extends Component
     public $metode_bayar = 1, $cash = 0, $keterangan, $dataBarang = [];
     public $keterangan_pembayaran, $total_tagihan = 0, $total_tindakan = 0, $total_resep = 0, $diskon = 0, $bahan = [], $alat = [];
     public $dataKodeAkunPenyusutan = [];
+
     public function mount(Registrasi $data)
     {
         $this->dataKodeAkunPenyusutan = KodeAkun::where('parent_id', '15200')->detail()->get()->toArray();
@@ -67,7 +68,7 @@ class Form extends Component
             ];
         })->toArray();
 
-        $this->resep = collect($data->resepobat)
+        $this->resep = collect($data->resepObat)
             ->groupBy('resep')
             ->map(function ($group) {
                 $first = $group->first();

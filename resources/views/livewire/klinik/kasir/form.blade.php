@@ -123,7 +123,7 @@
                                                 <td class="w-90px">
                                                     <input type="number" class="form-control" min="0"
                                                         placeholder="Qty" step="1" @keyup="hitungTotalTagihan()"
-                                                        x-model.number="barang.qty" autocomplete="off">
+                                                        x-model.number="barang.qty" disabled autocomplete="off">
                                                 </td>
                                             </tr>
                                         </template>

@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Livewire\Klinik\Resepobat;
+namespace App\Livewire\Klinik\Peracikanresepobat;
 
+use App\Models\PeracikanResepObat;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
@@ -27,17 +28,18 @@ class Index extends Component
 
     public function delete($id)
     {
-        ResepObat::where('registrasi_id', $id)->delete();
+        PeracikanResepObat::where('registrasi_id', $id)->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()
     {
-        return view('livewire.klinik.resepobat.index', [
+        return view('livewire.klinik.peracikanresepobat.index', [
+            
             'data' => Registrasi::with('pasien')->with('nakes')->with('pengguna')
-                ->when($this->status == 2, fn($q) => $q->whereHas('resepObat', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
+                ->when($this->status == 2, fn($q) => $q->whereHas('peracikanResepObat', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
                 ->whereDoesntHave('pembayaran')
-                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('resepObat'))
+                ->when($this->status == 1, fn($q) => $q->whereDoesntHave('peracikanResepObat'))
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
                     ->orWhereHas('pasien', fn($r) => $r
                         ->where('nama', 'like', '%' . $this->cari . '%')

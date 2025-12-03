@@ -46,21 +46,30 @@ class Index extends Component
     {
         return view('livewire.klinik.kasir.index', [
             'data' => $this->status == 1 ?
-                Registrasi::with('pasien')->with('nakes')->with('pengguna')
+                Registrasi::with('pasien', 'nakes', 'pengguna')
                 ->whereDoesntHave('pembayaran')
+                // jika ada resepObat maka juga harus ada peracikanResepObat
+                ->where(function($query) {
+                    $query->whereDoesntHave('resepObat')
+                        ->orWhere(function($query2) {
+                            $query2->whereHas('resepObat')
+                                ->whereHas('peracikanResepObat');
+                        });
+                })
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
                     ->orWhereHas('pasien', fn($r) => $r
                         ->where('nama', 'like', '%' . $this->cari . '%')
                         ->orWhere('id', 'like', '%' . $this->cari . '%')))
-                ->orderBy('id', 'asc')->paginate(10) : (Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna')
-                    ->whereNotNull('registrasi_id')
-                    ->where('created_at', 'like', $this->tanggal . '%')
-                    ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
-                        ->orWhere('registrasi_id', 'like', '%' . $this->cari . '%')
-                        ->orWhereHas('registrasi.pasien', fn($r) => $r
-                            ->where('nama', 'like', '%' . $this->cari . '%')
-                            ->orWhere('id', 'like', '%' . $this->cari . '%')))
-                    ->orderBy('id', 'asc')->paginate(10))
+                ->orderBy('id', 'asc')->paginate(10) :
+                Pembayaran::with('registrasi.pasien', 'registrasi.nakes', 'pengguna')
+                ->whereNotNull('registrasi_id')
+                ->where('created_at', 'like', $this->tanggal . '%')
+                ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
+                    ->orWhere('registrasi_id', 'like', '%' . $this->cari . '%')
+                    ->orWhereHas('registrasi.pasien', fn($r) => $r
+                        ->where('nama', 'like', '%' . $this->cari . '%')
+                        ->orWhere('id', 'like', '%' . $this->cari . '%')))
+                ->orderBy('id', 'asc')->paginate(10)
         ]);
     }
 }

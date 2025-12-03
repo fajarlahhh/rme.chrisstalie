@@ -252,6 +252,14 @@
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror
                         </div>
+                        <div class="mb-3">
+                            <label class="form-label">Ketemu Dokter</label>
+                            <select data-container="body" class="form-control" wire:model="ketemu_dokter"
+                                data-width="100%">
+                                <option value="0">Tidak</option>
+                                <option value="1">Ya</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
             </div>
