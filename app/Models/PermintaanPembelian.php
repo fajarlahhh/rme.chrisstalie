@@ -43,4 +43,9 @@ class PermintaanPembelian extends Model
     {
         return $this->hasOne(Pembelian::class);
     }
+
+    public function stokMasuk()
+    {
+        return $this->hasMany(StokMasuk::class);
+    }
 }

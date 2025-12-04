@@ -22,6 +22,9 @@
                         <option value="Ditolak">Ditolak</option>
                         <option value="Pending">Pending</option>
                     </select>&nbsp;
+                    @if ($status == 'Disetujui')
+                        <input type="date" class="form-control w-200px" wire:model.lazy="tanggal" />&nbsp;
+                    @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari">
@@ -35,6 +38,7 @@
                         <th class="w-10px">No.</th>
                         <th>Deskripsi</th>
                         <th>History Verifikasi</th>
+                        <th>Status</th>
                         <th class="w-600px">Detail</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -70,6 +74,16 @@
                                 </ul>
                             </td>
                             <td>
+                                <ul>
+                                    @if ($item->pembelian)
+                                        <li>Pembelian</li>
+                                        @if ($item->pembelian->stokMasuk->count() > 0)
+                                            <li>Stok Masuk</li>
+                                        @endif
+                                    @endif
+                                </ul>
+                            </td>
+                            <td>
                                 <table class="table table-bordered fs-11px">
                                     <thead>
                                         <tr>
@@ -94,7 +108,8 @@
                                                 <td class="text-nowrap text-end w-80px p-1">
                                                     {{ $detail->qty_permintaan }}
                                                 </td>
-                                                <td class="text-nowrap text-end w-80px p-1">{{ $detail->qty_disetujui }}
+                                                <td class="text-nowrap text-end w-80px p-1">
+                                                    {{ $detail->qty_disetujui }}
                                                 </td>
                                             </tr>
                                         @endforeach
