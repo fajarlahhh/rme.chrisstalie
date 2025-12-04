@@ -27,7 +27,7 @@ class Form extends Component
 
     public function submit()
     {
-        if ($this->data->pembayaran) {
+        if ($this->data->peracikanResepObat) {
             return abort(404);
         }
         $this->validateWithCustomMessages([
@@ -87,10 +87,9 @@ class Form extends Component
     public function mount(Registrasi $data)
     {
         $this->data = $data;
-        if ($this->data->pembayaran) {
+        if ($this->data->peracikanResepObat) {
             return abort(404);
         }
-        $this->catatan = $data->peracikanResepObat->catatan;
         $this->dataBarang = BarangClass::getBarang('Apotek');
         $resepobat = $data->resepobat;
         if (!$resepobat || $resepobat->isEmpty()) {
@@ -108,6 +107,7 @@ class Form extends Component
                         'nama' => $first->nama,
                         'barang' => $group->map(function ($r) {
                             return [
+                                'hapus' => false,
                                 'id' => $r->barang_satuan_id,
                                 'harga' => $r->harga,
                                 'qty' => $r->qty,

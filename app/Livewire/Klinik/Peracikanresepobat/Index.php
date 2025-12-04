@@ -30,10 +30,10 @@ class Index extends Component
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
-            ResepObat::where('registrasi_id', $id)->forceDelete();
+            ResepObat::where('registrasi_id', $id)->whereNull('deleted_at')->forceDelete();
             ResepObat::where('registrasi_id', $id)->withTrashed()->restore();
             
-            PeracikanResepObat::where('registrasi_id', $id)->delete();
+            PeracikanResepObat::where('id', $id)->delete();
             session()->flash('success', 'Berhasil menghapus data');
         });
     }
