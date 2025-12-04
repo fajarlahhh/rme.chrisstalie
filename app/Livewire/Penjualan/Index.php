@@ -21,6 +21,7 @@ class Index extends Component
     public $cash = 0;
     public $diskon = 0;
     public $total_tagihan = 0;
+    public $pasien_id;
     public $keterangan_pembayaran;
 
     public function submit()
@@ -75,6 +76,7 @@ class Index extends Component
             $pembayaran->total_tagihan = $this->total_tagihan;
             $pembayaran->kode_akun_id = $metodeBayar->kode_akun_id;
             $pembayaran->bebas = 1;
+            $pembayaran->pasien_id = $this->pasien_id;
             $pembayaran->pengguna_id = auth()->user()->id;
             $pembayaran->save();
 

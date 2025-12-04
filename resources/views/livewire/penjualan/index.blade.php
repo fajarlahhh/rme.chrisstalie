@@ -14,6 +14,49 @@
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
                 <div class="mb-3">
+                    <label class="form-label">Cari Pasien</label>
+                    <div wire:ignore>
+                        <select class="form-control" x-init="$($el).select2({
+                            width: $(this).data('width') ? $(this).data('width') : $(this).hasClass('w-100') ? '100%' : 'style',
+                            dropdownAutoWidth: true,
+                            templateResult: format,
+                            minimumInputLength: 3,
+                            dataType: 'json',
+                            ajax: {
+                                url: '/cari/pasien',
+                                data: function(params) {
+                                    var query = {
+                                        cari: params.term
+                                    }
+                                    return query;
+                                },
+                                processResults: function(data, params) {
+                                    return {
+                                        results: data,
+                                    };
+                                },
+                                cache: true
+                            }
+                        });
+                        
+                        $($el).on('change', function(element) {
+                            $wire.set('pasien_id', $($el).val());
+                        });
+                        
+                        function format(data) {
+                            if (!data.id) {
+                                return data.text;
+                            }
+                            var $data = $('<table><tr><th>No. RM</th><th>:</th><th>' + data.rm + '</th></tr>' +
+                                '<tr><th>No. KTP</th><th>:</th><th>' + data.nik + '</th></tr>' +
+                                '<tr><th>Nama</th><th>:</th><th>' + data.nama + '</th></tr>' +
+                                '<tr><th>Alamat</th><th>:</th><th>' + data.alamat + '</th></tr></table>');
+                            return $data;
+                        }">
+                        </select>
+                    </div>
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Keterangan</label>
                     <textarea class="form-control" type="text" wire:model="keterangan" x-model="keterangan"></textarea>
                     @error('keterangan')
@@ -160,7 +203,8 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='/penjualan/data'" class="btn btn-warning" wire:loading.attr="disabled">
+                <button type="button" onclick="window.location.href='/penjualan/data'" class="btn btn-warning"
+                    wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>

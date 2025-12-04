@@ -217,6 +217,7 @@ class Form extends Component
             $pembayaran->total_tagihan = $this->total_tagihan;
             $pembayaran->kode_akun_id = $metodeBayar->kode_akun_id;
             $pembayaran->bebas = 0;
+            $pembayaran->pasien_id = $this->data->pasien_id;
             $pembayaran->registrasi_id = $this->data->id;
             $pembayaran->pengguna_id = auth()->id();
             $pembayaran->save();
