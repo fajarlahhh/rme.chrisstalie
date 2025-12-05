@@ -42,7 +42,7 @@
                     <td>{{ $row['nama'] }}</td>
                     <td>{{ count($row['absensi']) }}</td>
                     <td>{{ collect($row['absensi'])->whereNotNull('masuk')->count() }}</td>
-                    <td>{{ collect($row['absensi'])->whereNotNull('masuk')? collect($row['absensi'])->whereNotNull('masuk')->where('jam_masuk', '>', 'masuk')->count() : null }}
+                    <td>{{ collect($row['absensi'])->whereNotNull('masuk')->count() > 0 ? collect($row['absensi'])->whereNotNull('masuk')->where('jam_masuk', '>', 'masuk')->count() : null }}
                     </td>
                     <td>{{ collect($row['absensi'])->whereNull('masuk')->count() }}</td>
                     <td>{{ collect($row['absensi'])->where('izin', 'Sakit')->count() }}</td>
