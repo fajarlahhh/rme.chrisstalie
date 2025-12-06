@@ -9,6 +9,31 @@
     <!-- BEGIN page-header -->
     <h1 class="page-header">Absensi</h1>
     <!-- END page-header -->
+
+    @php
+        $connected = false;
+        $output = null;
+        $return_var = null;
+
+        // Only check if the function exists for security and hosting compatibility
+        if (function_exists('exec')) {
+            $pingCommand = (stripos(PHP_OS, 'WIN') === 0)
+                ? 'ping -n 1 192.168.110.36'
+                : 'ping -c 1 192.168.110.36';
+            @exec($pingCommand, $output, $return_var);
+            $connected = ($return_var === 0);
+        }
+    @endphp
+
+    @if ($connected)
+        <div class="alert alert-success">
+            Terhubung ke 192.168.110.36
+        </div>
+    @else
+        <div class="alert alert-danger">
+            Tidak terhubung ke 192.168.110.36
+        </div>
+    @endif
     
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
