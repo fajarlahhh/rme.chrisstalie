@@ -48,7 +48,7 @@ class Index extends Component
                             'barang_id' => $q->barang->nama . $q->barang->id . $q->barang_satuan_id,
                             'satuan' => $q->barangSatuan->nama,
                             'harga_jual' => $q->harga,
-                            'qty' => $q->qty / $q->barangSatuan->rasio_dari_terkecil,
+                            'qty' => $q->qty,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
