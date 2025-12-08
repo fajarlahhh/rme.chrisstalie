@@ -96,6 +96,7 @@ class Index extends Component
                     ];
                 })->toArray() as $q
             ) {
+                Absensi::where('id', $q['id'])->restore();
                 if (Absensi::where('id', $q['id'])->exists()) {
                     if ($q['absen'] === false) {
                         Absensi::where('id', $q['id'])->delete();
