@@ -9,11 +9,14 @@ use App\Models\StokMasuk;
 class Index extends Component
 {
     #[Url]
-    public $bulan, $jenis = 'pertransaksi';
+    public $tanggal1, $tanggal2, $jenis, $persediaan;
 
     public function mount()
     {
-        $this->bulan = $this->bulan ?: date('Y-m');
+        $this->tanggal1 = $this->tanggal1 ?: date('Y-m-d');
+        $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
+        $this->jenis = $this->jenis ?: 'pertransaksi';
+        $this->persediaan = $this->persediaan ?: '';
     }
 
     public function print()
@@ -21,7 +24,8 @@ class Index extends Component
         $this->getData();
         $cetak = view('livewire.laporan.barangdagang.barangmasuk.cetak', [
             'cetak' => true,
-            'bulan' => $this->bulan,
+            'tanggal1' => $this->tanggal1,
+            'tanggal2' => $this->tanggal2,
             'data' => $this->getData(),
         ])->render();
         session()->flash('cetak', $cetak);
@@ -29,23 +33,42 @@ class Index extends Component
 
     public function getData()
     {
-        return StokMasuk::with(['barang', 'pembelian.pembelianDetail', 'barangSatuan', 'pembelian.supplier'])
-            ->where('tanggal', 'like', $this->bulan . '%')
-            ->orderBy('tanggal', 'desc')
-            ->get()->map(function ($q) {
-                return [
-                    'tanggal' => $q->tanggal,
-                    'barang' => $q->barang->nama,
-                    'satuan' => $q->barangSatuan->nama,
-                    'no_batch' => $q->no_batch,
-                    'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                    'harga_beli' => $q->pembelian->pembelianDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
-                    'qty' => $q->qty,
-                    'total' => $q->qty * $q->pembelian->pembelianDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
-                    'supplier' => $q->pembelian->supplier?->nama,
-                    'uraian' => $q->pembelian->uraian,
-                ];
-            })->toArray();
+        switch ($this->jenis) {
+            case 'pertransaksi':
+                return StokMasuk::with(['barang', 'pembelian.pembelianDetail', 'barangSatuan', 'pembelian.supplier'])
+                    ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
+                    ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
+                    ->orderBy('tanggal', 'desc')
+                    ->get()->map(function ($q) {
+                        return [
+                            'barang_id' => $q->barang->nama . $q->barang->id . $q->tanggal,
+                            'tanggal' => $q->tanggal,
+                            'barang' => $q->barang->nama,
+                            'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
+                            'no_batch' => $q->no_batch,
+                            'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
+                            'harga_beli' => $q->pembelian->pembelianDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
+                            'qty' => $q->qty,
+                            'total' => $q->qty * $q->pembelian->pembelianDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
+                            'supplier' => $q->pembelian->supplier?->nama,
+                            'uraian' => $q->pembelian->uraian,
+                        ];
+                    })->sortBy('barang_id')->groupBy('barang_id')->toArray();
+                break;
+            case 'perbarang':
+                return StokMasuk::with(['barang', 'barangSatuan'])
+                    ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
+                    ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
+                    ->get()->map(function ($q) {
+                        return [
+                            'nama' => $q->barang->nama,
+                            'barang_id' => $q->barang->nama . $q->barang->id . $q->barang_satuan_id,
+                            'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
+                            'qty' => $q->qty,
+                        ];
+                    })->sortBy('barang_id')->groupBy('barang_id')->toArray();
+                break;
+        }
     }
 
     public function render()

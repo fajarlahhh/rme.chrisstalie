@@ -9,9 +9,19 @@
     <br>
     <table>
         <tr>
+            <th>Persediaan</th>
+            <th class="w-10px">:</th>
+            <td>{{ $persediaan }}</td>
+        </tr>
+        <tr>
             <th class="w-100px">Periode</th>
             <th class="w-10px">:</th>
             <td>{{ $tanggal1 }} s/d {{ $tanggal2 }}</td>
+        </tr>
+        <tr>
+            <th>Jenis</th>
+            <th class="w-10px">:</th>
+            <td>{{ $jenis }}</td>
         </tr>
     </table>
 @endif

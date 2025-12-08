@@ -18,12 +18,17 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan">&nbsp;
-                    {{-- <select class="form-control w-auto" wire:model.lazy="jenis">
-                        <option value="pertanggalmasuk">Per Tanggal Masuk</option>
+                    <select class="form-control w-auto" wire:model.lazy="persediaan">
+                        <option value="">Semua Persediaan</option>
+                        <option value="Apotek">Apotek</option>
+                        <option value="Klinik">Klinik</option>
+                    </select>&nbsp;
+                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal1">&nbsp;s/d&nbsp;
+                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal2">&nbsp;
+                    <select class="form-control w-auto" wire:model.lazy="jenis">
                         <option value="pertransaksi">Per Transaksi</option>
                         <option value="perbarang">Per Barang</option>
-                    </select> --}}
+                    </select>
                 </div>
             </div>
         </div>

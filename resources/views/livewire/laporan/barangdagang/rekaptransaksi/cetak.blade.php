@@ -56,7 +56,7 @@
                     $stokMasuk = $row->stokMasuk
                         ->map(
                             fn($q) => [
-                                'qty' => $q->qty,
+                                'qty' => $q->qty / $row->barangSatuanUtama?->rasio_dari_terkecil,
                             ],
                         )
                         ->sum('qty');
@@ -74,28 +74,28 @@
                 <td>{{ $row->barangSatuanUtama?->nama }} {{ $row->barangSatuanUtama?->konversi_satuan }}</td>
                 <td class="text-end">
                     @if ($stokAwal > 0)
-                        <strong>{{ number_format($stokAwal, 3) }}</strong>
+                        <strong>{{ number_format($stokAwal, 2) }}</strong>
                     @else
                         0
                     @endif
                 </td>
                 <td class="text-end">
                     @if ($stokMasuk > 0)
-                        <strong>{{ number_format($stokMasuk, 3) }}</strong>
+                        <strong>{{ number_format($stokMasuk, 2) }}</strong>
                     @else
                         0
                     @endif
                 </td>
                 <td class="text-end">
                     @if ($stokKeluar > 0)
-                        <strong>{{ number_format($stokKeluar, 3) }}</strong>
+                        <strong>{{ number_format($stokKeluar, 2) }}</strong>
                     @else
                         0
                     @endif
                 </td>
                 <td class="text-end">
                     @if ($stokAkhir > 0)
-                        <strong>{{ number_format($stokAkhir, 3) }}</strong>
+                        <strong>{{ number_format($stokAkhir, 2) }}</strong>
                     @else
                         0
                     @endif

@@ -46,7 +46,7 @@ class Index extends Component
                             'tanggal' => $q->tanggal,
                             'nama' => $q->barang->nama,
                             'barang_id' => $q->barang->nama . $q->barang->id . $q->barang_satuan_id,
-                            'satuan' => $q->barangSatuan->nama,
+                            'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
                             'harga_jual' => $q->harga,
                             'qty' => $q->qty,
                         ];
@@ -62,7 +62,7 @@ class Index extends Component
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                             'barang_id' => $q->barang->nama . $q->barang->id . $q->tanggal_kedaluarsa,
                             'nama' => $q->barang->nama,
-                            'satuan' => $q->barang->barangSatuanTerkecil->nama,
+                            'satuan' => $q->barang->barangSatuanTerkecil->nama . ' ' . $q->barang->barangSatuanTerkecil->konversi_satuan,
                             'qty' => 1,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
@@ -77,7 +77,7 @@ class Index extends Component
                         return [
                             'nama' => $q->barang->nama,
                             'barang_id' => $q->barang->nama . $q->barang_id,
-                            'satuan' => $q->barang->barangSatuanUtama->nama,
+                            'satuan' => $q->barang->barangSatuanUtama->nama . ' ' . $q->barang->barangSatuanUtama->konversi_satuan,
                             'qty' => 1 / $q->barang->barangSatuanUtama->rasio_dari_terkecil,
                         ];
                     })
