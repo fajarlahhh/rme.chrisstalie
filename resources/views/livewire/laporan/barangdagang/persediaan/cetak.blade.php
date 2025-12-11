@@ -90,7 +90,13 @@
                     @role('administrator')
                         <td nowrap class="text-end">{{ number_format($subItem['harga_beli']) }}</td>
                     @endrole
-                    <td nowrap class="text-end">{{ number_format($subItem['stok'], 3) }}</td>
+                    <td nowrap class="text-end">
+                        @php
+                            // Mengecek jika stok mengandung koma/titik desimal
+                            $stok = $subItem['stok'];
+                        @endphp
+                        {{ fmod($stok, 1) != 0 ? number_format($stok, 3) : number_format($stok) }}
+                    </td>
                     @role('administrator')
                         <td nowrap class="text-end">
                             {{ number_format($subItem['total']) }}</td>
@@ -100,9 +106,11 @@
             </tr>
         @endforeach
     </tbody>
-    <tfoot>
-        <tr>
-            <th colspan="7" class="text-end">Total Nilai Persediaan</th>
-            <th class="text-end">{{ number_format($total, 2) }}</th>
-    </tfoot>
+    @role('administrator')
+        <tfoot>
+            <tr>
+                <th colspan="7" class="text-end">Total Nilai Persediaan</th>
+                <th class="text-end">{{ number_format($total, 2) }}</th>
+        </tfoot>
+    @endrole
 </table>
