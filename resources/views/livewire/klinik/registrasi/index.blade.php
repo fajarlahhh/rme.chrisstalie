@@ -275,7 +275,7 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Data
                 </button>
-                <button type="button" class="btn btn-secondary m-r-3"
+                <button type="button" class="btn btn-warning m-r-3"
                     onclick="window.location.href='/klinik/registrasi'" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Reset

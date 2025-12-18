@@ -52,9 +52,8 @@ class Index extends Component
     {
         return view('livewire.klinik.peracikanresepobat.index', [
             
-            'data' => Registrasi::with('pasien')->with('nakes.pegawai')->with('pengguna.pegawai')
+            'data' => Registrasi::with('pasien')->with('nakes.pegawai')->with('pengguna.pegawai')->with('peracikanResepObat')->with('resepObat.pengguna.pegawai')->with('pembayaran')
                 ->when($this->status == 2, fn($q) => $q->whereHas('peracikanResepObat', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
-                ->whereDoesntHave('pembayaran')
                 ->when($this->status == 1, fn($q) => $q->whereDoesntHave('peracikanResepObat'))
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')
                     ->orWhereHas('pasien', fn($r) => $r

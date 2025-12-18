@@ -34,7 +34,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.klinik.resepobat.index', [
-            'data' => Registrasi::with('pasien')->with('nakes.pegawai')->with('pengguna.pegawai')
+            'data' => Registrasi::with('pasien')->with('nakes.pegawai')->with('pengguna.pegawai')->with('peracikanResepObat')->with('resepObat.pengguna.pegawai')->with('pembayaran')
                 ->when($this->status == 2, fn($q) => $q->whereHas('resepObat', fn($r) => $r->withTrashed()->where('created_at', 'like', $this->tanggal . '%')))                
                 ->when($this->status == 1, fn($q) => $q->whereDoesntHave('resepObat')->whereDoesntHave('pembayaran'))
                 ->where(fn($q) => $q->where('id', 'like', '%' . $this->cari . '%')

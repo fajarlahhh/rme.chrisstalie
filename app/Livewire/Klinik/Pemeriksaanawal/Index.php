@@ -33,7 +33,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.klinik.pemeriksaanawal.index', [
-            'data' => Registrasi::with('pasien')->with('nakes.pegawai')->with('pengguna.pegawai')
+            'data' => Registrasi::with('pasien')->with('nakes.pegawai')->with('pengguna.pegawai')->with('pemeriksaanAwal.pengguna.pegawai')->with('pembayaran')
                 ->where('ketemu_dokter', 1)
                 ->when($this->status == 2, fn($q) => $q->whereHas('pemeriksaanAwal', fn($q) => $q->where('created_at', 'like', $this->tanggal . '%')))
                 ->when($this->status == 1, fn($q) => $q->whereDoesntHave('pemeriksaanAwal'))

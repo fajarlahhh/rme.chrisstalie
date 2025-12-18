@@ -30,8 +30,7 @@ class Index extends Component
     public function getQuery()
     {
         $query = Registrasi::query()
-            ->with(['pasien', 'nakes', 'pengguna.pegawai'])
-            ->whereDoesntHave('pembayaran')
+            ->with(['pasien', 'nakes', 'pengguna.pegawai', 'pembayaran', 'tindakan.pengguna.pegawai'])
             ->whereHas('pasien', function ($q) {
                 if (!empty($this->cari)) {
                     $q->where('nama', 'like', '%' . $this->cari . '%');

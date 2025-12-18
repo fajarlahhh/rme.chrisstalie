@@ -39,7 +39,7 @@ class Index extends Component
 
     public function getData($paginate = true)
     {
-        $query = Pasien::with('pengguna')->where(fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%')->orWhere('id', 'like', '%' . $this->cari . '%'))
+        $query = Pasien::with('pengguna', 'pembayaran')->where(fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%')->orWhere('id', 'like', '%' . $this->cari . '%'))
             ->orderBy('id');
         return $paginate ? $query->paginate(10) : $query->get();
     }
