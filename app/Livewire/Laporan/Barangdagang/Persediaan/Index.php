@@ -28,7 +28,7 @@ class Index extends Component
 
     private function getData()
     {
-        $this->data = Barang::with(['barangSatuanUtama', 'kodeAkun'])
+        $this->data = Barang::with(['barangSatuanUtama.satuanKonversi', 'barangSatuan', 'kodeAkun'])
             ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
             ->when($this->kode_akun_id, function ($q) {
                 $q->where('kode_akun_id', $this->kode_akun_id);

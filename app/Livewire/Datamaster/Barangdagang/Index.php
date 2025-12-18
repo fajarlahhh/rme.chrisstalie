@@ -47,8 +47,10 @@ class Index extends Component
     {
         $query = Barang::with(['barangSatuan' => fn($q) => $q->orderBy('rasio_dari_terkecil', 'desc')])->with([
             'pengguna',
-            'kodeAkun'
-        ])->persediaan()
+            'kodeAkun', 
+            'kodeAkunPenjualan',
+            'kodeAkunModal'
+        ])
             ->when($this->persediaan, fn($q) => $q->where('persediaan', $this->persediaan))
             ->when($this->klinik, fn($q) => $q->where('klinik', $this->klinik))
             ->when($this->kode_akun_id, function ($q) {

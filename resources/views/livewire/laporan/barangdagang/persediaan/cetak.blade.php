@@ -35,6 +35,7 @@
         <tr>
             <th class="w-10px bg-gray-300 text-white">No.</th>
             <th class="bg-gray-300 text-white">Nama</th>
+            <th class="bg-gray-300 text-white">Persediaan</th>
             <th class="bg-gray-300 text-white">Satuan</th>
             <th class="bg-gray-300 text-white">Kategori</th>
             <th class="bg-gray-300 text-white">Tanggal Kedaluarsa</th>
@@ -53,12 +54,13 @@
         @endphp
         @foreach ($data as $item)
             @php
-                $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($item) {
+                $barangSatuanUtama = $item->barangSatuanUtama;
+                $stok = $dataStok->where('barang_id', $item->id)->map(function ($q) use ($barangSatuanUtama) {
                     return [
                         'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                         'harga_beli' => $q->harga_beli,
-                        'stok' => $q->stok / $item->barangSatuanUtama?->rasio_dari_terkecil,
-                        'total' => ($q->harga_beli / $item->barangSatuanUtama?->rasio_dari_terkecil) * $q->stok,
+                        'stok' => $q->stok / $barangSatuanUtama?->rasio_dari_terkecil,
+                        'total' => ($q->harga_beli / $barangSatuanUtama?->rasio_dari_terkecil) * $q->stok,
                     ];
                 });
                 $total += $stok->sum(fn($q) => $q['total']);
@@ -69,8 +71,10 @@
                 <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
                     {{ $item->nama }}</td>
                 <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
-                    {{ $item->barangSatuanUtama?->nama }}
-                    {{ $item->barangSatuanUtama?->konversi_satuan }}</td>
+                    {{ $item->persediaan }}</td>
+                <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
+                    {{ $barangSatuanUtama?->nama }}
+                    <small>{{ $barangSatuanUtama?->konversi_satuan }}</small></td>
                 <td nowrap @if ($stok->count() > 0) rowspan="{{ $stok->count() + 1 }}" @endif>
                     {{ $item->kode_akun_id }} - {{ $item->kodeAkun?->nama }}</td>
                 @if ($stok->count() == 0)

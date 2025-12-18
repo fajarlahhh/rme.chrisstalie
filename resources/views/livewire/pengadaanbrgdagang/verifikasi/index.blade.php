@@ -74,7 +74,7 @@
                                                     {{ $detail->barangSatuan->barang->nama }}</td>
                                                 <td class="text-nowrap w-80px">
                                                     @if ($detail->barangSatuan->konversi_satuan)
-                                                        {!! $detail->barangSatuan->nama . '<small> (' . $detail->barangSatuan->konversi_satuan . ')</small>' !!}
+                                                        {!! $detail->barangSatuan->nama . ' <small>' . $detail->barangSatuan->konversi_satuan . '</small>' !!}
                                                     @else
                                                         {{ $detail->barangSatuan->nama }}
                                                     @endif
@@ -90,7 +90,7 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($item->verifikasiDisetujui->count() > 0 || $item->verifikasiDitolak->count() > 0)
+                                    @if ($item->verifikasi->count() > 0 )
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else

@@ -69,7 +69,7 @@ class Form extends Component
 
         
         $this->fill($data->toArray());
-        $this->dataBarang = Barang::persediaan()->with(['barangSatuanTerkecil'])->orderBy('nama')->get()->toArray();
+        $this->dataBarang = Barang::with(['barangSatuanTerkecil'])->orderBy('nama')->get()->toArray();
         if ($data->rasio_dari_terkecil != 1) {
             $this->dataBarangSatuan = BarangSatuan::where('barang_id', $data->barang_id)->with(['barang.barangSatuanTerkecil'])->orderBy('rasio_dari_terkecil', 'desc')->get()->toArray();
         }

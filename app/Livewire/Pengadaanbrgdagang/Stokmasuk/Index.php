@@ -35,12 +35,12 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pengadaanbrgdagang.stokmasuk.index', [
-            'pending' => Pembelian::select(DB::raw('pembelian.id id'), 'tanggal', 'supplier_id', 'uraian')
+            'pending' => Pembelian::select(DB::raw('pembelian.id id'), 'tanggal', 'supplier_id', 'uraian')->with('supplier')
                 ->leftJoin('pembelian_detail', 'pembelian.id', '=', 'pembelian_detail.pembelian_id')
                 ->groupBy('pembelian.id', 'tanggal', 'supplier_id', 'uraian')
                 ->havingRaw('SUM(pembelian_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pembelian_id = pembelian.id )')
                 ->get()->count(),
-            'data' => StokMasuk::with(['pengguna', 'barangSatuan.barang', 'pembelian'])
+            'data' => StokMasuk::with(['pengguna.pegawai', 'barangSatuan.barang', 'pembelian.supplier', 'keluar'])
                 ->where('created_at', 'like', $this->bulan . '%')
                 ->whereHas('pembelian', fn($q) => $q->where('jenis', 'Barang Dagang'))
                 ->where(fn($q) => $q

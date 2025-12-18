@@ -21,11 +21,6 @@ class Barang extends Model
         return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
-    public function konsinyator(): BelongsTo
-    {
-        return $this->belongsTo(Supplier::class, 'konsinyator_id')->withTrashed();
-    }
-
     public function stokTersedia(): HasMany
     {
         return $this->hasMany(Stok::class)->whereNull('stok_keluar_id');
@@ -59,16 +54,6 @@ class Barang extends Model
     public function stokKeluar(): HasMany
     {
         return $this->hasMany(StokKeluar::class);
-    }
-
-    public function scopePersediaan(Builder $query): void
-    {
-        $query->whereNull('konsinyator_id');
-    }
-
-    public function scopeKonsinyasi(Builder $query): void
-    {
-        $query->whereNotNull('konsinyator_id');
     }
 
     public function scopeKlinik(Builder $query): void

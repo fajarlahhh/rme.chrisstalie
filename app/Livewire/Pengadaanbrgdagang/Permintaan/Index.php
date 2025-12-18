@@ -40,6 +40,7 @@ class Index extends Component
         return view('livewire.pengadaanbrgdagang.permintaan.index', [
             'data' => PermintaanPembelian::with([
                 'pengguna',
+                'permintaanPembelianDetail.barangSatuan.satuanKonversi',
                 'permintaanPembelianDetail.barangSatuan.barang',
                 'pembelian.stokMasuk',
                 'verifikasiPending',
