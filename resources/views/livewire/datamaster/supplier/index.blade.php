@@ -13,7 +13,7 @@
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
-                    Tambah</a>
+                    Tambah</a>&nbsp;
             @endrole
             <a href="javascript:;" wire:click="export" class="btn btn-success">
                 Export</a>
