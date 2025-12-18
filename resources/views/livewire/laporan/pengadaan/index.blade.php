@@ -31,4 +31,8 @@
     </div>
     <x-alert />
     <x-modal.cetak judul="" />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

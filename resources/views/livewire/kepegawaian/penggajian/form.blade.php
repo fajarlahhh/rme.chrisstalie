@@ -123,4 +123,8 @@
             </div>
     </div>
     </form>
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

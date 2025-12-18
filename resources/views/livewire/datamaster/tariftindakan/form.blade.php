@@ -350,6 +350,10 @@
             </div>
         </form>
     </div>
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>
 
 @push('scripts')

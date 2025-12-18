@@ -72,6 +72,10 @@
 
     <x-alert />
 
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>
 @push('scripts')
     <script>

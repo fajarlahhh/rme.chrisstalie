@@ -98,4 +98,8 @@
     </div>
     <x-alert />
     <x-modal.cetak judul='Resep Obat' />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

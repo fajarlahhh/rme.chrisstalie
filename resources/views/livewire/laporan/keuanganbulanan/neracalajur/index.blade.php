@@ -27,4 +27,8 @@
     </div>
     <x-alert />
     <x-modal.cetak judul="Neraca Lajur" />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

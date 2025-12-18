@@ -42,4 +42,8 @@
         </div>
         <x-alert />
     </form>
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

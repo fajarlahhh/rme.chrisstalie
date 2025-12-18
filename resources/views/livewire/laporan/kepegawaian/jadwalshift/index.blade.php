@@ -29,4 +29,8 @@
     </div>
     <x-alert />
     <x-modal.cetak judul="Jadwal Shift" />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

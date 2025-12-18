@@ -45,4 +45,8 @@
     </div>
     <x-alert />
     <x-modal.cetak judul="Penerimaan" />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

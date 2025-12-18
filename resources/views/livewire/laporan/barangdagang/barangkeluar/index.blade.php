@@ -39,4 +39,8 @@
     </div>
     <x-alert />
     <x-modal.cetak judul="Laporan Barang Keluar" />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

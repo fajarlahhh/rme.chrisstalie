@@ -179,6 +179,10 @@
         </div>
     </div>
     <x-modal.cetak judul='Nota' />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>
 
 @push('scripts')

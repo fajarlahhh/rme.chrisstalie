@@ -48,4 +48,8 @@
     </div>
     <x-alert />
     <x-modal.cetak judul="Absensi" />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>

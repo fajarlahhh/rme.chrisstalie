@@ -98,4 +98,8 @@
         </div>
     </div>
     <x-alert />
+    
+    <div wire:loading>
+        <x-loading />
+    </div>
 </div>
