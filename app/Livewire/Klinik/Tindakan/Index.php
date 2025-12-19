@@ -42,7 +42,7 @@ class Index extends Component
                 $q->whereDate('created_at', $this->tanggal);
             });
         } elseif ($this->status == 1) {
-            $query->whereDoesntHave('tindakan');
+            $query->whereDoesntHave('tindakan')->whereDoesntHave('pembayaran');
         }
 
         return $query->orderBy('id', 'asc');
