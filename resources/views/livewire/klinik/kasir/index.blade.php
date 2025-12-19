@@ -70,21 +70,23 @@
                             <td>{{ $this->status == 1 ? $row->pasien->alamat : $row->registrasi->pasien->alamat }}</td>
                             <td>{{ $this->status == 1 ? $row->pasien->no_hp : $row->registrasi->pasien->no_hp }}</td>
                             <td>{{ $this->status == 1 ? $row->catatan : $row->registrasi->catatan }}</td>
-                            <td>
-                                Tindakan : {!! $row->tindakan->count() > 0
-                                    ? '<span class="badge bg-success">' . $row->tindakan->first()->created_at . '</span>'
-                                    : '' !!}
-                                <br>
-                                Resep : {!! $row->resepObat->count() > 0
-                                    ? '<span class="badge bg-success">' . $row->resepObat->first()->created_at . '</span>'
-                                    : '' !!}
-                                <br>
-                                @if ($row->resepObat->count() > 0)
-                                    Peracikan Resep : {!! $row->peracikanResepObat
-                                        ? '<span class="badge bg-success">' . $row->peracikanResepObat->created_at . '</span>'
+                            @if ($status == 1)
+                                <td>
+                                    Tindakan : {!! $row->tindakan->count() > 0
+                                        ? '<span class="badge bg-success">' . $row->tindakan->first()->created_at . '</span>'
                                         : '' !!}
-                                @endif
-                            </td>
+                                    <br>
+                                    Resep : {!! $row->resepObat->count() > 0
+                                        ? '<span class="badge bg-success">' . $row->resepObat->first()->created_at . '</span>'
+                                        : '' !!}
+                                    <br>
+                                    @if ($row->resepObat->count() > 0)
+                                        Peracikan Resep : {!! $row->peracikanResepObat
+                                            ? '<span class="badge bg-success">' . $row->peracikanResepObat->created_at . '</span>'
+                                            : '' !!}
+                                    @endif
+                                </td>
+                            @endif
                             @if ($status == 2)
                                 <td nowrap>
                                     <small>
