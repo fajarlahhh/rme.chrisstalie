@@ -22,6 +22,7 @@
             <th class="bg-gray-300 text-white" rowspan="2">No. Nota</th>
             <th class="bg-gray-300 text-white" rowspan="2">Tanggal</th>
             <th class="bg-gray-300 text-white" rowspan="2">Nama Pasien</th>
+            <th class="bg-gray-300 text-white" rowspan="2">Tindakan</th>
             <th class="bg-gray-300 text-white" colspan="{{ collect($data)->groupBy('perawat_id')->count() }}">Nama
                 Perawat</th>
         </tr>
@@ -38,6 +39,7 @@
                 <td>{{ $row['no_nota'] }}</td>
                 <td>{{ substr($row['tanggal'], 0, 10) }}</td>
                 <td>{{ $row['nama_pasien'] }}</td>
+                <td>{{ $row['nama_tindakan'] }}</td>
                 @foreach (collect($data)->groupBy('perawat_id') as $key => $item)
                     <td class="text-end">
                         @if ($row['perawat_id'] == $key)

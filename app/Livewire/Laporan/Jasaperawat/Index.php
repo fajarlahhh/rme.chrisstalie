@@ -26,7 +26,7 @@ class Index extends Component
 
     public function getData()
     {
-        return Tindakan::with('registrasi.pasien', 'pembayaran', 'perawat')
+        return Tindakan::with('registrasi.pasien', 'pembayaran', 'perawat', 'tarifTindakan', 'perawat.pegawai')
             ->where('biaya_jasa_perawat', '>', 0)
             ->whereHas('pembayaran', fn($r) => $r
                 ->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]))
@@ -35,6 +35,7 @@ class Index extends Component
                 'no_nota' => $row->pembayaran->id,
                 'tanggal' => substr($row->pembayaran->created_at, 0, 10),
                 'nama_pasien' => $row->registrasi->pasien->nama,
+                'nama_tindakan' => $row->tarifTindakan->nama,
                 'nama_petugas' => $row->perawat?->nama,
                 'biaya' => $row->biaya_jasa_perawat,
             ])->toArray();
