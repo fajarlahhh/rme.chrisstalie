@@ -78,13 +78,27 @@ class Form extends Component
                     'catatan' => $first->catatan,
                     'nama' => $first->nama,
                     'barang' => $group->map(function ($r) {
+                        $barang = collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id);
+                        if (!$barang) {
+                            return [
+                                'id' => null,
+                                'nama' => 'Terjadi Kesalahan Resep Obat',
+                                'satuan' => null,
+                                'kode_akun_id' => null,
+                                'kode_akun_penjualan_id' => null,
+                                'kode_akun_modal_id' => null,
+                                'harga' => null,
+                                'qty' => null,
+                                'subtotal' => null,
+                            ];
+                        }
                         return [
                             'id' => $r->barang_satuan_id,
-                            'nama' => collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id)['nama'],
-                            'satuan' => collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id)['satuan'],
-                            'kode_akun_id' => collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id)['kode_akun_id'],
-                            'kode_akun_penjualan_id' => collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id)['kode_akun_penjualan_id'],
-                            'kode_akun_modal_id' => collect($this->dataBarang)->firstWhere('id', $r->barang_satuan_id)['kode_akun_modal_id'],
+                            'nama' => $barang['nama'],
+                            'satuan' => $barang['satuan'],
+                            'kode_akun_id' => $barang['kode_akun_id'],
+                            'kode_akun_penjualan_id' => $barang['kode_akun_penjualan_id'],
+                            'kode_akun_modal_id' => $barang['kode_akun_modal_id'],
                             'harga' => $r->harga,
                             'qty' => $r->qty,
                             'subtotal' => $r->harga * $r->qty,
