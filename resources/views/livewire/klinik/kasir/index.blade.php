@@ -73,7 +73,7 @@
                             <td>{{ $this->status == 1 ? $row->pasien->no_hp : $row->registrasi->pasien->no_hp }}</td>
                             <td>{{ $this->status == 1 ? $row->catatan : $row->registrasi->catatan }}</td>
                             @if ($status == 1)
-                                <td>
+                                <td nowrap>
                                     Tindakan : {!! $row->tindakan->count() > 0
                                         ? '<span class="badge bg-success">' . $row->tindakan->first()->created_at . '</span>'
                                         : '' !!}
