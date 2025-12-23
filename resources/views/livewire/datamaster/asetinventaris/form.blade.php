@@ -62,7 +62,8 @@
                                 @if ($data->exists) disabled @endif data-width="100%">
                                 <option hidden selected>-- Tidak Ada Kode Akun --</option>
                                 @foreach ($dataKodeAkun as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('kode_akun_id')
@@ -75,7 +76,8 @@
                                 @if ($data->exists) disabled @endif data-width="100%">
                                 <option hidden selected>-- Tidak Ada Kode Akun --</option>
                                 @foreach ($dataKodeAkunSumberDana as $item)
-                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                                    </option>
                                 @endforeach
                             </select>
                             @error('kode_akun_sumber_dana_id')
@@ -124,7 +126,8 @@
                             </div>
                             <div class="mb-3">
                                 <label class="form-label">Nilai Residu</label>
-                                <input class="form-control" type="number" wire:model="nilai_residu" />
+                                <input class="form-control" type="number" wire:model="nilai_residu"
+                                    @if ($data->exists) disabled @endif />
                                 @error('nilai_residu')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
@@ -162,7 +165,7 @@
             </div>
         </form>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>
