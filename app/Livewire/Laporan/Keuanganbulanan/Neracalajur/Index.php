@@ -23,7 +23,7 @@ class Index extends Component
         $bulanIni = $this->bulan;
         $dataKodeAkun = KodeAkun::with([
             'kodeAkunNeraca' => function ($q) use ($bulanIni) {
-                $q->where('periode', $bulanIni);
+                $q->where('periode', $bulanIni . '-01');
             }
         ])
             ->with(['jurnalDetail' => function ($q) use ($bulanIni) {
