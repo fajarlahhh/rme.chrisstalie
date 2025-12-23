@@ -53,7 +53,7 @@ class Jurnalumum extends Component
                 'tanggal' => 'required',
                 'uraian' => 'required',
                 'detail' => 'required|array|min:2',
-                'detail.*.id' => 'required|distinct',
+                'detail.*.id' => 'required',
                 'detail.*.debet' => 'required',
                 'detail.*.kredit' => 'required'
             ]
