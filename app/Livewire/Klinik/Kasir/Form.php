@@ -257,7 +257,7 @@ class Form extends Component
             //Jurnal Kewajiban Biaya Dokter & Perawat
             $detail = array_merge($detail, collect($this->tindakan)->whereNotNull('dokter_id')->map(function ($q) {
                 return [
-                    'kode_akun_id' => '23000',
+                    'kode_akun_id' => '21300',
                     'debet' => 0,
                     'kredit' => $q['biaya_jasa_dokter'] * $q['qty'],
                 ];
@@ -266,7 +266,7 @@ class Form extends Component
             $detail = array_merge($detail, collect($this->tindakan)
                 ->where('perawat_id', '!=', '-')->whereNotNull('perawat_id')->map(function ($q) {
                     return [
-                        'kode_akun_id' => '24000',
+                        'kode_akun_id' => '21400',
                         'debet' => 0,
                         'kredit' => $q['biaya_jasa_perawat'] * $q['qty'],
                     ];
