@@ -36,7 +36,7 @@ class Form extends Component
         
         $this->data = $data;
         $this->fill($this->data->toArray());
-        $this->dataKodeAkun = KodeAkun::detail()->where('id', 'like', '111%')->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->whereIn('parent_id', ['11100', '21500'])->get()->toArray();
     }
 
     public function render()
