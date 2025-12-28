@@ -46,9 +46,14 @@
                             <td>{{ $row->created_at }}</td>
                             <td>{{ $row->uraian }}</td>
                             <td>{{ $row->supplier?->nama }}</td>
-                            <td>{!! $row->pembayaran == 'Jatuh Tempo'
-                                ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . '</span>'
-                                : '<span class="badge bg-success">Lunas</span>' !!}
+                            <td>
+                                @if ($row->pelunasanPembelian)
+                                    <span class="badge bg-success">Lunas</span>
+                                @else
+                                    {!! $row->pembayaran == 'Jatuh Tempo'
+                                        ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . '</span>'
+                                        : '<span class="badge bg-success">Lunas</span>' !!}
+                                @endif
                             </td>
                             <td>
                                 <table class="table table-bordered fs-11px">

@@ -51,7 +51,7 @@ class Index extends Component
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10) :
-                Pembelian::with(['pembelianDetail.barangSatuan.barang', 'pengguna.pegawai', 'stokMasuk'])
+                Pembelian::with(['pembelianDetail.barangSatuan.barang', 'pengguna.pegawai', 'stokMasuk', 'pelunasanPembelian', 'supplier', 'permintaanPembelian'])
                 ->where('jenis', 'Barang Dagang')
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))

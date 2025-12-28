@@ -36,7 +36,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pengadaanbrgdagang.lainnya.barangkhusus.index', [
-            'data' => Pembelian::where('jenis', 'Barang Khusus')->with(['pembelianDetail.barangSatuan.barang', 'pengguna.pegawai', 'supplier', 'stokKeluar'])
+            'data' => Pembelian::where('jenis', 'Barang Khusus')->with(['pembelianDetail.barangSatuan.barang', 'pengguna.pegawai', 'supplier', 'stokKeluar', 'pelunasanPembelian'])
                 ->paginate(10)
         ]);
     }
