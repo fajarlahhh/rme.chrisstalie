@@ -81,7 +81,7 @@ class Form extends Component
             $data->tanggal = $this->tanggal;
             $data->jatuh_tempo = $this->pembayaran == "Jatuh Tempo" ? $this->jatuh_tempo : null;
             $data->pembayaran = $this->pembayaran == "Jatuh Tempo" ? $this->pembayaran : "Lunas";
-            $data->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21000' : $this->pembayaran;
+            $data->kode_akun_id = $this->pembayaran == "Jatuh Tempo" ? '21100' : $this->pembayaran;
             $data->uraian = $this->uraian;
             $data->supplier_id = $this->supplier_id;
             $data->permintaan_pembelian_id = $this->data->id;
