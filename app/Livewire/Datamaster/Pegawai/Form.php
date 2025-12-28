@@ -42,6 +42,7 @@ class Form extends Component
         }
     }
 
+
     public function submit()
     {
         $this->validateWithCustomMessages([
@@ -107,7 +108,7 @@ class Form extends Component
             'nilai' => $q['nilai'],
             'sifat' => $q['sifat'],
             'kode_akun_id' => $q['kode_akun_id'],
-        ]);
+        ])->toArray();
     }
 
     public function render()
