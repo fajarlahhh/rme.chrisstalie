@@ -15,7 +15,7 @@
 
             <h4 class="panel-title">Form</h4>
         </div>
-        <form wire:submit.prevent="submit">
+        <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
                 <div class="row">
                     <div class="col-md-6">
@@ -184,7 +184,7 @@
                                                     </td>
                                                     <td>
                                                         <select class="form-control"
-                                                            :name="'unsurGaji[' + index + '][nilai]'"
+                                                            :name="'unsurGaji[' + index + '][sifat]'"
                                                             x-model="row.sifat">
                                                             <option value="+">+</option>
                                                             <option value="-">-</option>
@@ -251,6 +251,7 @@
                         if (componentId) {
                             let $wire = window.Livewire.find(componentId);
                             if ($wire && typeof $wire.set === 'function') {
+                                console.log(JSON.parse(JSON.stringify(this.unsurGaji)));
                                 $wire.set('unsurGaji', JSON.parse(JSON.stringify(this.unsurGaji)), true);
                             }
                         }
