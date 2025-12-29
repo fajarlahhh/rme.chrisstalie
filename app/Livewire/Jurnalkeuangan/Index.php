@@ -36,7 +36,7 @@ class Index extends Component
                     ->orWhere('nomor', 'like', $this->cari . '%')
                     ->orWhere('uraian', 'like', '%' . $this->cari . '%')
             )
-            ->orderBy('created_at', 'desc')
+            ->orderBy('tanggal', 'desc')
             ->when(!auth()->user()->hasRole('administrator'), fn($q) => $q->where('pengguna_id', auth()->id()))
             ->paginate(10);
     }
