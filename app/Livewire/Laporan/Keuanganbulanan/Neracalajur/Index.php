@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Laporan\Keuanganbulanan\Neracalajur;
 
+use App\Exports\LaporanneracalajurExport;
 use App\Models\JurnalDetail;
 use Livewire\Component;
 use Livewire\Attributes\Url;
@@ -15,6 +16,11 @@ class Index extends Component
     public function mount()
     {
         $this->bulan = $this->bulan ?: date('Y-m');
+    }
+
+    public function export()
+    {
+        return (new LaporanneracalajurExport($this->getData(), $this->bulan))->download('neracalajur' . $this->bulan . '.xls');
     }
 
     public function getData()
