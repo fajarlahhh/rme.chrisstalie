@@ -7,6 +7,7 @@ use App\Models\KodeAkun;
 use App\Models\KodeAkunNeraca;
 use Livewire\Attributes\Url;
 use App\Models\SaldoJurnalAudit;
+use App\Exports\LaporanbukubesarExport;
 
 class Index extends Component
 {
@@ -19,6 +20,12 @@ class Index extends Component
     {
         $this->bulan = $this->bulan ?: date('Y-m');
         $this->dataKodeAkun = KodeAkun::where('detail', 1)->get()->toArray();
+    }
+
+
+    public function export()
+    {
+        return (new LaporanbukubesarExport($this->getData(), $this->bulan, $this->kodeAkunId, $this->dataKodeAkun))->download('bukubesar' . $this->bulan . '.xls');
     }
 
     public function getData()

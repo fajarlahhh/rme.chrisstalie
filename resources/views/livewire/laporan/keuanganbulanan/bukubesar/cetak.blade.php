@@ -4,12 +4,13 @@
     @endphp
     <thead>
         <tr>
-            <th colspan="7" class="bg-gray-100">{{ $kodeAkun ? $kodeAkun['id'] . ' - ' . $kodeAkun['nama'] : '' }}</th>
+            <th colspan="8" class="bg-gray-100">{{ $kodeAkun ? $kodeAkun['id'] . ' - ' . $kodeAkun['nama'] : '' }}</th>
         </tr>
         <tr>
             <th class="w-20px bg-gray-100"></th>
             <th class="w-100px bg-gray-100">Tanggal</th>
             <th class="bg-gray-100">Uraian</th>
+            <th class="bg-gray-100">Jurnal</th>
             <th class="w-200px text-nowrap bg-gray-100">Ref</th>
             <th class="w-150px text-nowrap bg-gray-100">Debet</th>
             <th class="w-150px text-nowrap bg-gray-100">Kredit</th>
@@ -21,6 +22,7 @@
             <td>1</td>
             <td>{{ $bulan . '-01' }}</td>
             <td>Saldo Awal</td>
+            <td></td>
             <td></td>
             <td class="text-end"></td>
             <td class="text-end"></td>
@@ -45,6 +47,7 @@
                     <td>{{ $index + 2 }}</td>
                     <td>{{ $sub['periode'] }}</td>
                     <td>{{ $sub['uraian'] }}</td>
+                    <td>{{ $sub['nomor'] }}</td>
                     <td class="text-nowrap">{{ $sub['tipe'] }}</td>
                     <td class="text-end">
                         @if ($cetak)
