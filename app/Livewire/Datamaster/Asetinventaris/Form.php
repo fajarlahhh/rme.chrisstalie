@@ -150,7 +150,7 @@ class Form extends Component
         $this->data = $data;
         $this->fill($this->data->toArray());
         $this->dataKodeAkun = KodeAkun::detail()->where('parent_id', '15100')->get()->toArray();
-        $this->dataKodeAkunSumberDana = KodeAkun::detail()->whereIn('parent_id', ['11100', '20000', '15300'])->get()->toArray();
+        $this->dataKodeAkunSumberDana = KodeAkun::detail()->whereIn('parent_id', ['11100', '20000', '15300', '21200 '])->get()->toArray();
         $this->dataKodeAkunPenyusutan = KodeAkun::detail()->whereIn('parent_id', ['15200'])->get()->toArray();
     }
 
