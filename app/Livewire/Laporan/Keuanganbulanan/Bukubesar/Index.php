@@ -37,7 +37,7 @@ class Index extends Component
             'saldo' => $this->kodeAkunId ?
                 (collect($this->dataKodeAkun)->where('id', $this->kodeAkunId)->first()['kategori'] == 'Aktiva' ?
                     KodeAkunNeraca::where('kode_akun_id', $this->kodeAkunId)->where('periode', $this->bulan . '-01')->first()->debet ?? 0
-                    : 0)
+                    : KodeAkunNeraca::where('kode_akun_id', $this->kodeAkunId)->where('periode', $this->bulan . '-01')->first()->kredit ?? 0)
                 : 0,
             'data' => ($this->getData())
         ]);
