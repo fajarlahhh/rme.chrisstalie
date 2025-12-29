@@ -44,12 +44,14 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
+            $edit = false;
             if (!$this->data->exists) {
                 $terakhir = Aset::where('kode_akun_id', $this->kode_akun_id)
                     ->orderBy('created_at', 'desc')
                     ->first();
                 $nomor = $terakhir ? (int)substr($terakhir->nomor, 6, 4) : 0;
                 $this->data->nomor = $this->kode_akun_id . '.' . sprintf('%04d', $nomor + 1);
+                $edit = true;
             }
 
             $this->data->nama = $this->nama;
@@ -69,7 +71,8 @@ class Form extends Component
             $this->data->nilai_residu = $this->nilai_residu;
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
-            
+
+            if ($edit == false) {
                 JurnalClass::insert(
                     jenis: 'Pembelian Aset Inventaris',
                     sub_jenis: 'Pembelian',
@@ -131,7 +134,7 @@ class Form extends Component
                     $penyusutan->jurnal_id = $jurnal->id;
                     $penyusutan->save();
                 }
-            
+            }
             $data = Aset::findOrFail($this->data->id);
 
             $cetak = view('livewire.datamaster.asetinventaris.qr', [
