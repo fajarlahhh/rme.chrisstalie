@@ -20,7 +20,8 @@ class JurnalClass
         $terakhir = Jurnal::where('tanggal', 'like', substr($tanggal, 0, 7) . '%')
             ->orderBy('id', 'desc')
             ->first();
-        $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 12, 5) : 0;
+        $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
+        // dd(substr($terakhir->id, 6, 5));
         $nomor = 'JURNAL/' . str_replace('-', '/', substr($tanggal, 0, 7)) . '/' . sprintf('%05d', $nomorTerakhir + 1);
         return $nomor;
     }
