@@ -79,11 +79,11 @@
                                 </ul></small>
                             </td>
                             <td class="with-btn-group text-end" nowrap>
-                                @role('administrator')
+                                @role('administrator|supervisor')
                                     <x-action :row="$row" custom="" :detail="false" :edit="false"
                                         :print="true" :permanentDelete="false" :restore="false" :delete="true" />
                                 @endrole
-                                @role('supervisor')
+                                {{-- @role('supervisor')
                                     @if (substr($row->created_at, 0, 10) == date('Y-m-d'))
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="true" :permanentDelete="false" :restore="false" :delete="true" />
@@ -91,7 +91,7 @@
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="true" :permanentDelete="false" :restore="false" :delete="false" />
                                     @endif
-                                @endrole
+                                @endrole --}}
                                 @role('operator')
                                     <x-action :row="$row" custom="" :detail="false" :edit="false"
                                         :print="true" :permanentDelete="false" :restore="false" :delete="false" />

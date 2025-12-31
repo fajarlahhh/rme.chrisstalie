@@ -56,7 +56,7 @@
                         </select>
                     </div>
                 </div>
-                @role('administrator|superuser')
+                @role('administrator|supervisor')
                     <div class="mb-3">
                         <label class="form-label">Tanggal</label>
                         <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal" />
