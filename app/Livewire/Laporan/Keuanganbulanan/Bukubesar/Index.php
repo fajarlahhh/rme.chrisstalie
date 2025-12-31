@@ -32,7 +32,7 @@ class Index extends Component
     {
         $data = [];
         if ($this->kodeAkunId) {
-            $data = SaldoJurnalAudit::orderBy('periode')->where('kode_akun_id', $this->kodeAkunId)->where("periode", 'like', $this->bulan . '%')->get();
+            $data = SaldoJurnalAudit::orderBy('periode')->orderBy('id')->where('kode_akun_id', $this->kodeAkunId)->where("periode", 'like', $this->bulan . '%')->get();
         }
 
         return $data;

@@ -40,7 +40,7 @@
                         <div class="widget widget-stats bg-blue">
                             <div class="stats-icon stats-icon-lg"><i class="fa fa-dollar fa-fw"></i></div>
                             <div class="stats-content">
-                                <div class="stats-title">PENERIMAAN BULAN INI</div>
+                                <div class="stats-title">OMSET BULAN INI</div>
                                 <div class="stats-number text-end fs-12px">
                                     <small>JASA</small> :
                                     {{ number_format($dataPembayaranBulanIni->sum('total_tindakan'), 2) }}
@@ -59,7 +59,7 @@
                             <div class="stats-content">
                                 <div class="stats-title">PENGELUARAN BULAN INI</div>
                                 <div class="stats-number text-end">
-                                    {{ number_format($dataPengeluaranBulanIni->sum('debet'), 2) }}
+                                    {{ number_format($dataPengeluaranBulanIni->sum('kredit'), 2) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>

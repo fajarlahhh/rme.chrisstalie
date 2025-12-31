@@ -46,7 +46,7 @@ class Index extends Component
             ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]);
 
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {
-            $query->where('pengguna_id', auth()->user()->id);
+            $query->where('pengguna_id', auth()->id());
         }
 
         return $query->get();
@@ -73,7 +73,7 @@ class Index extends Component
                 }),
             'dataPengguna' => auth()->user()->hasRole(['administrator', 'supervisor']) ?
                 Pengguna::whereIn('id', $data->pluck('pengguna_id')->unique()->toArray())->with('pegawai')->get()->toArray() :
-                Pengguna::where('id', auth()->user()->id)->with('pegawai')->get()->toArray()
+                Pengguna::where('id', auth()->id())->with('pegawai')->get()->toArray()
         ]);
     }
 }
