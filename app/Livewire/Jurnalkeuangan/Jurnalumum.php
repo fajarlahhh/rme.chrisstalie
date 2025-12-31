@@ -75,7 +75,7 @@ class Jurnalumum extends Component
         DB::transaction(function () {
             if (!$this->data->exists) {
                 $nomor = JurnalClass::getNomor($this->tanggal);
-                $this->data->id = str_replace('/', '', $nomor);
+                $this->data->id = str_replace('/', '', substr($nomor, 6, 14));
                 $this->data->nomor = $nomor;
             }
 
