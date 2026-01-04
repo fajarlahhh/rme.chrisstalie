@@ -94,8 +94,8 @@ class Index extends Component
             });
 
             DB::transaction(function () use ($dataAbsensi, $dataKehadiran) {
-                foreach ($dataKehadiran as $haidrhadi) {
-                    Kehadiran::insertOrIgnore($kehadiran->toArray());
+                foreach ($dataKehadiran as $kehadiran) {
+                    Kehadiran::insertOrIgnore($kehadiran);
                 }
                 $absensi = collect($dataAbsensi)->chunk(1000);
                 foreach ($absensi as $absen) {
