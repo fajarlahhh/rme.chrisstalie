@@ -76,30 +76,15 @@ class Index extends Component
                     'waktu' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 11, 8),
                     'tanggal' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 0, 10),
                     'kode' => $this->parse($data, "<Status>", "</Status>"),
+                    'masuk' => $this->parse($data, "<Status>", "</Status>") == '0' ? $this->parse($data, "<DateTime>", "</DateTime>") : null,
+                    'pulang' => $this->parse($data, "<Status>", "</Status>") == '1' ? $this->parse($data, "<DateTime>", "</DateTime>") : null,
                 ]);
             }
         }
 
-        $dataAbsensi = collect($dataKehadiran)->groupBy('pegawai_id')->map(function ($q) {
-            return [
-                'id' => $q->first()['tanggal'] . '-' . $q->first()['pegawai_id'],
-                'pegawai_id' => $q->first()['pegawai_id'],
-                'tanggal' => $q->first()['tanggal'],
-                'masuk' => $q->where('kode', '0')?->sortBy('waktu')->first()['waktu'] ?? null,
-                'pulang' => $q->where('kode', '1')?->sortByDesc('waktu')->first()['waktu'] ?? null,
-                'pengguna_id' => auth()->id(),
-                'created_at' => now(),
-                'updated_at' => now(),
-            ];
-        });
-
-        DB::transaction(function () use ($dataAbsensi, $dataKehadiran) {
+        DB::transaction(function () use ($dataKehadiran) {
             foreach ($dataKehadiran as $kehadiran) {
                 Kehadiran::insertOrIgnore($kehadiran);
-            }
-            $absensi = collect($dataAbsensi)->chunk(1000);
-            foreach ($absensi as $absen) {
-                Absensi::insertOrIgnore($absen->toArray());
             }
         });
 

@@ -9,6 +9,10 @@ class Kehadiran extends Model
 {
     //
     protected $table = 'kehadiran';
+    protected $primaryKey = 'id';
+    public $incrementing = false;
+    protected $keyType = 'string';
+    public $timestamps = false;
 
     public function pegawai(): BelongsTo
     {
