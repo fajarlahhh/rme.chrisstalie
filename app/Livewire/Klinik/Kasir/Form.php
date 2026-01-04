@@ -296,7 +296,7 @@ class Form extends Component
                     'kode_akun_penjualan_id' => $q['kode_akun_penjualan_id'],
                     'kode_akun_modal_id' => $q['kode_akun_modal_id'],
                 ];
-            })->toArray(), $pembayaran->id);
+            })->toArray(), $pembayaran->id, $this->tanggal);
 
             //Jurnal Penyusutan Alat
             $detail = array_merge($detail, collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
@@ -338,7 +338,7 @@ class Form extends Component
                     ];
                 })->all();
                 if (count($barangMap)) {
-                    $hppBarang = BarangClass::stokKeluar($barangMap, $pembayaran->id);
+                    $hppBarang = BarangClass::stokKeluar($barangMap, $pembayaran->id, $this->tanggal);
                     $detail = array_merge($detail, collect($hppBarang)->map(function ($q) {
                         return [
                             'kode_akun_id' => $q['kode_akun_id'],

@@ -95,7 +95,7 @@ class Index extends Component
                 ];
             })->toArray();
 
-            $hpp = BarangClass::stokKeluar($barang, $pembayaran->id);
+            $hpp = BarangClass::stokKeluar($barang, $pembayaran->id, $this->tanggal);
 
             $this->jurnalPendapatan($pembayaran, $metodeBayar, $hpp);
 

@@ -69,7 +69,7 @@ class Index extends Component
                             ->whereHas(
                                 'jurnal',
                                 fn($r) =>
-                                $r->whereRaw("to_char(tanggal, 'YYYY-MM') = ?", [$periode->format('Y-m')])
+                                $r->whereRaw("DATE_FORMAT(tanggal, '%Y-%m') = ?", [$periode->format('Y-m')])
                             )
                             ->groupBy('kode_akun_id')
                     ])

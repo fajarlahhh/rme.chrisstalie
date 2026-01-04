@@ -80,12 +80,12 @@ class BarangClass
             ])->toArray();
     }
 
-    public static function stokKeluar($barang, $pembayaranId)
+    public static function stokKeluar($barang, $pembayaranId, $tanggal = null)
     {
         $detail = [];
         foreach ($barang as $brg) {
             $stokKeluar = new StokKeluar();
-            $stokKeluar->tanggal = now();
+            $stokKeluar->tanggal = $tanggal ?? now();
             $stokKeluar->qty = $brg['qty'];
             $stokKeluar->pembayaran_id = $pembayaranId;
             $stokKeluar->barang_id = $brg['barang_id'];
