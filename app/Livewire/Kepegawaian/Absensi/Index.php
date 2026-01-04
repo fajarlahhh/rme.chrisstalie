@@ -99,7 +99,11 @@ class Index extends Component
                 }
                 $absensi = collect($dataAbsensi)->chunk(1000);
                 foreach ($absensi as $absen) {
-                    Absensi::insertOrIgnore($absen->toArray());
+                    Absensi::where('id', $absen->id)->updateOrInsert([
+                        'masuk' => $absen->masuk,
+                        'pulang' => $absen->pulang,
+                        'pengguna_id' => auth()->id(),
+                    ]);
                 }
             });
 
