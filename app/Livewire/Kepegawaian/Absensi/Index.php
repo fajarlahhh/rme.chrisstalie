@@ -49,81 +49,78 @@ class Index extends Component
     public function download()
     {
         ini_set('max_execution_time', 300);
-        try {
-            $Connect = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
-            if ($Connect) {
 
-                $soap_request = "<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">" . config('app.fingerprint_key') . "</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
-                $newLine = "\r\n";
-                fputs($Connect, "POST /iWsService HTTP/1.0" . $newLine);
-                fputs($Connect, "Content-Type: text/xml" . $newLine);
-                fputs($Connect, "Content-Length: " . strlen($soap_request) . $newLine . $newLine);
-                fputs($Connect, $soap_request . $newLine);
-                $buffer = "";
-                while ($Response = fgets($Connect, 1024)) {
-                    $buffer = $buffer . $Response;
-                }
+        $Connect = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
+        if ($Connect) {
+
+            $soap_request = "<GetAttLog><ArgComKey xsi:type=\"xsd:integer\">" . config('app.fingerprint_key') . "</ArgComKey><Arg><PIN xsi:type=\"xsd:integer\">All</PIN></Arg></GetAttLog>";
+            $newLine = "\r\n";
+            fputs($Connect, "POST /iWsService HTTP/1.0" . $newLine);
+            fputs($Connect, "Content-Type: text/xml" . $newLine);
+            fputs($Connect, "Content-Length: " . strlen($soap_request) . $newLine . $newLine);
+            fputs($Connect, $soap_request . $newLine);
+            $buffer = "";
+            while ($Response = fgets($Connect, 1024)) {
+                $buffer = $buffer . $Response;
             }
-
-            $buffer = $this->parse($buffer, "<GetAttLogResponse>", "</GetAttLogResponse>");
-            $buffer = explode("\r\n", $buffer);
-            $dataKehadiran = [];
-            for ($i = 0; $i < count($buffer); $i++) {
-                $data = $this->parse($buffer[$i], "<Row>", "</Row>");;
-                if ($data) {
-                    array_push($dataKehadiran, [
-                        'pegawai_id' => (int)$this->parse($data, "<PIN>", "</PIN>"),
-                        'waktu' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 11, 8),
-                        'tanggal' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 0, 10),
-                        'kode' => $this->parse($data, "<Status>", "</Status>"),
-                    ]);
-                }
-            }
-
-            $dataAbsensi = collect($dataKehadiran)->groupBy('pegawai_id')->map(function ($q) {
-                return [
-                    'id' => $q->first()['tanggal'] . '-' . $q->first()['pegawai_id'],
-                    'pegawai_id' => $q->first()['pegawai_id'],
-                    'tanggal' => $q->first()['tanggal'],
-                    'masuk' => $q->where('kode', '0')?->sortBy('waktu')->first()['waktu'] ?? null,
-                    'pulang' => $q->where('kode', '1')?->sortByDesc('waktu')->first()['waktu'] ?? null,
-                    'pengguna_id' => auth()->id(),
-                    'created_at' => now(),
-                    'updated_at' => now(),
-                ];
-            });
-
-            DB::transaction(function () use ($dataAbsensi, $dataKehadiran) {
-                foreach ($dataKehadiran as $kehadiran) {
-                    Kehadiran::insertOrIgnore($kehadiran);
-                }
-                $absensi = collect($dataAbsensi)->chunk(1000);
-                foreach ($absensi as $absen) {
-                    Absensi::where('id', $absen->id)->updateOrInsert([
-                        'masuk' => $absen->masuk,
-                        'pulang' => $absen->pulang,
-                        'pengguna_id' => auth()->id(),
-                    ]);
-                }
-            });
-
-            // $Connect1 = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
-            // if ($Connect1) {
-            //     $soap_request = "<ClearData><ArgComKey xsi:type=\"xsd:integer\">" . config('app.fingerprint_key') . "</ArgComKey><Arg><Value xsi:type=\"xsd:integer\">3</Value></Arg></ClearData>";
-            //     $newLine = "\r\n";
-            //     fputs($Connect1, "POST /iWsService HTTP/1.0" . $newLine);
-            //     fputs($Connect1, "Content-Type: text/xml" . $newLine);
-            //     fputs($Connect1, "Content-Length: " . strlen($soap_request) . $newLine . $newLine);
-            //     fputs($Connect1, $soap_request . $newLine);
-            //     $buffer1 = "";
-            //     while ($Response1 = fgets($Connect1, 1024)) {
-            //         $buffer1 = $buffer1 . $Response1;
-            //     }
-            // }
-            session()->flash('success', 'Berhasil mengambil data absensi');
-        } catch (\Exception $e) {
-            session()->flash('danger', $e->getMessage());
         }
+
+        $buffer = $this->parse($buffer, "<GetAttLogResponse>", "</GetAttLogResponse>");
+        $buffer = explode("\r\n", $buffer);
+        $dataKehadiran = [];
+        for ($i = 0; $i < count($buffer); $i++) {
+            $data = $this->parse($buffer[$i], "<Row>", "</Row>");;
+            if ($data) {
+                array_push($dataKehadiran, [
+                    'pegawai_id' => (int)$this->parse($data, "<PIN>", "</PIN>"),
+                    'waktu' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 11, 8),
+                    'tanggal' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 0, 10),
+                    'kode' => $this->parse($data, "<Status>", "</Status>"),
+                ]);
+            }
+        }
+
+        $dataAbsensi = collect($dataKehadiran)->groupBy('pegawai_id')->map(function ($q) {
+            return [
+                'id' => $q->first()['tanggal'] . '-' . $q->first()['pegawai_id'],
+                'pegawai_id' => $q->first()['pegawai_id'],
+                'tanggal' => $q->first()['tanggal'],
+                'masuk' => $q->where('kode', '0')?->sortBy('waktu')->first()['waktu'] ?? null,
+                'pulang' => $q->where('kode', '1')?->sortByDesc('waktu')->first()['waktu'] ?? null,
+                'pengguna_id' => auth()->id(),
+                'created_at' => now(),
+                'updated_at' => now(),
+            ];
+        });
+
+        DB::transaction(function () use ($dataAbsensi, $dataKehadiran) {
+            foreach ($dataKehadiran as $kehadiran) {
+                Kehadiran::insertOrIgnore($kehadiran);
+            }
+            $absensi = collect($dataAbsensi)->chunk(1000);
+            foreach ($absensi as $absen) {
+                Absensi::where('id', $absen['id'])->updateOrInsert([
+                    'masuk' => $absen['masuk'],
+                    'pulang' => $absen['pulang'],
+                    'pengguna_id' => auth()->id(),
+                ]);
+            }
+            session()->flash('success', 'Berhasil mengambil data absensi');
+        });
+
+        // $Connect1 = fsockopen(config('app.fingerprint_ip'), "80", $errno, $errstr, 30);
+        // if ($Connect1) {
+        //     $soap_request = "<ClearData><ArgComKey xsi:type=\"xsd:integer\">" . config('app.fingerprint_key') . "</ArgComKey><Arg><Value xsi:type=\"xsd:integer\">3</Value></Arg></ClearData>";
+        //     $newLine = "\r\n";
+        //     fputs($Connect1, "POST /iWsService HTTP/1.0" . $newLine);
+        //     fputs($Connect1, "Content-Type: text/xml" . $newLine);
+        //     fputs($Connect1, "Content-Length: " . strlen($soap_request) . $newLine . $newLine);
+        //     fputs($Connect1, $soap_request . $newLine);
+        //     $buffer1 = "";
+        //     while ($Response1 = fgets($Connect1, 1024)) {
+        //         $buffer1 = $buffer1 . $Response1;
+        //     }
+        // }
     }
 
     public function render()
