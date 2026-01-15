@@ -13,16 +13,22 @@ use App\Traits\CustomValidationTrait;
 class Form extends Component
 {
     use CustomValidationTrait;
-    public $dataPembelian = [], $dataKodePembayaran = [], $kode_akun_pembayaran_id, $pembelian_id, $tanggal, $uraian;
+    public $pembelian, $dataPembelian = [], $dataKodePembayaran = [], $kode_akun_pembayaran_id, $pembelian_id, $tanggal, $uraian;
 
     public function mount($data = null)
     {
         if ($data) {
             $this->pembelian_id = $data;
+            $this->pembelian = Pembelian::with('supplier', 'pembelianDetail')->find($data);
         }
-        $this->dataPembelian = Pembelian::where('pembayaran', 'Jatuh Tempo')->with('supplier')
+        $this->dataPembelian = Pembelian::where('pembayaran', 'Jatuh Tempo')->with('supplier', 'pembelianDetail')
             ->whereDoesntHave('pelunasanPembelian')->get();
         $this->dataKodePembayaran = KodeAkun::where('parent_id', '11100')->detail()->get()->toArray();
+    }
+
+    public function updatedPembelianId()
+    {
+        $this->pembelian = Pembelian::with('supplier', 'pembelianDetail')->find($this->pembelian_id);
     }
 
     public function submit()

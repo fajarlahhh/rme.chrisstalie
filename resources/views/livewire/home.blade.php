@@ -124,15 +124,16 @@
                                 <th>No. Faktur</th>
                                 <th>Vendor</th>
                                 <th>Tanggal Jatuh Tempo</th>
-                                <th>Total</th>
+                                <th class="text-end">Total</th>
+                                <th></th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($dataPengadaanBarangJatuhTempo as $row)
                                 <tr>
                                     <td nowrap="" nowrap>
-                                        <a href="/pengadaanbrgdagang/pelunasan/form/{{ $row->id }}" class="btn btn-sm btn-outline-primary">{{ $row->uraian }}</a>
-                                    </td>   
+                                        {{ $row->uraian }}
+                                    </td>
                                     <td nowrap="" nowrap>{{ $row->supplier?->nama }}</td>
                                     <td nowrap="" nowrap>
                                         @if ($row->jatuh_tempo < date('Y-m-d'))
@@ -144,6 +145,10 @@
                                         @endif
                                     </td>
                                     <td class="text-end" nowrap>Rp. {{ number_format($row->total_harga) }}</td>
+                                    <td>
+                                        <a href="/pengadaanbrgdagang/pelunasan/form/{{ $row->id }}"
+                                            class="btn btn-xs btn-primary">Lunasi</a>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -152,7 +157,7 @@
             </div>
         </div>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

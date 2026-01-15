@@ -16,43 +16,101 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <div class="mb-3" wire:ignore>
-                    <label class="form-label">Pembelian</label>
-                    <select class="form-control" x-init="$($el).select2({ width: '100%', dropdownAutoWidth: true });
-                    $($el).on('change', function(e) {
-                        $wire.set('pembelian_id', e.target.value);
-                    });" wire:model="pembelian_id" required>
-                        <option selected value="" hidden>-- Cari Data Pembelian --</option>
-                        @foreach ($dataPembelian as $row)
-                            <option value="{{ $row['id'] }}">
-                                {{ $row['tanggal'] }} - {{ $row['uraian'] }}, Supplier : {{ $row['supplier']['nama'] }}, Total Harga : {{ number_format($row['total_harga']) }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Tanggal Pelunasan</label>
-                    <input class="form-control" type="date" wire:model="tanggal" max="{{ now()->format('Y-m-d') }}"
-                        required />
-                    @error('tanggal')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Uraian</label>
-                    <input class="form-control" type="text" wire:model="uraian" required />
-                    @error('uraian')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label"> Pembayaran</label>
-                    <select class="form-control" wire:model="kode_akun_pembayaran_id" data-width="100%">
-                        <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach ($dataKodePembayaran as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
-                        @endforeach
-                    </select>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3" wire:ignore>
+                            <label class="form-label">Uraian/No. Faktur Pembelian</label>
+                            <select class="form-control" x-init="$($el).select2({ width: '100%', dropdownAutoWidth: true });
+                            $($el).on('change', function(e) {
+                                $wire.set('pembelian_id', e.target.value);
+                            });" wire:model="pembelian_id" required>
+                                <option selected value="" hidden>-- Cari Data Pembelian --</option>
+                                @foreach ($dataPembelian as $row)
+                                    <option value="{{ $row['id'] }}">
+                                        {{ $row['uraian'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal Pelunasan</label>
+                            <input class="form-control" type="date" wire:model="tanggal"
+                                max="{{ now()->format('Y-m-d') }}" required />
+                            @error('tanggal')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Uraian</label>
+                            <input class="form-control" type="text" wire:model="uraian" required />
+                            @error('uraian')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label"> Pembayaran</label>
+                            <select class="form-control" wire:model="kode_akun_pembayaran_id" data-width="100%">
+                                <option hidden selected>-- Tidak Ada Kode Akun --</option>
+                                @foreach ($dataKodePembayaran as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
+                                    </option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="note alert-secondary mb-0">
+                            <div class="note-content">
+                                <div class="mb-3">
+                                    <label class="form-label">Tanggal</label>
+                                    <input class="form-control" type="date"
+                                        value="{{ $pembelian ? $pembelian->tanggal : '' }}" disabled />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Supplier</label>
+                                    <input class="form-control" type="text"
+                                        value="{{ $pembelian ? $pembelian->supplier->nama : '' }}" disabled />
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Operator</label>
+                                    <input class="form-control" type="text"
+                                        value="{{ $pembelian ? $pembelian->pengguna->nama : '' }}" disabled />
+                                </div>
+                                <div class="table-responsive">
+                                    <table class="table table-borderless">
+                                        <thead>
+                                            <tr>
+                                                <th>Nama Barang</th>
+                                                <th>Satuan</th>
+                                                <th class="text-end">Harga Satuan</th>
+                                                <th class="text-end">Qty</th>
+                                                <th class="text-end">Total Harga</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @if ($pembelian)
+                                                @foreach ($pembelian->pembelianDetail as $item)
+                                                    <tr>
+                                                        <td>{{ $item->barangSatuan->barang->nama }}</td>
+                                                        <td>{{ $item->barangSatuan->nama }}</td>
+                                                        <td class="text-end">{{ number_format($item->harga_beli) }}</td>
+                                                        <td class="text-end">{{ number_format($item['qty']) }}</td>
+                                                        <td class="text-end">{{ number_format($item->harga_beli * $item->qty) }}</td>
+                                                    </tr>
+                                                @endforeach
+                                            @endif
+                                        </tbody>
+                                        <tfoot>
+                                            <tr>
+                                                <th colspan="4" class="text-end">Total Harga</th>
+                                                <th class="text-end">{{$pembelian ? number_format($pembelian->total_harga) : '' }}</th>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
             <div class="panel-footer">
@@ -72,7 +130,7 @@
     </div>
 
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
