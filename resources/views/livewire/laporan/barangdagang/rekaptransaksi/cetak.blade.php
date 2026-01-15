@@ -1,3 +1,22 @@
+@php
+    if (!function_exists('formatAngka')) {
+        function formatAngka($angka)
+        {
+            if (is_null($angka) || $angka === '') {
+                return '-';
+            }
+            if (is_numeric($angka)) {
+                // Cek apakah ada angka dibelakang koma (floating, bukan integer)
+                if (fmod($angka, 1) != 0) {
+                    return $angka;
+                } else {
+                    return number_format($angka, 0, ',', '.');
+                }
+            }
+            return $angka;
+        }
+    }
+@endphp
 @if ($cetak)
     <div class="w-100 text-center">
         <img src="/assets/img/login.png" class="w-200px" alt="" />
@@ -74,28 +93,28 @@
                 <td>{{ $row->barangSatuanUtama?->nama }} {{ $row->barangSatuanUtama?->konversi_satuan }}</td>
                 <td class="text-end">
                     @if ($stokAwal > 0)
-                        <strong>{{ number_format($stokAwal, 2) }}</strong>
+                        <strong>{{ formatAngka($stokAwal) }}</strong>
                     @else
                         0
                     @endif
                 </td>
                 <td class="text-end">
                     @if ($stokMasuk > 0)
-                        <strong>{{ number_format($stokMasuk, 2) }}</strong>
+                        <strong>{{ formatAngka($stokMasuk) }}</strong>
                     @else
                         0
                     @endif
                 </td>
                 <td class="text-end">
                     @if ($stokKeluar > 0)
-                        <strong>{{ number_format($stokKeluar, 2) }}</strong>
+                        <strong>{{ formatAngka($stokKeluar) }}</strong>
                     @else
                         0
                     @endif
                 </td>
                 <td class="text-end">
                     @if ($stokAkhir > 0)
-                        <strong>{{ number_format($stokAkhir, 2) }}</strong>
+                        <strong>{{ formatAngka($stokAkhir) }}</strong>
                     @else
                         0
                     @endif

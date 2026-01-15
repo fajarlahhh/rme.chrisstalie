@@ -96,6 +96,7 @@ class Form extends Component
             ) {
                 if ($value['qty'] > 0) {
                     $stokMasuk = new StokMasuk();
+                    $stokMasuk->tanggal = $this->tanggal;
                     $stokMasuk->qty = $value['qty'];
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];

@@ -35,7 +35,7 @@ class Index extends Component
     private function getData()
     {
         return Barang::with([
-            'barangSatuanUtama',
+            'barangSatuanUtama.satuanKonversi',
             'kodeAkun',
             'stokAwal' => function ($q) {
                 $q->where('tanggal', 'like', $this->bulan . '%');
