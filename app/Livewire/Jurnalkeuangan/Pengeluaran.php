@@ -42,8 +42,8 @@ class Pengeluaran extends Component
         ]);
         DB::transaction(function () {
             JurnalClass::insert(
-                jenis: collect($this->dataJenisPengeluaran)->firstWhere('id', $this->jenis_pengeluaran_id)['nama'],
-                sub_jenis: 'Pengeluaran',
+                jenis: 'Pengeluaran',
+                sub_jenis: collect($this->dataJenisPengeluaran)->firstWhere('id', $this->jenis_pengeluaran_id)['nama'],
                 tanggal: $this->tanggal,
                 uraian: $this->uraian,
                 system: 0,

@@ -44,7 +44,7 @@
             @endrole
             <th class="bg-gray-300 text-white">Stok</th>
             @role('administrator')
-                <th class="bg-gray-300 text-white">Total Persediaan</th>
+                <th class="bg-gray-300 text-white">Nilai Persediaan</th>
             @endrole
         </tr>
     </thead>

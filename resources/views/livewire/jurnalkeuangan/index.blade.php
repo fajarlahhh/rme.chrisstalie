@@ -11,7 +11,7 @@
         <div class="panel-heading">
             @role('administrator|supervisor|operator')
                 <div class="btn-group my-n1">
-                    <button type="button" class="btn btn-outline-secondary btn-block" disabled>Tambah</button>
+                    <a class="btn btn-outline-secondary btn-block" href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'">Umum</a>
                     <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle"
                         data-bs-toggle="dropdown"><b class="caret"></b></button>
                     <div class="dropdown-menu dropdown-menu-start">
@@ -21,9 +21,6 @@
                             <a class="dropdown-item"
                                 href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pindahsaldokas'">Pindah
                                 Saldo Kas</a>
-                            <a class="dropdown-item"
-                                href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'">Jurnal
-                                Umum</a>
                         @endrole
                     </div>
                 </div>

@@ -33,6 +33,15 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="mb-3">
+                    <label class="form-label" for="jenis">Jenis</label>
+                    <select class="form-control" x-model="jenis" id="jenis">
+                        <option value="" selected hidden>-- Pilih Jenis --</option>
+                        @foreach ($dataJenis as $item)
+                            <option value="{{ $item }}">{{ $item }}</option>
+                        @endforeach
+                    </select>
+                </div>
                 <div class="note alert-secondary mb-0">
                     <div class="note-content table-responsive">
                         <table class="table table-borderless">

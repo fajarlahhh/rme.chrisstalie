@@ -124,6 +124,77 @@ return [
             ]
         ],
         [
+            "title" => "Manajemen Stok",
+            "urutkan" => true,
+            "icon" => "<i class='fas fa-boxes'></i>",
+            "sub_menu" => [
+                [
+                    "title" => "Opname",
+                    "urutkan" => true,
+                    "sub_menu" => [
+                        [
+                            "title" => "Penambahan",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Pengurangan",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                    ]
+                ],
+                [
+                    "title" => "Pengadaan Brg. Dagang",
+                    "icon" => "<i class='fas fa-cubes'></i>",
+                    "urutkan" => false,
+                    "sub_menu" => [
+                        [
+                            "title" => "Permintaan",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Verifikasi",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Pembelian",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Stok Masuk",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Pelunasan",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
+                        [
+                            "title" => "Lainnya",
+                            "urutkan" => true,
+                            "sub_menu" => [
+                                [
+                                    "title" => "Alat Dan Bahan",
+                                    "urutkan" => true,
+                                    "method" => ["Index", "Form"],
+                                ],
+                                [
+                                    "title" => "Barang Khusus",
+                                    "urutkan" => true,
+                                    "method" => ["Index", "Form"],
+                                ]
+                            ]
+                        ],
+                    ]
+                ],
+            ],
+        ],
+        [
             "title" => "Laporan",
             "icon" => "<i class='fa fa-file-text'></i>",
             "urutkan" => true,
@@ -213,47 +284,6 @@ return [
                 [
                     "title" => "Jasa Dokter",
                     "method" => ["Index"],
-                ],
-            ]
-        ],
-        [
-            "title" => "Pengadaan Brg. Dagang",
-            "icon" => "<i class='fas fa-cubes'></i>",
-            "urutkan" => false,
-            "sub_menu" => [
-                [
-                    "title" => "Permintaan",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Verifikasi",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Pembelian",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Stok Masuk",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Pelunasan",
-                    "method" => ["Index", "Form"],
-                ],
-                [
-                    "title" => "Lainnya",
-                    "urutkan" => true,
-                    "sub_menu" => [
-                        [
-                            "title" => "Alat Dan Bahan",
-                            "method" => ["Index", "Form"],
-                        ],
-                        [
-                            "title" => "Barang Khusus",
-                            "method" => ["Index", "Form"],
-                        ]
-                    ]
                 ],
             ]
         ],

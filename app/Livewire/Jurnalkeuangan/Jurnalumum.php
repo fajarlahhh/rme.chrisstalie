@@ -13,8 +13,8 @@ class Jurnalumum extends Component
 {
     use CustomValidationTrait;
     public Jurnal $data;
-    public $tanggal, $uraian, $kode_akun_id, $nilai;
-    public  $dataKodeAkun = [], $detail = [];
+    public $tanggal, $uraian, $kode_akun_id, $nilai, $jenis;
+    public  $dataJenis = ['Barang Masuk', 'Hutang', 'Koreksi', 'Modal', 'Pendapatan', 'Pembelian', 'Pengeluaran', 'Piutang', 'Penyusutan'], $dataKodeAkun = [], $detail = [];
 
     public function mount(Jurnal $data)
     {
@@ -79,8 +79,8 @@ class Jurnalumum extends Component
                 $this->data->nomor = $nomor;
             }
 
-            $this->data->jenis = 'Jurnal Umum';
-            $this->data->sub_jenis = null;
+            $this->data->jenis = $this->jenis;
+            $this->data->sub_jenis = 'Jurnal Umum';
             $this->data->uraian = ucfirst($this->uraian);
             $this->data->tanggal = $this->tanggal;
             $this->data->system = 0;

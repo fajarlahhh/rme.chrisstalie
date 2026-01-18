@@ -40,7 +40,7 @@ class Pindahsaldokas extends Component
         ]);
         DB::transaction(function () {
             JurnalClass::insert(
-                jenis: collect($this->dataKodeAkun)->firstWhere('id', $this->tujuan_dana_id)['nama'],
+                jenis: 'Koreksi',
                 sub_jenis: 'Pindah Saldo Kas',
                 tanggal: $this->tanggal,
                 uraian: $this->uraian,

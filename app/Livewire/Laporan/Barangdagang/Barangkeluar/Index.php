@@ -37,7 +37,7 @@ class Index extends Component
     {
         switch ($this->jenis) {
             case 'perhargajual':
-                return StokKeluar::with(['barang', 'barangSatuan'])
+                return StokKeluar::with(['barang', 'barangSatuan.satuanKonversi'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->get()
@@ -53,7 +53,7 @@ class Index extends Component
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
             case 'pertanggalkedaluarsa':
-                return Stok::with(['barang.barangSatuanTerkecil'])
+                return Stok::with(['barang.barangSatuanTerkecil.satuanKonversi'])
                     ->whereNotNull('stok_keluar_id')
                     ->whereBetween('tanggal_keluar', [$this->tanggal1, $this->tanggal2])
                     ->get()
@@ -68,7 +68,7 @@ class Index extends Component
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
             case 'perbarang':
-                return Stok::with(['barang.barangSatuanUtama'])
+                return Stok::with(['barang.barangSatuanUtama.satuanKonversi'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereNotNull('stok_keluar_id')
                     ->whereBetween('tanggal_keluar', [$this->tanggal1, $this->tanggal2])

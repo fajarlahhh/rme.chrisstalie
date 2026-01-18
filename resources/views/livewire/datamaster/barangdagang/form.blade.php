@@ -21,7 +21,7 @@
                     <label class="form-label">Persediaan</label>
                     <select class="form-control" wire:model.live="persediaan" data-width="100%"
                         @if ($data->exists) disabled @endif>
-                        <option hidden selected>-- Tidak Ada Unit Bisnis --</option>
+                        <option hidden selected>-- Pilih Persediaan --</option>
                         <option value="Apotek">Apotek</option>
                         <option value="Klinik">Klinik</option>
                     </select>

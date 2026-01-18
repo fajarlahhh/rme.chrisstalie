@@ -393,7 +393,7 @@ class Form extends Component
         })->all();
 
         $jurnal = JurnalClass::insert(
-            jenis: 'Pendapatan Pasien Klinik',
+            jenis: 'Pendapatan',
             sub_jenis: 'Pendapatan',
             tanggal: $this->tanggal,
             uraian: 'Pendapatan Pasien Klinik No. Nota ' . $pembayaran->id,

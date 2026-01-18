@@ -146,8 +146,8 @@ class Index extends Component
         })->toArray());
 
         JurnalClass::insert(
-            jenis: 'Pendapatan Penjualan Barang Bebas',
-            sub_jenis: 'Pendapatan',
+            jenis: 'Pendapatan',
+            sub_jenis: 'Pendapatan Penjualan Barang Bebas',
             tanggal: $this->tanggal,
             uraian: 'Pendapatan Penjualan Barang Bebas ' . $pembayaran->id,
             system: 1,

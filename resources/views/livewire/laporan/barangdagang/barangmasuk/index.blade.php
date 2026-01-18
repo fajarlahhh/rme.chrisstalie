@@ -23,12 +23,12 @@
                         <option value="Apotek">Apotek</option>
                         <option value="Klinik">Klinik</option>
                     </select>&nbsp;
-                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal1">&nbsp;s/d&nbsp;
-                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal2">&nbsp;
                     <select class="form-control w-auto" wire:model.lazy="jenis">
                         <option value="pertransaksi">Per Transaksi</option>
                         <option value="perbarang">Per Barang</option>
-                    </select>
+                    </select>&nbsp;
+                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal1">&nbsp;s/d&nbsp;
+                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal2">
                 </div>
             </div>
         </div>

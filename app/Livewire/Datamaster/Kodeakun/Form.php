@@ -20,7 +20,7 @@ class Form extends Component
 
     public function updatedKategori($value)
     {
-        $this->dataParent = KodeAkun::where('kategori', $value)->where('detail', '0')->get()->toArray();
+        $this->dataParent = KodeAkun::where('kategori', $value)->whereDoesntHave('jurnalDetail')->get()->toArray();
     }
 
     public function submit()
@@ -62,6 +62,8 @@ class Form extends Component
         
         $this->data = $data;
         $this->kode = $this->data->id;
+        $this->parent_id = $this->data->parent_id;
+        $this->dataParent = KodeAkun::where('kategori', $this->data->kategori)->whereDoesntHave('jurnalDetail')->get()->toArray();
         $this->fill($this->data->toArray());
     }
 

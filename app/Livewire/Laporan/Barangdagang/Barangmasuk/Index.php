@@ -35,7 +35,7 @@ class Index extends Component
     {
         switch ($this->jenis) {
             case 'pertransaksi':
-                return StokMasuk::with(['barang', 'pembelian.pembelianDetail', 'barangSatuan', 'pembelian.supplier'])
+                return StokMasuk::with(['barang', 'pembelian.pembelianDetail', 'pembelian.kodeAkun', 'barangSatuan.satuanKonversi', 'pembelian.supplier', 'pengguna.pegawai'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->orderBy('tanggal', 'desc')
@@ -46,17 +46,19 @@ class Index extends Component
                             'barang' => $q->barang->nama,
                             'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
                             'no_batch' => $q->no_batch,
+                            'metode_bayar' => $q->pembelian->pembayaran? ($q->pembelian->pembayaran == 'Lunas' ? $q->pembelian->kodeAkun->nama : 'Jatuh Tempo') : '<span class="text-danger">Koreksi</span>',
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                             'harga_beli' => $q->pembelian->pembelianDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
                             'qty' => $q->qty,
                             'total' => $q->qty * $q->pembelian->pembelianDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
                             'supplier' => $q->pembelian->supplier?->nama,
                             'uraian' => $q->pembelian->uraian,
+                            'operator' => $q->pengguna->pegawai->nama,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
             case 'perbarang':
-                return StokMasuk::with(['barang', 'barangSatuan'])
+                return StokMasuk::with(['barang', 'barangSatuan.satuanKonversi'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->get()->map(function ($q) {

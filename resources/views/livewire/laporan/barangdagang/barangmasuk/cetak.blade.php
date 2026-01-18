@@ -32,7 +32,8 @@
                 <tr>
                     <th class="bg-gray-300 text-white">No.</th>
                     <th class="bg-gray-300 text-white">Tanggal</th>
-                    <th class="bg-gray-300 text-white">Uraian</th>
+                    <th class="bg-gray-300 text-white">Operator</th>
+                    <th class="bg-gray-300 text-white">Metode Bayar</th>
                     <th class="bg-gray-300 text-white">Barang</th>
                     <th class="bg-gray-300 text-white">Satuan Utama</th>
                     <th class="bg-gray-300 text-white">No. Batch</th>
@@ -48,7 +49,8 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td nowrap>{{ $row[0]['tanggal'] }}</td>
-                        <td nowrap>{{ $row[0]['uraian'] }}</td>
+                        <td nowrap>{{ $row[0]['operator'] }}</td>
+                        <td nowrap>{{ $row[0]['metode_bayar'] }}</td>
                         <td nowrap>{{ $row[0]['barang'] }}</td>
                         <td nowrap>{{ $row[0]['satuan'] }}</td>
                         <td nowrap>{{ $row[0]['no_batch'] }}</td>
