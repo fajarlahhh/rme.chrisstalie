@@ -14,7 +14,7 @@ class Jurnalumum extends Component
     use CustomValidationTrait;
     public Jurnal $data;
     public $tanggal, $uraian, $kode_akun_id, $nilai, $jenis;
-    public  $dataJenis = ['Barang Masuk', 'Hutang', 'Koreksi', 'Modal', 'Pendapatan', 'Pembelian', 'Pengeluaran', 'Piutang', 'Penyusutan'], $dataKodeAkun = [], $detail = [];
+    public  $dataJenis = ['Barang Masuk', 'Hutang', 'Koreksi', 'Modal', 'Pembelian', 'Pendapatan', 'Pengeluaran', 'Penyusutan', 'Piutang'], $dataKodeAkun = [], $detail = [];
 
     public function mount(Jurnal $data)
     {
