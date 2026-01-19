@@ -18,6 +18,15 @@ class Index extends Component
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
     }
 
+
+    public function delete($id)
+    {
+        DB::transaction(function () use ($id) {
+            StokKeluar::find($id)->delete();
+        });
+        session()->flash('success', 'Berhasil menghapus data');
+    }
+    
     public function render()
     {
         $query = StokKeluar::with(['barang', 'barangSatuan'])->whereNull('pembayaran_id');

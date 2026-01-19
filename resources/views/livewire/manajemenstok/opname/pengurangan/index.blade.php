@@ -13,8 +13,7 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading">
             @role('administrator|supervisor|operator')
-                <a href="/manajemenstok/opname/pengurangan/form"
-                    class="btn btn-primary">
+                <a href="/manajemenstok/opname/pengurangan/form" class="btn btn-primary">
                     Tambah</a>
             @endrole
             <div class="w-100">
@@ -49,7 +48,12 @@
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px">{{ $row->pengguna->nama }}</td>
-                            <td></td>
+                            @role('administrator|supervisor')
+                                @if (\Carbon\Carbon::now()->format('Y-m') == \Carbon\Carbon::parse($row->created_at)->format('Y-m'))
+                                    <x-action :row="$row" :detail="false" :edit="false" :information="false"
+                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                @endif
+                            @endrole
                         </tr>
                     @empty
                         <tr>
@@ -61,7 +65,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
