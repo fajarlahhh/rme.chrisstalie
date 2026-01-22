@@ -135,6 +135,9 @@
                     {{ number_format($resep->sum(fn($q) => $q->harga * $q->qty)) }}
                 </td>
             </tr>
+            <tr>
+                <td colspan="2">{{ $item->catatan }}</td>
+            </tr>
         </table>
         <hr>
     @endforeach
