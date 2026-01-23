@@ -8,25 +8,25 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 
-class Pembelian extends Model
+class PemesananPengadaan extends Model
 {
     use HasFactory;
 
-    protected $table = 'pembelian';
+    protected $table = 'pemesanan_pengadaan';
 
     public function permintaanPengadaan(): BelongsTo
     {
         return $this->belongsTo(PermintaanPengadaan::class);
     }
 
-    public function pelunasanPembelian(): HasOne
+    public function pelunasanPemesananPengadaan(): HasOne
     {
         return $this->hasOne(PelunasanPembelian::class);
     }
 
-    public function pembelianDetail(): HasMany
+    public function pemesananPengadaanDetail(): HasMany
     {
-        return $this->hasMany(PembelianDetail::class);
+        return $this->hasMany(PemesananPengadaanDetail::class);
     }
 
     public function supplier(): BelongsTo
@@ -66,7 +66,7 @@ class Pembelian extends Model
 
     public function getTotalHargaAttribute(): float
     {
-        return $this->pembelianDetail->sum(function ($item) {
+        return $this->pemesananPengadaanDetail->sum(function ($item) {
             return $item->harga_beli * $item->qty;
         }) - $this->diskon + $this->ppn;
     }

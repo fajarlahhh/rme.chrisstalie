@@ -48,11 +48,11 @@ class Pengeluaran extends Component
                 uraian: $this->uraian,
                 system: 0,
                 aset_id: null,
-                pembelian_id: null,
+                pemesanan_pengadaan_id: null,
                 stok_masuk_id: null,
                 pembayaran_id: null,
                 penggajian_id: null,
-                pelunasan_pembelian_id: null,
+                pelunasan_pemesanan_pengadaan_id: null,
                 stok_keluar_id: null,
                 detail: [
                     [

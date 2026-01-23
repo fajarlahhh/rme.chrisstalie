@@ -42,7 +42,7 @@ class Index extends Component
                 'pengguna.pegawai',
                 'permintaanPengadaanDetail.barangSatuan.satuanKonversi',
                 'permintaanPengadaanDetail.barangSatuan.barang',
-                'pembelian.stokMasuk',
+                'pemesananPengadaan.stokMasuk',
                 'VerifikasiPengadaanPending',
                 'VerifikasiPengadaanDisetujui',
                 'VerifikasiPengadaanDitolak',

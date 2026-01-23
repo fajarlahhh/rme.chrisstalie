@@ -39,9 +39,9 @@ class PermintaanPengadaan extends Model
         return $this->hasMany(VerifikasiPengadaan::class)->where('status', 'Ditolak');
     }
 
-    public function pembelian()
+    public function pemesananPengadaan()
     {
-        return $this->hasOne(Pembelian::class);
+        return $this->hasOne(PemesananPengadaan::class);
     }
 
     public function stokMasuk()

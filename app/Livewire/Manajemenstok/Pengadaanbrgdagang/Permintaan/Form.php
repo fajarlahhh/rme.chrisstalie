@@ -51,7 +51,7 @@ class Form extends Component
             if ($this->verifikator_id) {
                 $verifikasiPengadaan = new VerifikasiPengadaan();
                 $verifikasiPengadaan->permintaan_pengadaan_id = $this->data->id;
-                $verifikasiPengadaan->jenis = 'Permintaan Pembelian';
+                $verifikasiPengadaan->jenis = 'Permintaan Pengadaan';
                 $verifikasiPengadaan->pengguna_id = $this->verifikator_id;
                 $verifikasiPengadaan->save();
             }

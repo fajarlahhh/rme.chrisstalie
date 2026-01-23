@@ -152,11 +152,11 @@ class Index extends Component
             uraian: 'Pendapatan Penjualan Barang Bebas ' . $pembayaran->id,
             system: 1,
             aset_id: null,
-            pembelian_id: null,
+            pemesanan_pengadaan_id: null,
             stok_masuk_id: null,
             pembayaran_id: $pembayaran->id,
             penggajian_id: null,
-            pelunasan_pembelian_id: null,
+            pelunasan_pemesanan_pengadaan_id: null,
             stok_keluar_id: null,
             detail: $jurnalDetail
         );

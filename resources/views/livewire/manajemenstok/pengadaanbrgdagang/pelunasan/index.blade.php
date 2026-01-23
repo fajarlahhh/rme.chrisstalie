@@ -45,8 +45,8 @@
                             <td>{{ $row->tanggal }}</td>
                             <td>
                                 <ul>
-                                    <li><strong>{{ $row->pembelian->uraian }}</strong></li>
-                                    <li>{{ $row->pembelian->tanggal }}</li>
+                                    <li><strong>{{ $row->pemesananPengadaan->uraian }}</strong></li>
+                                    <li>{{ $row->pemesananPengadaan->tanggal }}</li>
                                 </ul>
                             </td>
                             <td>{{ $row->uraian }}</td>

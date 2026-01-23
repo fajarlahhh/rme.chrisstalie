@@ -400,9 +400,9 @@ class Form extends Component
             system: 1,
             pembayaran_id: $pembayaran->id,
             penggajian_id: null,
-            pelunasan_pembelian_id: null,
+            pelunasan_pemesanan_pengadaan_id: null,
             aset_id: null,
-            pembelian_id: null,
+            pemesanan_pengadaan_id: null,
             stok_masuk_id: null,
             stok_keluar_id: null,
             detail: collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {

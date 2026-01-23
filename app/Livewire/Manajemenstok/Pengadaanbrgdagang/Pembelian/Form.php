@@ -1,12 +1,12 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pembelian;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\PemesananPengadaan;
 
 use App\Models\Jurnal;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
-use App\Models\Pembelian;
+use App\Models\PemesananPengadaan;
 use App\Class\BarangClass;
 use App\Class\JurnalClass;
 use Illuminate\Support\Str;
@@ -77,7 +77,7 @@ class Form extends Component
         }
 
         DB::transaction(function () {
-            $data = new Pembelian();
+            $data = new PemesananPengadaan();
             $data->tanggal = $this->tanggal;
             $data->jatuh_tempo = $this->pembayaran == "Jatuh Tempo" ? $this->jatuh_tempo : null;
             $data->pembayaran = $this->pembayaran == "Jatuh Tempo" ? $this->pembayaran : "Lunas";
@@ -90,15 +90,15 @@ class Form extends Component
             $data->jenis = 'Barang Dagang';
             $data->pengguna_id = auth()->id();
             $data->save();
-            $data->pembelianDetail()->delete();
-            $data->pembelianDetail()->insert(collect($this->barang)->map(fn($q) => [
+            $data->pemesananPengadaanDetail()->delete();
+            $data->pemesananPengadaanDetail()->insert(collect($this->barang)->map(fn($q) => [
                 'qty' => $q['qty'],
                 'harga_beli' => $q['harga_beli'],
                 'barang_id' => $q['barang_id'],
                 'barang_satuan_id' => $q['id'],
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'harga_beli_terkecil' => $q['harga_beli'] / $q['rasio_dari_terkecil'],
-                'pembelian_id' => $data->id,
+                'pemesanan_pengadaan_id' => $data->id,
             ])->toArray());
             
             JurnalClass::insert(
@@ -107,12 +107,12 @@ class Form extends Component
                 tanggal: $this->tanggal,
                 uraian: $this->uraian,
                 system: 1,
-                pembelian_id: $data->id,
+                pemesanan_pengadaan_id: $data->id,
                 aset_id: null,
                 stok_masuk_id: null,
                 pembayaran_id: null,
                 penggajian_id: null,
-                pelunasan_pembelian_id: null,
+                pelunasan_pemesanan_pengadaan_id: null,
                 stok_keluar_id: null,
                 detail: [
                     [
@@ -140,11 +140,11 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/manajemenstok/pengadaanbrgdagang/pembelian');
+        $this->redirect('/manajemenstok/pengadaanbrgdagang/pemesanan_pengadaan');
     }
 
     public function render()
     {
-        return view('livewire.manajemenstok.pengadaanbrgdagang.pembelian.form');
+        return view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan_pengadaan.form');
     }
 }

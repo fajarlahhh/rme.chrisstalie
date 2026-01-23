@@ -29,7 +29,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.opname.penambahan.index', [
-            'data' => StokMasuk::with(['barang', 'barangSatuan'])->whereNull('pembelian_id')->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2])->get()
+            'data' => StokMasuk::with(['barang', 'barangSatuan'])->whereNull('pemesanan_pengadaan_id')->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2])->get()
         ]);
     }
 }

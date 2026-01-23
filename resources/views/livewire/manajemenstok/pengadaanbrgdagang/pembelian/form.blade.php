@@ -1,4 +1,4 @@
-<div x-data="pembelianForm()" x-init="init()" x-ref="alpineRoot">
+<div x-data="pemesanan_pengadaanForm()" x-init="init()" x-ref="alpineRoot">
     @section('title', 'Pembelian')
 
     @section('breadcrumb')
@@ -203,7 +203,7 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/pembelian'"
+                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/pemesanan_pengadaan'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
@@ -219,7 +219,7 @@
 </div>
 
 <script>
-    function pembelianForm() {
+    function pemesanan_pengadaanForm() {
         return {
             tanggal: @js($tanggal ?? ''),
             uraian: @js($uraian ?? ''),

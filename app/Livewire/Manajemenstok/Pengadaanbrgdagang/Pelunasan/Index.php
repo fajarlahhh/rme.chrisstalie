@@ -35,7 +35,7 @@ class Index extends Component
         return view(
             'livewire.manajemenstok.pengadaanbrgdagang.pelunasan.index',
             [
-                'data' => PelunasanPembelian::with(['pembelian', 'jurnal', 'pengguna.pegawai', 'kodeAkunPembayaran'])->where('created_at', 'like', $this->bulan . '%')
+                'data' => PelunasanPembelian::with(['pemesananPengadaan', 'jurnal', 'pengguna.pegawai', 'kodeAkunPembayaran'])->where('created_at', 'like', $this->bulan . '%')
                     ->orderBy('created_at', 'desc')->paginate(10)
             ]
         );

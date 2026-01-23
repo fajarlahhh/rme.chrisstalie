@@ -22,8 +22,8 @@
                             <label class="form-label">Uraian/No. Faktur Pembelian</label>
                             <select class="form-control" x-init="$($el).select2({ width: '100%', dropdownAutoWidth: true });
                             $($el).on('change', function(e) {
-                                $wire.set('pembelian_id', e.target.value);
-                            });" wire:model="pembelian_id" required>
+                                $wire.set('pemesanan_pengadaan_id', e.target.value);
+                            });" wire:model="pemesanan_pengadaan_id" required>
                                 <option selected value="" hidden>-- Cari Data Pembelian --</option>
                                 @foreach ($dataPembelian as $row)
                                     <option value="{{ $row['id'] }}">
@@ -64,17 +64,17 @@
                                 <div class="mb-3">
                                     <label class="form-label">Tanggal</label>
                                     <input class="form-control" type="date"
-                                        value="{{ $pembelian ? $pembelian->tanggal : '' }}" disabled />
+                                        value="{{ $pemesananPengadaan ? $pemesananPengadaan->tanggal : '' }}" disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Supplier</label>
                                     <input class="form-control" type="text"
-                                        value="{{ $pembelian ? $pembelian->supplier->nama : '' }}" disabled />
+                                        value="{{ $pemesananPengadaan ? $pemesananPengadaan->supplier->nama : '' }}" disabled />
                                 </div>
                                 <div class="mb-3">
                                     <label class="form-label">Operator</label>
                                     <input class="form-control" type="text"
-                                        value="{{ $pembelian ? $pembelian->pengguna->nama : '' }}" disabled />
+                                        value="{{ $pemesananPengadaan ? $pemesananPengadaan->pengguna->nama : '' }}" disabled />
                                 </div>
                                 <div class="table-responsive">
                                     <table class="table table-borderless">
@@ -88,8 +88,8 @@
                                             </tr>
                                         </thead>
                                         <tbody>
-                                            @if ($pembelian)
-                                                @foreach ($pembelian->pembelianDetail as $item)
+                                            @if ($pemesananPengadaan)
+                                                @foreach ($pemesananPengadaan->pemesananPengadaanDetail as $item)
                                                     <tr>
                                                         <td>{{ $item->barangSatuan->barang->nama }}</td>
                                                         <td>{{ $item->barangSatuan->nama }}</td>
@@ -103,7 +103,7 @@
                                         <tfoot>
                                             <tr>
                                                 <th colspan="4" class="text-end">Total Harga</th>
-                                                <th class="text-end">{{$pembelian ? number_format($pembelian->total_harga) : '' }}</th>
+                                                <th class="text-end">{{$pemesananPengadaan ? number_format($pemesananPengadaan->total_harga) : '' }}</th>
                                             </tr>
                                         </tfoot>
                                     </table>

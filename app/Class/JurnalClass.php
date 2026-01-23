@@ -26,7 +26,7 @@ class JurnalClass
         return $nomor;
     }
 
-    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $aset_id = null, $pembelian_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $pelunasan_pembelian_id = null, $stok_keluar_id = null, $detail)
+    public static function insert($jenis, $sub_jenis = null, $tanggal, $uraian, $system = 0, $aset_id = null, $pemesanan_pengadaan_id = null, $stok_masuk_id = null, $pembayaran_id = null, $penggajian_id = null, $pelunasan_pemesanan_pengadaan_id = null, $stok_keluar_id = null, $detail)
     {
         $nomor = self::getNomor($tanggal);
         
@@ -39,11 +39,11 @@ class JurnalClass
         $jurnal->uraian = $uraian;
         $jurnal->system = $system;
         $jurnal->aset_id = $aset_id;
-        $jurnal->pembelian_id = $pembelian_id;
+        $jurnal->pemesanan_pengadaan_id = $pemesanan_pengadaan_id;
         $jurnal->stok_masuk_id = $stok_masuk_id;
         $jurnal->pembayaran_id = $pembayaran_id;
         $jurnal->penggajian_id = $penggajian_id;
-        $jurnal->pelunasan_pembelian_id = $pelunasan_pembelian_id;
+        $jurnal->pelunasan_pemesanan_pengadaan_id = $pelunasan_pemesanan_pengadaan_id;
         $jurnal->stok_keluar_id = $stok_keluar_id;
         $jurnal->pengguna_id = auth()->id();
         $jurnal->save();

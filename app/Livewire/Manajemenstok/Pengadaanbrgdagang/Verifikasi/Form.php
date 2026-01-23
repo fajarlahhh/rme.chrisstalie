@@ -44,7 +44,7 @@ class Form extends Component
                     'permintaan_pengadaan_id' => $this->data->id,
                 ])->toArray());
             }
-            $verifikasiPengadaan = VerifikasiPengadaan::where('permintaan_pengadaan_id', $this->data->id)->where('jenis', 'Permintaan Pembelian')->whereNull('status')->first();
+            $verifikasiPengadaan = VerifikasiPengadaan::where('permintaan_pengadaan_id', $this->data->id)->where('jenis', 'Permintaan Pengadaan')->whereNull('status')->first();
             $verifikasiPengadaan->status = $this->status;
             $verifikasiPengadaan->catatan = $this->catatan;
             $verifikasiPengadaan->waktu_verifikasi = now();

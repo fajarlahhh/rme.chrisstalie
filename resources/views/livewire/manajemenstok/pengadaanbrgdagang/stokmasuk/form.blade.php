@@ -20,8 +20,8 @@
                     <label class="form-label">Pembelian</label>
                     <select class="form-control" x-init="$($el).select2({ width: '100%', dropdownAutoWidth: true });
                     $($el).on('change', function(e) {
-                        $wire.set('pembelian_id', e.target.value);
-                    });" wire:model="pembelian_id">
+                        $wire.set('pemesanan_pengadaan_id', e.target.value);
+                    });" wire:model="pemesanan_pengadaan_id">
                         <option selected value="" hidden>-- Cari Data Pembelian --</option>
                         @foreach ($dataPembelian as $row)
                             <option value="{{ $row['id'] }}">

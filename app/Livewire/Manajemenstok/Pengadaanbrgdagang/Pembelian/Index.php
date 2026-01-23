@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pembelian;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\PemesananPengadaan;
 
 use Livewire\Component;
-use App\Models\Pembelian;
+use App\Models\PemesananPengadaan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Models\PermintaanPengadaan;
@@ -27,13 +27,13 @@ class Index extends Component
 
     public function delete($id)
     {
-        Pembelian::findOrFail($id)->forceDelete();
+        PemesananPengadaan::findOrFail($id)->forceDelete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function render()
     {
-        return view('livewire.manajemenstok.pengadaanbrgdagang.pembelian.index', [
+        return view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan_pengadaan.index', [
             'data' => $this->status == 1 ? PermintaanPengadaan::with([
                 'pengguna.pegawai',
                 'permintaanPengadaanDetail.barangSatuan.satuanKonversi',
@@ -46,12 +46,12 @@ class Index extends Component
                 ->whereHas('verifikasiPengadaan', function ($q) {
                     $q->whereNotNull('status');
                 })
-                ->whereDoesntHave('pembelian')
+                ->whereDoesntHave('pemesananPengadaan')
                 ->where(fn($q) => $q
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10) :
-                Pembelian::with(['pembelianDetail.barangSatuan.barang', 'pengguna.pegawai', 'stokMasuk', 'pelunasanPembelian', 'supplier', 'permintaanPengadaan'])
+                PemesananPengadaan::with(['pemesananPengadaanDetail.barangSatuan.barang', 'pengguna.pegawai', 'stokMasuk', 'pelunasanPemesananPengadaan', 'supplier', 'permintaanPengadaan'])
                 ->where('jenis', 'Barang Dagang')
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('uraian', 'like', '%' . $this->cari . '%'))

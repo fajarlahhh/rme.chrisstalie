@@ -80,11 +80,11 @@ class Form extends Component
                     uraian: 'Pembelian Aset Inventaris ' . $this->nama,
                     system: 1,
                     aset_id: $this->data->id,
-                    pembelian_id: null,
+                    pemesanan_pengadaan_id: null,
                     stok_masuk_id: null,
                     pembayaran_id: null,
                     penggajian_id: null,
-                    pelunasan_pembelian_id: null,
+                    pelunasan_pemesanan_pengadaan_id: null,
                     stok_keluar_id: null,
                     detail: [
                         [
@@ -108,11 +108,11 @@ class Form extends Component
                         uraian: 'Penyusutan Aset Inventaris ' . $this->nama,
                         system: 1,
                         aset_id: $this->data->id,
-                        pembelian_id: null,
+                        pemesanan_pengadaan_id: null,
                         stok_masuk_id: null,
                         pembayaran_id: null,
                         penggajian_id: null,
-                        pelunasan_pembelian_id: null,
+                        pelunasan_pemesanan_pengadaan_id: null,
                         stok_keluar_id: null,
                         detail: [
                             [

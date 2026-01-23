@@ -7,11 +7,11 @@ use Illuminate\Database\Eloquent\Model;
 class PelunasanPembelian extends Model
 {
     //
-    protected $table = 'pelunasan_pembelian';
+    protected $table = 'pelunasan_pemesanan_pengadaan';
 
-    public function pembelian()
+    public function pemesananPengadaan()
     {
-        return $this->belongsTo(Pembelian::class);
+        return $this->belongsTo(PemesananPengadaan::class);
     }
 
     public function jurnal()

@@ -5,7 +5,7 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 use App\Models\Stok;
 use App\Models\Jurnal;
 use Livewire\Component;
-use App\Models\Pembelian;
+use App\Models\PemesananPengadaan;
 use App\Models\StokMasuk;
 use App\Class\JurnalClass;
 use Illuminate\Support\Str;
@@ -19,17 +19,17 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $dataPembelian = [], $barang = [];
-    public $pembelian_id, $tanggal;
+    public $pemesanan_pengadaan_id, $tanggal;
 
 
     public function updatedPembelianId($value)
     {
         $this->barang = [];
-        $stokMasuk = StokMasuk::where('pembelian_id', $value)->get()->map(fn($q) => [
+        $stokMasuk = StokMasuk::where('pemesanan_pengadaan_id', $value)->get()->map(fn($q) => [
             'id' => $q->barangSatuan->barang_id,
             'qty_masuk' => $q->qty,
         ]);
-        $barang = PembelianDetail::where('pembelian_id', $value)->with('barang')->get()->map(fn($q) => [
+        $barang = PembelianDetail::where('pemesanan_pengadaan_id', $value)->with('barang')->get()->map(fn($q) => [
             'id' => $q->barangSatuan->barang_id,
             'nama' => $q->barangSatuan->barang->nama,
             'kode_akun_id' => $q->barangSatuan->barang->kode_akun_id,
@@ -50,17 +50,17 @@ class Form extends Component
 
     public function mount()
     {
-        $this->dataPembelian = Pembelian::select(DB::raw('pembelian.id id'), 'tanggal', 'supplier_id', 'uraian')
-            ->leftJoin('pembelian_detail', 'pembelian.id', '=', 'pembelian_detail.pembelian_id')
-            ->groupBy('pembelian.id', 'tanggal', 'supplier_id', 'uraian')
-            ->havingRaw('SUM(pembelian_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pembelian_id = pembelian.id )')
+        $this->dataPembelian = PemesananPengadaan::select(DB::raw('pemesanan_pengadaan.id id'), 'tanggal', 'supplier_id', 'uraian')
+            ->leftJoin('pemesanan_pengadaan_detail', 'pemesanan_pengadaan.id', '=', 'pemesanan_pengadaan_detail.pemesanan_pengadaan_id')
+            ->groupBy('pemesanan_pengadaan.id', 'tanggal', 'supplier_id', 'uraian')
+            ->havingRaw('SUM(pemesanan_pengadaan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pemesanan_pengadaan_id = pemesanan_pengadaan.id )')
             ->with('supplier')->get()->toArray();
     }
 
     public function submit()
     {
         $this->validateWithCustomMessages([
-            'pembelian_id' => 'required',
+            'pemesanan_pengadaan_id' => 'required',
             'tanggal' => 'required|date',
             'barang' => 'required|array',
             'barang.*.qty_masuk' => [
@@ -117,7 +117,7 @@ class Form extends Component
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
                     $stokMasuk->barang_id = $value['id'];
-                    $stokMasuk->pembelian_id = $this->pembelian_id;
+                    $stokMasuk->pemesanan_pengadaan_id = $this->pemesanan_pengadaan_id;
                     $stokMasuk->barang_satuan_id = $value['barang_satuan_id'];
                     $stokMasuk->rasio_dari_terkecil = $value['rasio_dari_terkecil'];
                     $stokMasuk->pengguna_id = auth()->id();
@@ -130,7 +130,7 @@ class Form extends Component
                             'id' => Str::uuid(),
                             'barang_id' => $value['id'],
                             'no_batch' => $value['no_batch'],
-                            'pembelian_id' => $this->pembelian_id,
+                            'pemesanan_pengadaan_id' => $this->pemesanan_pengadaan_id,
                             'tanggal_kedaluarsa' => $value['tanggal_kedaluarsa'],
                             'stok_masuk_id' => $stokMasuk->id,
                             'tanggal_masuk' => now(),
@@ -146,12 +146,12 @@ class Form extends Component
                         tanggal: now(),
                         uraian: 'Stok Masuk Barang Dagang ' . $value['nama'],
                         system: 1,
-                        pembelian_id: $this->pembelian_id,
+                        pemesanan_pengadaan_id: $this->pemesanan_pengadaan_id,
                         stok_masuk_id: $stokMasuk->id,
                         pembayaran_id: null,
                         penggajian_id: null,
                         aset_id: null,
-                        pelunasan_pembelian_id: null,
+                        pelunasan_pemesanan_pengadaan_id: null,
                         stok_keluar_id: null,
                         detail: [[
                             'kode_akun_id' => $value['kode_akun_id'],

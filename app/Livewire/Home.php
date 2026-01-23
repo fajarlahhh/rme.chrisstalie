@@ -7,7 +7,7 @@ use App\Models\Jurnal;
 use App\Models\Absensi;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Models\Pembelian;
+use App\Models\PemesananPengadaan;
 use App\Models\Pembayaran;
 use App\Models\JurnalDetail;
 use Livewire\Attributes\Url;
@@ -64,10 +64,10 @@ class Home extends Component
 
     public function getDataPengadaanBarangJatuhTempo()
     {
-        return Pembelian::with('supplier', 'pembelianDetail')
+        return PemesananPengadaan::with('supplier', 'pemesananPengadaanDetail')
             ->whereNotNull('jatuh_tempo')
             ->where(fn($q) => $q->where('jatuh_tempo', '<=', date('Y-m-d', strtotime('+2 days')))
-                ->whereDoesntHave('pelunasanPembelian'))
+                ->whereDoesntHave('pelunasanPemesananPengadaan'))
             ->get();
     }
 

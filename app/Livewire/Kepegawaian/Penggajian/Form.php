@@ -108,10 +108,10 @@ class Form extends Component
                 system: 1,
                 penggajian_id: $penggajian->id,
                 aset_id: null,
-                pembelian_id: null,
+                pemesanan_pengadaan_id: null,
                 stok_masuk_id: null,
                 pembayaran_id: null,
-                pelunasan_pembelian_id: null,
+                pelunasan_pemesanan_pengadaan_id: null,
                 stok_keluar_id: null,
                 detail: collect($jurnalDetail)->values()->toArray()
             );

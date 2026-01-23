@@ -65,7 +65,7 @@ class Form extends Component
             $data->no_batch = $this->no_batch;
             $data->tanggal_kedaluarsa = $this->tanggal_kedaluarsa;
             $data->barang_id = $this->barang_id;
-            $data->pembelian_id = null;
+            $data->pemesanan_pengadaan_id = null;
             $data->barang_satuan_id = $this->satuan_id;
             $data->rasio_dari_terkecil = $this->satuan['rasio_dari_terkecil'];
             $data->harga_beli = $this->harga_beli;
@@ -75,7 +75,7 @@ class Form extends Component
             for ($i = 0; $i < $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk; $i++) {
                 $stok[] = [
                     'id' => $data->id . '-' . $this->barang_id . '-' . $i,
-                    'pembelian_id' => null,
+                    'pemesanan_pengadaan_id' => null,
                     'barang_id' => $this->barang_id,
                     'no_batch' => $this->no_batch,
                     'tanggal_kedaluarsa' => $this->tanggal_kedaluarsa,
@@ -121,11 +121,11 @@ class Form extends Component
             uraian: 'Koreksi Stok Barang ' . $this->barang['nama'],
             system: 1,
             aset_id: null,
-            pembelian_id: null,
+            pemesanan_pengadaan_id: null,
             stok_masuk_id: $koreksi->id,
             pembayaran_id: null,
             penggajian_id: null,
-            pelunasan_pembelian_id: null,
+            pelunasan_pemesanan_pengadaan_id: null,
             stok_keluar_id: null,
             detail: $detail
         );

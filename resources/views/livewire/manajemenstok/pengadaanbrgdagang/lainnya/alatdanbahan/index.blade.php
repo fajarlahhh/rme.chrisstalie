@@ -47,9 +47,9 @@
                             <td>{{ $row->uraian }}</td>
                             <td>{{ $row->supplier?->nama }}</td>
                             <td>
-                                @if ($row->pelunasanPembelian)
+                                @if ($row->pelunasanPemesananPengadaan)
                                     <span class="badge bg-success">Lunas
-                                        ({{ $row->pelunasanPembelian->kodeAkunPembayaran->nama }})</span>
+                                        ({{ $row->pelunasanPemesananPengadaan->kodeAkunPembayaran->nama }})</span>
                                 @else
                                     {!! $row->pembayaran == 'Jatuh Tempo'
                                         ? '<span class="badge bg-danger">Jatuh Tempo : ' . $row->jatuh_tempo . ' (' . $row->kode_akun_id . ' - ' . $row->kodeAkun->nama . ')</span>'
@@ -67,7 +67,7 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        @foreach ($row->pembelianDetail as $detail)
+                                        @foreach ($row->pemesananPengadaanDetail as $detail)
                                             <tr>
                                                 <td class="text-nowrap w-300px">
                                                     {{ $detail->barangSatuan->barang->nama }}</td>

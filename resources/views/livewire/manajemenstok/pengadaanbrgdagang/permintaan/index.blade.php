@@ -75,9 +75,9 @@
                             </td>
                             <td>
                                 <ul>
-                                    @if ($item->pembelian)
+                                    @if ($item->pemesananPengadaan)
                                         <li>Pembelian</li>
-                                        @if ($item->pembelian->stokMasuk->count() > 0)
+                                        @if ($item->pemesananPengadaan->stokMasuk->count() > 0)
                                             <li>Stok Masuk</li>
                                         @endif
                                     @endif
@@ -123,7 +123,7 @@
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
                                         @if ($item->VerifikasiPengadaanDisetujui->count() > 0 || $item->VerifikasiPengadaanDitolak->count() > 0)
-                                            @if ($item->pembelian && $item->pembelian->stokMasuk->count() > 0)
+                                            @if ($item->pemesananPengadaan && $item->pemesananPengadaan->stokMasuk->count() > 0)
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="false" :permanentDelete="false"
                                                     :restore="false" :delete="false" />
