@@ -15,7 +15,8 @@
     <tbody>
         @foreach ($data as $index => $item)
             <tr>
-                <td>{{ $cetak == false ? ($data->currentPage() - 1) * $data->perPage() + $loop->iteration : $loop->iteration }}</td>
+                <td>{{ $cetak == false ? ($data->currentPage() - 1) * $data->perPage() + $loop->iteration : $loop->iteration }}
+                </td>
                 <td>{{ $item->id }}</td>
                 <td>{{ $item->nama }}</td>
                 <td>{{ $item->kategori }}</td>
@@ -24,10 +25,10 @@
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>
                         @role('administrator|supervisor')
-                            @if ($item->sistem != 1)
-                                <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                    :print="false" :permanentDelete="false" :restore="false" :delete="true" />
-                            @endif
+                            {{-- @if ($item->sistem != 1) --}}
+                            <x-action :row="$item" custom="" :detail="false" :edit="true" :print="false"
+                                :permanentDelete="false" :restore="false" :delete="true" />
+                            {{-- @endif --}}
                         @endrole
                     </td>
                 @endif
