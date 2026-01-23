@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\PemesananPengadaan;
 use App\Class\JurnalClass;
-use App\Models\PelunasanPembelian;
+use App\Models\PelunasanPengadaan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -43,7 +43,7 @@ class Form extends Component
         DB::transaction(function () {
             $pemesananPengadaan = PemesananPengadaan::find($this->pemesanan_pengadaan_id);
 
-            $data = new PelunasanPembelian();
+            $data = new PelunasanPengadaan();
             $data->pemesanan_pengadaan_id = $this->pemesanan_pengadaan_id;
             $data->tanggal = $this->tanggal;
             $data->uraian = $this->uraian;

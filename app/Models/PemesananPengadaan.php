@@ -21,7 +21,7 @@ class PemesananPengadaan extends Model
 
     public function pelunasanPemesananPengadaan(): HasOne
     {
-        return $this->hasOne(PelunasanPembelian::class);
+        return $this->hasOne(PelunasanPengadaan::class);
     }
 
     public function pemesananPengadaanDetail(): HasMany
