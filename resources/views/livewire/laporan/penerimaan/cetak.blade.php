@@ -44,24 +44,33 @@
         </tr>
     </thead>
     <tbody>
+        @php
+            $total_tindakan = 0;
+            $total_resep = 0;
+            $total_bebas = 0;
+            $total_diskon = 0;
+            $total_total = 0;
+        @endphp
         @foreach ($data as $row)
+            @php
+                $diskon = $row['diskon'];
+                $tindakan = $row['registrasi_id'] ? $row['total_tindakan'] + $diskon : 0;
+                $resep = $row['registrasi_id'] ? $row['total_resep'] : 0;
+                $bebas = !$row['registrasi_id'] ? $row['total_harga_barang'] : 0;
+                $total = $tindakan + $resep + $bebas - $diskon;
+            @endphp
             <tr>
                 <td>{{ $loop->iteration }}</td>
                 <td>{{ $row['id'] }}</td>
                 <td>
                     {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['nama']) ? $row['registrasi']['pasien']['nama'] : '' }}
                 </td>
+                <td class="text-end">{{ $cetak ? $tindakan : number_format($tindakan) }}</td>
+                <td class="text-end">{{ $cetak ? $bebas : number_format($bebas) }}</td>
+                <td class="text-end">{{ $cetak ? $resep : number_format($resep) }}</td>
+                <td class="text-end">{{ $cetak ? $diskon : number_format($diskon) }}</td>
                 <td class="text-end">
-                    {{ $cetak ? ($row['registrasi_id'] ? $row['total_tindakan'] + $row['diskon'] : 0) : number_format($row['registrasi_id'] ? $row['total_tindakan'] + $row['diskon'] : 0) }}
-                </td>
-                <td class="text-end">
-                    {{ $cetak ? $row['total_harga_barang'] : number_format($row['total_harga_barang']) }}</td>
-                <td class="text-end">{{ $cetak ? $row['total_resep'] : number_format($row['total_resep']) }}</td>
-                <td class="text-end">{{ $cetak ? $row['diskon'] : number_format($row['diskon']) }}</td>
-                <td class="text-end">
-                    {{ $cetak
-                        ? ($row['registrasi_id'] ? $row['total_tindakan'] : 0) + $row['total_harga_barang'] + $row['total_resep']
-                        : number_format($row['registrasi_id'] ? $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'] : 0) }}
+                    {{ $cetak ? $total : number_format($total) }}
                 </td>
                 @role('administrator|supervisor')
                     <td>{{ $row['pengguna']['nama'] }}</td>
@@ -69,23 +78,28 @@
                 <td>{{ $row['metode_bayar'] }}</td>
                 <td>{{ $row['keterangan'] }}</td>
             </tr>
+            @php
+                $total_tindakan += $tindakan;
+                $total_bebas += $bebas;
+                $total_resep += $resep;
+                $total_diskon += $diskon;
+                $total_total += $total;
+            @endphp
         @endforeach
     </tbody>
     <tfoot>
         <tr>
             <th colspan="3">Total</th>
             <th class="text-end">
-                {{ $cetak ? $data->sum(fn($row) => $row['total_tindakan'] + $row['diskon']) : number_format($data->sum(fn($row) => $row['total_tindakan'] + $row['diskon'])) }}
+                {{ $cetak ? $total_tindakan : number_format($total_tindakan) }}
             </th>
             <th class="text-end">
-                {{ $cetak ? $data->sum('total_harga_barang') : number_format($data->sum('total_harga_barang')) }}</th>
-            <th class="text-end">{{ $cetak ? $data->sum('total_resep') : number_format($data->sum('total_resep')) }}
+                {{ $cetak ? $total_bebas : number_format($total_bebas) }}</th>
+            <th class="text-end">{{ $cetak ? $total_resep : number_format($total_resep) }}
             </th>
-            <th class="text-end">{{ $cetak ? $data->sum('diskon') : number_format($data->sum('diskon')) }}</th>
+            <th class="text-end">{{ $cetak ? $total_diskon : number_format($total_diskon) }}</th>
             <th class="text-end">
-                {{ $cetak
-                    ? $data->sum(fn($row) => $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'] - $row['diskon'])
-                    : number_format($data->sum(fn($row) => $row['total_tindakan'] + $row['total_harga_barang'] + $row['total_resep'] - $row['diskon'])) }}
+                {{ $cetak ? $total_total : number_format($total_total) }}
             </th>
             @role('administrator|supervisor')
                 <th colspan="3"></th>
