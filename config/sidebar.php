@@ -341,7 +341,7 @@ return [
             ]
         ],
         [
-            "title" => "JurnalKeuangan Keuangan",
+            "title" => "Jurnal Keuanganan",
             "urutkan" => true,
             "method" => ["Index", "Form"],
             "icon" => "<i class='fas fa-book'></i>"
