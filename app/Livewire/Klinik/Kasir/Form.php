@@ -9,7 +9,7 @@ use App\Models\KodeAkun;
 use App\Models\Tindakan;
 use App\Models\ResepObat;
 use App\Class\BarangClass;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\Pembayaran;
 use App\Models\Registrasi;
 use App\Models\MetodeBayar;
@@ -250,14 +250,14 @@ class Form extends Component
                 ]);
             }
 
-            //Jurnal Kas
+            //JurnalKeuangan Kas
             $detail[] = [
                 'debet' => $this->total_tagihan,
                 'kredit' => 0,
                 'kode_akun_id' => $metodeBayar->kode_akun_id
             ];
 
-            //Jurnal Kewajiban Biaya Dokter & Perawat
+            //JurnalKeuangan Kewajiban Biaya Dokter & Perawat
             $detail = array_merge($detail, collect($this->tindakan)->whereNotNull('dokter_id')->map(function ($q) {
                 return [
                     'kode_akun_id' => '21300',
@@ -275,7 +275,7 @@ class Form extends Component
                     ];
                 })->all());
 
-            //Jurnal Pendapatan Tindakan
+            //JurnalKeuangan Pendapatan Tindakan
             $detail = array_merge($detail, collect($this->tindakan)->map(function ($q) {
                 return [
                     'kode_akun_id' => $q['kode_akun_id'],
@@ -298,7 +298,7 @@ class Form extends Component
                 ];
             })->toArray(), $pembayaran->id, $this->tanggal);
 
-            //Jurnal Penyusutan Alat
+            //JurnalKeuangan Penyusutan Alat
             $detail = array_merge($detail, collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
                 return [
                     'kode_akun_id' => $q['kode_akun_penyusutan_id'],
@@ -385,14 +385,14 @@ class Form extends Component
 
         $jurnalDetail = collect($detail)->map(function ($q) use ($id) {
             return [
-                'jurnal_id' => $id,
+                'jurnal_keuangan_id' => $id,
                 'debet' => $q['debet'],
                 'kredit' => $q['kredit'],
                 'kode_akun_id' => $q['kode_akun_id'],
             ];
         })->all();
 
-        $jurnal = JurnalClass::insert(
+        $jurnalKeuangan = JurnalkeuanganClass::insert(
             jenis: 'Pendapatan',
             sub_jenis: 'Pendapatan',
             tanggal: $this->tanggal,
@@ -422,7 +422,7 @@ class Form extends Component
                 $asetPenyusutan[] = [
                     'aset_id' => $alat['id'],
                     'nilai' => $alat['biaya'],
-                    'jurnal_id' => $jurnal->id,
+                    'jurnal_keuangan_id' => $jurnalKeuangan->id,
                     'created_at' => now(),
                     'updated_at' => now(),
                 ];

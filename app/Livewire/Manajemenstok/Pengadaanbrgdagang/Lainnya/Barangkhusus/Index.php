@@ -5,7 +5,7 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Lainnya\Barangkhusus;
 use Livewire\Component;
 use App\Models\PemesananPengadaan;
 use App\Models\StokMasuk;
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use Illuminate\Support\Facades\DB;

@@ -44,9 +44,9 @@ class PemesananPengadaan extends Model
         return $this->belongsTo(Pengguna::class);
     }
 
-    public function jurnal(): HasOne
+    public function jurnalKeuangan(): HasOne
     {
-        return $this->hasOne(Jurnal::class);
+        return $this->hasOne(JurnalKeuangan::class);
     }
 
     public function stok(): HasMany

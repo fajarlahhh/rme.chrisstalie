@@ -3,11 +3,11 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 
 use App\Models\Stok;
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\PemesananPengadaan;
 use App\Models\StokMasuk;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use App\Models\JurnalDetail;
@@ -140,7 +140,7 @@ class Form extends Component
                         ];
                     }
 
-                    JurnalClass::insert(
+                    JurnalkeuanganClass::insert(
                         jenis: 'Pembelian',
                         sub_jenis: 'Stok Masuk Barang Dagang',
                         tanggal: now(),

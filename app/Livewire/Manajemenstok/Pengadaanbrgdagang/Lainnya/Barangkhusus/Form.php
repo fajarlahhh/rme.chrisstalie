@@ -7,7 +7,7 @@ use App\Models\KodeAkun;
 use App\Models\Supplier;
 use App\Models\PemesananPengadaan;
 use App\Class\BarangClass;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\StokMasuk;
 use App\Models\Stok;
 use Illuminate\Support\Facades\DB;
@@ -163,7 +163,7 @@ class Form extends Component
                 'kredit' => $this->diskon,
             ];
 
-            JurnalClass::insert(
+            JurnalkeuanganClass::insert(
                 jenis: 'Pembelian',
                 sub_jenis: 'Stok Masuk Barang Khusus',
                 tanggal: now(),

@@ -5,7 +5,7 @@ namespace App\Livewire\Datamaster\Asetinventaris;
 use App\Models\Aset;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\AsetPenyusutan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -73,7 +73,7 @@ class Form extends Component
             $this->data->save();
 
             if ($edit == false) {
-                JurnalClass::insert(
+                JurnalkeuanganClass::insert(
                     jenis: 'Pembelian',
                     sub_jenis: 'Pembelian Aset Inventaris',
                     tanggal: $this->tanggal_perolehan,
@@ -101,7 +101,7 @@ class Form extends Component
                 );
 
                 if ($this->metode_penyusutan == 'Garis Lurus') {
-                    $jurnal = JurnalClass::insert(
+                    $jurnalKeuangan = JurnalkeuanganClass::insert(
                         jenis: 'Penyusutan',
                         sub_jenis: 'Penyusutan Aset Inventaris',
                         tanggal: $this->tanggal_perolehan,
@@ -131,7 +131,7 @@ class Form extends Component
                     $penyusutan = new AsetPenyusutan();
                     $penyusutan->aset_id = $this->data->id;
                     $penyusutan->nilai = $this->data->nilai_penyusutan;
-                    $penyusutan->jurnal_id = $jurnal->id;
+                    $penyusutan->jurnal_keuangan_id = $jurnalKeuangan->id;
                     $penyusutan->save();
                 }
             }

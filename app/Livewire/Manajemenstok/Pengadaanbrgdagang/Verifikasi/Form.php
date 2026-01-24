@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\VerifikasiPengadaan;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Verifikasi;
 
 use Livewire\Component;
 use App\Models\VerifikasiPengadaan;

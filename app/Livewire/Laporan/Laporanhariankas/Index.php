@@ -4,7 +4,7 @@ namespace App\Livewire\Laporan\Laporanhariankas;
 
 use App\Models\Sale;
 use App\Models\Kasir;
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Pengguna;
@@ -49,12 +49,12 @@ class Index extends Component
 
     public function getPengeluaran()
     {
-        return Jurnal::leftJoin('jurnal_detail', 'jurnal.id', '=', 'jurnal_detail.jurnal_id')
-        ->leftJoin('kode_akun', 'jurnal_detail.kode_akun_id', '=', 'kode_akun.id')->select(
-            'jurnal.*',
-            'jurnal_detail.kode_akun_id as kode_akun_id',
-            'jurnal_detail.debet as debet',
-            'jurnal_detail.kredit as kredit',
+        return JurnalKeuangan::leftJoin('jurnal_keuangan_detail', 'jurnalKeuangan.id', '=', 'jurnal_keuangan_detail.jurnal_keuangan_id')
+        ->leftJoin('kode_akun', 'jurnal_keuangan_detail.kode_akun_id', '=', 'kode_akun.id')->select(
+            'jurnalKeuangan.*',
+            'jurnal_keuangan_detail.kode_akun_id as kode_akun_id',
+            'jurnal_keuangan_detail.debet as debet',
+            'jurnal_keuangan_detail.kredit as kredit',
             'kode_akun.nama as kode_akun_nama'
         )->with(['pengguna'])->where('sub_jenis', 'Pengeluaran')
             ->where('tanggal', $this->tanggal)->get();

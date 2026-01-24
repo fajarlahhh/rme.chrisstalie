@@ -6,10 +6,10 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-class Jurnal extends Model
+class JurnalKeuangan extends Model
 {
     //
-    protected $table = 'jurnal';
+    protected $table = 'jurnalKeuangan';
     protected $primaryKey = 'id';
     public $incrementing = false;
     protected $keyType = 'string';

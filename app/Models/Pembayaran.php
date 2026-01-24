@@ -30,12 +30,12 @@ class Pembayaran extends Model
 
     public function jurnalPenjualanBarangBebas(): HasMany
     {
-        return $this->hasMany(Jurnal::class, 'referensi_id')->where('jenis', 'Penjualan Barang Bebas');
+        return $this->hasMany(JurnalKeuangan::class, 'referensi_id')->where('jenis', 'Penjualan Barang Bebas');
     }
 
     public function jurnalPembayaranPasienKlinik(): HasMany
     {
-        return $this->hasMany(Jurnal::class, 'referensi_id')->where('jenis', 'Pembayaran Pasien Klinik');
+        return $this->hasMany(JurnalKeuangan::class, 'referensi_id')->where('jenis', 'Pembayaran Pasien Klinik');
     }
 
     public function metodeBayar(): BelongsTo

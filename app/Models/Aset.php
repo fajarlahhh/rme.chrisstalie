@@ -26,8 +26,8 @@ class Aset extends Model
         return $this->belongsTo(KodeAkun::class, 'kode_akun_sumber_dana_id');
     }
 
-    public function jurnal(): HasOne
+    public function jurnalKeuangan(): HasOne
     {
-        return $this->hasOne(Jurnal::class);
+        return $this->hasOne(JurnalKeuangan::class);
     }
 }

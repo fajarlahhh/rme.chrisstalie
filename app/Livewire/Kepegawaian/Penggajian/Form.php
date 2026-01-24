@@ -2,11 +2,11 @@
 
 namespace App\Livewire\Kepegawaian\Penggajian;
 
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use App\Models\Pegawai;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\PegawaiUnsurGaji;
 use App\Models\Penggajian;
 use Illuminate\Support\Str;
@@ -100,7 +100,7 @@ class Form extends Component
                 'kode_akun_id' => $this->metode_bayar,
             ];
             
-            JurnalClass::insert(
+            JurnalkeuanganClass::insert(
                 jenis: 'Gaji',
                 sub_jenis: 'Pengeluaran',
                 tanggal: $this->tanggal,

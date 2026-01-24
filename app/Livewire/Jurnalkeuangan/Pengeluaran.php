@@ -2,10 +2,10 @@
 
 namespace App\Livewire\Jurnalkeuangan;
 
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -13,11 +13,11 @@ use App\Traits\CustomValidationTrait;
 class Pengeluaran extends Component
 {
     use CustomValidationTrait;
-    public Jurnal $data;
+    public JurnalKeuangan $data;
     public $tanggal, $uraian, $jenis_pengeluaran_id, $sumber_dana_id, $nilai;
     public  $dataJenisPengeluaran = [], $dataSumberDana = [];
 
-    public function mount(Jurnal $data)
+    public function mount(JurnalKeuangan $data)
     {
         $this->data = $data;
         if ($this->data->exists) {
@@ -41,7 +41,7 @@ class Pengeluaran extends Component
             'nilai' => 'required|numeric|min:0',
         ]);
         DB::transaction(function () {
-            JurnalClass::insert(
+            JurnalkeuanganClass::insert(
                 jenis: 'Pengeluaran',
                 sub_jenis: collect($this->dataJenisPengeluaran)->firstWhere('id', $this->jenis_pengeluaran_id)['nama'],
                 tanggal: $this->tanggal,

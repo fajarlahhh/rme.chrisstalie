@@ -4,7 +4,7 @@ namespace App\Livewire\Jurnalkeuangan;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 
 class Form extends Component
 {
@@ -12,10 +12,10 @@ class Form extends Component
     public $jenis;
     public $data;
 
-    public function mount(Jurnal $data)
+    public function mount(JurnalKeuangan $data)
     {
         if ($data->exists) {
-            if ($data->jenis == 'Jurnal Umum') {
+            if ($data->jenis == 'JurnalKeuangan Umum') {
                 $this->jenis = 'jurnalumum';
             } else {
                 $this->jenis = strtolower(str_replace(' ', '', $data->sub_jenis));

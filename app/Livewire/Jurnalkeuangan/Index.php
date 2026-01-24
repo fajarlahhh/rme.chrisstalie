@@ -5,7 +5,7 @@ namespace App\Livewire\Jurnalkeuangan;
 use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 
 class Index extends Component
 {
@@ -21,13 +21,13 @@ class Index extends Component
 
     public function delete($id)
     {
-        Jurnal::findOrFail($id)->delete();
+        JurnalKeuangan::findOrFail($id)->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
     public function getData()
     {
-        return Jurnal::with(['jurnalDetail.kodeAkun', 'pengguna.pegawai'])
+        return JurnalKeuangan::with(['jurnalDetail.kodeAkun', 'pengguna.pegawai'])
             ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
             ->where('tanggal', 'like', $this->bulan . '%')
             ->where(
@@ -43,7 +43,7 @@ class Index extends Component
 
     public function getJenis()
     {
-        return Jurnal::where('tanggal', 'like', $this->bulan . '%')->select('jenis')->groupBy('jenis')->orderBy('jenis', 'asc')->get()->toArray();
+        return JurnalKeuangan::where('tanggal', 'like', $this->bulan . '%')->select('jenis')->groupBy('jenis')->orderBy('jenis', 'asc')->get()->toArray();
     }
 
     public function render()

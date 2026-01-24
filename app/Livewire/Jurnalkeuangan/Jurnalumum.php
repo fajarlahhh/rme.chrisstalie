@@ -2,21 +2,21 @@
 
 namespace App\Livewire\Jurnalkeuangan;
 
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\KodeAkun;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
 class Jurnalumum extends Component
 {
     use CustomValidationTrait;
-    public Jurnal $data;
+    public JurnalKeuangan $data;
     public $tanggal, $uraian, $kode_akun_id, $nilai, $jenis;
     public  $dataJenis = ['Barang Masuk', 'Hutang', 'Koreksi', 'Modal', 'Pembelian', 'Pendapatan', 'Pengeluaran', 'Penyusutan', 'Piutang'], $dataKodeAkun = [], $detail = [];
 
-    public function mount(Jurnal $data)
+    public function mount(JurnalKeuangan $data)
     {
         $this->data = $data;
         $this->tanggal = date('Y-m-d');
@@ -74,13 +74,13 @@ class Jurnalumum extends Component
 
         DB::transaction(function () {
             if (!$this->data->exists) {
-                $nomor = JurnalClass::getNomor($this->tanggal);
+                $nomor = JurnalkeuanganClass::getNomor($this->tanggal);
                 $this->data->id = str_replace('/', '', substr($nomor, 6, 14));
                 $this->data->nomor = $nomor;
             }
 
             $this->data->jenis = $this->jenis;
-            $this->data->sub_jenis = 'Jurnal Umum';
+            $this->data->sub_jenis = 'JurnalKeuangan Umum';
             $this->data->uraian = ucfirst($this->uraian);
             $this->data->tanggal = $this->tanggal;
             $this->data->system = 0;
@@ -89,7 +89,7 @@ class Jurnalumum extends Component
 
             $this->data->jurnalDetail()->delete();
             $this->data->jurnalDetail()->insert(collect($this->detail)->map(fn($q) => [
-                'jurnal_id' => $this->data->id,
+                'jurnal_keuangan_id' => $this->data->id,
                 'debet' => $q['debet'],
                 'kredit' => $q['kredit'],
                 'kode_akun_id' => $q['id'],

@@ -9,11 +9,11 @@ use App\Models\KodeAkun;
 class JurnalDetail extends Model
 {
     //
-    protected $table = 'jurnal_detail';
+    protected $table = 'jurnal_keuangan_keuangan_detail';
 
-    public function jurnal(): BelongsTo
+    public function jurnalKeuangan(): BelongsTo
     {
-        return $this->belongsTo(Jurnal::class);
+        return $this->belongsTo(JurnalKeuangan::class);
     }
 
     public function kodeAkun(): BelongsTo

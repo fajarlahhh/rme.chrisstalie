@@ -7,7 +7,7 @@ use App\Models\Barang;
 use Livewire\Component;
 use App\Models\StokMasuk;
 use App\Class\BarangClass;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -94,14 +94,14 @@ class Form extends Component
             if (!empty($stok)) {
                 Stok::insert($stok);
             }
-            $this->jurnal($data, $this->harga_beli / $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk);
+            $this->jurnalKeuangan($data, $this->harga_beli / $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk);
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return $this->redirect('/manajemenstok/opname/penambahan');
     }
 
-    private function jurnal($koreksi, $hargaBeli)
+    private function jurnalKeuangan($koreksi, $hargaBeli)
     {
         $detail[] = [
             'kode_akun_id' => $this->barang['kode_akun_id'],
@@ -114,7 +114,7 @@ class Form extends Component
             'kredit' => $hargaBeli,
         ];
 
-        JurnalClass::insert(
+        JurnalkeuanganClass::insert(
             jenis: 'Koreksi',
             sub_jenis: 'Koreksi Penambaan Stok',
             tanggal: now(),

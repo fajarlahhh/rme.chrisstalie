@@ -4,7 +4,7 @@ namespace App\Livewire\Penjualan;
 
 use App\Models\Stok;
 use Livewire\Component;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\Pembayaran;
 use App\Models\MetodeBayar;
 use App\Class\BarangClass;
@@ -145,7 +145,7 @@ class Index extends Component
             ];
         })->toArray());
 
-        JurnalClass::insert(
+        JurnalkeuanganClass::insert(
             jenis: 'Pendapatan',
             sub_jenis: 'Pendapatan Penjualan Barang Bebas',
             tanggal: $this->tanggal,

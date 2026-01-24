@@ -33,7 +33,7 @@ class Index extends Component
             }
         ])
             ->with(['jurnalDetail' => function ($q) use ($bulanIni) {
-                $q->whereHas('jurnal', function ($q) use ($bulanIni) {
+                $q->whereHas('jurnalKeuangan', function ($q) use ($bulanIni) {
                     $q->where('tanggal', 'like', $bulanIni . '%');
                 });
             }])->where('detail', 1)->get()->map(function ($q) {
@@ -44,11 +44,11 @@ class Index extends Component
                     'laba_rugi' => $q->laba_rugi,
                     'saldo_debet' => $q->kodeAkunNeraca->sum('debet') ?? 0,
                     'saldo_kredit' => $q->kodeAkunNeraca->sum('kredit') ?? 0,
-                    'jurnal_debet' => $q->jurnalDetail->sum('debet') ?? 0,
-                    'jurnal_kredit' => $q->jurnalDetail->sum('kredit') ?? 0,
+                    'jurnal_keuangan_debet' => $q->jurnalDetail->sum('debet') ?? 0,
+                    'jurnal_keuangan_kredit' => $q->jurnalDetail->sum('kredit') ?? 0,
                 ];
             });
-        $labaRugi = $dataKodeAkun->filter(fn($q) => $q['kategori'] == 'Pendapatan')->sum(fn($q) => $q['jurnal_kredit'] - $q['jurnal_debet']) - $dataKodeAkun->filter(fn($q) => $q['kategori'] == 'Beban')->sum(fn($q) => $q['jurnal_debet'] - $q['jurnal_kredit']);
+        $labaRugi = $dataKodeAkun->filter(fn($q) => $q['kategori'] == 'Pendapatan')->sum(fn($q) => $q['jurnal_keuangan_kredit'] - $q['jurnal_keuangan_debet']) - $dataKodeAkun->filter(fn($q) => $q['kategori'] == 'Beban')->sum(fn($q) => $q['jurnal_keuangan_debet'] - $q['jurnal_keuangan_kredit']);
 
         $sumDebetLabaRugi = 0;
         $sumKreditLabaRugi = 0;
@@ -58,8 +58,8 @@ class Index extends Component
         foreach ($dataKodeAkun->toArray() as $key => $row) {
             $debetSaldo = $row['saldo_debet'];
             $kreditSaldo = $row['saldo_kredit'];
-            $debetJurnal = $row['jurnal_debet'];
-            $kreditJurnal = $row['jurnal_kredit'];
+            $debetJurnal = $row['jurnal_keuangan_debet'];
+            $kreditJurnal = $row['jurnal_keuangan_kredit'];
 
             $debetLabaRugi = 0;
             $kreditLabaRugi = 0;
@@ -95,8 +95,8 @@ class Index extends Component
                 'id' => $row['id'] . " - " . $row['deskripsi'],
                 'saldo_debet' => $debetSaldo,
                 'saldo_kredit' => $kreditSaldo,
-                'jurnal_debet' => $debetJurnal,
-                'jurnal_kredit' => $kreditJurnal,
+                'jurnal_keuangan_debet' => $debetJurnal,
+                'jurnal_keuangan_kredit' => $kreditJurnal,
                 'laba_rugi_debet' => $debetLabaRugi,
                 'laba_rugi_kredit' => $kreditLabaRugi,
                 'necara_debet' => $debetSaldoAkhir,

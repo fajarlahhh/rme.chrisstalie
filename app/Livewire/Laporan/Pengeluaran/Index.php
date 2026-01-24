@@ -2,7 +2,7 @@
 
 namespace App\Livewire\Laporan\Pengeluaran;
 
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Pengguna;
@@ -38,7 +38,7 @@ class Index extends Component
 
     public function getData()
     {
-        $query = Jurnal::with('jurnalDetail.kodeAkun', 'pengguna.pegawai')
+        $query = JurnalKeuangan::with('jurnalDetail.kodeAkun', 'pengguna.pegawai')
             ->whereHas('jurnalDetail', function ($query) {
                 $query->whereIn('kode_akun_id', collect($this->dataKodeAkun)->pluck('id'));
             })

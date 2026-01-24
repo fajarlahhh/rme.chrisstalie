@@ -5,7 +5,7 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pelunasan;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\PemesananPengadaan;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\PelunasanPengadaan;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -51,7 +51,7 @@ class Form extends Component
             $data->jumlah = $pemesananPengadaan->total_harga;
             $data->save();
 
-            JurnalClass::insert(
+            JurnalkeuanganClass::insert(
                 jenis: 'Pengeluaran',
                 sub_jenis: 'Pelunasan Pembelian Barang Dagang',
                 tanggal: $this->tanggal,

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\PemesananPengadaan;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pemesanan;
 
 use Livewire\Component;
 use App\Models\PemesananPengadaan;

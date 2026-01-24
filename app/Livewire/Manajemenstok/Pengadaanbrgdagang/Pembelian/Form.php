@@ -1,14 +1,14 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\PemesananPengadaan;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pemesanan;
 
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
 use App\Models\PemesananPengadaan;
 use App\Class\BarangClass;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
@@ -101,7 +101,7 @@ class Form extends Component
                 'pemesanan_pengadaan_id' => $data->id,
             ])->toArray());
             
-            JurnalClass::insert(
+            JurnalkeuanganClass::insert(
                 jenis: 'Pembelian',
                 sub_jenis: 'Pembelian Barang Dagang',
                 tanggal: $this->tanggal,

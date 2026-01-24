@@ -59,7 +59,7 @@
                                 console.log(e.target.value);
                                 $wire.set('barang_id', e.target.value);
                             });">
-                                <option value="" selected>-- Tidak Ada Barang --</option>
+                                <option value="" selected>-- Pilih Barang --</option>
                                 @foreach (collect($dataBarang)->sortBy('nama') as $row)
                                     <option value="{{ $row['id'] }}" data-nama="{{ $row['nama'] }}"
                                         data-harga="{{ number_format($row['harga'], 0, ',', '.') }}"

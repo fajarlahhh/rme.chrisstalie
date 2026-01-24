@@ -6,7 +6,7 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\KodeAkunNeraca;
 use Livewire\Attributes\Url;
-use App\Models\SaldoJurnalAudit;
+use App\Models\MutasiKeuangan;
 use App\Exports\LaporanbukubesarExport;
 
 class Index extends Component
@@ -32,7 +32,7 @@ class Index extends Component
     {
         $data = [];
         if ($this->kodeAkunId) {
-            $data = SaldoJurnalAudit::orderBy('periode')->orderBy('id')->where('kode_akun_id', $this->kodeAkunId)->where("periode", 'like', $this->bulan . '%')->get();
+            $data = MutasiKeuangan::orderBy('periode')->orderBy('id')->where('kode_akun_id', $this->kodeAkunId)->where("periode", 'like', $this->bulan . '%')->get();
         }
 
         return $data;

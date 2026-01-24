@@ -67,7 +67,7 @@ class Index extends Component
                     ->with([
                         'jurnalDetail' => fn($q) => $q->withoutGlobalScopes()->selectRaw("kode_akun_id, sum(debet) debet, sum(kredit) kredit")
                             ->whereHas(
-                                'jurnal',
+                                'jurnalKeuangan',
                                 fn($r) =>
                                 $r->whereRaw("DATE_FORMAT(tanggal, '%Y-%m') = ?", [$periode->format('Y-m')])
                             )

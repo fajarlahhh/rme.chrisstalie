@@ -3,20 +3,20 @@
 namespace App\Livewire\Jurnalkeuangan;
 
 use Livewire\Component;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
-use App\Models\Jurnal;
+use App\Models\JurnalKeuangan;
 use App\Models\KodeAkun;
 
 class Pindahsaldokas extends Component
 {
     use CustomValidationTrait;
-    public Jurnal $data;
+    public JurnalKeuangan $data;
     public $tanggal, $uraian, $sumber_dana_id, $tujuan_dana_id, $nilai;
     public  $dataKodeAkun = [];
 
-    public function mount(Jurnal $data)
+    public function mount(JurnalKeuangan $data)
     {
         $this->data = $data;
         if ($this->data->exists) {
@@ -39,7 +39,7 @@ class Pindahsaldokas extends Component
             'nilai' => 'required|numeric|min:0',
         ]);
         DB::transaction(function () {
-            JurnalClass::insert(
+            JurnalkeuanganClass::insert(
                 jenis: 'Koreksi',
                 sub_jenis: 'Pindah Saldo Kas',
                 tanggal: $this->tanggal,

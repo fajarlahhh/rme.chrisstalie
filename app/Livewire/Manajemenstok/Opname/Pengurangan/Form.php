@@ -6,7 +6,7 @@ use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Class\BarangClass;
-use App\Class\JurnalClass;
+use App\Class\JurnalkeuanganClass;
 use App\Models\StokKeluar;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
@@ -47,7 +47,7 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
-            if (Stok::where('barang_id', $this->barang_id)->where('no_batch', $this->barang['no_batch'])->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])->count() < $this->qty_keluar) {
+            if (Stok::where('barang_id', $this->barang['barang_id'])->where('no_batch', $this->barang['no_batch'])->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])->count() < $this->qty_keluar) {
                 session()->flash('error', 'Qty dikeluarkan melebihi stok yang tersedia');
                 return $this->render();
             }
@@ -63,7 +63,7 @@ class Form extends Component
             $data->koreksi = 1;
             $data->save();
 
-            Stok::where('barang_id', $this->barang_id)
+            Stok::where('barang_id', $this->barang['barang_id'])
                 ->where('no_batch', $this->barang['no_batch'])
                 ->where('tanggal_kedaluarsa', $this->barang['tanggal_kedaluarsa'])
                 ->limit($this->qty_keluar)->update([
@@ -74,14 +74,14 @@ class Form extends Component
             $hargaBeli = Stok::where('barang_id', $this->barang['barang_id'])
                 ->where('stok_keluar_id', $data->id)
                 ->sum('harga_beli');
-            $this->jurnal($data, $hargaBeli);
+            $this->jurnalKeuangan($data, $hargaBeli);
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return $this->redirect('/manajemenstok/opname/penambahan/index');
     }
 
-    private function jurnal($koreksi, $hargaBeli)
+    private function jurnalKeuangan($koreksi, $hargaBeli)
     {
         $detail[] = [
             'kode_akun_id' => $this->barang['kode_akun_id'],
@@ -94,7 +94,7 @@ class Form extends Component
             'kredit' => 0,
         ];
 
-        JurnalClass::insert(
+        JurnalkeuanganClass::insert(
             jenis: 'Koreksi',
             sub_jenis: 'Koreksi Pengeluaran Stok',
             tanggal: now(),
