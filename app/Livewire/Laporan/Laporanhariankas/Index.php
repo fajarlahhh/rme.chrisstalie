@@ -66,7 +66,7 @@ class Index extends Component
     public function render()
     {
         $dataPendapatan = $this->getPendapatan();
-        $dataPengeluaran = $this->getPengeluaran();
+        $dataPengeluaran = dd($this->getPengeluaran());
         return view('livewire.laporan.laporanhariankas.index', [
             'dataPendapatan' =>  $this->getPendapatan()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),
             'dataPengeluaran' =>  $this->getPengeluaran()->when($this->pengguna_id, fn($q) => $q->where('pengguna_id', $this->pengguna_id)),

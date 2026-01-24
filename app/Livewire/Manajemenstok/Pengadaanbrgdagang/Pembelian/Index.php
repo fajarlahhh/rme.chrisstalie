@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pemesanan;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pembelian;
 
 use Livewire\Component;
 use App\Models\PemesananPengadaan;
@@ -33,7 +33,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan_pengadaan.index', [
+        return view('livewire.manajemenstok.pengadaanbrgdagang.pembelian.index', [
             'data' => $this->status == 1 ? PermintaanPengadaan::with([
                 'pengguna.pegawai',
                 'permintaanPengadaanDetail.barangSatuan.satuanKonversi',

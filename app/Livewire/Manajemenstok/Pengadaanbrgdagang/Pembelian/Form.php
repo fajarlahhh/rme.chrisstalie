@@ -1,20 +1,15 @@
 <?php
 
-namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pemesanan;
+namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Pembelian;
 
-use App\Models\JurnalKeuangan;
 use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\Supplier;
 use App\Models\PemesananPengadaan;
-use App\Class\BarangClass;
 use App\Class\JurnalkeuanganClass;
-use Illuminate\Support\Str;
-use Illuminate\Validation\Rule;
 use Illuminate\Support\Facades\DB;
 use App\Models\PermintaanPengadaan;
 use App\Traits\CustomValidationTrait;
-use App\Models\PermintaanPengadaanDetail;
 
 class Form extends Component
 {
@@ -135,11 +130,11 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        $this->redirect('/manajemenstok/pengadaanbrgdagang/pemesanan_pengadaan');
+        $this->redirect('/manajemenstok/pengadaanbrgdagang/pembelian');
     }
 
     public function render()
     {
-        return view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan_pengadaan.form');
+        return view('livewire.manajemenstok.pengadaanbrgdagang.pembelian.form');
     }
 }
