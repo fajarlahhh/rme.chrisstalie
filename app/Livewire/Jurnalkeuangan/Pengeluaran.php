@@ -22,9 +22,9 @@ class Pengeluaran extends Component
         $this->data = $data;
         if ($this->data->exists) {
             $this->fill($this->data->toArray());
-            $this->sumber_dana_id = $this->data->jurnalDetail->firstWhere('kredit', '>', 0)->kode_akun_id;
-            $this->jenis_pengeluaran_id = $this->data->jurnalDetail->firstWhere('debet', '>', 0)->kode_akun_id;
-            $this->nilai = $this->data->jurnalDetail->sum('kredit');
+            $this->sumber_dana_id = $this->data->jurnalKeuanganDetail->firstWhere('kredit', '>', 0)->kode_akun_id;
+            $this->jenis_pengeluaran_id = $this->data->jurnalKeuanganDetail->firstWhere('debet', '>', 0)->kode_akun_id;
+            $this->nilai = $this->data->jurnalKeuanganDetail->sum('kredit');
         }
         $this->tanggal = date('Y-m-d');
         $this->dataJenisPengeluaran = KodeAkun::detail()->where('id', '!=', '21100')->whereIn('kategori', ['Beban'])->get()->toArray();

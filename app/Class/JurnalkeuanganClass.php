@@ -48,8 +48,8 @@ class JurnalkeuanganClass
         $jurnalKeuangan->pengguna_id = auth()->id();
         $jurnalKeuangan->save();
 
-        $jurnalKeuangan->jurnalDetail()->delete();
-        $jurnalKeuangan->jurnalDetail()->insert(collect($detail)->map(fn($q) => [
+        $jurnalKeuangan->jurnalKeuanganDetail()->delete();
+        $jurnalKeuangan->jurnalKeuanganDetail()->insert(collect($detail)->map(fn($q) => [
             'jurnal_keuangan_keuangan_keuangan_id' => $jurnalKeuangan->id,
             'debet' => $q['debet'],
             'kredit' => $q['kredit'],

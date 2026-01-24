@@ -59,7 +59,7 @@
                             <div class="stats-content">
                                 <div class="stats-title">PENGELUARAN BULAN INI</div>
                                 <div class="stats-number text-end">
-                                    {{ number_format($dataPengeluaranBulanIni->sum(fn($row) => $row->jurnalDetail->sum('kredit'))) }}
+                                    {{ number_format($dataPengeluaranBulanIni->sum(fn($row) => $row->jurnalKeuanganDetail->sum('kredit'))) }}
                                 </div>
                                 <div class="stats-progress progress">
                                     <div class="progress-bar" style="width: 100%;"></div>

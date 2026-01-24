@@ -47,18 +47,18 @@
                 <td>{{ $row->uraian }}</td>
                 <td>{{ $row->sub_jenis }}</td>
                 <td nowrap>
-                    {{ $row->jurnalDetail->whereIn('kode_akun_id', collect($dataKodeAkun)->pluck('id'))->first()->kodeAkun->nama }}
+                    {{ $row->jurnalKeuanganDetail->whereIn('kode_akun_id', collect($dataKodeAkun)->pluck('id'))->first()->kodeAkun->nama }}
                 </td>
                 <td nowrap>{{ $row['pengguna']['nama'] }}</td>
                 <td class="text-end">
-                    {{ $cetak ? $row->jurnalDetail->sum('kredit') : number_format($row->jurnalDetail->sum('kredit')) }}
+                    {{ $cetak ? $row->jurnalKeuanganDetail->sum('kredit') : number_format($row->jurnalKeuanganDetail->sum('kredit')) }}
                 </td>
             </tr>
         @endforeach
         <tr>
             <th colspan="7">TOTAL</th>
             <th class="text-end">
-                {{ $cetak ? $data->sum(fn($row) => $row->jurnalDetail->sum('kredit')) : number_format($data->sum(fn($row) => $row->jurnalDetail->sum('kredit'))) }}
+                {{ $cetak ? $data->sum(fn($row) => $row->jurnalKeuanganDetail->sum('kredit')) : number_format($data->sum(fn($row) => $row->jurnalKeuanganDetail->sum('kredit'))) }}
             </th>
         </tr>
     </tbody>

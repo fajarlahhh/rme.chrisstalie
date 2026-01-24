@@ -10,7 +10,7 @@ use App\Models\StokMasuk;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
 use Livewire\Attributes\On;
-use App\Models\JurnalDetail;
+use App\Models\JurnalKeuanganDetail;
 use App\Models\PembelianDetail;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;

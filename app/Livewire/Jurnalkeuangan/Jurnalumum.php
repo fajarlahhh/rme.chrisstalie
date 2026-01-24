@@ -22,7 +22,7 @@ class Jurnalumum extends Component
         $this->tanggal = date('Y-m-d');
         $this->dataKodeAkun = KodeAkun::detail()->with('parent')->get()->toArray();
         $this->fill($this->data->toArray());
-        $this->detail = $this->data->jurnalDetail->map(fn($q) => [
+        $this->detail = $this->data->jurnalKeuanganDetail->map(fn($q) => [
             'id' => $q->kode_akun_id,
             'debet' => $q->debet,
             'kredit' => $q->kredit,
@@ -87,8 +87,8 @@ class Jurnalumum extends Component
             $this->data->pengguna_id = auth()->id();
             $this->data->save();
 
-            $this->data->jurnalDetail()->delete();
-            $this->data->jurnalDetail()->insert(collect($this->detail)->map(fn($q) => [
+            $this->data->jurnalKeuanganDetail()->delete();
+            $this->data->jurnalKeuanganDetail()->insert(collect($this->detail)->map(fn($q) => [
                 'jurnal_keuangan_id' => $this->data->id,
                 'debet' => $q['debet'],
                 'kredit' => $q['kredit'],

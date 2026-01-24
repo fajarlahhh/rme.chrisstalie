@@ -383,7 +383,7 @@ class Form extends Component
     {
         $id = Str::uuid();
 
-        $jurnalDetail = collect($detail)->map(function ($q) use ($id) {
+        $jurnalKeuanganDetail = collect($detail)->map(function ($q) use ($id) {
             return [
                 'jurnal_keuangan_id' => $id,
                 'debet' => $q['debet'],
@@ -405,7 +405,7 @@ class Form extends Component
             pemesanan_pengadaan_id: null,
             stok_masuk_id: null,
             stok_keluar_id: null,
-            detail: collect($jurnalDetail)->groupBy('kode_akun_id')->map(function ($q) {
+            detail: collect($jurnalKeuanganDetail)->groupBy('kode_akun_id')->map(function ($q) {
                 return [
                     'debet' => $q->sum('debet'),
                     'kredit' => $q->sum('kredit'),

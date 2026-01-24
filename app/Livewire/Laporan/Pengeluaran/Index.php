@@ -38,8 +38,8 @@ class Index extends Component
 
     public function getData()
     {
-        $query = JurnalKeuangan::with('jurnalDetail.kodeAkun', 'pengguna.pegawai')
-            ->whereHas('jurnalDetail', function ($query) {
+        $query = JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.pegawai')
+            ->whereHas('jurnalKeuanganDetail', function ($query) {
                 $query->whereIn('kode_akun_id', collect($this->dataKodeAkun)->pluck('id'));
             })
             ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])
@@ -62,7 +62,7 @@ class Index extends Component
                 })
                 ->when($this->metode_bayar, function ($collection) {
                     return $collection->filter(function ($item) {
-                        return $item->jurnalDetail->contains(function ($detail) {
+                        return $item->jurnalKeuanganDetail->contains(function ($detail) {
                             // $this->metode_bayar may be string or array, handle both
                             if (is_array($this->metode_bayar)) {
                                 return in_array($detail->kode_akun_id, $this->metode_bayar);

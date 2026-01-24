@@ -9,7 +9,7 @@ use Livewire\Component;
 use App\Models\KodeAkun;
 use App\Models\PemesananPengadaan;
 use App\Models\Pembayaran;
-use App\Models\JurnalDetail;
+use App\Models\JurnalKeuanganDetail;
 use Livewire\Attributes\Url;
 
 class Home extends Component
@@ -73,8 +73,8 @@ class Home extends Component
 
     public function getDataPengeluaranBulanIni()
     {
-        return JurnalKeuangan::with('jurnalDetail.kodeAkun', 'pengguna.pegawai')
-            ->whereHas('jurnalDetail', function ($query) {
+        return JurnalKeuangan::with('jurnalKeuanganDetail.kodeAkun', 'pengguna.pegawai')
+            ->whereHas('jurnalKeuanganDetail', function ($query) {
                 $query->whereIn('kode_akun_id', KodeAkun::where('parent_id', '11100')->get()->pluck('id'));
             })
             ->whereIn('jenis', ['Pembelian', 'Pengeluaran'])

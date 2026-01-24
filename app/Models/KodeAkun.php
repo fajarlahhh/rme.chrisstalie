@@ -20,9 +20,9 @@ class KodeAkun extends Model
         return $this->belongsTo(KodeAkun::class, 'parent_id');
     }
 
-    public function jurnalDetail()
+    public function jurnalKeuanganDetail()
     {
-        return $this->hasMany(JurnalDetail::class);
+        return $this->hasMany(JurnalKeuanganDetail::class);
     }
 
     public function children()

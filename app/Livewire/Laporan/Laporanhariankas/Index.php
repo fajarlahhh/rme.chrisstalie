@@ -11,7 +11,7 @@ use App\Models\Pengguna;
 use App\Models\Pembayaran;
 use App\Models\Expenditure;
 use App\Models\MetodeBayar;
-use App\Models\JurnalDetail;
+use App\Models\JurnalKeuanganDetail;
 use Livewire\Attributes\Url;
 
 class Index extends Component

@@ -111,7 +111,7 @@ class Index extends Component
 
     private function jurnalPendapatan($pembayaran, $metodeBayar, $hpp)
     {
-        $jurnalDetail = [];
+        $jurnalKeuanganDetail = [];
 
         // foreach (
         //     collect($this->barang)->groupBy('kode_akun_penjualan_id')->map(fn($q) => [
@@ -119,25 +119,25 @@ class Index extends Component
         //         'total' => $q->sum(fn($q) => $q['harga'] * $q['qty']),
         //     ]) as $barang
         // ) {
-        //     $jurnalDetail[] = [
+        //     $jurnalKeuanganDetail[] = [
         //         'debet' => 0,
         //         'kredit' => $barang['total'],
         //         'kode_akun_id' => $barang['kode_akun_id']
         //     ];
         // }
         if ($this->diskon > 0) {
-            $jurnalDetail[] = [
+            $jurnalKeuanganDetail[] = [
                 'debet' => $this->diskon,
                 'kredit' => 0,
                 'kode_akun_id' => '44000'
             ];
         }
-        $jurnalDetail[] = [
+        $jurnalKeuanganDetail[] = [
             'debet' => $this->total_tagihan,
             'kredit' => 0,
             'kode_akun_id' => $metodeBayar->kode_akun_id
         ];
-        $jurnalDetail = array_merge($jurnalDetail, collect($hpp)->map(function ($q) {
+        $jurnalKeuanganDetail = array_merge($jurnalKeuanganDetail, collect($hpp)->map(function ($q) {
             return [
                 'kode_akun_id' => $q['kode_akun_id'],
                 'debet' =>  $q['debet'],
@@ -158,7 +158,7 @@ class Index extends Component
             penggajian_id: null,
             pelunasan_pemesanan_pengadaan_id: null,
             stok_keluar_id: null,
-            detail: $jurnalDetail
+            detail: $jurnalKeuanganDetail
         );
     }
 

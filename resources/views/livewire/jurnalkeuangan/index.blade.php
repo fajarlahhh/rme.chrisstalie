@@ -71,7 +71,7 @@
                                         <th class="text-end w-100px p-1">Debet</th>
                                         <th class="text-end w-100px p-1">Kredit</th>
                                     </tr>
-                                    @foreach ($row->jurnalDetail as $j => $subRow)
+                                    @foreach ($row->jurnalKeuanganDetail as $j => $subRow)
                                         <tr>
                                             <td class="p-1  text-nowrap">
                                                 {{ $subRow->kode_akun_id . ' - ' . $subRow->kodeAkun?->nama }}
@@ -85,9 +85,9 @@
                                     <tr>
                                         <th class="p-1">Total</th>
                                         <th class="p-1 text-end">
-                                            {{ number_format($row->jurnalDetail->sum('debet'), 2) }}</th>
+                                            {{ number_format($row->jurnalKeuanganDetail->sum('debet'), 2) }}</th>
                                         <th class="p-1 text-end">
-                                            {{ number_format($row->jurnalDetail->sum('kredit'), 2) }}</th>
+                                            {{ number_format($row->jurnalKeuanganDetail->sum('kredit'), 2) }}</th>
                                     </tr>
                                 </table>
                             </td>

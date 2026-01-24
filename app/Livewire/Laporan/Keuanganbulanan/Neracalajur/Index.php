@@ -3,7 +3,7 @@
 namespace App\Livewire\Laporan\Keuanganbulanan\Neracalajur;
 
 use App\Exports\LaporanneracalajurExport;
-use App\Models\JurnalDetail;
+use App\Models\JurnalKeuanganDetail;
 use Livewire\Component;
 use Livewire\Attributes\Url;
 use App\Models\KodeAkun;
@@ -32,7 +32,7 @@ class Index extends Component
                 $q->where('periode', $bulanIni . '-01');
             }
         ])
-            ->with(['jurnalDetail' => function ($q) use ($bulanIni) {
+            ->with(['jurnalKeuanganDetail' => function ($q) use ($bulanIni) {
                 $q->whereHas('jurnalKeuangan', function ($q) use ($bulanIni) {
                     $q->where('tanggal', 'like', $bulanIni . '%');
                 });
@@ -44,8 +44,8 @@ class Index extends Component
                     'laba_rugi' => $q->laba_rugi,
                     'saldo_debet' => $q->kodeAkunNeraca->sum('debet') ?? 0,
                     'saldo_kredit' => $q->kodeAkunNeraca->sum('kredit') ?? 0,
-                    'jurnal_debet' => $q->jurnalDetail->sum('debet') ?? 0,
-                    'jurnal_kredit' => $q->jurnalDetail->sum('kredit') ?? 0,
+                    'jurnal_debet' => $q->jurnalKeuanganDetail->sum('debet') ?? 0,
+                    'jurnal_kredit' => $q->jurnalKeuanganDetail->sum('kredit') ?? 0,
                 ];
             });
         $labaRugi = $dataKodeAkun->filter(fn($q) => $q['kategori'] == 'Pendapatan')->sum(fn($q) => $q['jurnal_kredit'] - $q['jurnal_debet']) - $dataKodeAkun->filter(fn($q) => $q['kategori'] == 'Beban')->sum(fn($q) => $q['jurnal_debet'] - $q['jurnal_kredit']);

@@ -27,7 +27,7 @@ class Index extends Component
 
     public function getData()
     {
-        return JurnalKeuangan::with(['jurnalDetail.kodeAkun', 'pengguna.pegawai'])
+        return JurnalKeuangan::with(['jurnalKeuanganDetail.kodeAkun', 'pengguna.pegawai'])
             ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
             ->where('tanggal', 'like', $this->bulan . '%')
             ->where(

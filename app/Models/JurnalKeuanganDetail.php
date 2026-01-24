@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use App\Models\KodeAkun;
 
-class JurnalDetail extends Model
+class JurnalKeuanganDetail extends Model
 {
     //
     protected $table = 'jurnal_keuangan_keuangan_detail';

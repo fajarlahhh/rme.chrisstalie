@@ -65,7 +65,7 @@ class Index extends Component
                         ->where("periode", $periode->format('Y-m-01'))
                 ])
                     ->with([
-                        'jurnalDetail' => fn($q) => $q->withoutGlobalScopes()->selectRaw("kode_akun_id, sum(debet) debet, sum(kredit) kredit")
+                        'jurnalKeuanganDetail' => fn($q) => $q->withoutGlobalScopes()->selectRaw("kode_akun_id, sum(debet) debet, sum(kredit) kredit")
                             ->whereHas(
                                 'jurnalKeuangan',
                                 fn($r) =>
@@ -79,14 +79,14 @@ class Index extends Component
 
                 if ($dataAkun) {
                     $labaRugi = $dataAkun->filter(fn($q) => $q['kategori'] == 'Pendapatan')->sum(
-                        fn($q) => ($q->jurnalDetail->sum('kredit')) - ($q->jurnalDetail->sum('debet'))
+                        fn($q) => ($q->jurnalKeuanganDetail->sum('kredit')) - ($q->jurnalKeuanganDetail->sum('debet'))
                     ) - $dataAkun->filter(fn($q) => $q['kategori'] == 'Beban')->sum(
-                        fn($q) => ($q->jurnalDetail->sum('debet')) - ($q->jurnalDetail->sum('kredit'))
+                        fn($q) => ($q->jurnalKeuanganDetail->sum('debet')) - ($q->jurnalKeuanganDetail->sum('kredit'))
                     );
 
                     foreach ($dataAkun as $key => $row) {
-                        $debetJurnal = $row->jurnalDetail->sum('debet');
-                        $kreditJurnal = $row->jurnalDetail->sum('kredit');
+                        $debetJurnal = $row->jurnalKeuanganDetail->sum('debet');
+                        $kreditJurnal = $row->jurnalKeuanganDetail->sum('kredit');
 
                         $saldoDebet = sizeof($row->kodeAkunNeraca) > 0 ? $row->kodeAkunNeraca->sum('debet') : 0;
                         $saldoKredit = sizeof($row->kodeAkunNeraca) > 0 ? $row->kodeAkunNeraca->sum('kredit') : 0;

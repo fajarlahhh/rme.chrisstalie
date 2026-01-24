@@ -89,12 +89,12 @@ class Form extends Component
             $penggajian->pengguna_id = auth()->id();
             $penggajian->save();
 
-            $jurnalDetail = collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->groupBy('kode_akun_id')->map(fn($q) => [
+            $jurnalKeuanganDetail = collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->groupBy('kode_akun_id')->map(fn($q) => [
                 'debet' => $q->sum('nilai'),
                 'kredit' => 0,
                 'kode_akun_id' => $q->first()['kode_akun_id'],
             ])->toArray();
-            $jurnalDetail[] = [
+            $jurnalKeuanganDetail[] = [
                 'debet' => 0,
                 'kredit' => collect($this->detail)->pluck('pegawai_unsur_gaji')->flatten(1)->sum('nilai'),
                 'kode_akun_id' => $this->metode_bayar,
@@ -113,7 +113,7 @@ class Form extends Component
                 pembayaran_id: null,
                 pelunasan_pemesanan_pengadaan_id: null,
                 stok_keluar_id: null,
-                detail: collect($jurnalDetail)->values()->toArray()
+                detail: collect($jurnalKeuanganDetail)->values()->toArray()
             );
 
             session()->flash('success', 'Berhasil menyimpan data');
