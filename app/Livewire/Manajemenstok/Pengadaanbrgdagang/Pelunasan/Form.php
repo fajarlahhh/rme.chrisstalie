@@ -57,7 +57,7 @@ class Form extends Component
                 tanggal: $this->tanggal,
                 uraian: $this->uraian,
                 system: 1,
-                foreign_key: 'pelunasan_pemesanan_pengadaan_id',
+                foreign_key: 'pelunasan_pengadaan_id',
                 foreign_id: $data->id,
                 detail: [
                     [
