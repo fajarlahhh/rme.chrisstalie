@@ -48,12 +48,14 @@
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px">{{ $row->pengguna->nama }}</td>
-                            @role('administrator|supervisor')
-                                @if (\Carbon\Carbon::now()->format('Y-m') == \Carbon\Carbon::parse($row->created_at)->format('Y-m'))
-                                    <x-action :row="$row" :detail="false" :edit="false" :information="false"
-                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
-                                @endif
-                            @endrole
+                            <td class="with-btn-group text-end" nowrap>
+                                @role('administrator|supervisor')
+                                    @if (\Carbon\Carbon::now()->format('Y-m') == \Carbon\Carbon::parse($row->created_at)->format('Y-m'))
+                                        <x-action :row="$row" :detail="false" :edit="false" :information="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    @endif
+                                @endrole
+                            </td>
                         </tr>
                     @empty
                         <tr>

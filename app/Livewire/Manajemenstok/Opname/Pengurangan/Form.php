@@ -78,7 +78,7 @@ class Form extends Component
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
-        return $this->redirect('/manajemenstok/opname/penambahan/index');
+        return $this->redirect('/manajemenstok/opname/pengurangan');
     }
 
     private function keuanganJurnal($koreksi, $hargaBeli)
