@@ -31,7 +31,7 @@ class Form extends Component
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
-                        'pegawai_id' => $kepegawaianPegawai['id'],
+                        'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
                         'nilai' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
                         'kode_akun_id' => $item['id'],
                         'kode_akun_nama' => $item['nama'],
@@ -39,7 +39,7 @@ class Form extends Component
                     ];
                 }
                 $this->detail[] = [
-                    'pegawai_id' => $kepegawaianPegawai['id'],
+                    'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
                     'nama' => $kepegawaianPegawai['nama'],
                     'pegawai_unsur_gaji' => $unsurGaji,
                 ];
@@ -57,7 +57,7 @@ class Form extends Component
                 $unsurGaji = [];
                 foreach ($this->dataUnsurGaji as $item) {
                     $unsurGaji[] = [
-                        'pegawai_id' => $kepegawaianPegawai['id'],
+                        'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
                         'nilai' => collect($kepegawaianPegawai['pegawai_unsur_gaji'])->where('kode_akun_id', $item['id'])->first()['nilai'] ?? 0,
                         'kode_akun_id' => $item['id'],
                         'kode_akun_nama' => $item['nama'],
@@ -65,7 +65,7 @@ class Form extends Component
                     ];
                 }
                 $this->detail[] = [
-                    'pegawai_id' => $kepegawaianPegawai['id'],
+                    'kepegawaian_pegawai_id' => $kepegawaianPegawai['id'],
                     'nama' => $kepegawaianPegawai['nama'],
                     'pegawai_unsur_gaji' => $unsurGaji,
                 ];

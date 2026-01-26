@@ -11,7 +11,7 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $dataPegawai = [];
-    public $pegawai_id, $tanggal, $keterangan, $izin;
+    public $kepegawaian_pegawai_id, $tanggal, $keterangan, $izin;
 
     public function mount()
     {
@@ -21,19 +21,19 @@ class Form extends Component
     public function submit()
     {
         $this->validateWithCustomMessages([
-            'pegawai_id' => ['required'],
+            'kepegawaian_pegawai_id' => ['required'],
             'tanggal' => ['required'],
             'keterangan' => 'required',
         ]);
-        if (KepegawaianAbsensi::where('id', $this->tanggal . '-' . $this->pegawai_id)->exists()) {
+        if (KepegawaianAbsensi::where('id', $this->tanggal . '-' . $this->kepegawaian_pegawai_id)->exists()) {
             session()->flash('danger', 'Data sudah ada');
         } else {
             $data = new KepegawaianAbsensi();
-            $data->id = $this->tanggal . '-' . $this->pegawai_id;
+            $data->id = $this->tanggal . '-' . $this->kepegawaian_pegawai_id;
             $data->tanggal = $this->tanggal;
             $data->izin = $this->izin;
             $data->keterangan = $this->keterangan;
-            $data->pegawai_id = $this->pegawai_id;
+            $data->kepegawaian_pegawai_id = $this->kepegawaian_pegawai_id;
             $data->pengguna_id = auth()->id();
             $data->save();
             session()->flash('success', 'Berhasil menyimpan data');

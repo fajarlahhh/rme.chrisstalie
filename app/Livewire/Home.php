@@ -25,7 +25,7 @@ class Home extends Component
     public function getDataJadwalShiftPegawai()
     {
         $detail = [];
-        $kepegawaianAbsensi = KepegawaianAbsensi::where('pegawai_id', auth()->user()->pegawai_id)->where('tanggal', 'like', $this->bulanShift . '%')->get();
+        $kepegawaianAbsensi = KepegawaianAbsensi::where('kepegawaian_pegawai_id', auth()->user()->kepegawaian_pegawai_id)->where('tanggal', 'like', $this->bulanShift . '%')->get();
         if (!$this->bulanShift || !preg_match('/^\d{4}-\d{2}$/', $this->bulanShift)) {
             $this->bulanShift = date('Y-m');
         }
@@ -86,7 +86,7 @@ class Home extends Component
         return view(
             'livewire.home',
             [
-                'dataJadwalShiftPegawai' => auth()->user()->pegawai_id ? $this->getDataJadwalShiftPegawai() : [],
+                'dataJadwalShiftPegawai' => auth()->user()->kepegawaian_pegawai_id ? $this->getDataJadwalShiftPegawai() : [],
                 'dataPembayaranBulanIni' => $this->getDataPembayaranBulanIni(),
                 'dataPengeluaranBulanIni' => $this->getDataPengeluaranBulanIni(),
                 'dataPengadaanBarangJatuhTempo' => $this->getDataPengadaanBarangJatuhTempo(),

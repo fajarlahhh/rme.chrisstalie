@@ -9,7 +9,7 @@ use Livewire\Attributes\Url;
 class Index extends Component
 {
     #[Url]
-    public $tanggal1, $tanggal2, $jenis = 'Rekap', $pegawai_id;
+    public $tanggal1, $tanggal2, $jenis = 'Rekap', $kepegawaian_pegawai_id;
     public $dataPegawai = [];
 
     public function mount()
@@ -18,12 +18,12 @@ class Index extends Component
         $this->tanggal2 = $this->tanggal2 ?: date('Y-m-t');
         $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
         $this->jenis = $this->jenis ?: 'Rekap';
-        $this->pegawai_id = $this->pegawai_id ?: null;
+        $this->kepegawaian_pegawai_id = $this->kepegawaian_pegawai_id ?: null;
     }
 
     public function updatedJenis()
     {
-        $this->pegawai_id = null;
+        $this->kepegawaian_pegawai_id = null;
     }
 
     public function print()
@@ -34,7 +34,7 @@ class Index extends Component
             'tanggal2' => $this->tanggal2,
             'data' => $this->getData(),
             'jenis' => $this->jenis,
-            'pegawai_id' => collect($this->dataPegawai)->where('id', $this->pegawai_id)->first(),
+            'kepegawaian_pegawai_id' => collect($this->dataPegawai)->where('id', $this->kepegawaian_pegawai_id)->first(),
         ])->render();
         session()->flash('cetak', $cetak);
     }
@@ -43,7 +43,7 @@ class Index extends Component
     {
         return KepegawaianPegawai::with(['kepegawaianAbsensi' => function ($query) {
             $query->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2]);
-        }])->when($this->jenis == 'Per KepegawaianPegawai', fn($q) => $q->where('id', $this->pegawai_id))->get()->toArray();
+        }])->when($this->jenis == 'Per KepegawaianPegawai', fn($q) => $q->where('id', $this->kepegawaian_pegawai_id))->get()->toArray();
     }
 
     public function render()

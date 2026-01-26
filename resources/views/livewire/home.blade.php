@@ -70,7 +70,7 @@
                 @endrole
             </div>
         </div>
-        @if (auth()->user()->pegawai_id)
+        @if (auth()->user()->kepegawaian_pegawai_id)
             <div class="col-sm-12 col-md-12 col-lg-12 col-xl-6 col-xxl-6 col-xs-12">
                 <div class="panel panel-inverse" data-sortable-id="index-6">
                     <div class="panel-heading ui-sortable-handle">

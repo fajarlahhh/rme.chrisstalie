@@ -13,7 +13,7 @@ class KepegawaianAbsensi extends Model
     protected $table = 'kepegawaian_absensi';
     public $incrementing = false;
     protected $keyType = 'string';
-    protected $fillable = ['pegawai_id', 'tanggal', 'masuk', 'pulang', 'izin'];
+    protected $fillable = ['kepegawaian_pegawai_id', 'tanggal', 'masuk', 'pulang', 'izin'];
 
 
     public function kepegawaianPegawai(): BelongsTo

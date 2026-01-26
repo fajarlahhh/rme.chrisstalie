@@ -12,13 +12,13 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $dataPegawai = [], $kepegawaianPegawai;
-    public $nama, $ihs, $nik, $alamat, $no_hp, $dokter = false, $pegawai_id;
+    public $nama, $ihs, $nik, $alamat, $no_hp, $dokter = false, $kepegawaian_pegawai_id;
 
     public function updatedPegawaiId($value)
     {
         $this->reset('nama', 'ihs', 'nik', 'alamat', 'no_hp', 'dokter');
         if ($value) {
-            $this->kepegawaianPegawai = KepegawaianPegawai::find($this->pegawai_id);
+            $this->kepegawaianPegawai = KepegawaianPegawai::find($this->kepegawaian_pegawai_id);
             $this->nama = $this->kepegawaianPegawai->nama;
             $this->ihs = $this->kepegawaianPegawai->ihs;
             $this->nik = $this->kepegawaianPegawai->nik;
@@ -31,7 +31,7 @@ class Form extends Component
 
     public function submit()
     {
-        if (!$this->pegawai_id) {
+        if (!$this->kepegawaian_pegawai_id) {
             $this->validateWithCustomMessages([
                 'nama' => 'required',
                 'nik' => 'required',
@@ -41,9 +41,9 @@ class Form extends Component
         }
 
         DB::transaction(function () {
-            $this->data->pegawai_id = $this->pegawai_id;
+            $this->data->kepegawaian_pegawai_id = $this->kepegawaian_pegawai_id;
             $this->data->ihs = $this->ihs;
-            if (!$this->pegawai_id) {
+            if (!$this->kepegawaian_pegawai_id) {
                 $this->data->nama = $this->nama;
                 $this->data->nik = $this->nik;
                 $this->data->alamat = $this->alamat;

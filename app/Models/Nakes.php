@@ -22,7 +22,7 @@ class Nakes extends Model
 
     public function getNamaAttribute()
     {
-        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+        if ($this->kepegawaian_pegawai_id && $this->kepegawaianPegawai) {
             return $this->kepegawaianPegawai->nama;
         }
         return $this->attributes['nama'] ?? null;
@@ -30,7 +30,7 @@ class Nakes extends Model
 
     public function getNikAttribute()
     {
-        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+        if ($this->kepegawaian_pegawai_id && $this->kepegawaianPegawai) {
             return $this->kepegawaianPegawai->nik;
         }
         return $this->attributes['nik'] ?? null;
@@ -38,7 +38,7 @@ class Nakes extends Model
 
     public function getAlamatAttribute()
     {
-        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+        if ($this->kepegawaian_pegawai_id && $this->kepegawaianPegawai) {
             return $this->kepegawaianPegawai->alamat;
         }
         return $this->attributes['alamat'] ?? null;
@@ -46,7 +46,7 @@ class Nakes extends Model
     
     public function getNoHpAttribute()
     {
-        if ($this->pegawai_id && $this->kepegawaianPegawai) {
+        if ($this->kepegawaian_pegawai_id && $this->kepegawaianPegawai) {
             return $this->kepegawaianPegawai->no_hp;
         }
         return $this->attributes['no_hp'] ?? null;

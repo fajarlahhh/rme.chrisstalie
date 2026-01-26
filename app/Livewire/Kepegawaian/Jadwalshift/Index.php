@@ -15,7 +15,7 @@ class Index extends Component
 {
     use CustomValidationTrait;
     #[Url]
-    public $cari, $bulan, $pegawai_id;
+    public $cari, $bulan, $kepegawaian_pegawai_id;
     public $dataPegawai = [], $dataShift = [], $detail = [];
 
     public function mount()
@@ -23,8 +23,8 @@ class Index extends Component
         $this->bulan = $this->bulan ?: date('Y-m');
         $this->dataShift = Shift::orderBy('nama')->get()->toArray();
         $this->dataPegawai = KepegawaianPegawai::orderBy('nama')->get()->toArray();
-        $this->pegawai_id = $this->pegawai_id ?: $this->dataPegawai[0]['id'];
-        $this->getDetail($this->bulan, $this->pegawai_id);
+        $this->kepegawaian_pegawai_id = $this->kepegawaian_pegawai_id ?: $this->dataPegawai[0]['id'];
+        $this->getDetail($this->bulan, $this->kepegawaian_pegawai_id);
     }
 
     public function updatedBulan()
@@ -41,7 +41,7 @@ class Index extends Component
     {
         $this->reset('detail');
 
-        $kepegawaianAbsensi = KepegawaianAbsensi::where('pegawai_id', $this->pegawai_id)->where('tanggal', 'like', $this->bulan . '%')->get();
+        $kepegawaianAbsensi = KepegawaianAbsensi::where('kepegawaian_pegawai_id', $this->kepegawaian_pegawai_id)->where('tanggal', 'like', $this->bulan . '%')->get();
         if (!$this->bulan || !preg_match('/^\d{4}-\d{2}$/', $this->bulan)) {
             $this->bulan = date('Y-m');
         }
@@ -73,7 +73,7 @@ class Index extends Component
     {
         $this->validateWithCustomMessages(
             [
-                'pegawai_id' => 'required',
+                'kepegawaian_pegawai_id' => 'required',
                 'bulan' => 'required',
                 'detail.*.shift_id' => 'required_if:detail.*.absen,true',
             ]
@@ -84,8 +84,8 @@ class Index extends Component
                 collect($this->detail)->map(function ($q) {
                     $shift = collect($this->dataShift)->where('id', $q['shift_id'])->first();
                     return [
-                        'id' => $q['tanggal'] . '-' . $this->pegawai_id,
-                        'pegawai_id' => $this->pegawai_id,
+                        'id' => $q['tanggal'] . '-' . $this->kepegawaian_pegawai_id,
+                        'kepegawaian_pegawai_id' => $this->kepegawaian_pegawai_id,
                         'tanggal' => $q['tanggal'],
                         'jam_masuk' => $q['absen'] === false ? null : $shift['jam_masuk'],
                         'jam_pulang' => $q['absen'] === false ? null : $shift['jam_pulang'],
@@ -111,7 +111,7 @@ class Index extends Component
                     if ($q['absen'] === true) {
                         KepegawaianAbsensi::insert([
                             'id' => $q['id'],
-                            'pegawai_id' => $q['pegawai_id'],
+                            'kepegawaian_pegawai_id' => $q['kepegawaian_pegawai_id'],
                             'tanggal' => $q['tanggal'],
                             'jam_masuk' => $q['jam_masuk'],
                             'jam_pulang' => $q['jam_pulang'],

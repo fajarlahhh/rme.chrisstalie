@@ -22,8 +22,8 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="pegawai_id">Pegawai</label>
-                    <select wire:model.live="pegawai_id" id="pegawai_id" class="form-control">
+                    <label class="form-label" for="kepegawaian_pegawai_id">Pegawai</label>
+                    <select wire:model.live="kepegawaian_pegawai_id" id="kepegawaian_pegawai_id" class="form-control">
                         <option value="">-- Pilih Pegawai --</option>
                         @foreach ($dataPegawai as $row)
                             <option value="{{ $row['id'] }}">
@@ -31,7 +31,7 @@
                             </option>
                         @endforeach
                     </select>
-                    @error('pegawai_id')
+                    @error('kepegawaian_pegawai_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
@@ -48,7 +48,7 @@
                                     <input class="form-check-input mb-1" type="checkbox" value="1"
                                         wire:model.live="detail.{{ $i }}.absen"
                                         x-model="$wire.detail[{{ $i }}].absen"
-                                        @if (!$pegawai_id) disabled @endif />
+                                        @if (!$kepegawaian_pegawai_id) disabled @endif />
                                     <p class="card-text">
                                         {{ \Carbon\Carbon::parse($row['tanggal'])->format('d M Y') }}
                                     </p>

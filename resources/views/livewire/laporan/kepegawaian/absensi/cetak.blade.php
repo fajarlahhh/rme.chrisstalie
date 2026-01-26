@@ -110,7 +110,7 @@
         </tbody>
     </table>
 @else
-    @if ($pegawai_id)
+    @if ($kepegawaian_pegawai_id)
         <table class="table table-bordered table-hover">
             <thead>
                 <tr>

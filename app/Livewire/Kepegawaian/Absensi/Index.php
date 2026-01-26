@@ -15,7 +15,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $tanggal1, $tanggal2, $pegawai_id;
+    public $cari, $tanggal1, $tanggal2, $kepegawaian_pegawai_id;
     public $dataPegawai = [];
 
     public function mount()
@@ -106,7 +106,7 @@ class Index extends Component
             if ($data) {
                 array_push($dataKehadiran, [
                     'id' => $this->parse($data, "<DateTime>", "</DateTime>") . '-' . (int)$this->parse($data, "<PIN>", "</PIN>"),
-                    'pegawai_id' => (int)$this->parse($data, "<PIN>", "</PIN>"),
+                    'kepegawaian_pegawai_id' => (int)$this->parse($data, "<PIN>", "</PIN>"),
                     'waktu' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 11, 8),
                     'tanggal' =>  substr($this->parse($data, "<DateTime>", "</DateTime>"), 0, 10),
                     'kode' => $this->parse($data, "<Status>", "</Status>"),
@@ -141,7 +141,7 @@ class Index extends Component
     {
         return view('livewire.kepegawaian.absensi.index', [
             'data' => KepegawaianAbsensi::with(['kepegawaianPegawai.kepegawaianKehadiran'])
-                ->when($this->pegawai_id, fn($q) => $q->where('pegawai_id', $this->pegawai_id))
+                ->when($this->kepegawaian_pegawai_id, fn($q) => $q->where('kepegawaian_pegawai_id', $this->kepegawaian_pegawai_id))
                 ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                 ->when(
                     $this->cari,

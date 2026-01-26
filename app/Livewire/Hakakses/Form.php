@@ -15,7 +15,7 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $dataRole = [], $pegawaiData = [];
-    public $uid, $nama, $pegawai_id, $password, $role, $hakAkses = [];
+    public $uid, $nama, $kepegawaian_pegawai_id, $password, $role, $hakAkses = [];
 
     public function submit()
     {
@@ -23,7 +23,7 @@ class Form extends Component
             'hakAkses' => 'required',
             'role' => 'required',
             'uid' => 'required|unique:pengguna,uid,' . $this->data->id,
-            'pegawai_id' => 'required',
+            'kepegawaian_pegawai_id' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -36,7 +36,7 @@ class Form extends Component
                 $this->data->password = Hash::make($this->uid);
             }
             $this->data->nama = $this->nama;
-            $this->data->pegawai_id = $this->pegawai_id;
+            $this->data->kepegawaian_pegawai_id = $this->kepegawaian_pegawai_id;
             $this->data->save();
 
             $this->data->syncPermissions($this->hakAkses);

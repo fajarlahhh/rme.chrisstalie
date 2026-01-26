@@ -59,7 +59,7 @@
                 <div class="col-md-10">
                     <div class="panel-heading-btn float-end">
                         <div class="input-group w-100">
-                            <select class="form-control w-auto" wire:model="pegawai_id">
+                            <select class="form-control w-auto" wire:model="kepegawaian_pegawai_id">
                                 <option value="">Semua Pegawai</option>
                                 @foreach ($dataPegawai as $row)
                                     <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>

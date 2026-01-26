@@ -21,7 +21,7 @@
                         @if ($data->exists)
                             <div class="mb-3">
                                 <label class="form-label">Nama</label>
-                                @if (!$this->data->pegawai_id)
+                                @if (!$this->data->kepegawaian_pegawai_id)
                                     <input class="form-control" type="text" wire:model="nama"
                                         @if ($data->exists) disabled @endif />
                                 @else
@@ -43,14 +43,14 @@
                                     style: '',
                                     showSubtext: true,
                                     styleBase: 'form-control'
-                                })" class="form-control" wire:model="pegawai_id"
+                                })" class="form-control" wire:model="kepegawaian_pegawai_id"
                                     data-width="100%">
                                     <option selected value="">-- Tidak Ada Pegawai --</option>
                                     @foreach ($pegawaiData as $item)
                                         <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                                     @endforeach
                                 </select>
-                                @error('pegawai_id')
+                                @error('kepegawaian_pegawai_id')
                                     <span class="text-danger">{{ $message }}</span>
                                 @enderror
                             </div>

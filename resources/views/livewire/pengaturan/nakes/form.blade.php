@@ -30,21 +30,21 @@
                         showSubtext: true,
                         styleBase: 'form-control'
                     })"
-                        wire:model.lazy="pegawai_id" data-width="100%">
+                        wire:model.lazy="kepegawaian_pegawai_id" data-width="100%">
                         <option selected value="">-- Bukan Pegawai --</option>
                         @foreach ($dataPegawai as $item)
                             <option value="{{ $item['id'] }}" data-subtext="{{ $item['nik'] }}">
                                 {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
-                    @error('pegawai_id')
+                    @error('kepegawaian_pegawai_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label">No. KTP</label>
                     <input class="form-control" type="number" step="1" maxlength="16" minlength="16"
-                        wire:model="nik" @if ($pegawai_id) disabled @endif />
+                        wire:model="nik" @if ($kepegawaian_pegawai_id) disabled @endif />
                     @error('nik')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -59,7 +59,7 @@
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
                     <input class="form-control" type="text" wire:model="nama"
-                        @if ($pegawai_id) disabled @endif />
+                        @if ($kepegawaian_pegawai_id) disabled @endif />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -67,7 +67,7 @@
                 <div class="mb-3">
                     <label class="form-label">Alamat</label>
                     <input class="form-control" type="text" wire:model="alamat"
-                        @if ($pegawai_id) disabled @endif />
+                        @if ($kepegawaian_pegawai_id) disabled @endif />
                     @error('alamat')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -75,7 +75,7 @@
                 <div class="mb-3">
                     <label class="form-label">No. Hp</label>
                     <input class="form-control" type="text" wire:model="no_hp"
-                        @if ($pegawai_id) disabled @endif />
+                        @if ($kepegawaian_pegawai_id) disabled @endif />
                     @error('no_hp')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror

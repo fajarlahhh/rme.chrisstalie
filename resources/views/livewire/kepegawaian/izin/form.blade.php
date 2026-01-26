@@ -22,7 +22,7 @@
                 <div class="mb-3">
                     <label class="form-label" for="pegawai">Pegawai</label>
                     <div wire:ignore>
-                        <select wire:model="pegawai_id" id="pegawai_id" class="form-control">
+                        <select wire:model="kepegawaian_pegawai_id" id="kepegawaian_pegawai_id" class="form-control">
                             <option value="" selected hidden>-- Pilih Pegawai --</option>
                             @foreach ($dataPegawai as $row)
                                 <option value="{{ $row['id'] }}">
@@ -31,7 +31,7 @@
                             @endforeach
                         </select>
                     </div>
-                    @error('pegawai_id')
+                    @error('kepegawaian_pegawai_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

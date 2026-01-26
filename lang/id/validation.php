@@ -213,7 +213,7 @@ return [
         
         // Data Pegawai/Nakes
         'nakes_id' => 'Tenaga Kesehatan',
-        'pegawai_id' => 'Pegawai',
+        'kepegawaian_pegawai_id' => 'Pegawai',
         
         // Penjualan/Transaksi
         'metode_bayar' => 'Metode Pembayaran',

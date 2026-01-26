@@ -32,7 +32,7 @@
                     <input type="date" autocomplete="off" wire:model.lazy="tanggal2" id="tanggal"
                         class="form-control w-auto">&nbsp;
                     @if ($jenis == 'Per Pegawai')
-                        <select class="form-control" wire:model.lazy="pegawai_id">
+                        <select class="form-control" wire:model.lazy="kepegawaian_pegawai_id">
                             <option value="">-- Pilih Pegawai --</option>
                             @foreach ($dataPegawai as $row)
                                 <option value="{{ $row['id'] }}">{{ $row['nama'] }}</option>
