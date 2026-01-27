@@ -8,9 +8,14 @@
             if (is_numeric($angka)) {
                 // Cek apakah ada angka dibelakang koma (floating, bukan integer)
                 if (fmod($angka, 1) != 0) {
-                    return $angka;
+                    // Pecah integer dan koma
+                    $parts = explode('.', (string) $angka);
+                    $integer = $parts[0];
+                    $decimal = $parts[1] ?? '';
+                    // Tambah pemisah ribuan pada integer, jaga presisi koma original
+                    return number_format($integer, 0) . ($decimal !== '' ? '.' . $decimal : '');
                 } else {
-                    return number_format($angka, 0, ',', '.');
+                    return number_format($angka);
                 }
             }
             return $angka;
