@@ -35,16 +35,16 @@
                                     var qty = option.data('qty');
                                     if (!nama) return state.text;
                                     return $(`
-                                                                                                                                                                    <div>
-                                                                                                                                                                        <div style='font-weight:bold'>${nama}</div>
-                                                                                                                                                                        <div style='font-size:90%;color:#6c757d'>
-                                                                                                                                                                            Harga Beli : ${harga} <br/>
-                                                                                                                                                                            Tgl. Kedaluarsa : ${tglExp} <br/>
-                                                                                                                                                                            Batch : ${batch} <br/>
-                                                                                                                                                                            Qty : ${qty} ${satuan} <br/>
-                                                                                                                                                                        </div>
-                                                                                                                                                                    </div>
-                                                                                                                                                                `);
+                                                                                                                                                                                                <div>
+                                                                                                                                                                                                    <div style='font-weight:bold'>${nama}</div>
+                                                                                                                                                                                                    <div style='font-size:90%;color:#6c757d'>
+                                                                                                                                                                                                        Harga Beli : ${harga} <br/>
+                                                                                                                                                                                                        Tgl. Kedaluarsa : ${tglExp} <br/>
+                                                                                                                                                                                                        Batch : ${batch} <br/>
+                                                                                                                                                                                                        Qty : ${qty} ${satuan} <br/>
+                                                                                                                                                                                                    </div>
+                                                                                                                                                                                                </div>
+                                                                                                                                                                                            `);
                                 },
                                 templateSelection: function(state) {
                                     if (!state.id) return state.text;
@@ -94,7 +94,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Qty Dikeluarkan (Dalam Satuan {{ $barang['satuan'] ?? '' }})</label>
-                    <input type="number" class="form-control" wire:model="qty_keluar" min="1" autocomplete="off">
+                    <input type="number" class="form-control" wire:model="qty_keluar" min="1"
+                        max="{{ $barang['qty'] }}" autocomplete="off">
                     @error('qty_keluar')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
