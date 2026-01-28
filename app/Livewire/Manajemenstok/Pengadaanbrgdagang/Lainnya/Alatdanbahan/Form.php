@@ -98,6 +98,7 @@ class Form extends Component
                     $stokMasuk = new StokMasuk();
                     $stokMasuk->tanggal = $this->tanggal;
                     $stokMasuk->qty = $value['qty'];
+                    $stokMasuk->harga_beli = $value['harga_beli'];
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
                     $stokMasuk->barang_id = $value['barang_id'];

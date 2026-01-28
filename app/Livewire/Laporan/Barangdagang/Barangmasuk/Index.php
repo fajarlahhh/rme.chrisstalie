@@ -46,14 +46,14 @@ class Index extends Component
                             'barang' => $q->barang->nama,
                             'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
                             'no_batch' => $q->no_batch,
-                            'metode_bayar' => $q->pengadaanPemesanan->pembayaran? ($q->pengadaanPemesanan->pembayaran == 'Lunas' ? $q->pengadaanPemesanan->kodeAkun->nama : 'Jatuh Tempo') : '<span class="text-danger">Koreksi</span>',
+                            'metode_bayar' => $q->pengadaanPemesanan ? ($q->pengadaanPemesanan->pembayaran ? ($q->pengadaanPemesanan->pembayaran == 'Lunas' ? $q->pengadaanPemesanan->kodeAkun->nama : 'Jatuh Tempo') : '<span class="text-danger">Koreksi</span>') : '',
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
-                            'harga_beli' => $q->pengadaanPemesanan->pengadaanPemesananDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
+                            'harga_beli' => $q->harga_beli,
                             'qty' => $q->qty,
-                            'total' => $q->qty * $q->pengadaanPemesanan->pengadaanPemesananDetail->where('barang_id', $q->barang_id)->first()->harga_beli,
-                            'supplier' => $q->pengadaanPemesanan->supplier?->nama,
-                            'uraian' => $q->pengadaanPemesanan->uraian,
-                            'operator' => $q->pengguna->kepegawaianPegawai->nama,
+                            'total' => $q->qty * $q->harga_beli,
+                            'supplier' => $q->pengadaanPemesanan ? $q->pengadaanPemesanan->supplier?->nama : '',
+                            'uraian' => $q->pengadaanPemesanan ? $q->pengadaanPemesanan->uraian : '',
+                            'operator' => $q->pengguna->nama,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
