@@ -32,7 +32,7 @@ class Index extends Component
         $this->getDetail();
     }
 
-    public function updatedPegawaiId()
+    public function updatedKepegawaianPegawaiId()
     {
         $this->getDetail();
     }
