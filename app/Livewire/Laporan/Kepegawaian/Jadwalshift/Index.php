@@ -29,7 +29,14 @@ class Index extends Component
 
     private function getData()
     {
-        return KepegawaianAbsensi::with('kepegawaianPegawai')->where('tanggal', 'like', $this->bulan . '%')->get();
+        return KepegawaianPegawai::with(['kepegawaianAbsensi' => function ($query) {
+            $query->where('tanggal', 'like', $this->bulan . '%');
+        }])->get()->map(function ($q) {
+            return [
+                'nama' => $q->nama,
+                'kepegawaian_absensi' => $q->kepegawaianAbsensi,
+            ];
+        })->toArray();
     }
 
     public function render()

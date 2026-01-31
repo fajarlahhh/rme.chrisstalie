@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Kepegawaian\KepegawaianPenggajian;
+namespace App\Livewire\Kepegawaian\Penggajian;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
@@ -25,7 +25,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.penggajian.index', [
-            'data' => KepegawaianPenggajian::with('kodeAkunPembayaran','pengguna.kepegawaianPegawai')->where('periode', 'like', $this->tahun . '%')->orderBy('periode', 'desc')->get()
+            'data' => KepegawaianPenggajian::with('kodeAkunPembayaran','kepegawaianPegawai','pengguna.kepegawaianPegawai')->where('periode', 'like', $this->tahun . '%')->orderBy('periode', 'desc')->get()
         ]);
     }
 }

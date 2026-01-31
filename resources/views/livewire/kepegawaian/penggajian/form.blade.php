@@ -18,94 +18,76 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <div class="mb-3">
-                    <label class="form-label">Tanggal</label>
-                    <input class="form-control" type="date" wire:model="tanggal" />
-                    @error('tanggal')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Periode</label>
-                    <input class="form-control" type="month" wire:model.live="periode" />
-                    @error('periode')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
-                </div>
-                @if ($detail != [])
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th class="w-5px" rowspan="2">No.</th>
-                                <th rowspan="2">Nama</th>
-                                <th colspan="{{ collect($dataUnsurGaji)->count() }}">
-                                    Unsur Gaji
-                                </th>
-                                <th rowspan="2">Total</th>
-                            </tr>
-                            <tr>
-                                @foreach ($dataUnsurGaji as $unsurGaji)
-                                    <th> {{ $unsurGaji['nama'] }}
-                                    </th>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-3">
+                            <label class="form-label">Tanggal</label>
+                            <input class="form-control" type="date" wire:model="tanggal" />
+                            @error('tanggal')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Periode</label>
+                            <input class="form-control" type="month" wire:model.live="periode" />
+                            @error('periode')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Pegawai</label>
+                            <select class="form-control" wire:model.live="pegawai_id">
+                                <option selected hidden>-- Pilih Pegawai --</option>
+                                @foreach ($dataPegawai as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                                 @endforeach
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                            </tr>
-                            @foreach ($detail as $index => $item)
-                                <tr>
-                                    <td>{{ $loop->iteration }}</td>
-                                    <td> {{ $item['nama'] }}
-                                    </td>
-                                    @foreach ($item['pegawai_unsur_gaji'] as $subIndex => $subItem)
-                                        <td>
-                                            <input class="form-control text-end" type="text"
-                                                wire:model.lazy="detail.{{ $index }}.pegawai_unsur_gaji.{{ $subIndex }}.nilai" />
-                                        </td>
+                            </select>
+                        </div>
+                        <div class="mb-3">
+                            <label class="form-label">Metode Pembayaran</label>
+                            <select class="form-control" wire:model="metode_bayar">
+                                <option selected hidden>-- Pilih Metode Pembayaran --</option>
+                                @foreach (collect($dataKodeAkun)->where('parent_id', '11100') as $item)
+                                    <option value="{{ $item['id'] }}">{{ $item['id'] . ' - ' . $item['nama'] }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="alert alert-info">
+                            <h4>Komponen Gaji</h4>
+                            <hr>
+                            <table class="table">
+                                <tbody>
+                                    @foreach ($detail as $index => $row)
+                                        <tr>
+                                            <td>
+                                                @if ($row['kode_akun_id'] == null)
+                                                    <select class="form-control" required
+                                                        wire:model="detail.{{ $index}}.kode_akun_id">
+                                                        <option value="">-- Pilih Komponen Lainnya --</option>
+                                                        @foreach (collect($dataKodeAkun)->where('kategori', 'Beban') as $subRow)
+                                                            <option value="{{ $subRow['id'] }}">
+                                                                {{ $subRow['id'] . ' - ' . $subRow['nama'] }}</option>
+                                                        @endforeach
+                                                    </select>
+                                                @else
+                                                    <input type="text" class="form-control"
+                                                        value="{{ $row['kode_akun_id'] . ' - ' . $row['kode_akun_nama'] }}"
+                                                        disabled>
+                                                @endif
+                                            </td>
+                                            <td>
+                                                <input type="text" class="form-control" required
+                                                    wire:model="detail.{{ $index }}.debet" autocomplete="off">
+                                            </td>
+                                        </tr>
                                     @endforeach
-                                    <td>
-                                        <input class="form-control text-end" type="text"
-                                            value="{{ number_format(collect($item['pegawai_unsur_gaji'])->sum('nilai')) }}"
-                                            disabled />
-                                    </td>
-                                </tr>
-                            @endforeach
-                        </tbody>
-                        <tfoot>
-                            <tr>
-                                <th colspan="{{ collect($dataUnsurGaji)->count() + 2 }}">Total</th>
-                                @foreach ($maxPegawai['pegawai_unsur_gaji'] ?? [] as $subItem)
-                                    <th>
-                                        <input class="form-control text-end" type="text"
-                                            value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->firstWhere('kode_akun_id', $subItem['kode_akun_id'])['nilai'] ?? 0)) }}"
-                                            disabled />
-                                    </th>
-                                @endforeach
-                                <th>
-                                    <input class="form-control text-end" type="text"
-                                        value="{{ number_format(collect($detail)->sum(fn($p) => collect($p['pegawai_unsur_gaji'])->sum('nilai'))) }}"
-                                        disabled />
-                                </th>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-                    <div class="mb-3">
-                        <label class="form-label">Metode Bayar</label>
-                        <select class="form-control" wire:model="metode_bayar">
-                            <option selected hidden>-- Pilih Metode Bayar --</option>
-                            @foreach ($dataKodeAkun as $item)
-                                <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
-                                </option>
-                            @endforeach
-                        </select>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
-                @else
-                    <div class="alert alert-warning text-center">
-                        <h5>Penggajian pada periode {{ $periode }} sudah pernah dibuat</h5>
-                    </div>
-                @endif
+                </div>
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
@@ -121,9 +103,9 @@
                 </button>
                 <x-alert />
             </div>
+        </form>
     </div>
-    </form>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

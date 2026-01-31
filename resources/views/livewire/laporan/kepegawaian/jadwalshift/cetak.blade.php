@@ -20,11 +20,12 @@
         <tr>
             <th rowspan="2">No.</th>
             <th rowspan="2">Pegawai</th>
-            <th rowspan="2">Jadwal Shift</th>
+            <th colspan="3">Jadwal Shift</th>
         </tr>
         <tr>
-            <th>Sakit</th>
-            <th>Izin</th>
+            <th>Tanggal</th>
+            <th>Masuk</th>
+            <th>Pulang</th>
         </tr>
     </thead>
     <tbody>
@@ -33,16 +34,22 @@
         @endphp
         @foreach ($data as $key => $row)
             <tr>
-                <td>{{ ++$no }}</td>
-                <td>{{ $row['nama'] }}</td>
-                <td>{{ count($row['kepegawaianAbsensi']) }}</td>
-                <td>{{ collect($row['kepegawaianAbsensi'])->whereNotNull('masuk')->count() }}</td>
-                <td>{{ collect($row['kepegawaianAbsensi'])->whereNotNull('masuk')->where('jam_masuk', '>', 'masuk')->count() }}
-                </td>
-                <td>{{ collect($row['kepegawaianAbsensi'])->whereNull('masuk')->count() }}</td>
-                <td>{{ collect($row['kepegawaianAbsensi'])->where('izin', 'Sakit')->count() }}</td>
-                <td>{{ collect($row['kepegawaianAbsensi'])->where('izin', 'Izin')->count() }}</td>
+                <td rowspan="{{ collect($row['kepegawaian_absensi'])->count() + 1 }}">{{ ++$no }}</td>
+                <td rowspan="{{ collect($row['kepegawaian_absensi'])->count() + 1 }}">{{ $row['nama'] }}</td>
             </tr>
+            @foreach ($row['kepegawaian_absensi'] as $key => $subRow)
+                <tr>
+                    @if ($subRow['jam_masuk'])
+                        <td>{{ $subRow['tanggal'] }}</td>
+                        <td>{{ $subRow['jam_masuk'] }}</td>
+                        <td>{{ $subRow['jam_pulang'] }}</td>
+                    @else
+                        <td>{{ $subRow['tanggal'] }}</td>
+                        <td></td>
+                        <td></td>
+                    @endif
+                </tr>
+            @endforeach
         @endforeach
     </tbody>
 </table>

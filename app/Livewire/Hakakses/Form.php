@@ -23,7 +23,6 @@ class Form extends Component
             'hakAkses' => 'required',
             'role' => 'required',
             'uid' => 'required|unique:pengguna,uid,' . $this->data->id,
-            'kepegawaian_pegawai_id' => 'required',
         ]);
 
         DB::transaction(function () {

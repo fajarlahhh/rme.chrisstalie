@@ -42,7 +42,7 @@
                     <td>{{ $row['nama'] }}</td>
                     <td>
                         @php
-                            $hariKerja = collect($row['kepegawaianAbsensi'])->whereNotNull('masuk')->count();
+                            $hariKerja = collect($row['kepegawaian_absensi'])->count();
                         @endphp
                         @if ($hariKerja > 0)
                             <strong>{{ $hariKerja }}</strong>
@@ -52,7 +52,7 @@
                     </td>
                     <td>
                         @php
-                            $kepegawaianKehadiran = collect($row['kepegawaianAbsensi'])->whereNotNull('masuk')->count();
+                            $kepegawaianKehadiran = collect($row['kepegawaian_absensi'])->whereNotNull('masuk')->count();
                         @endphp
                         @if ($kepegawaianKehadiran > 0)
                             <strong>{{ $kepegawaianKehadiran }}</strong>
@@ -62,7 +62,7 @@
                     </td>
                     <td class="bg-red-100">
                         @php
-                            $tanpaKeterangan = collect($row['kepegawaianAbsensi'])->whereNull('masuk')->count();
+                            $tanpaKeterangan = collect($row['kepegawaian_absensi'])->whereNull('masuk')->count();
                         @endphp
                         @if ($tanpaKeterangan > 0)
                             <strong>{{ $tanpaKeterangan }}</strong>
@@ -72,7 +72,7 @@
                     </td>
                     <td class="bg-orange-100">
                         @php
-                            $telat = collect($row['kepegawaianAbsensi'])
+                            $telat = collect($row['kepegawaian_absensi'])
                                 ->whereNotNull('masuk')
                                 ->map(function ($item) {
                                     return $item['masuk'] > $item['jam_masuk'] ? 1 : 0;
@@ -87,7 +87,7 @@
                     </td>
                     <td>
                         @php
-                            $sakit = collect($row['kepegawaianAbsensi'])->where('izin', 'Sakit')->count();
+                            $sakit = collect($row['kepegawaian_absensi'])->where('izin', 'Sakit')->count();
                         @endphp
                         @if ($sakit > 0)
                             <strong>{{ $sakit }}</strong>
@@ -97,7 +97,7 @@
                     </td>
                     <td>
                         @php
-                            $izin = collect($row['kepegawaianAbsensi'])->where('izin', 'Izin')->count();
+                            $izin = collect($row['kepegawaian_absensi'])->where('izin', 'Izin')->count();
                         @endphp
                         @if ($izin > 0)
                             <strong>{{ $izin }}</strong>
@@ -126,7 +126,7 @@
                 </tr>
             </thead>
             <tbody>
-                @foreach (collect($data)->first()['kepegawaianAbsensi'] as $key => $row)
+                @foreach (collect($data)->first()['kepegawaian_absensi'] as $key => $row)
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $row['tanggal'] }}</td>

@@ -23,4 +23,9 @@ class KepegawaianPenggajian extends Model
     {
         return $this->belongsTo(Pengguna::class, 'pengguna_id');
     }
+
+    public function kepegawaianPegawai(): BelongsTo
+    {
+        return $this->belongsTo(KepegawaianPegawai::class);
+    }
 }

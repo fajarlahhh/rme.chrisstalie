@@ -17,19 +17,17 @@ class Index extends Component
 
     public function delete($id)
     {
-        if ($this->key != 1) {
+        if ($id != 1) {
             Pengguna::findOrFail($id)
                 ->delete();
-            $this->reset(['key']);
         }
     }
 
     public function permanentDelete($id)
     {
-        if ($this->key != 1) {
+        if ($id != 1) {
             Pengguna::findOrFail($id)
                 ->forceDelete();
-            $this->reset(['key']);
         }
     }
 

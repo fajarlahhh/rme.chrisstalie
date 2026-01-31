@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Livewire\Laporan\Kepegawaian\KepegawaianAbsensi;
+namespace App\Livewire\Laporan\Kepegawaian\Absensi;
 
 use Livewire\Component;
 use App\Models\KepegawaianPegawai;
@@ -28,7 +28,7 @@ class Index extends Component
 
     public function print()
     {
-        $cetak = view('livewire.laporan.kepegawaian.kepegawaianAbsensi.cetak', [
+        $cetak = view('livewire.laporan.kepegawaian.absensi.cetak', [
             'cetak' => true,
             'tanggal1' => $this->tanggal1,
             'tanggal2' => $this->tanggal2,
@@ -48,7 +48,7 @@ class Index extends Component
 
     public function render()
     {
-        return view('livewire.laporan.kepegawaian.kepegawaianAbsensi.index', [
+        return view('livewire.laporan.kepegawaian.absensi.index', [
             'data' => $this->getData(),
         ]);
     }
