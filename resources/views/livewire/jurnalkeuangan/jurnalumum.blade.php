@@ -176,6 +176,7 @@
                 dataKodeAkun: @js($dataKodeAkun),
                 detail: @js($detail),
                 errors: {},
+                jenis: @js($jenis),
                 sumDebet: 0,
                 sumKredit: 0,
                 loadingSubmit: false,
@@ -238,6 +239,7 @@
                                 $wire.set('detail', JSON.parse(JSON.stringify(this.detail)), true);
                                 $wire.set('tanggal', this.tanggal, true);
                                 $wire.set('uraian', this.uraian, true);
+                                $wire.set('jenis', this.jenis, true);
                             }
                         }
                     }
