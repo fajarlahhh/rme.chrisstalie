@@ -80,7 +80,7 @@ class Form extends Component
                 tanggal: $this->tanggal,
                 uraian: 'Gaji Bulan ' . $this->periode,
                 system: 1,
-                foreign_key: 'penggajian_id',
+                foreign_key: 'kepegawaian_penggajian_id',
                 foreign_id: $penggajian->id,
                 detail: collect($this->detail)->map(fn($q) => [
                     'debet' => $q['debet'],
