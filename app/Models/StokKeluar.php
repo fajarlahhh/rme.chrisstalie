@@ -19,7 +19,7 @@ class StokKeluar extends Model
 
     public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(Pengguna::class);
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
     
     public function pembayaran(): BelongsTo

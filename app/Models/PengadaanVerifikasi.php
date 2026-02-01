@@ -11,6 +11,6 @@ class PengadaanVerifikasi extends Model
 
     public function pengguna()
     {
-        return $this->belongsTo(Pengguna::class);
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 }

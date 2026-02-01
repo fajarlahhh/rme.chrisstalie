@@ -41,7 +41,7 @@ class PengadaanPemesanan extends Model
 
     public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(Pengguna::class);
+        return $this->belongsTo(Pengguna::class)->withTrashed();
     }
 
     public function keuanganJurnal(): HasOne
