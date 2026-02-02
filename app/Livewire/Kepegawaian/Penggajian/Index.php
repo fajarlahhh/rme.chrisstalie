@@ -9,11 +9,11 @@ use App\Models\KepegawaianPenggajian;
 class Index extends Component
 {
     #[Url]
-    public $cari, $tahun;
+    public $cari, $bulan;
 
     public function mount()
     {
-        $this->tahun = $this->tahun ?: date('Y');
+        $this->bulan = $this->bulan ?: date('Y-m');
     }
 
     public function delete($id)
@@ -25,7 +25,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.kepegawaian.penggajian.index', [
-            'data' => KepegawaianPenggajian::with('kodeAkunPembayaran','kepegawaianPegawai','pengguna.kepegawaianPegawai')->where('periode', 'like', $this->tahun . '%')->orderBy('periode', 'desc')->get()
+            'data' => KepegawaianPenggajian::with('kodeAkunPembayaran','kepegawaianPegawai','pengguna.kepegawaianPegawai')->where('periode', 'like', $this->bulan . '%')->orderBy('periode', 'desc')->get()
         ]);
     }
 }

@@ -20,8 +20,8 @@
                 <div class="col-md-10">
                     <div class="panel-heading-btn float-end">
                         <div class="input-group w-100">
-                            <input class="form-control w-auto" type="number" autocomplete="off"
-                                wire:model.lazy="tahun" />
+                            <input class="form-control w-auto" type="month" autocomplete="off"
+                                wire:model.lazy="bulan" />
                         </div>
                     </div>
                 </div>
