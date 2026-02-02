@@ -27,12 +27,9 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
-                        <th>Deskripsi Permintaan</th>
+                        <th>Deskripsi</th>
                         <th>History Verifikasi</th>
                         <th class="w-600px">Detail</th>
-                        @if ($status == 'Terverifikasi')
-                            <th>Status Pembelian</th>
-                        @endif
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -43,18 +40,18 @@
                             <td>{{ $item->deskripsi }}</td>
                             <td>
                                 <ul>
-                                    @foreach ($item->pengadaanVerifikasi as $pengadaanVerifikasi)
+                                    @foreach ($item->pengadaanVerifikasi as $verifikasi)
                                         <li>
-                                            @if ($pengadaanVerifikasi->status == 'Disetujui')
+                                            @if ($verifikasi->status == 'Disetujui')
                                                 <span class="badge bg-success">Disetujui</span>
                                             @else
                                                 <span class="badge bg-danger">Ditolak
-                                                    {{ ' - ' . $pengadaanVerifikasi->catatan }}</span>
+                                                    {{ ' - ' . $verifikasi->catatan }}</span>
                                             @endif
                                             <br>
                                             <small>
-                                                {{ $pengadaanVerifikasi->pengguna->nama }}<br>
-                                                {{ $pengadaanVerifikasi->waktu_verifikasi }}
+                                                {{ $verifikasi->pengguna->nama }}<br>
+                                                {{ $verifikasi->waktu_verifikasi }}
                                             </small>
                                         </li>
                                     @endforeach
@@ -91,23 +88,14 @@
                                     </tbody>
                                 </table>
                             </td>
-                            @if ($status == 'Terverifikasi')
-                                <td class="text-center">
-                                    @if ($item->pengadaanPemesanan)
-                                        <span class="badge bg-success">Sudah Pembelian</span>
-                                    @else
-                                        <span class="badge bg-warning">Belum Pembelian</span>
-                                    @endif
-                                </td>
-                            @endif
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if ($item->pengadaanPemesanan)
+                                    @if ($item->pengadaanVerifikasi->count() > 0 )
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else
-                                        <x-action :row="$item" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @endif
                                 @endrole
                             </td>
@@ -121,7 +109,7 @@
         </div>
     </div>
     <x-alert />
-
+    
     <div wire:loading>
         <x-loading />
     </div>

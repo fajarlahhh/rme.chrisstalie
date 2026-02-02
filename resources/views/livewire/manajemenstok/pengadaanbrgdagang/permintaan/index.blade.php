@@ -118,11 +118,11 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($item->PengadaanVerifikasiPending->count() > 0)
+                                    @if ($item->pengadaanVerifikasiPending->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
-                                        @if ($item->PengadaanVerifikasiDisetujui->count() > 0 || $item->PengadaanVerifikasiDitolak->count() > 0)
+                                        @if ($item->pengadaanVerifikasiDisetujui->count() > 0 || $item->pengadaanVerifikasiDitolak->count() > 0)
                                             @if ($item->pengadaanPemesanan && $item->pengadaanPemesanan->stokMasuk->count() > 0)
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="false" :permanentDelete="false"
