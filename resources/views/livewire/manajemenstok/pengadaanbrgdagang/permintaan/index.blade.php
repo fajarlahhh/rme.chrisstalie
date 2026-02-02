@@ -21,9 +21,11 @@
                         <option value="Disetujui">Disetujui</option>
                         <option value="Ditolak">Ditolak</option>
                         <option value="Pending">Pending</option>
+                        <option value="Belum Kirim Verifikasi">Belum Kirim Verifikasi</option>
                     </select>&nbsp;
                     @if ($status == 'Disetujui')
-                        <input type="month" class="form-control w-200px" wire:model.lazy="bulan" max="{{ date('Y-m') }}" />&nbsp;
+                        <input type="month" class="form-control w-200px" wire:model.lazy="bulan"
+                            max="{{ date('Y-m') }}" />&nbsp;
                     @endif
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
@@ -75,12 +77,6 @@
                             </td>
                             <td>
                                 <ul>
-                                    @if ($item->pengadaanPemesanan)
-                                        <li>Pembelian</li>
-                                        @if ($item->pengadaanPemesanan->stokMasuk->count() > 0)
-                                            <li>Stok Masuk</li>
-                                        @endif
-                                    @endif
                                 </ul>
                             </td>
                             <td>
@@ -91,6 +87,7 @@
                                             <th class="p-1">Satuan</th>
                                             <th class="p-1">Qty Permintaan</th>
                                             <th class="p-1">Qty Disetujui</th>
+                                            <th class="p-1">Qty Dipesan</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -111,6 +108,9 @@
                                                 <td class="text-nowrap text-end w-80px p-1">
                                                     {{ $detail->qty_disetujui }}
                                                 </td>
+                                                <td class="text-nowrap text-end w-80px p-1">
+                                                    {{ $item->pengadaanPemesananDetail->where('barang_id', $detail->barang_id)->sum('qty') }}
+                                                </td>
                                             </tr>
                                         @endforeach
                                     </tbody>
@@ -118,12 +118,12 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($item->pengadaanVerifikasiPending->count() > 0)
+                                    @if ($item->pengadaanVerifikasi->whereNull('status')->count() > 0)
                                         <x-action :row="$item" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @else
-                                        @if ($item->pengadaanVerifikasiDisetujui->count() > 0 || $item->PengadaanVerifikasiDitolak->count() > 0)
-                                            @if ($item->pengadaanPemesanan && $item->pengadaanPemesanan->stokMasuk->count() > 0)
+                                        @if ($item->pengadaanVerifikasi->whereNotNull('status')->where('status', 'Disetujui')->count() > 0)
+                                            @if ($item->pengadaanPemesanan)
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="false" :permanentDelete="false"
                                                     :restore="false" :delete="false" />

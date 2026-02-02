@@ -12,7 +12,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $status = 'Pending', $bulan;
+    public $cari, $status = 'Belum Kirim Verifikasi', $bulan;
 
     public function updated()
     {
@@ -37,30 +37,32 @@ class Index extends Component
 
     private function getData()
     {
-        if ($this->status == 'Pending') {
-            $data = PengadaanPermintaan::with([
-                'pengguna.kepegawaianPegawai',
-                'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
-                'pengadaanPermintaanDetail.barangSatuan.barang',
-                'pengadaanPemesanan.stokMasuk',
-                'pengadaanVerifikasiPending',
-                'pengadaanVerifikasiDisetujui',
-                'pengadaanVerifikasiDitolak',
-                'pengadaanVerifikasi.pengguna'
-            ])
-                ->where(fn($q) => $q
-                    ->where('deskripsi', 'like', '%' . $this->cari . '%'))
-                ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
-                ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
-                    $q->whereNull('status');
-                })->orWhereDoesntHave('pengadaanVerifikasi'))
-                ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('pengadaanVerifikasiDitolak'))
-                ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('pengadaanVerifikasiDisetujui')->where('created_at', 'like', $this->bulan . '%'))
-                ->orderBy('created_at', 'desc')
-                ->get();
-            return $data;
-        } else {
-        }
+        $data = PengadaanPermintaan::with([
+            'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
+            'pengadaanPermintaanDetail.barangSatuan.barang',
+            'pengadaanPemesanan',
+            'pengadaanPemesananDetail',
+            'pengadaanVerifikasi.pengguna',
+            'pengguna'
+        ])
+            ->where(fn($q) => $q
+                ->where('deskripsi', 'like', '%' . $this->cari . '%'))
+            ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
+            ->when($this->status == 'Belum Kirim Verifikasi', fn($q) => $q->whereDoesntHave('pengadaanVerifikasi'))
+            ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
+                $q->whereNull('status');
+            })->orWhereDoesntHave('pengadaanVerifikasi'))
+            ->when($this->status == 'Ditolak', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
+                $q->whereNotNull('status');
+                $q->where('status', 'Ditolak');
+            }))
+            ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
+                $q->whereNotNull('status');
+                $q->where('status', 'Disetujui');
+            })->where('created_at', 'like', $this->bulan . '%'))
+            ->orderBy('created_at', 'desc')
+            ->paginate(10);
+        return $data;
     }
 
     public function render()

@@ -53,15 +53,11 @@ class Form extends Component
                 'harga_beli' => $q['harga_beli'],
                 'barang_id' => $q['barang_id'],
                 'barang_satuan_id' => $q['id'],
+                'pengadaan_permintaan_id' => $this->data->id,
                 'rasio_dari_terkecil' => $q['rasio_dari_terkecil'],
                 'harga_beli_terkecil' => $q['harga_beli'] / $q['rasio_dari_terkecil'],
                 'pengadaan_pemesanan_id' => $data->id,
             ])->toArray());
-            foreach ($this->barang as $q) {
-                $this->data->pengadaanPermintaanDetail()->where('barang_id', $q['barang_id'])->update([
-                    'qty_sudah_dipesan' => $q['qty'],
-                ]);
-            }
 
             $pengadaanVerifikasi = new PengadaanVerifikasi();
             $pengadaanVerifikasi->pengadaan_pemesanan_id = $data->id;
@@ -79,10 +75,6 @@ class Form extends Component
             return abort(404);
         }
         $this->fill($this->data->toArray());
-        $this->barangSudahDipesan = $data->pengadaanPemesanan?->pengadaanPemesananDetail->groupBy('barang_id')->map(fn($q) => [
-            'barang_id' => $q->first()->barang_id,
-            'qty' => $q->sum('qty'),
-        ])->toArray();
         $this->barang = $data->pengadaanPermintaanDetail->map(fn($q) => [
             'id' => $q->barang_satuan_id,
             'barang_id' => $q->barang_id,
@@ -90,7 +82,7 @@ class Form extends Component
             'satuan' => $q->barangSatuan->nama,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
             'qty_permintaan' => $q->qty_disetujui,
-            'qty_sudah_dipesan' => collect($this->barangSudahDipesan)->firstWhere('barang_id', $q->barang_id)['qty'] ?? 0,
+            'qty_sudah_dipesan' => $data->pengadaanPemesananDetail->where('barang_id', $q->barang_id)->sum('qty') ?? 0,
             'qty' => 0,
         ])->toArray();
         $this->dataSupplier = Supplier::whereNotNull('konsinyator')->orderBy('nama')->get()->toArray();

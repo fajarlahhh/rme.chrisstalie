@@ -14,11 +14,11 @@
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
                     <select class="form-select" wire:model.lazy="status">
-                        <option value="Belum Proses">Belum Proses</option>
-                        <option value="Sudah Proses">Sudah Proses</option>
+                        <option value="Belum Dipesan">Belum Dipesan</option>
+                        <option value="Sudah Dipesan">Sudah Dipesan</option>
                         <option value="Sudah Persetujuan">Sudah Persetujuan</option>
                     </select>&nbsp;
-                    @if ($status == 'Sudah Proses' || $status == 'Sudah Persetujuan')
+                    @if ($status == 'Sudah Dipesan' || $status == 'Sudah Persetujuan')
                         <input type="month" class="form-control w-auto" wire:model.lazy="bulan"
                             max="{{ date('Y-m') }}">
                         &nbsp;
@@ -30,7 +30,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
-            @if ($status == 'Belum Proses')
+            @if ($status == 'Belum Dipesan')
                 <table class="table table-hover">
                     <thead>
                         <tr>
@@ -52,7 +52,7 @@
                                                 <th>Barang</th>
                                                 <th>Satuan</th>
                                                 <th>Qty Permintaan</th>
-                                                <th>Qty Pemesanan</th>
+                                                <th>Qty Dipesan</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -71,7 +71,7 @@
                                                         {{ $detail->qty_disetujui }}
                                                     </td>
                                                     <td class="text-nowrap text-end w-80px">
-                                                        {{ $detail->qty_sudah_dipesan }}
+                                                        {{ $item->pengadaanPemesananDetail->where('barang_id', $detail->barang_id)->sum('qty') }}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -90,7 +90,7 @@
                         @endforeach
                     </tbody>
                 </table>
-            @else
+            @elseif ($status == 'Sudah Dipesan')
                 <table class="table table-hover">
                     <thead>
                         <tr>

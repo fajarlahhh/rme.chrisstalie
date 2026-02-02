@@ -103,7 +103,7 @@
                                         </td>
                                         <td>
                                             <input type="number" class="form-control" min="0" step="1"
-                                                x-model="row.harga_beli" @input="hitungTotal()">
+                                                x-model="row.harga_beli" @input="hitungTotal()" required>
                                         </td>
                                     </tr>
                                 </template>

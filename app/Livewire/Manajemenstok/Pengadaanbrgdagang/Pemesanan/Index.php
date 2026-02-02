@@ -15,7 +15,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $status = 'Belum Proses', $bulan;
+    public $cari, $status = 'Belum Dipesan', $bulan;
 
     public function updated()
     {
@@ -40,30 +40,29 @@ class Index extends Component
     }
     private function getData()
     {
-        if ($this->status == 'Belum Proses') {
+        if ($this->status == 'Belum Dipesan') {
             $data = PengadaanPermintaan::with([
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
                 'pengadaanPemesanan.stokMasuk',
+                'pengadaanPemesananDetail'
             ])
-                ->whereHas('pengadaanPermintaanDetail', function ($q) {
-                    $q->whereColumn(DB::raw('ifnull(qty_sudah_dipesan, 0)'), '<', 'qty_disetujui');
-                })
+                ->whereRaw('(select ifnull(sum(qty),0) from pengadaan_pemesanan_detail where pengadaan_permintaan_id = pengadaan_permintaan.id ) < (select sum(qty_disetujui) from pengadaan_permintaan_detail where pengadaan_permintaan_id = pengadaan_permintaan.id)')
                 ->where(fn($q) => $q
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))
                 ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             return $data;
-        } else {
+        } else if ($this->status == 'Sudah Dipesan') {
             $data = PengadaanPemesanan::with([
                 'supplier',
                 'pengguna.kepegawaianPegawai',
                 'pengadaanPemesananDetail.barangSatuan.barang',
                 'pengadaanPemesananDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaan',
-                'pengadaanVerifikasi.pengguna',
+                'pengadaanPemesananVerifikasi.pengguna',
             ])
                 ->whereHas('pengadaanPermintaan', function ($q) {
                     $q->where(fn($q) => $q
