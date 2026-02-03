@@ -19,7 +19,7 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="month" wire:model.lazy="month" />
+                    <input class="form-control" type="month" wire:model.lazy="month" min="2025-11" max="{{ date('Y-m') }}" />
                 </div>
             </div>
         </div>

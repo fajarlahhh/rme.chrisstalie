@@ -18,8 +18,8 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" wire:model.lazy="tanggal1" />&nbsp;
-                    <input class="form-control" type="date" wire:model.lazy="tanggal2" />&nbsp;
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1" />&nbsp;
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2" />&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari" placeholder="Cari">

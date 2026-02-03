@@ -26,7 +26,7 @@ class Index extends Component
         DB::transaction(function () {
             $bulanSelanjutnya = Carbon::parse($this->bulan . '-01')->addMonths(1)->format('Y-m-01');
 
-            $data = Barang::where('id', 22)->with(['stokAwal' => fn($q) => $q->where('tanggal', $this->bulan . '-01'), 'barangSatuanUtama'])
+            $data = Barang::with(['stokAwal' => fn($q) => $q->where('tanggal', $this->bulan . '-01'), 'barangSatuanUtama'])
                 ->with(['stokMasuk' => fn($q) => $q->with('barangSatuan')->where('tanggal', 'like',  $this->bulan . '%')])
                 ->with(['stokKeluar' => fn($q) => $q->with('barangSatuan')->where('tanggal', 'like',  $this->bulan . '%')])
                 ->get();

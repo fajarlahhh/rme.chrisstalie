@@ -17,7 +17,7 @@
                 Export</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="month" autocomplete="off" wire:model.lazy="bulan" class="form-control w-auto">
+                    <input type="month" autocomplete="off" wire:model.lazy="bulan" class="form-control w-auto" min="2025-11" max="{{ date('Y-m') }}">
                 </div>
             </div>
         </div>

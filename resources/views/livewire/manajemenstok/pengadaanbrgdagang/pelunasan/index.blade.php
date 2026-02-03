@@ -17,7 +17,7 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
+                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11" max="{{ date('Y-m') }}">
                     &nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"

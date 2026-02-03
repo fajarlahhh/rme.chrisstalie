@@ -19,7 +19,7 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" wire:model.lazy="tanggal" />
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal" />
                     &nbsp;
                     <select class="form-control" wire:model.lazy="pengguna_id">
                         <option value="">Semua Pengguna</option>

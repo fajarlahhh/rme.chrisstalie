@@ -19,9 +19,9 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" wire:model.lazy="date1" />
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="date1" />
                     &nbsp;s/d&nbsp;
-                    <input class="form-control" type="date" wire:model.lazy="date2" />
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="date2" />
                 </div>
             </div>
         </div>

@@ -17,9 +17,9 @@
                 Export</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="date" autocomplete="off" wire:model.lazy="tanggal1" id="tanggal"
+                    <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1" id="tanggal"
                         class="form-control w-auto">&nbsp;s/d&nbsp;
-                    <input type="date" autocomplete="off" wire:model.lazy="tanggal2" id="tanggal"
+                    <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2" id="tanggal"
                         class="form-control w-auto">&nbsp;
                     <select class="form-control w-auto" wire:model.lazy="pengguna_id">
                         @role('administrator|supervisor')

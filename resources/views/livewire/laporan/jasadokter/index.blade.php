@@ -15,9 +15,9 @@
                 Export</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" wire:model.lazy="tanggal1" />
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1" />
                     &nbsp;s/d&nbsp;
-                    <input class="form-control" type="date" wire:model.lazy="tanggal2" />
+                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2" />
                 </div>
             </div>
         </div>

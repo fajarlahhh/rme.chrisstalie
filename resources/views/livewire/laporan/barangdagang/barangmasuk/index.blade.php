@@ -27,8 +27,8 @@
                         <option value="pertransaksi">Per Transaksi</option>
                         <option value="perbarang">Per Barang</option>
                     </select>&nbsp;
-                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal1">&nbsp;s/d&nbsp;
-                    <input type="date" class="form-control w-auto" wire:model.lazy="tanggal2">
+                    <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" class="form-control w-auto" wire:model.lazy="tanggal1">&nbsp;s/d&nbsp;
+                    <input type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" class="form-control w-auto" wire:model.lazy="tanggal2">
                 </div>
             </div>
         </div>
