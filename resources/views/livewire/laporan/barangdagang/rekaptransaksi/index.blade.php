@@ -18,7 +18,7 @@
                 Cetak</a>
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan">
+                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11" max="{{ date('Y-m') }}">
                     &nbsp;
                     <select class="form-control w-auto" wire:model.lazy="persediaan">
                         <option value="">Semua Persediaan</option>

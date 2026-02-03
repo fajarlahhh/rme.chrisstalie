@@ -26,25 +26,28 @@ class Index extends Component
         DB::transaction(function () {
             $bulanSelanjutnya = Carbon::parse($this->bulan . '-01')->addMonths(1)->format('Y-m-01');
 
-            $data = Barang::with(['stokAwal' => fn($q) => $q->where('tanggal', $this->bulan . '-01')])
-                ->with(['stokMasuk' => fn($q) => $q->where('tanggal', 'like',  $this->bulan . '%')])
-                ->with(['stokKeluar' => fn($q) => $q->where('tanggal', 'like',  $this->bulan . '%')])
+            $data = Barang::where('id', 22)->with(['stokAwal' => fn($q) => $q->where('tanggal', $this->bulan . '-01'), 'barangSatuanUtama'])
+                ->with(['stokMasuk' => fn($q) => $q->with('barangSatuan')->where('tanggal', 'like',  $this->bulan . '%')])
+                ->with(['stokKeluar' => fn($q) => $q->with('barangSatuan')->where('tanggal', 'like',  $this->bulan . '%')])
                 ->get();
 
             StokAwal::where('tanggal', $bulanSelanjutnya)->delete();
-            StokAwal::insert($data->map(
+            $insert = $data->map(
                 fn($q) =>
                 [
                     'barang_id' => $q->id,
                     'tanggal' =>  $bulanSelanjutnya,
-                    'qty' => $q->stokAwal->sum('qty') + $q->stokMasuk->sum(fn($q) => $q['qty'] * $q['rasio_dari_terkecil']) - $q->stokKeluar->sum(fn($q) => $q['qty'] * $q['rasio_dari_terkecil']),
+                    'qty' => $q->stokAwal->sum('qty') +
+                        ($q->stokMasuk->sum(fn($r) => $r['qty'] *
+                        $r->barangSatuan->rasio_dari_terkecil / $q->barangSatuanUtama?->rasio_dari_terkecil)) -
+                        ($q->stokKeluar->sum(fn($r) => $r['qty'] *
+                        $r->barangSatuan->rasio_dari_terkecil / $q->barangSatuanUtama?->rasio_dari_terkecil)),
                     'pengguna_id' => auth()->id(),
                     'created_at' => now(),
                     'updated_at' => now(),
                 ]
-            )->toArray());
-
-
+            )->toArray();
+            StokAwal::insert($insert);
 
             $periode = Carbon::parse($this->bulan . '-01');
             $periodeSelanjutnya = Carbon::parse($this->bulan . '-01')->addMonths(1);
