@@ -31,7 +31,7 @@
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>&nbsp;
-                    <input type="month" autocomplete="off" wire:model.lazy="bulan" class="form-control w-auto" min="2025-11" max="{{ date('Y-m') }}">
+                    <input type="month" autocomplete="off" wire:model.lazy="bulan" class="form-control w-auto" min="2025-09" max="{{ date('Y-m') }}">
                 </div>
             </div>
         </div>

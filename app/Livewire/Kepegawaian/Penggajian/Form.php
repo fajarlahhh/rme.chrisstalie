@@ -78,7 +78,7 @@ class Form extends Component
                 jenis: 'Gaji',
                 sub_jenis: 'Pengeluaran',
                 tanggal: $this->tanggal,
-                uraian: 'Gaji Bulan ' . $this->periode,
+                uraian: 'Gaji Bulan ' . $this->periode . ' a/n ' . collect($this->dataPegawai)->where('id', $this->pegawai_id)->first()['nama'],
                 system: 1,
                 foreign_key: 'kepegawaian_penggajian_id',
                 foreign_id: $penggajian->id,
