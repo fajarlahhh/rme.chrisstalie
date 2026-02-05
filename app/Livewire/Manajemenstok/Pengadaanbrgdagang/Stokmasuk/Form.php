@@ -12,6 +12,7 @@ use Illuminate\Support\Str;
 use Livewire\Attributes\On;
 use App\Models\KeuanganJurnalDetail;
 use App\Models\PembelianDetail;
+use App\Models\PengadaanPemesananDetail;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 
@@ -19,24 +20,24 @@ class Form extends Component
 {
     use CustomValidationTrait;
     public $data, $dataPembelian = [], $barang = [];
-    public $pengadaan_pemesanan_id, $tanggal;
+    public $pengadaan_pemesanan_id;
 
 
-    public function updatedPembelianId($value)
+    public function updatedPengadaanPemesananId($value)
     {
         $this->barang = [];
         $stokMasuk = StokMasuk::where('pengadaan_pemesanan_id', $value)->get()->map(fn($q) => [
-            'id' => $q->barangSatuan->barang_id,
-            'qty_masuk' => $q->qty,
+            'barang_id' => $q->barang_id,
+            'qty' => $q->qty,
         ]);
-        $barang = PembelianDetail::where('pengadaan_pemesanan_id', $value)->with('barang')->get()->map(fn($q) => [
-            'id' => $q->barangSatuan->barang_id,
-            'nama' => $q->barangSatuan->barang->nama,
-            'kode_akun_id' => $q->barangSatuan->barang->kode_akun_id,
+        $barang = PengadaanPemesananDetail::where('pengadaan_pemesanan_id', $value)->with('barang')->get()->map(fn($q) => [
+            'id' => $q->barang_id,
+            'nama' => $q->barang->nama,
+            'kode_akun_id' => $q->barang->kode_akun_id,
             'barang_satuan_id' => $q->barang_satuan_id,
             'rasio_dari_terkecil' => $q->rasio_dari_terkecil,
-            'satuan' => $q->barangSatuan->nama . ($q->barangSatuan->konversi_satuan ? ' (' . $q->barangSatuan->konversi_satuan . ')' : ''),
-            'qty' => $q->qty - ($stokMasuk->where('id', ($q->barangSatuan->barang_id))->first()['qty_masuk'] ?? 0),
+            'satuan' => $q->barangSatuan->nama,
+            'qty' => $q->qty - ($stokMasuk->where('barang_id', ($q->barang_id))->sum('qty') ?? 0),
             'qty_masuk' => 0,
             'harga_beli' => $q->harga_beli,
             'harga_beli_terkecil' => $q->harga_beli_terkecil,
@@ -50,7 +51,7 @@ class Form extends Component
 
     public function mount()
     {
-        $this->dataPembelian = PengadaanPemesanan::select(DB::raw('pengadaan_pemesanan.id id'), 'tanggal', 'supplier_id', 'uraian')
+        $this->dataPembelian = PengadaanPemesanan::select(DB::raw('pengadaan_pemesanan.id id'), 'tanggal', 'supplier_id', 'uraian', 'nomor')
             ->leftJoin('pengadaan_pemesanan_detail', 'pengadaan_pemesanan.id', '=', 'pengadaan_pemesanan_detail.pengadaan_pemesanan_id')
             ->groupBy('pengadaan_pemesanan.id', 'tanggal', 'supplier_id', 'uraian')
             ->havingRaw('SUM(pengadaan_pemesanan_detail.qty) > (SELECT ifnull(SUM(stok_masuk.qty), 0) FROM stok_masuk WHERE pengadaan_pemesanan_id = pengadaan_pemesanan.id )')
@@ -61,7 +62,6 @@ class Form extends Component
     {
         $this->validateWithCustomMessages([
             'pengadaan_pemesanan_id' => 'required',
-            'tanggal' => 'required|date',
             'barang' => 'required|array',
             'barang.*.qty_masuk' => [
                 'numeric',
@@ -112,7 +112,7 @@ class Form extends Component
             foreach ($this->barang as $key => $value) {
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk = new StokMasuk();
-                    $stokMasuk->tanggal = $this->tanggal;
+                    $stokMasuk->tanggal = now();
                     $stokMasuk->qty = $value['qty_masuk'];
                     $stokMasuk->no_batch = $value['no_batch'];
                     $stokMasuk->tanggal_kedaluarsa = $value['tanggal_kedaluarsa'];
@@ -148,16 +148,18 @@ class Form extends Component
                         system: 1,
                         foreign_key: 'pengadaan_pemesanan_id',
                         foreign_id: $this->pengadaan_pemesanan_id,
-                        detail: [[
-                            'kode_akun_id' => $value['kode_akun_id'],
-                            'debet' => $value['harga_beli'] * $value['qty_masuk'],
-                            'kredit' => 0,
-                        ], 
-                        [
-                            'kode_akun_id' => '12000',
-                            'debet' => 0,
-                            'kredit' => $value['harga_beli'] * $value['qty_masuk'],
-                        ]]
+                        detail: [
+                            [
+                                'kode_akun_id' => $value['kode_akun_id'],
+                                'debet' => $value['harga_beli'] * $value['qty_masuk'],
+                                'kredit' => 0,
+                            ],
+                            [
+                                'kode_akun_id' => '12000',
+                                'debet' => 0,
+                                'kredit' => $value['harga_beli'] * $value['qty_masuk'],
+                            ]
+                        ]
                     );
                 }
             }

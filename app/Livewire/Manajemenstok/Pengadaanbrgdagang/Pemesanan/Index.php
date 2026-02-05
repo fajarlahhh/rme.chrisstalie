@@ -74,6 +74,7 @@ class Index extends Component
                 'pengadaanPemesananDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaan',
                 'pengadaanPemesananVerifikasi.pengguna',
+                'stokMasuk',
             ])
                 ->where(fn($z) => $z->whereHas('pengadaanPermintaan', function ($q) {
                     $q->where(

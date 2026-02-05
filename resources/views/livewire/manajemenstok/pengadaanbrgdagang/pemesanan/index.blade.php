@@ -133,6 +133,7 @@
                                                 <th>Satuan</th>
                                                 <th>Qty</th>
                                                 <th>Harga Beli</th>
+                                                <th>Qty Masuk</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -152,6 +153,9 @@
                                                     </td>
                                                     <td class="text-nowrap text-end w-80px">
                                                         {{ number_format($detail->harga_beli) }}
+                                                    </td>
+                                                    <td class="text-nowrap text-end w-80px">
+                                                        {{ $item->stokMasuk->where('barang_id', $detail->barang_id)->sum('qty') }}
                                                     </td>
                                                 </tr>
                                             @endforeach
@@ -186,14 +190,20 @@
                                             <x-action :row="$item" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                         @else
-                                            @if ($status == 'Sudah Persetujuan')
+                                            @if ($item->stokMasuk->count() > 0)
                                                 <x-action :row="$item" custom="" :detail="false"
                                                     :edit="false" :print="true" :permanentDelete="false"
-                                                    :restore="false" :delete="true" />
+                                                    :restore="false" :delete="false" />
                                             @else
-                                                <x-action :row="$item" custom="" :detail="false"
-                                                    :edit="false" :print="false" :permanentDelete="false"
-                                                    :restore="false" :delete="true" />
+                                                @if ($status == 'Sudah Persetujuan')
+                                                    <x-action :row="$item" custom="" :detail="false"
+                                                        :edit="false" :print="true" :permanentDelete="false"
+                                                        :restore="false" :delete="true" />
+                                                @else
+                                                    <x-action :row="$item" custom="" :detail="false"
+                                                        :edit="false" :print="false" :permanentDelete="false"
+                                                        :restore="false" :delete="true" />
+                                                @endif
                                             @endif
                                         @endif
                                     @endrole

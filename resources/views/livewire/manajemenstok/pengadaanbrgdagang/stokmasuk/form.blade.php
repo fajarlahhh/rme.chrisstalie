@@ -17,26 +17,30 @@
         <form wire:submit.prevent="submit">
             <div class="panel-body">
                 <div class="mb-3" wire:ignore>
-                    <label class="form-label">Pembelian</label>
-                    <select class="form-control" x-init="$($el).select2({ width: '100%', dropdownAutoWidth: true });
+                    <label class="form-label">No. Pemesanan</label>
+                    <select class="form-control" x-init="$($el).select2({
+                        templateResult: formatState,
+                        width: '100%',
+                        dropdownAutoWidth: true,
+                        placeholder: '-- Cari Pemesanan --'
+                    });
+                    
+                    function formatState(state) {
+                        if (!state.id) {
+                            return state.text;
+                        }
+                        return 'No. Pemesanan : ' + state.text;
+                    }
                     $($el).on('change', function(e) {
                         $wire.set('pengadaan_pemesanan_id', e.target.value);
                     });" wire:model="pengadaan_pemesanan_id">
                         <option selected value="" hidden>-- Cari Data Pembelian --</option>
                         @foreach ($dataPembelian as $row)
                             <option value="{{ $row['id'] }}">
-                                {{ $row['tanggal'] }} - {{ $row['uraian'] }}, Supplier : {{ $row['supplier']['nama'] }}
+                                {{ $row['nomor'] }} - {{ $row['supplier']['nama'] }}
                             </option>
                         @endforeach
                     </select>
-                </div>
-                <div class="mb-3">
-                    <label class="form-label">Tanggal</label>
-                    <input class="form-control" type="date" wire:model="tanggal" x-model="tanggal"
-                        max="{{ now()->format('Y-m-d') }}" required />
-                    @error('tanggal')
-                        <span class="text-danger">{{ $message }}</span>
-                    @enderror
                 </div>
                 <div class="note alert-secondary mb-0">
                     <div class="note-content table-responsive">
@@ -104,7 +108,7 @@
                         Simpan
                     </button>
                 @endunlessrole
-                <button type="button" onclick="window.location.href='/pengadaanbrgdagang/stokmasuk'"
+                <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/stokmasuk'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Kembali
@@ -114,7 +118,7 @@
     </div>
 
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

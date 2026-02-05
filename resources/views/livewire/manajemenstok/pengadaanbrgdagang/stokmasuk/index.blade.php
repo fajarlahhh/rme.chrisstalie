@@ -13,9 +13,7 @@
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
-                    Tambah</a>&nbsp;
-                <a href="javascript:;" class="btn btn-warning" disabled>
-                    {!! $pending !!}</a>
+                    Tambah</a>
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
@@ -32,13 +30,13 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>Data Pemesanan</th>
                         <th>Tanggal</th>
                         <th>Barang</th>
                         <th>Qty</th>
                         <th>Satuan</th>
                         <th>No. Batch</th>
                         <th>Tanggal Kedaluarsa</th>
-                        <th>Pembelian</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -46,21 +44,21 @@
                     @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                            <td nowrap>
+                                <ul>
+                                    @if ($row->pengadaanPemesanan->nomor)
+                                        <li>No. SP : {{ $row->pengadaanPemesanan->nomor }}</li>
+                                    @endif
+                                    <li>Supplier : {{ $row->pengadaanPemesanan->supplier->nama }}</li>
+                                    <li>Tanggal : {{ $row->pengadaanPemesanan->tanggal }}</li>
+                                </ul>
+                            </td>
                             <td>{{ $row->created_at }}</td>
                             <td>{{ $row->barangSatuan->barang->nama }}</td>
                             <td>{{ $row->qty }}</td>
                             <td>{{ $row->barangSatuan->nama }}</td>
                             <td>{{ $row->no_batch }}</td>
                             <td>{{ $row->tanggal_kedaluarsa }}</td>
-                            <td>
-                                <small>
-                                    <ul>
-                                        <li><strong>{{ $row->pengadaanPemesanan->uraian }}</strong></li>
-                                        <li>Supplier : {{ $row->pengadaanPemesanan->supplier->nama }}</li>
-                                        <li>Tanggal : {{ $row->pengadaanPemesanan->tanggal }}</li>
-                                    </ul>
-                                </small>
-                            </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     @if ($row->keluar->count() == 0)
@@ -82,7 +80,7 @@
         </div>
     </div>
     <x-alert />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
