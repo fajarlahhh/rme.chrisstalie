@@ -22,6 +22,13 @@ class Index extends Component
         $this->resetPage();
     }
 
+    public function delete($id)
+    {
+        $data = PengadaanTagihan::find($id);
+        $data->delete();
+        session()->flash('success', 'Berhasil menghapus data');
+    }
+
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.tagihan.index', [

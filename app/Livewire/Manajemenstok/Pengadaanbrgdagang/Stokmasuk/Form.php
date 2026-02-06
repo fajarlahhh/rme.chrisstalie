@@ -105,10 +105,11 @@ class Form extends Component
                 }
             ],
         ]);
-
         DB::transaction(function () {
             $stok = [];
 
+            $pengadaanPemesanan = PengadaanPemesanan::find($this->pengadaan_pemesanan_id);
+            dd($pengadaanPemesanan);
             foreach ($this->barang as $key => $value) {
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk = new StokMasuk();
@@ -141,10 +142,10 @@ class Form extends Component
                     }
 
                     JurnalkeuanganClass::insert(
-                        jenis: 'Pembelian',
-                        sub_jenis: 'Stok Masuk Barang Dagang',
+                        jenis: 'Persediaan',
+                        sub_jenis: 'Persediaan Masuk',
                         tanggal: now(),
-                        uraian: 'Stok Masuk Barang Dagang ' . $value['nama'],
+                        uraian: 'Persediaan masuk pengadaan ' . $pengadaanPemesanan->jenis . ' ' . $pengadaanPemesanan->nomor . ' dari supplier ' . $pengadaanPemesanan->supplier->nama . ' tanggal ' . $pengadaanPemesanan->tanggal,
                         system: 1,
                         foreign_key: 'pengadaan_pemesanan_id',
                         foreign_id: $this->pengadaan_pemesanan_id,
