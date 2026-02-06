@@ -17,6 +17,6 @@ class PengadaanPermintaanDetail extends Model
 
     public function barangSatuan()
     {
-        return $this->belongsTo(BarangSatuan::class);
+        return $this->belongsTo(BarangSatuan::class)->with('satuanKonversi');
     }
 }

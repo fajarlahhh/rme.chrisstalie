@@ -2,13 +2,9 @@
 
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Permintaan;
 
-use App\Models\Barang;
 use Livewire\Component;
-use App\Models\Pengguna;
 use App\Class\BarangClass;
 use App\Models\PengadaanVerifikasi;
-use Illuminate\Support\Str;
-use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
 use App\Models\PengadaanPermintaan;
 use App\Traits\CustomValidationTrait;
@@ -40,6 +36,15 @@ class Form extends Component
         ]);
 
         DB::transaction(function () {
+            if (!$this->data->exists) {
+                $terakhir = PengadaanPermintaan::where('created_at', 'like', date('Y-m') . '%')
+                    ->whereNotNull('nomor')
+                    ->orderBy('id', 'desc')
+                    ->first();
+                $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
+                $nomor = sprintf('%05d', $nomorTerakhir + 1) . '/PERMINTAAN-CHRISSTALIE/' . date('m', strtotime($this->data->created_at)) . '/' . date('Y', strtotime($this->data->created_at));
+                $this->data->nomor = $nomor;
+            }
             $this->data->jenis_barang = $this->jenis_barang;
             $this->data->deskripsi = $this->deskripsi;
             $this->data->kirim = $this->kirim;

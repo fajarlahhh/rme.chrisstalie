@@ -21,7 +21,7 @@ class PengadaanPelunasan extends Model
 
     public function pengguna()
     {
-        return $this->belongsTo(Pengguna::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function kodeAkunPembayaran()

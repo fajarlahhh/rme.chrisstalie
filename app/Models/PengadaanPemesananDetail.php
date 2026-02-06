@@ -24,6 +24,6 @@ class PengadaanPemesananDetail extends Model
 
     public function barangSatuan(): BelongsTo
     {
-        return $this->belongsTo(BarangSatuan::class);
+        return $this->belongsTo(BarangSatuan::class)->with('satuanKonversi');
     }
 }

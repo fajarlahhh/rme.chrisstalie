@@ -14,12 +14,12 @@ class ResepObat extends Model
 
     public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(Pengguna::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function barangSatuan(): BelongsTo
     {
-        return $this->belongsTo(BarangSatuan::class);
+        return $this->belongsTo(BarangSatuan::class)->with('satuanKonversi');
     }
 
     public function registrasi(): BelongsTo

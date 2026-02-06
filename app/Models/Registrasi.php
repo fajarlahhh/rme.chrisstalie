@@ -26,7 +26,7 @@ class Registrasi extends Model
 
     public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(Pengguna::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function nakes(): BelongsTo

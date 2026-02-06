@@ -27,6 +27,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>Nomor</th>
                         <th>Deskripsi</th>
                         <th>History Verifikasi</th>
                         <th class="w-600px">Detail</th>
@@ -37,6 +38,7 @@
                     @foreach ($data as $item)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                            <td>{{ $item->nomor }}</td>
                             <td>{{ $item->deskripsi }}</td>
                             <td>
                                 <ul>

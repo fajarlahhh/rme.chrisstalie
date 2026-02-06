@@ -80,6 +80,21 @@ class BarangClass
             ])->toArray();
     }
 
+    public static function hapusStok($barangId, $qty, $stokMasukId)
+    {
+        $stok = Stok::where('barang_id', $barangId)
+            ->where('stok_masuk_id', $stokMasukId)
+            ->whereNull('stok_keluar_id')->get();
+        if ($stok->count() < $qty) {
+            session()->flash('error', 'Stok sudah digunakan');
+            return false;
+        }
+        Stok::where('barang_id', $barangId)
+            ->where('stok_masuk_id', $stokMasukId)
+            ->whereNull('stok_keluar_id')->delete();
+        return true;
+    }
+
     public static function stokKeluar($barang, $pembayaranId, $tanggal = null)
     {
         $detail = [];

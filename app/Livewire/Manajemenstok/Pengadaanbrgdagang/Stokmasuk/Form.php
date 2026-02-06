@@ -3,22 +3,19 @@
 namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 
 use App\Models\Stok;
-use App\Models\KeuanganJurnal;
 use Livewire\Component;
 use App\Models\PengadaanPemesanan;
 use App\Models\StokMasuk;
 use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Str;
-use Livewire\Attributes\On;
-use App\Models\KeuanganJurnalDetail;
-use App\Models\PembelianDetail;
 use App\Models\PengadaanPemesananDetail;
 use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
+use App\Traits\KodeakuntransaksiTrait;
 
 class Form extends Component
 {
-    use CustomValidationTrait;
+    use CustomValidationTrait, KodeakuntransaksiTrait;
     public $data, $dataPemesanan = [], $barang = [];
     public $pengadaan_pemesanan_id;
 
@@ -109,7 +106,6 @@ class Form extends Component
             $stok = [];
 
             $pengadaanPemesanan = PengadaanPemesanan::find($this->pengadaan_pemesanan_id);
-            dd($pengadaanPemesanan);
             foreach ($this->barang as $key => $value) {
                 if ($value['qty_masuk'] > 0) {
                     $stokMasuk = new StokMasuk();
@@ -141,26 +137,22 @@ class Form extends Component
                         ];
                     }
 
-                    JurnalkeuanganClass::insert(
-                        jenis: 'Persediaan',
-                        sub_jenis: 'Persediaan Masuk',
-                        tanggal: now(),
-                        uraian: 'Persediaan masuk pengadaan ' . $pengadaanPemesanan->jenis . ' ' . $pengadaanPemesanan->nomor . ' dari supplier ' . $pengadaanPemesanan->supplier->nama . ' tanggal ' . $pengadaanPemesanan->tanggal,
-                        system: 1,
-                        foreign_key: 'pengadaan_pemesanan_id',
-                        foreign_id: $this->pengadaan_pemesanan_id,
-                        detail: [
-                            [
-                                'kode_akun_id' => $value['kode_akun_id'],
-                                'debet' => $value['harga_beli'] * $value['qty_masuk'],
-                                'kredit' => 0,
-                            ],
-                            [
-                                'kode_akun_id' => '12000',
-                                'debet' => 0,
-                                'kredit' => $value['harga_beli'] * $value['qty_masuk'],
-                            ]
+                    $detail = [
+                        [
+                            'kode_akun_id' => $value['kode_akun_id'],
+                            'debet' => $value['harga_beli'] * $value['qty_masuk'],
+                            'kredit' => 0,
+                        ],
+                        [
+                            'kode_akun_id' => $this->getAkunTransaksiByTransaksi('Stok Masuk Barang')->kode_akun_id,
+                            'debet' => 0,
+                            'kredit' => $value['harga_beli'] * $value['qty_masuk'],
                         ]
+                    ];
+                    $this->jurnalKeuangan(
+                        'Persediaan masuk ' . $value['nama'] . ' sejumlah ' . $value['qty_masuk'] . ' ' . $value['satuan'] . ' No. SP ' . $pengadaanPemesanan->nomor . ' supplier  ' . $pengadaanPemesanan->supplier->nama . ' tanggal ' . $pengadaanPemesanan->tanggal,
+                        $stokMasuk->id,
+                        $detail
                     );
                 }
             }
@@ -170,6 +162,20 @@ class Form extends Component
             session()->flash('success', 'Berhasil menyimpan data');
         });
         $this->redirect('/manajemenstok/pengadaanbrgdagang/stokmasuk');
+    }
+
+    private function jurnalKeuangan($uraian, $foreign_id, $detail)
+    {
+        JurnalkeuanganClass::insert(
+            jenis: 'Persediaan',
+            sub_jenis: 'Persediaan Masuk',
+            tanggal: now(),
+            uraian: $uraian,
+            system: 1,
+            foreign_key: 'stok_masuk_id',
+            foreign_id: $foreign_id,
+            detail: $detail
+        );
     }
 
     public function render()

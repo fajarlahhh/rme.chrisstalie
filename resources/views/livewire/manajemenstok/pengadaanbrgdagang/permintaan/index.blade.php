@@ -38,9 +38,10 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>Nomor</th>
                         <th>Deskripsi</th>
+                        <th>Waktu Permintaan</th>
                         <th>History Verifikasi</th>
-                        <th>Status</th>
                         <th class="w-600px">Detail</th>
                         <th class="w-10px"></th>
                     </tr>
@@ -49,35 +50,24 @@
                     @foreach ($data as $item)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                            <td>{{ $item->nomor }}</td>
                             <td>{{ $item->deskripsi }}</td>
+                            <td>{{ $item->created_at }}</td>
                             <td>
-                                <ul>
-                                    @foreach ($item->pengadaanVerifikasi as $pengadaanVerifikasi)
-                                        @if ($pengadaanVerifikasi->status)
-                                            <li>
-                                                @if ($pengadaanVerifikasi->status == 'Disetujui')
-                                                    <span class="badge bg-success">Disetujui</span>
-                                                @else
-                                                    <span class="badge bg-danger">Ditolak
-                                                        {{ ' - ' . $pengadaanVerifikasi->catatan }}</span>
-                                                @endif
-                                                <br>
-                                                <small>
-                                                    {{ $pengadaanVerifikasi->pengguna->nama }} -
-                                                    {{ $pengadaanVerifikasi->waktu_verifikasi }}
-                                                </small>
-                                            </li>
+                                @foreach ($item->pengadaanVerifikasi as $pengadaanVerifikasi)
+                                    @if ($pengadaanVerifikasi->status)
+                                        @if ($pengadaanVerifikasi->status == 'Disetujui')
+                                            <span class="badge bg-success">Disetujui :
+                                                {{ $pengadaanVerifikasi->waktu_verifikasi }}</span><br>
                                         @else
-                                            <li>
-                                                <span class="badge bg-warning">Pending Verifikasi</span>
-                                            </li>
+                                            <span class="badge bg-danger">Ditolak
+                                                {{ ' - ' . $pengadaanVerifikasi->catatan }} :
+                                                {{ $pengadaanVerifikasi->waktu_verifikasi }}</span><br>
                                         @endif
-                                    @endforeach
-                                </ul>
-                            </td>
-                            <td>
-                                <ul>
-                                </ul>
+                                    @else
+                                        <span class="badge bg-warning">Pending Verifikasi</span><br>
+                                    @endif
+                                @endforeach
                             </td>
                             <td>
                                 <table class="table table-bordered fs-11px">

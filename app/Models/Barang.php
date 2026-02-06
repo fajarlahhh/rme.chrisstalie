@@ -18,7 +18,7 @@ class Barang extends Model
     
     public function pengguna(): BelongsTo
     {
-        return $this->belongsTo(Pengguna::class)->withTrashed();
+        return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function stokTersedia(): HasMany
@@ -68,17 +68,17 @@ class Barang extends Model
 
     public function barangSatuan(): HasMany
     {
-        return $this->hasMany(BarangSatuan::class);
+        return $this->hasMany(BarangSatuan::class)->with('satuanKonversi');
     }
 
     public function barangSatuanTerkecil(): HasOne
     {
-        return $this->hasOne(BarangSatuan::class)->where('rasio_dari_terkecil', 1);
+        return $this->hasOne(BarangSatuan::class)->with('satuanKonversi')->where('rasio_dari_terkecil', 1);
     }
 
     public function barangSatuanUtama(): HasOne
     {
-        return $this->hasOne(BarangSatuan::class)->where('utama', 1);
+        return $this->hasOne(BarangSatuan::class)->with('satuanKonversi')->where('utama', 1);
     }
 
     public function kodeAkun(): BelongsTo

@@ -38,13 +38,14 @@ class Index extends Component
         $data = PengadaanPermintaan::with([
             'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
             'pengadaanPermintaanDetail.barangSatuan.barang',
-            'pengadaanPemesanan',
+            'pengadaanPemesanan.stokMasuk',
             'pengadaanPemesananDetail',
-            'pengadaanVerifikasi.pengguna',
+            'pengadaanVerifikasi',
             'pengguna'
         ])
             ->where(fn($q) => $q
-                ->where('deskripsi', 'like', '%' . $this->cari . '%'))
+                ->where('deskripsi', 'like', '%' . $this->cari . '%')
+                ->orWhere('nomor', 'like', '%' . $this->cari . '%'))
             ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
             ->when($this->status == 'Belum Kirim Verifikasi', fn($q) => $q->whereDoesntHave('pengadaanVerifikasi'))
             ->when($this->status == 'Pending Verifikasi', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
@@ -54,11 +55,12 @@ class Index extends Component
                 $q->whereNotNull('status');
                 $q->where('status', 'Ditolak');
             }))
-            ->when($this->status == 'Disetujui', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
+            ->when($this->status == 'Disetujui', fn($q) => $q->where('created_at', 'like', $this->bulan . '%')->whereHas('pengadaanVerifikasi', function ($q) {
                 $q->whereNotNull('status');
                 $q->where('status', 'Disetujui');
-            })->where('created_at', 'like', $this->bulan . '%'))
-            ->orderBy('created_at', 'desc')
+            }))
+
+            ->orderBy('created_at', 'asc')
             ->paginate(10);
         return $data;
     }

@@ -4,8 +4,10 @@ namespace App\Livewire\Manajemenstok\Pengadaanbrgdagang\Stokmasuk;
 
 use Livewire\Component;
 use App\Models\StokMasuk;
+use App\Class\BarangClass;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
+use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
@@ -26,8 +28,13 @@ class Index extends Component
 
     public function delete($id)
     {
-        StokMasuk::findOrFail($id)->forceDelete();
-        session()->flash('success', 'Berhasil menghapus data');
+        DB::transaction(function () use ($id) {
+            $stokMasuk = StokMasuk::findOrFail($id);
+            if (BarangClass::hapusStok($stokMasuk->barang_id, $stokMasuk->qty, $stokMasuk->id)) {
+                session()->flash('success', 'Berhasil menghapus data');
+                $stokMasuk->forceDelete();
+            }
+        });
     }
 
     public function render()
