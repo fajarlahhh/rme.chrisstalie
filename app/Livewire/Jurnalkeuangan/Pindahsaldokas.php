@@ -38,6 +38,10 @@ class Pindahsaldokas extends Component
             'sumber_dana_id' => 'required|exists:kode_akun,id',
             'nilai' => 'required|numeric|min:0',
         ]);
+        if (JurnalkeuanganClass::tutupBuku(substr($this->tanggal, 0, 7) . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
         DB::transaction(function () {
             JurnalkeuanganClass::insert(
                 jenis: 'Koreksi',

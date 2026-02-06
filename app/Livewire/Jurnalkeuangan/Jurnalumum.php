@@ -58,6 +58,10 @@ class Jurnalumum extends Component
                 'detail.*.kredit' => 'required'
             ]
         );
+        if (JurnalkeuanganClass::tutupBuku(substr($this->tanggal, 0, 7) . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
 
         if (collect($this->detail)->sum('kredit') != collect($this->detail)->sum('debet')) {
             $this->addError('detail', 'Kredit dan Debet tidak seimbang');

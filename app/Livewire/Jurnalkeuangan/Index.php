@@ -6,6 +6,7 @@ use Livewire\Component;
 use Livewire\WithPagination;
 use Livewire\Attributes\Url;
 use App\Models\KeuanganJurnal;
+use App\Class\JurnalkeuanganClass;
 
 class Index extends Component
 {
@@ -21,7 +22,12 @@ class Index extends Component
 
     public function delete($id)
     {
-        KeuanganJurnal::findOrFail($id)->delete();
+        $data = KeuanganJurnal::findOrFail($id);
+        if (JurnalkeuanganClass::tutupBuku(substr($data->tanggal, 0, 7) . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
+        $data->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 

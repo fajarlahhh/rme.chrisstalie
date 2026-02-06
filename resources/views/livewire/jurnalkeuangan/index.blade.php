@@ -12,7 +12,8 @@
             @role('administrator|supervisor|operator')
                 <div class="btn-group my-n1">
                     <a class="btn btn-outline-secondary btn-block"
-                        href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'" @role('operator|guest') disabled @endrole>Umum</a>
+                        href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=jurnalumum'"
+                        @role('operator|guest') disabled @endrole>Umum</a>
                     <button type="button" class="btn btn-outline-secondary btn-block dropdown-toggle"
                         data-bs-toggle="dropdown"><b class="caret"></b></button>
                     <div class="dropdown-menu dropdown-menu-start">
@@ -93,12 +94,19 @@
                             </td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
-                                    @if ($row->system)
+                                    @if ($row->waktu_tutup_buku)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
                                     @else
-                                        <x-action :row="$row" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        @if ($row->system)
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="false" :permanentDelete="false" :restore="false"
+                                                :delete="false" />
+                                        @else
+                                            <x-action :row="$row" custom="" :detail="false"
+                                                :edit="true" :print="false" :permanentDelete="false" :restore="false"
+                                                :delete="true" />
+                                        @endif
                                     @endif
                                 @endrole
                             </td>
