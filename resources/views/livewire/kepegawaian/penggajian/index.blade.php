@@ -39,6 +39,7 @@
                             <th>Detail</th>
                             <th>Metode Bayar</th>
                             <th>Total</th>
+                            <th>No. Jurnal</th>
                             @unlessrole('guest')
                                 <th class="w-5px"></th>
                             @endunlessrole
@@ -58,15 +59,16 @@
                                         <table class="table table-bordered fs-10px">
                                             <thead>
                                                 <tr>
-                                                    <th>Kode Akun</th>
-                                                    <th>Nilai</th>
+                                                    <th class="p-1">Kode Akun</th>
+                                                    <th class="p-1">Nilai</th>
                                                 </tr>
                                             </thead>
                                             <tbody>
                                                 @foreach ($row->detail as $item)
                                                     <tr>
-                                                        <td>{{ $item['kode_akun_id'] ?? null }}</td>
-                                                        <td class="text-end p-1">
+                                                        <td class="p-1" nowrap>{{ $item['kode_akun_id'] ?? null }}
+                                                        </td>
+                                                        <td class="text-end p-1" nowrap>
                                                             {{ number_format($item['debet'] ?? 0) }}</td>
                                                     </tr>
                                                 @endforeach
@@ -106,7 +108,7 @@
                                         </table>
                                     @endif
                                 </td>
-                                <td nowrap>{{ $row->kode_akun_pembayaran_id }} <br>
+                                <td nowrap>{{ $row->kode_akun_pembayaran_id }} -
                                     {{ $row->kodeAkunPembayaran->nama ?? null }}
                                 </td>
                                 <td class="text-end">
@@ -116,10 +118,18 @@
                                         {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['pegawai_unsur_gaji'])->sum('nilai'))) }}
                                     @endif
                                 </td>
+                                <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                                        target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                                 <td class="text-end text-nowrap">
                                     @unlessrole('guest')
-                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        @if ($row->keuanganJurnal->waktu_tutup_buku)
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                        @else
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                                :print="false" :permanentDelete="false" :restore="true"
+                                                :delete="false" />
+                                        @endif
                                     @endunlessrole
                                 </td>
                             </tr>

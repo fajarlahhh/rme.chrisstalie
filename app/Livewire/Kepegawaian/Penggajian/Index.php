@@ -4,6 +4,7 @@ namespace App\Livewire\Kepegawaian\Penggajian;
 
 use Livewire\Component;
 use Livewire\Attributes\Url;
+use App\Class\JurnalkeuanganClass;
 use App\Models\KepegawaianPenggajian;
 
 class Index extends Component
@@ -18,7 +19,12 @@ class Index extends Component
 
     public function delete($id)
     {
-        KepegawaianPenggajian::findOrFail($id)->delete();
+        $data = KepegawaianPenggajian::findOrFail($id);
+        if (JurnalkeuanganClass::tutupBuku(substr($data->tanggal, 0, 7) . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
+        $data->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 

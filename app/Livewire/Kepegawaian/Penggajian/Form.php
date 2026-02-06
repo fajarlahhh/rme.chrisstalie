@@ -55,6 +55,11 @@ class Form extends Component
             'pegawai_id' => 'required',
         ]);
 
+        if (JurnalkeuanganClass::tutupBuku(substr($this->tanggal, 0, 7) . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
+        
         DB::transaction(function () {
             $penggajian = new KepegawaianPenggajian();
             $penggajian->tanggal = $this->tanggal;
