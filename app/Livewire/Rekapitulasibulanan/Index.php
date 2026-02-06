@@ -167,16 +167,25 @@ class Index extends Component
     {
         set_time_limit(0);
         $periode = Carbon::parse($this->bulan . '-01');
-        $diff = $periode->diffInMonths(Carbon::now());
+        $diff = Carbon::parse($this->bulan . '-01')->diffInMonths(date('Y-m-01'));
         if ($diff > 12) {
             $diff = 24;
         }
+        $tes = [];
+
+        KeuanganJurnal::where('tanggal', '>=', $periode->format('Y-m-01'))->update([
+            'waktu_tutup_buku' => null,
+        ]);
         for ($i = 0; $i < $diff; $i++) {
             DB::transaction(function () use ($periode) {
                 $this->penyusutan($periode);
                 $this->stok($periode);
                 $this->keuangan($periode);
+                KeuanganJurnal::where('tanggal', 'like', $periode->format('Y-m') . '%')->update([
+                    'waktu_tutup_buku' => now(),
+                ]);
             });
+            $tes[] = $periode->format('Y-m-01');
             $periode->addMonth();
         }
         session()->flash('success', 'Berhasil menyimpan data');

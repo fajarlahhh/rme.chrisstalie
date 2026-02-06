@@ -8,6 +8,7 @@ use App\Models\KodeAkun;
 use Livewire\Attributes\Url;
 use Livewire\WithPagination;
 use App\Exports\DatamasterExport;
+use App\Class\JurnalkeuanganClass;
 use Maatwebsite\Excel\Facades\Excel;
 
 class Index extends Component
@@ -45,7 +46,12 @@ class Index extends Component
 
     public function delete($id)
     {
-        Aset::findOrFail($id)->forceDelete();
+        $data = Aset::findOrFail($id);
+        if (JurnalkeuanganClass::tutupBuku(substr($data->tanggal_perolehan, 0, 7) . '-01')) {
+            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            return;
+        }
+        $data->forceDelete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
@@ -54,7 +60,8 @@ class Index extends Component
         $query = Aset::with([
             'pengguna.kepegawaianPegawai',
             'kodeAkun',
-            'kodeAkunSumberDana'
+            'kodeAkunSumberDana',
+            'keuanganJurnal'
         ])
             ->when($this->kode_akun_id, function ($q) {
                 $q->where('kode_akun_id', $this->kode_akun_id);
@@ -68,7 +75,7 @@ class Index extends Component
         return $paginate ? $query->paginate(10) : $query->get();
     }
     public function render()
-    {        
+    {
         return view('livewire.datamaster.asetinventaris.index', [
             'data' => $this->getData(true),
             'dataRaw' => Aset::when($this->kode_akun_id, function ($q) {
@@ -77,6 +84,7 @@ class Index extends Component
                 ->when($this->bulanPerolehan, function ($q) {
                     $q->where('tanggal_perolehan', 'like', $this->bulanPerolehan . '%');
                 })
+
                 ->where(fn($q) => $q
                     ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->get()

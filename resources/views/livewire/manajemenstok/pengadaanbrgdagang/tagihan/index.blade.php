@@ -118,12 +118,12 @@
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if (!\App\Class\JurnalkeuanganClass::tutupBuku(substr($row->keuanganJurnal?->tanggal, 0, 7) . '-01'))
-                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
-                                    @else
+                                    @if ($row->pengadaanPelunasan->count() > 0)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                    @else
+                                        <x-action :row="$row" custom="" :detail="false" :edit="false"
+                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>

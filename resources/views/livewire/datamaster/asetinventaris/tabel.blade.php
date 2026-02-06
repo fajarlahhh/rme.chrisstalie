@@ -12,6 +12,7 @@
             <th>Nilai Penyusutan</th>
             <th>Lokasi</th>
             <th>Status</th>
+            <th>No. Jurnal</th>
             @if ($cetak == false)
                 <th></th>
             @endif
@@ -56,11 +57,18 @@
                         @default
                     @endswitch
                 </td>
+                <td><a href="/jurnalkeuangan?bulan={{ substr($item->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $item->keuanganJurnal?->id }}"
+                        target="_blank">{{ $item->keuanganJurnal?->nomor }}</a></td>
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>
                         @role('administrator|supervisor')
-                            <x-action :row="$item" custom="" :detail="false" :edit="true" :print="true"
-                                :permanentDelete="false" :restore="false" :delete="true" />
+                            @if ($item->keuanganJurnal->waktu_tutup_buku)
+                                <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                    :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                            @else
+                                <x-action :row="$item" custom="" :detail="false" :edit="true"
+                                    :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                            @endif
                         @endrole
                     </td>
                 @endif

@@ -31,6 +31,7 @@ class Index extends Component
         $query = Icd10::where(fn($q) => $q
             ->where('id', 'like', '%' . $this->cari . '%')
             ->orWhere('uraian', 'like', '%' . $this->cari . '%'))
+            ->with('pengguna')
             ->orderBy('id');
         return $paginate ? $query->paginate(10) : $query->get();
     }
