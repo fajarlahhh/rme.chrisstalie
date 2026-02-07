@@ -118,16 +118,16 @@
                                         {{ number_format(collect($row->detail)->sum(fn($q) => collect($q['pegawai_unsur_gaji'])->sum('nilai'))) }}
                                     @endif
                                 </td>
-                                <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                                <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                         target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                                 <td class="text-end text-nowrap">
                                     @unlessrole('guest')
                                         @if ($row->keuanganJurnal->waktu_tutup_buku)
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                                :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="true"
+                                                :print="false" :permanentdelete="false" :restore="true"
                                                 :delete="false" />
                                         @endif
                                     @endunlessrole
@@ -139,7 +139,6 @@
             </div>
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

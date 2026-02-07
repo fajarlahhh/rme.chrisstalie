@@ -24,6 +24,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -45,10 +46,10 @@
                                 @role('administrator|supervisor')
                                     @if ($item->nama == 'Cash')
                                         <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
                                         <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>
@@ -61,7 +62,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
     
     <div wire:loading>
         <x-loading />

@@ -152,7 +152,7 @@ class Form extends Component
                         ]
                     ];
                     $this->jurnalKeuangan(
-                        'Persediaan masuk ' . $value['nama'] . ' sejumlah ' . $value['qty_masuk'] . ' ' . $value['satuan'] . ' No. SP ' . $this->data->pengadaanPermintaan?->nomor . ' supplier  ' . $this->data->supplier->nama . ' tanggal ' . $this->data->tanggal,
+                        'Persediaan masuk ' . $value['nama'] . ' sejumlah ' . $value['qty_masuk'] . ' ' . $value['satuan'] . ' No. SP ' . $this->data->pengadaanPermintaan?->nomor . ' supplier  ' . $this->data->supplier->nama,
                         $stokMasuk->id,
                         $detail
                     );

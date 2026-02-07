@@ -28,6 +28,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -135,7 +136,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

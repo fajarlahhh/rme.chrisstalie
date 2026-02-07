@@ -26,6 +26,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -58,16 +59,16 @@
                             <td>{{ number_format($row->jumlah) }}</td>
                             <td>{{ $row->kodeAkunPembayaran->nama }}</td>
                             <td>{{ $row->bukti }}</td>
-                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator')
                                     @if ($row->keuanganJurnal->waktu_tutup_buku)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>
@@ -80,7 +81,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

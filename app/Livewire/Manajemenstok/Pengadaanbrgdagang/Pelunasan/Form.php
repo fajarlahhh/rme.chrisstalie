@@ -53,7 +53,7 @@ class Form extends Component
         ]);
         
         if (JurnalkeuanganClass::tutupBuku(substr($this->tanggal, 0, 7) . '-01')) {
-            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
             return;
         }
         

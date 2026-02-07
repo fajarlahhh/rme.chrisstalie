@@ -33,10 +33,10 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             @include('livewire.laporan.barangdagang.barangmasuk.cetak', ['cetak' => false])
         </div>
     </div>
-    <x-alert />
     <x-modal.cetak judul="Laporan Barang Masuk" />
     
     <div wire:loading>

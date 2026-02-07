@@ -15,6 +15,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">UID</label>
                     <input class="form-control" type="uid" value="{{ auth()->user()->uid }}" disabled />

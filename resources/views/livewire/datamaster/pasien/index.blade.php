@@ -21,13 +21,13 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             @include('livewire.datamaster.pasien.tabel', ['cetak' => false])
         </div>
         <div class="panel-footer">
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
     
     <div wire:loading>
         <x-loading />

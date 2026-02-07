@@ -39,7 +39,7 @@ class Pindahsaldokas extends Component
             'nilai' => 'required|numeric|min:0',
         ]);
         if (JurnalkeuanganClass::tutupBuku(substr($this->tanggal, 0, 7) . '-01')) {
-            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
             return;
         }
         DB::transaction(function () {

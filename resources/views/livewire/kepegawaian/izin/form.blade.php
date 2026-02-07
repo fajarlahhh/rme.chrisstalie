@@ -19,6 +19,7 @@
                 </div>
             </div>
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label" for="pegawai">Pegawai</label>
                     <div wire:ignore>

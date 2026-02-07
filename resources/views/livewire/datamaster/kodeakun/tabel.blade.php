@@ -27,7 +27,7 @@
                         @role('administrator|supervisor')
                             {{-- @if ($item->sistem != 1) --}}
                             <x-action :row="$item" custom="" :detail="false" :edit="true" :print="false"
-                                :permanentDelete="false" :restore="false" :delete="true" />
+                                :permanentdelete="false" :restore="false" :delete="true" />
                             {{-- @endif --}}
                         @endrole
                     </td>

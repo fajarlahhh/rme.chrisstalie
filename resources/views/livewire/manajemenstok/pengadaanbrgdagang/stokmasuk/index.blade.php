@@ -26,6 +26,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -76,21 +77,21 @@
                             <td>{{ $row->barangSatuan->nama }}</td>
                             <td>{{ $row->no_batch }}</td>
                             <td>{{ $row->tanggal_kedaluarsa }}</td>
-                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->id }}"
+                            <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     @if ($row->pengadaanPemesanan->pengadaanTagihan)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
                                         @if ($row->keluar->count() == 0)
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="false"
+                                                :print="false" :permanentdelete="false" :restore="false"
                                                 :delete="true" />
                                         @else
                                             <x-action :row="$row" custom="" :detail="false"
-                                                :edit="false" :print="false" :permanentDelete="false" :restore="false"
+                                                :edit="false" :print="false" :permanentdelete="false" :restore="false"
                                                 :delete="false" />
                                         @endif
                                     @endif
@@ -105,7 +106,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

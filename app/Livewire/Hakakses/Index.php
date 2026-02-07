@@ -23,7 +23,7 @@ class Index extends Component
         }
     }
 
-    public function permanentDelete($id)
+    public function permanentdelete($id)
     {
         if ($id != 1) {
             Pengguna::findOrFail($id)

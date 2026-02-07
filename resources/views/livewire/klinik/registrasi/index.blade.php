@@ -16,6 +16,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="row">
                     <div class="col-md-6">
                         <ul class="nav nav-tabs bg-gray-100">

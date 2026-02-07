@@ -4,8 +4,8 @@
             <a href="javascript:;" wire:click="delete('{{ $row['id'] }}')" wire:loading.remove style="display: none"
                 class="delete{{ str_replace(['/', '.'], '', $row['id']) }} delete btn btn-warning">Hapus</a>
         @endif
-        @if ($permanentDelete)
-            <a href="javascript:;" wire:click="permanentDelete('{{ $row['id'] }}')" wire:loading.remove
+        @if ($permanentdelete)
+            <a href="javascript:;" wire:click="permanentdelete('{{ $row['id'] }}')" wire:loading.remove
                 style="display: none" class="delete{{ str_replace(['/', '.'], '', $row['id']) }} delete btn btn-danger">Hapus
                 Permanen</a>
         @endif

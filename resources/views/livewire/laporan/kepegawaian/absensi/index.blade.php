@@ -43,10 +43,10 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             @include('livewire.laporan.kepegawaian.absensi.cetak', ['cetak' => false])
         </div>
     </div>
-    <x-alert />
     <x-modal.cetak judul="Absensi" />
     
     <div wire:loading>

@@ -22,10 +22,10 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             @include('livewire.laporan.keuanganbulanan.neracalajur.cetak', ['cetak' => false])
         </div>
     </div>
-    <x-alert />
     <x-modal.cetak judul="Neraca Lajur" />
     
     <div wire:loading>

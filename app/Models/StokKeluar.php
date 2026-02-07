@@ -31,4 +31,9 @@ class StokKeluar extends Model
     {
         return $this->belongsTo(BarangSatuan::class)->with('satuanKonversi');
     }
+
+    public function keuanganJurnal(): BelongsTo
+    {
+        return $this->belongsTo(KeuanganJurnal::class);
+    }
 }

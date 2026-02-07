@@ -16,6 +16,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="alert alert-warning">
                     Pesanan yang bisa dipilih adalah pesanan yang sudah lengkap stok masuk dan belum dibuat tagihannya.
                 </div>

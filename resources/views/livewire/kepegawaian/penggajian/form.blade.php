@@ -18,6 +18,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="row">
                     <div class="col-md-6">
                         <div class="mb-3">

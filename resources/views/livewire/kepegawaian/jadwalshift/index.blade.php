@@ -14,6 +14,7 @@
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label" for="bulan">Bulan</label>
                     <input type="month" class="form-control" wire:model.live="bulan" id="bulan">

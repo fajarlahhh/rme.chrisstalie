@@ -27,6 +27,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -54,10 +55,10 @@
                                     @if ($row->uid != 'administrator')
                                         @if ($row->trashed())
                                             <x-action :row="$row"  custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="true" :delete="false" />
+                                                :print="false" :permanentdelete="false" :restore="true" :delete="false" />
                                         @else
                                             <x-action :row="$row"  custom="" :detail="false" :edit="true"
-                                                :print="false" :permanentDelete="true" :restore="false"
+                                                :print="false" :permanentdelete="true" :restore="false"
                                                 :delete="true" />
                                         @endif
                                     @endif
@@ -72,7 +73,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
     
     <div wire:loading>
         <x-loading />

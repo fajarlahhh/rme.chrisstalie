@@ -16,6 +16,7 @@
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Cari Barang</label>
                     <div wire:ignore>
@@ -94,7 +95,7 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='/manajemenstok/pengurangan/index'"
+                <button type="button" onclick="window.location.href='/manajemenstok/pengurangan'"
                     class="btn btn-warning" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Kembali

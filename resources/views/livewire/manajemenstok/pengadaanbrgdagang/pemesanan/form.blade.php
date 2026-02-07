@@ -16,6 +16,7 @@
         </div>
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
+                <x-alert />
                 <div class="alert alert-info">
                     <h4 class="alert-heading">Data Permintaan</h4>
                     <div class="mb-3">

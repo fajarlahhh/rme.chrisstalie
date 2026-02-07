@@ -17,6 +17,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Kode</label>
                     <input class="form-control" type="text" wire:model="kode" />

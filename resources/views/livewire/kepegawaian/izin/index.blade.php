@@ -63,7 +63,7 @@
                                 <td class="text-end  text-nowrap">
                                     @unlessrole('guest')
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                     @endunlessrole
                                 </td>
                             </tr>

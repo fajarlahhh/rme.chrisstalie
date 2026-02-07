@@ -26,7 +26,7 @@ class Index extends Component
     public function delete($id)
     {
         if (JurnalkeuanganClass::tutupBuku($this->bulan . '-01')) {
-            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
             return;
         }
         $data = PengadaanTagihan::find($id);

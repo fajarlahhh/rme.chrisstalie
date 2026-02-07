@@ -48,7 +48,7 @@ class Index extends Component
     {
         $data = Aset::findOrFail($id);
         if (JurnalkeuanganClass::tutupBuku(substr($data->tanggal_perolehan, 0, 7) . '-01')) {
-            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
             return;
         }
         $data->forceDelete();

@@ -28,6 +28,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -77,11 +78,11 @@
                                         @endphp
                                         @if ($row->pembayaran)
                                             <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="true" :information="false" :print="false" :permanentDelete="false"
+                                                :edit="true" :information="false" :print="false" :permanentdelete="false"
                                                 :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row" :custom="$custom" :detail="false"
-                                                :edit="true" :information="false" :print="false" :permanentDelete="false" :restore="false"
+                                                :edit="true" :information="false" :print="false" :permanentdelete="false" :restore="false"
                                                 :delete="true" />
                                         @endif
                                     @endif
@@ -96,7 +97,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
     
     <div wire:loading>
         <x-loading />

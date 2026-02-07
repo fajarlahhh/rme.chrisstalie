@@ -134,7 +134,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

@@ -27,6 +27,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -89,10 +90,10 @@
                                 @role('administrator|supervisor')
                                     @if ($row->stokKeluar->count() == 0)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                     @else
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @endif
                                 @endrole
                             </td>
@@ -105,7 +106,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

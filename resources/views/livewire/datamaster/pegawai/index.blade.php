@@ -28,6 +28,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -58,12 +59,12 @@
                                 @if ($row->status == 'Aktif')
                                     @role('administrator|supervisor')
                                         <x-action :row="$row" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                     @endrole
                                 @else
                                     @role('administrator')
                                         <x-action :row="$row" custom="" :detail="false" :edit="true"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @endrole
                                 @endif
                             </td>
@@ -76,7 +77,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
     
     <div wire:loading>
         <x-loading />

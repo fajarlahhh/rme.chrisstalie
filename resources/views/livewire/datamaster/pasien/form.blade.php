@@ -19,6 +19,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">RM</label>
                     <input class="form-control" type="text" wire:model="rm" disabled />

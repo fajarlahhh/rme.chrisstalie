@@ -26,10 +26,10 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             @include('livewire.laporan.pengadaanbrgdagang.cetak', ['cetak' => false])
         </div>
     </div>
-    <x-alert />
     <x-modal.cetak judul="" />
     
     <div wire:loading>

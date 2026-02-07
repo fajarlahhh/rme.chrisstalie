@@ -17,6 +17,7 @@
         </div>
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
+                <x-alert />
                 <div class="border p-3 mb-3">
                     <strong>Tindakan :</strong>
                     <ul>

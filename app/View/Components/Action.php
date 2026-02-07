@@ -8,7 +8,7 @@ use Illuminate\View\Component;
 
 class Action extends Component
 {
-    public $row, $print, $edit, $delete, $permanentDelete, $restore, $detail, $custom, $information=false;
+    public $row, $print, $edit, $delete, $permanentdelete, $restore, $detail, $custom, $information=false;
     /**
      * Create a new component instance.
      */
@@ -17,7 +17,7 @@ class Action extends Component
         $print,
         $edit,
         $delete,
-        $permanentDelete,
+        $permanentdelete,
         $restore,
         $detail,
         $custom = '',
@@ -29,7 +29,7 @@ class Action extends Component
         $this->edit = $edit;
         $this->delete = $delete;
         $this->detail = $detail;
-        $this->permanentDelete = $permanentDelete;
+        $this->permanentdelete = $permanentdelete;
         $this->restore = $restore;
         $this->custom = $custom;
         $this->information = $information;

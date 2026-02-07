@@ -36,10 +36,10 @@
                         @role('administrator|supervisor|operator')
                             @if ($row->pembayaran->count() > 0)
                                 <x-action :row="$row" custom="" :detail="false" :edit="true"
-                                    :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                    :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                             @else
                                 <x-action :row="$row" custom="" :detail="false" :edit="true"
-                                    :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                             @endif
                         @endrole
                     </td>

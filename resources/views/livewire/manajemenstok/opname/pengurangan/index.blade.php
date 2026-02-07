@@ -18,8 +18,8 @@
             @endrole
             <div class="w-100">
                 <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1" />&nbsp;
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2" />&nbsp;
+                    <input class="form-control" type="month" wire:model.lazy="bulan" min="2025-09"
+                        max="{{ date('Y-m') }}" />&nbsp;
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari" placeholder="Cari">
@@ -27,6 +27,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -39,7 +40,7 @@
                         <th>Harga Beli</th>
                         <th>No. Batch</th>
                         <th>Tgl. Kedaluarsa</th>
-                        <th>Operator</th>
+                        <th>No. Jurnal</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -55,12 +56,14 @@
                             <td class="text-nowrap w-100px">{{ $row->harga }}</td>
                             <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
                             <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
-                            <td class="text-nowrap w-100px">{{ $row->pengguna->nama }}</td>
+                            <td class="text-nowrap w-100px"><a
+                                    href="/jurnalkeuangan?bulan={{ substr($row->created_at, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
+                                    target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     @if (\Carbon\Carbon::now()->format('Y-m') == \Carbon\Carbon::parse($row->created_at)->format('Y-m'))
                                         <x-action :row="$row" :detail="false" :edit="false" :information="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                     @endif
                                 @endrole
                             </td>
@@ -70,7 +73,6 @@
             </table>
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

@@ -13,6 +13,7 @@
                 Form
             </div>
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Bulan</label>
                     <input type="month" class="form-control" wire:model="bulan" min="2025-09">

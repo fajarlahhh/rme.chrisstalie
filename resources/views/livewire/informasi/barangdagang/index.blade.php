@@ -42,6 +42,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             @if ($dataBarang)
                 <div class="row">
                     <div class="col-md-6">

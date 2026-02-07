@@ -16,6 +16,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="row w-100">
                     <div class="col-md-4">
                         @if ($data->exists)

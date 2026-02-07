@@ -12,6 +12,7 @@
             <!-- END panel-heading -->
             <!-- BEGIN panel-body -->
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label" for="tanggal">Tanggal</label>
                     <input type="date" class="form-control" wire:model="tanggal" id="tanggal"

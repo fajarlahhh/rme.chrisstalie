@@ -16,6 +16,7 @@
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">
+                <x-alert />
                 <div class="alert alert-primary">
                     <div class="mb-3">
                         <label class="form-label">Cari Barang</label>
@@ -34,17 +35,15 @@
                                     var batch = option.data('batch');
                                     var qty = option.data('qty');
                                     if (!nama) return state.text;
-                                    return $(`
-                                                                                                                                                                                                                            <div>
-                                                                                                                                                                                                                                <div style='font-weight:bold'>${nama}</div>
-                                                                                                                                                                                                                                <div style='font-size:90%;color:#6c757d'>
-                                                                                                                                                                                                                                    Harga Beli : ${harga} <br/>
-                                                                                                                                                                                                                                    Tgl. Kedaluarsa : ${tglExp} <br/>
-                                                                                                                                                                                                                                    Batch : ${batch} <br/>
-                                                                                                                                                                                                                                    Qty : ${qty} ${satuan} <br/>
-                                                                                                                                                                                                                                </div>
-                                                                                                                                                                                                                            </div>
-                                                                                                                                                                                                                        `);
+                                    return $(`<div>
+                                                    <div style='font-weight:bold'>${nama}</div>
+                                                    <div style='font-size:90%;color:#6c757d'>
+                                                        Harga Beli : ${harga} <br/>
+                                                        Tgl. Kedaluarsa : ${tglExp} <br/>
+                                                        Batch : ${batch} <br/>
+                                                        <strong>Qty : ${qty} ${satuan}</strong> <br/>
+                                                    </div>
+                                                </div>`);
                                 },
                                 templateSelection: function(state) {
                                     if (!state.id) return state.text;
@@ -117,7 +116,7 @@
                         Simpan
                     </button>
                 @endrole
-                <button type="button" onclick="window.location.href='/manajemenstok/opname/pengurangan/index'"
+                <button type="button" onclick="window.location.href='/manajemenstok/opname/pengurangan'"
                     class="btn btn-warning" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Kembali

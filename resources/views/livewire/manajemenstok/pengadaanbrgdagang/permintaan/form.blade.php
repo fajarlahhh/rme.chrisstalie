@@ -14,6 +14,7 @@
         </div>
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label mb-2">Jenis Barang</label>
                     <br>

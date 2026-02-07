@@ -94,35 +94,32 @@ class Form extends Component
             if (!empty($stok)) {
                 Stok::insert($stok);
             }
-            $this->keuanganJurnal($data, $this->harga_beli / $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk);
+            $this->jurnalKeuangan($data, $this->harga_beli / $this->satuan['rasio_dari_terkecil'] * $this->qty_masuk);
 
             session()->flash('success', 'Berhasil menyimpan data');
         });
         return $this->redirect('/manajemenstok/opname/penambahan');
     }
 
-    private function keuanganJurnal($koreksi, $hargaBeli)
+    private function jurnalKeuangan($koreksi, $hargaBeli)
     {
-        $detail[] = [
-            'kode_akun_id' => $this->barang['kode_akun_id'],
-            'debet' => $hargaBeli,
-            'kredit' => 0
-        ];
-        $detail[] = [
-            'kode_akun_id' => $this->barang['kode_akun_modal_id'],
-            'debet' => 0,
-            'kredit' => $hargaBeli,
-        ];
-
         JurnalkeuanganClass::insert(
             jenis: 'Koreksi',
             sub_jenis: 'Koreksi Penambaan Stok',
             tanggal: now(),
-            uraian: 'Koreksi Stok Barang ' . $this->barang['nama'],
+            uraian: 'Koreksi Stok Barang ' . $this->barang['nama'] . ' sejumlah ' . $this->qty_masuk . ' ' . $this->satuan['nama'],
             system: 1,
             foreign_key: 'stok_masuk_id',
             foreign_id: $koreksi->id,
-            detail: $detail
+            detail: [[
+                'kode_akun_id' => $this->barang['kode_akun_id'],
+                'debet' => $hargaBeli,
+                'kredit' => 0
+            ], [
+                'kode_akun_id' => $this->barang['kode_akun_modal_id'],
+                'debet' => 0,
+                'kredit' => $hargaBeli,
+            ]]
         );
     }
     public function render()

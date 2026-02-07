@@ -27,6 +27,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -81,20 +82,20 @@
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                        :print="true" :permanentDelete="false" :restore="false" :delete="true" />
+                                        :print="true" :permanentdelete="false" :restore="false" :delete="true" />
                                 @endrole
                                 {{-- @role('supervisor')
                                     @if (substr($row->created_at, 0, 10) == date('Y-m-d'))
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="true" :permanentDelete="false" :restore="false" :delete="true" />
+                                            :print="true" :permanentdelete="false" :restore="false" :delete="true" />
                                     @else
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="true" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="true" :permanentdelete="false" :restore="false" :delete="false" />
                                     @endif
                                 @endrole --}}
                                 @role('operator')
                                     <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                        :print="true" :permanentDelete="false" :restore="false" :delete="false" />
+                                        :print="true" :permanentdelete="false" :restore="false" :delete="false" />
                                 @endrole
                             </td>
                         </tr>
@@ -115,6 +116,5 @@
             </table>
         </div>
     </div>
-    <x-alert />
     <x-modal.cetak judul='Nota' />
 </div>

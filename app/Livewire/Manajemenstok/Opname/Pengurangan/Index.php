@@ -3,37 +3,40 @@
 namespace App\Livewire\Manajemenstok\Opname\Pengurangan;
 
 use Livewire\Component;
-use Livewire\Attributes\Url;
 use App\Models\StokKeluar;
+use Livewire\Attributes\Url;
+use Livewire\WithPagination;
+use App\Class\JurnalkeuanganClass;
 use Illuminate\Support\Facades\DB;
 
 class Index extends Component
 {
+    use WithPagination;
     #[Url]
-    public $tanggal1, $tanggal2, $cari;
+    public $bulan, $cari;
 
     public function mount()
     {
-        $this->tanggal1 = $this->tanggal1 ?: date('Y-m-01');
-        $this->tanggal2 = $this->tanggal2 ?: date('Y-m-d');
+        $this->bulan = $this->bulan ?: date('Y-m');
     }
 
 
     public function delete($id)
     {
         DB::transaction(function () use ($id) {
-            StokKeluar::find($id)->delete();
+            $data = StokKeluar::find($id);
+            if (JurnalkeuanganClass::tutupBuku(substr($data->tanggal, 0, 7) . '-01')) {
+                session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
+                return $this->render();
+            }
+            $data->delete();
         });
         session()->flash('success', 'Berhasil menghapus data');
     }
     
     public function render()
     {
-        $query = StokKeluar::with(['barang', 'barangSatuan', 'pengguna'])->whereNull('pembayaran_id');
-
-        if ($this->tanggal1) {
-            $query->whereBetween(DB::raw('DATE(created_at)'), [$this->tanggal1, $this->tanggal2]);
-        }
+        $query = StokKeluar::with(['barang', 'barangSatuan', 'pengguna', 'keuanganJurnal'])->whereNull('pembayaran_id')->where('created_at', 'like', $this->bulan . '%');
 
         if ($this->cari) {
             $query->where(function ($q) {
@@ -43,7 +46,7 @@ class Index extends Component
 
         $data = $query->orderBy('created_at', 'desc')
             ->orderBy('id', 'desc')
-            ->get();
+            ->paginate(10);
 
         return view('livewire.manajemenstok.opname.pengurangan.index', [
             'data' => $data

@@ -17,6 +17,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Barang</label>
                     <select class="form-control" @if ($data->exists) disabled @endif

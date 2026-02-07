@@ -24,6 +24,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -44,7 +45,7 @@
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
                                     <x-action :row="$item" custom="" :detail="false" :edit="false"
-                                        :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                        :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                 @endrole
                             </td>
                         </tr>
@@ -56,7 +57,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
     
     <div wire:loading>
         <x-loading />

@@ -29,6 +29,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             @if ($status == 'Belum Dipesan')
                 <table class="table table-hover">
                     <thead>
@@ -190,20 +191,20 @@
                                     @role('administrator|supervisor')
                                         @if (!$item->pengadaanPemesananVerifikasi)
                                             <x-action :row="$item" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                                :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                                         @else
                                             @if ($item->stokMasuk->count() > 0)
                                                 <x-action :row="$item" custom="" :detail="false"
-                                                    :edit="false" :print="true" :permanentDelete="false"
+                                                    :edit="false" :print="true" :permanentdelete="false"
                                                     :restore="false" :delete="false" />
                                             @else
                                                 @if ($status == 'Sudah Persetujuan')
                                                     <x-action :row="$item" custom="" :detail="false"
-                                                        :edit="false" :print="true" :permanentDelete="false"
+                                                        :edit="false" :print="true" :permanentdelete="false"
                                                         :restore="false" :delete="true" />
                                                 @else
                                                     <x-action :row="$item" custom="" :detail="false"
-                                                        :edit="false" :print="false" :permanentDelete="false"
+                                                        :edit="false" :print="false" :permanentdelete="false"
                                                         :restore="false" :delete="true" />
                                                 @endif
                                             @endif
@@ -220,7 +221,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

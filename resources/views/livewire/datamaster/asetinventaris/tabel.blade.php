@@ -57,17 +57,17 @@
                         @default
                     @endswitch
                 </td>
-                <td><a href="/jurnalkeuangan?bulan={{ substr($item->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $item->keuanganJurnal?->id }}"
+                <td><a href="/jurnalkeuangan?bulan={{ substr($item->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $item->keuanganJurnal?->nomor }}"
                         target="_blank">{{ $item->keuanganJurnal?->nomor }}</a></td>
                 @if ($cetak == false)
                     <td class="with-btn-group text-end" nowrap>
                         @role('administrator|supervisor')
                             @if ($item->keuanganJurnal->waktu_tutup_buku)
                                 <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                    :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                    :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                             @else
                                 <x-action :row="$item" custom="" :detail="false" :edit="true"
-                                    :print="false" :permanentDelete="false" :restore="false" :delete="true" />
+                                    :print="false" :permanentdelete="false" :restore="false" :delete="true" />
                             @endif
                         @endrole
                     </td>

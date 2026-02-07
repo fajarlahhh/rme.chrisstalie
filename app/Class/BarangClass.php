@@ -86,7 +86,7 @@ class BarangClass
             ->where('stok_masuk_id', $stokMasukId)
             ->whereNull('stok_keluar_id')->get();
         if ($stok->count() < $qty) {
-            session()->flash('error', 'Stok sudah digunakan');
+            session()->flash('danger', 'Stok sudah digunakan');
             return false;
         }
         Stok::where('barang_id', $barangId)

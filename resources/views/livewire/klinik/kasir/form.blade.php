@@ -18,6 +18,7 @@
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">
+                <x-alert />
                 @role('administrator|supervisor')
                     <div class="mb-3">
                         <label class="form-label">Tanggal</label>

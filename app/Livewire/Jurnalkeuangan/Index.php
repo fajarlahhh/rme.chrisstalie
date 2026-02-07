@@ -24,7 +24,7 @@ class Index extends Component
     {
         $data = KeuanganJurnal::findOrFail($id);
         if (JurnalkeuanganClass::tutupBuku(substr($data->tanggal, 0, 7) . '-01')) {
-            session()->flash('error', 'Pembukuan periode ini sudah ditutup');
+            session()->flash('danger', 'Pembukuan periode ini sudah ditutup');
             return;
         }
         $data->delete();

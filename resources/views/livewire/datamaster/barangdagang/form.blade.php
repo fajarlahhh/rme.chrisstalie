@@ -17,6 +17,7 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
+                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Persediaan</label>
                     <select class="form-control" wire:model.live="persediaan" data-width="100%"

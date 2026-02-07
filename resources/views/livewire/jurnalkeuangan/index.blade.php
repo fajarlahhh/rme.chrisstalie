@@ -45,6 +45,7 @@
             </div>
         </div>
         <div class="panel-body table-responsive">
+            <x-alert />
             <table class="table table-hover">
                 <thead>
                     <tr>
@@ -96,15 +97,15 @@
                                 @role('administrator|supervisor|operator')
                                     @if ($row->waktu_tutup_buku)
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                            :print="false" :permanentDelete="false" :restore="false" :delete="false" />
+                                            :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
                                         @if ($row->system)
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentDelete="false" :restore="false"
+                                                :print="false" :permanentdelete="false" :restore="false"
                                                 :delete="false" />
                                         @else
                                             <x-action :row="$row" custom="" :detail="false"
-                                                :edit="true" :print="false" :permanentDelete="false" :restore="false"
+                                                :edit="true" :print="false" :permanentdelete="false" :restore="false"
                                                 :delete="true" />
                                         @endif
                                     @endif
@@ -119,7 +120,6 @@
             {{ $data->links() }}
         </div>
     </div>
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

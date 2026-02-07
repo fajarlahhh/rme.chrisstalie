@@ -17,6 +17,7 @@
                 <h4 class="panel-title">Assessment (Penilaian)</h4>
             </div>
             <div class="panel-body">
+                <x-alert />
                 <div class="alert alert-info table-responsive h-400px">
                     <h5>History Diagnosis</h5>
                     <table class="table">

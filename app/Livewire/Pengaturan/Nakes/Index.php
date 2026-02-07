@@ -20,7 +20,7 @@ class Index extends Component
         Nakes::findOrFail($id)->delete();
     }
 
-    public function permanentDelete($id)
+    public function permanentdelete($id)
     {
         Nakes::findOrFail($id)->forceDelete();
     }
