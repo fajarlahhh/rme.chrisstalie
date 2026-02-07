@@ -31,7 +31,7 @@ class Registrasi extends Model
 
     public function nakes(): BelongsTo
     {
-        return $this->belongsTo(Nakes::class);
+        return $this->belongsTo(Nakes::class)->with('kepegawaianPegawai')->withTrashed();
     }
 
     public function pemeriksaanAwal(): HasOne

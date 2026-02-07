@@ -22,7 +22,7 @@
                     <div class="col-md-6">
                         <div class="mb-3">
                             <label class="form-label">Nama</label>
-                            <input class="form-control" type="text" wire:model="nama" />
+                            <input class="form-control" type="text" wire:model="nama" @if ($data->exists) disabled @endif />
                             @error('nama')
                                 <span class="text-danger">{{ $message }}</span>
                             @enderror

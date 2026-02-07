@@ -54,6 +54,6 @@ class Tindakan extends Model
 
     public function perawat(): BelongsTo
     {
-        return $this->belongsTo(Nakes::class);
+        return $this->belongsTo(Nakes::class)->with('kepegawaianPegawai')->withTrashed();
     }
 }

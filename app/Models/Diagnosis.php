@@ -30,7 +30,6 @@ class Diagnosis extends Model
 
     public function getIcd10UraianAttribute()
     {
-        // Relasi manual ke model Icd10 berdasarkan kode
         return Icd10::whereIn('id', $this->icd10)->get();
     }
 
