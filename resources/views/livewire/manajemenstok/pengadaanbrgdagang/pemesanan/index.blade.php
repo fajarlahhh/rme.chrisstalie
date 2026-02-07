@@ -86,7 +86,7 @@
                                     @role('administrator|supervisor|operator')
                                         <a href="/manajemenstok/pengadaanbrgdagang/pemesanan/form/{{ $item->id }}"
                                             class="btn btn-info btn-sm">
-                                            Buat
+                                            Buat Pemesanan
                                         </a>
                                     @endrole
                                 </td>
@@ -188,7 +188,7 @@
                                     </td>
                                 @endif
                                 <td class="with-btn-group text-end" nowrap>
-                                    @role('administrator|supervisor')
+                                    @role('administrator|supervisor|operator')
                                         @if (!$item->pengadaanPemesananVerifikasi)
                                             <x-action :row="$item" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentdelete="false" :restore="false" :delete="true" />

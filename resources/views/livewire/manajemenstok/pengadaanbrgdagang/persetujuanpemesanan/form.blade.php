@@ -107,7 +107,7 @@
                 </div>
             </div>
             <div class="panel-footer">
-                @role('administrator|supervisor|operator')
+                @role('administrator|supervisor')
                     @if (auth()->user()->kepegawaian_pegawai_id)
                         <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                             <span wire:loading class="spinner-border spinner-border-sm"></span>

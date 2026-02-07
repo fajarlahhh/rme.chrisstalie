@@ -12,7 +12,7 @@
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <div class="panel-heading">
-            @role('administrator|supervisor|operator')
+            @role('administrator|supervisor')
                 <a href="/manajemenstok/opname/pengurangan/form" class="btn btn-primary">
                     Tambah</a>
             @endrole
@@ -61,10 +61,15 @@
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor')
-                                    @if (\Carbon\Carbon::now()->format('Y-m') == \Carbon\Carbon::parse($row->created_at)->format('Y-m'))
-                                        <x-action :row="$row" :detail="false" :edit="false" :information="false"
-                                            :print="false" :permanentdelete="false" :restore="false" :delete="true" />
-                                    @endif
+                                    @role('administrator|supervisor')
+                                        @if ($row->keuanganJurnal->waktu_tutup_buku)
+                                            <x-action :row="$row" :detail="false" :edit="false" :print="false"
+                                                :permanentdelete="false" :restore="false" :delete="false" />
+                                        @else
+                                            <x-action :row="$row" :detail="false" :edit="false" :print="false"
+                                                :permanentdelete="false" :restore="false" :delete="true" />
+                                        @endif
+                                    @endrole
                                 @endrole
                             </td>
                         </tr>

@@ -10,7 +10,7 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading">
-            @role('administrator|supervisor|operator')
+            @role('administrator|supervisor')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
                     Tambah</a>

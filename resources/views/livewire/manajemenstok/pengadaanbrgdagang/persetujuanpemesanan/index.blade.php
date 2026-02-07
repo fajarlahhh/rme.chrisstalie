@@ -118,7 +118,7 @@
                                 </td>
                             @endif
                             <td class="with-btn-group text-end" nowrap>
-                                @role('administrator|supervisor|operator')
+                                @role('administrator|supervisor')
                                     @if ($status == 'Belum Disetujui')
                                         <a href="/manajemenstok/pengadaanbrgdagang/persetujuanpemesanan/form/{{ $item->id }}"
                                             class="btn btn-info btn-sm">

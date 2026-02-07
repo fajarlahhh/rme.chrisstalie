@@ -137,12 +137,12 @@
                 </div>
             </div>
             <div class="panel-footer">
-                @unlessrole('guest')
+                @role('administrator|supervisor')
                     <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Simpan
                     </button>
-                @endunlessrole
+                @endrole
                 <button type="button" onclick="window.location.href='/manajemenstok/pengadaanbrgdagang/stokmasuk'"
                     class="btn btn-danger" wire:loading.attr="disabled">
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
