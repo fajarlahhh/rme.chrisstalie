@@ -28,8 +28,7 @@ class Index extends Component
 
     public function delete($id)
     {
-        PengadaanPermintaan::findOrFail($id)
-            ->pengadaanPermintaanDetail()->delete();
+        PengadaanPermintaan::findOrFail($id)->delete();
         session()->flash('success', 'Berhasil menghapus data');
     }
 
