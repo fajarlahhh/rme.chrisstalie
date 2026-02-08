@@ -40,8 +40,8 @@ class Form extends Component
                 $terakhir = PengadaanPermintaan::where('created_at', 'like', date('Y-m') . '%')
                     ->whereNotNull('nomor')
                     ->orderBy('id', 'desc')
-                    ->first();
-                $nomorTerakhir = $terakhir ? (int)substr($terakhir->id, 6, 5) : 0;
+                    ->first();;
+                $nomorTerakhir = $terakhir ? (int)substr($terakhir->nomor, 0, 5) : 0;
                 $nomor = sprintf('%05d', $nomorTerakhir + 1) . '/PERMINTAAN-CHRISSTALIE/' . date('m') . '/' . date('Y');
                 $this->data->nomor = $nomor;
             }
