@@ -57,7 +57,7 @@ class Form extends Component
                 }
             ],
         ]);
-        dd($this->barang);
+        
         DB::transaction(function () {
             $data = new PengadaanPemesanan();
             $data->tanggal = $this->tanggal;
