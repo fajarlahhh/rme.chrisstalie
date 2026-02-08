@@ -29,16 +29,12 @@ class Index extends Component
                 'pengadaanPemesanan',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
-                'pengadaanVerifikasiDisetujui',
-                'pengadaanVerifikasiDitolak',
-                'pengadaanVerifikasiPending',
-                'pengadaanVerifikasi'
             ])->with(['pengadaanVerifikasi' => fn($q) => $q->whereNotNull('status')])
                 ->when($this->status == 'Pending', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
-                    $q->whereNull('status')->where('jenis', 'Permintaan Pengadaan');
+                    $q->whereNull('status');
                 }))
                 ->when($this->status == 'Terverifikasi', fn($q) => $q->whereHas('pengadaanVerifikasi', function ($q) {
-                    $q->whereNotNull('status')->where('jenis', 'Permintaan Pengadaan');
+                    $q->whereNotNull('status');
                 }))
                 ->where(fn($q) => $q
                     ->where('deskripsi', 'like', '%' . $this->cari . '%'))

@@ -63,6 +63,7 @@ class Index extends Component
                         ->where('deskripsi', 'like', '%' . $this->cari . '%')
                         ->when(auth()->user()->hasRole('operator|guest'), fn($q) => $q->whereIn('jenis_barang', ['Persediaan Apotek', 'Alat Dan Bahan']))
                 )
+                ->whereDoesntHave('pengadaanPemesanan')
                 ->orderBy('created_at', 'desc')
                 ->paginate(10);
             return $data;
