@@ -135,6 +135,13 @@
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">No. Ref/Bukti Pelunasan</label>
+                    <input class="form-control" type="text" x-model="bukti" required />
+                    @error('bukti')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor')

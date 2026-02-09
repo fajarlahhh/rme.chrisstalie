@@ -12,7 +12,7 @@ trait KodeakuntransaksiTrait
         return KeuanganKodeAkunTransaksi::where('jenis', $jenis)->get();
     }
 
-    public function getAkunTransaksiByTransaksi($transaksi)
+    public function getKodeAkunTransaksiByTransaksi($transaksi)
     {
         $data  = KeuanganKodeAkunTransaksi::where('transaksi', $transaksi)->get();
 

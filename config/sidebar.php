@@ -92,6 +92,12 @@ return [
             "icon" => "<i class='fas fa-shopping-cart'></i>",
         ],
         [
+            "title" => "Kasir",
+            "urutkan" => true,
+            "method" => ["Index", "Data"],
+            "icon" => "<i class='fas fa-cash-register'></i>",
+        ],
+        [
             "title" => "Rekapitulasi Bulanan",
             "urutkan" => true,
             "method" => ["Index"],

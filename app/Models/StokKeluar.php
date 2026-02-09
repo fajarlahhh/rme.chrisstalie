@@ -12,6 +12,7 @@ class StokKeluar extends Model
     use HasFactory;
 
     protected $table = 'stok_keluar';
+    protected $fillable = ['harga'];
 
     public function barang(): BelongsTo
     {

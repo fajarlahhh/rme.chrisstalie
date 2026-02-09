@@ -71,9 +71,9 @@
                                         @php
                                             $custom =
                                                 "<hr class='dropdown-divider'></li><a href='javascript:;'class='dropdown-item fs-8px'>" .
-                                                $row->resepObat->first()->pengguna->nama .
+                                                $row->resepObat->first()?->pengguna->nama .
                                                 '<br>' .
-                                                $row->resepObat->first()->created_at .
+                                                $row->resepObat->first()?->created_at .
                                                 '</a>';
                                         @endphp
                                         @if ($row->peracikanResepObat)

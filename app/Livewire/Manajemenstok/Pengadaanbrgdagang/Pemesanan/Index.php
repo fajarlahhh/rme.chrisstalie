@@ -96,6 +96,17 @@ class Index extends Component
 
     public function render()
     {
+        // $permintaan = DB::table('pengadaan_permintaan')
+        //     ->whereNotIn('id', function ($query) {
+        //         $query->select('pengadaan_permintaan_id')
+        //             ->from('pengadaan_pemesanan');
+        //     })
+        //     ->whereIn('id', function ($query) {
+        //         $query->select('pengadaan_permintaan_id')
+        //             ->from('stok_masuk');
+        //     })
+        //     ->get();
+        // dd($permintaan);
         return view('livewire.manajemenstok.pengadaanbrgdagang.pemesanan.index', [
             'data' => $this->getData()
         ]);

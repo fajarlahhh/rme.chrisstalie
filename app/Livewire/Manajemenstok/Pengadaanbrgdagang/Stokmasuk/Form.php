@@ -146,7 +146,7 @@ class Form extends Component
                             'kredit' => 0,
                         ],
                         [
-                            'kode_akun_id' => $this->getAkunTransaksiByTransaksi('Stok Masuk Barang')->kode_akun_id,
+                            'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi('Stok Masuk Barang')->kode_akun_id,
                             'debet' => 0,
                             'kredit' => $value['harga_beli'] * $value['qty_masuk'],
                         ]

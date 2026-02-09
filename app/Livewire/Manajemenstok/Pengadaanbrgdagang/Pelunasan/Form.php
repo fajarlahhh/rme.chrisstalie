@@ -33,7 +33,7 @@ class Form extends Component
                 ->pluck('supplier_id')
         )->orderBy('nama')->get()->toArray();
         $this->updatedSupplier();
-        $this->dataKodePembayaran = KodeAkun::detail()->whereIn('id', ($this->getAkunTransaksiByTransaksi('Pembayaran')->pluck('kode_akun_id')))->get()->toArray();
+        $this->dataKodePembayaran = KodeAkun::detail()->whereIn('id', ($this->getKodeAkunTransaksiByTransaksi('Pembayaran')->pluck('kode_akun_id')))->get()->toArray();
     }
 
     public function updatedSupplier()
