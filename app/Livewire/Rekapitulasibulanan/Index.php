@@ -34,15 +34,32 @@ class Index extends Component
         $data = Barang::with(['stokAwal' => fn($q) => $q->where('tanggal', $periodeSekarang)])
             ->with(['stokMasuk' => fn($q) => $q->where('tanggal', 'like',  substr($periodeSekarang, 0, 7) . '%')])
             ->with(['stokKeluar' => fn($q) => $q->where('tanggal', 'like',  substr($periodeSekarang, 0, 7) . '%')])
+            ->with('barangSatuanUtama')
             ->get();
 
         StokAwal::where('tanggal', $periodeSelanjutnya->format('Y-m-01'))->delete();
-        StokAwal::insert($data->map(
-            fn($q) =>
+        ($data->map(
+            fn($row) =>
             [
-                'barang_id' => $q->id,
+                'barang_id' => $row->id,
                 'tanggal' =>  $periodeSelanjutnya->format('Y-m-01'),
-                'qty' => $q->stokAwal->sum('qty') + $q->stokMasuk->sum(fn($q) => $q['qty'] * $q['rasio_dari_terkecil']) - $q->stokKeluar->sum(fn($q) => $q['qty'] * $q['rasio_dari_terkecil']),
+                'qty' => $row->stokAwal->sum('qty') +
+                    $row->stokMasuk
+                    ->map(
+                        fn($q) => [
+                            'qty' => ($q->qty * $q->rasio_dari_terkecil) /
+                                $row->barangSatuanUtama?->rasio_dari_terkecil,
+                        ],
+                    )
+                    ->sum('qty') -
+                    $row->stokKeluar
+                    ->map(
+                        fn($q) => [
+                            'qty' => ($q->qty * $q->rasio_dari_terkecil) /
+                                $row->barangSatuanUtama?->rasio_dari_terkecil,
+                        ],
+                    )
+                    ->sum('qty'),
                 'pengguna_id' => auth()->id(),
                 'created_at' => now(),
                 'updated_at' => now(),
