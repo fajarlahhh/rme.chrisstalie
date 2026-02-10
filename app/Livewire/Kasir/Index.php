@@ -271,8 +271,6 @@ class Index extends Component
             ],
         );
 
-        dd($this->barang);
-
         DB::transaction(function () {
             $dataTerakhir = Pembayaran::where('tanggal', 'like',  substr($this->tanggal, 0, 7) . '%')->orderBy('id', 'desc')->first();
 
