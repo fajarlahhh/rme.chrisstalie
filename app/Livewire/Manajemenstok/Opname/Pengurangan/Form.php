@@ -61,8 +61,6 @@ class Form extends Component
             $data->barang_satuan_id = $this->barang['barang_satuan_id'];
             $data->rasio_dari_terkecil = 1;
             $data->koreksi = 1;
-            $data->tanggal_kedaluarsa = $this->barang['tanggal_kedaluarsa'];
-            $data->no_batch = $this->barang['no_batch'];
             $data->save();
 
             Stok::where('barang_id', $this->barang['barang_id'])
