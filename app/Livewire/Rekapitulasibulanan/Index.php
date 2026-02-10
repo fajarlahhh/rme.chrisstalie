@@ -47,16 +47,14 @@ class Index extends Component
                     $row->stokMasuk
                     ->map(
                         fn($q) => [
-                            'qty' => ($q->qty * $q->rasio_dari_terkecil) /
-                                $row->barangSatuanUtama?->rasio_dari_terkecil,
+                            'qty' => $q->qty * $q->rasio_dari_terkecil,
                         ],
                     )
                     ->sum('qty') -
                     $row->stokKeluar
                     ->map(
                         fn($q) => [
-                            'qty' => ($q->qty * $q->rasio_dari_terkecil) /
-                                $row->barangSatuanUtama?->rasio_dari_terkecil,
+                            'qty' => $q->qty * $q->rasio_dari_terkecil,
                         ],
                     )
                     ->sum('qty'),

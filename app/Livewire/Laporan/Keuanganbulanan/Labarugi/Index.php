@@ -19,9 +19,14 @@ class Index extends Component
         $this->bulan = $this->bulan ?: date('Y-m', strtotime('-1 month'));
     }
 
-    public function export()
+    public function cetak()
     {
-        return (new LaporankeuanganExport($this->getData(), $this->bulan))->download('labarugi' . $this->bulan . '.xls');
+        $cetak = view('livewire.laporan.keuanganbulanan.labarugi.cetak', [
+            'cetak' => true,
+            'data' => $this->getData(),
+            'bulan' => $this->bulan,
+        ])->render();
+        session()->flash('cetak', $cetak);
     }
 
     public function getData()
