@@ -11,10 +11,23 @@ class Index extends Component
 {
     #[Url]
     public $bulan;
-
+    public $template;
+    public $saldo;
     public function mount()
     {
         $this->bulan = $this->bulan ?: date('Y-m', strtotime('-1 month'));
+        $this->getTemplate();
+    }
+
+    public function updatedBulan()
+    {
+        $this->getTemplate();
+    }
+
+    public function getTemplate()
+    {
+        $this->template = KeuanganTemplateLaporanKeuangan::where('jenis', 'Neraca')->orderBy('urutan')->get();
+        $this->saldo = KeuanganSaldo::where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
     }
 
     public function cetak()
@@ -29,18 +42,14 @@ class Index extends Component
     }
 
     public function getDataAktiva()
-    {   
-        // $data = KeuanganLaporanBulanan::where('Laba Rugi')->where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
-        $saldo = KeuanganSaldo::where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
-
+    {
         $data = [];
         $detail = [];
-        $template = KeuanganTemplateLaporanKeuangan::where('jenis', 'Neraca Aktiva')->orderBy('urutan')->get();
-        foreach ($template as $item) {
+        foreach ($this->template->where('kategori', 'Aktiva')->sortBy('urutan') as $item) {
             $nilai = '';
             if ($item['kode_akun']) {
-                $debet = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('debet_jurnal');
-                $kredit = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('kredit_jurnal');
+                $debet = $this->saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('debet');
+                $kredit = $this->saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('kredit');
 
                 $nilai = $debet - $kredit;
                 $detail[] = [
@@ -101,17 +110,13 @@ class Index extends Component
 
     public function getDataPasiva()
     {
-        // $data = KeuanganLaporanBulanan::where('Laba Rugi')->where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
-        $saldo = KeuanganSaldo::where('periode', date('Y-m-01', strtotime($this->bulan . '-01' . ' +1 month')))->get();
-
         $data = [];
         $detail = [];
-        $template = KeuanganTemplateLaporanKeuangan::where('jenis', 'Neraca Pasiva')->orderBy('urutan')->get();
-        foreach ($template as $item) {
+        foreach ($this->template->where('kategori', '!=', 'Aktiva')->sortBy('urutan') as $item) {
             $nilai = '';
             if ($item['kode_akun']) {
-                $debet = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('debet_jurnal');
-                $kredit = $saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('kredit_jurnal');
+                $debet = $this->saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('debet');
+                $kredit = $this->saldo->whereIn('kode_akun_id', explode(';', $item['kode_akun']))->sum('kredit');
 
                 $nilai = $kredit - $debet;
                 $detail[] = [
