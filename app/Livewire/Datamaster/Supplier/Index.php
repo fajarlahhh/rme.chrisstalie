@@ -32,6 +32,7 @@ class Index extends Component
                 ->where('nama', 'like', '%' . $this->cari . '%'))
                 ->when($this->exist == '2', fn($q) => $q->onlyTrashed())
                 ->with('pengguna.kepegawaianPegawai')
+                ->with('kodeAkun')
                 ->orderBy('nama')
                 ->paginate(10)
         ]);

@@ -40,19 +40,31 @@
                     @enderror
                 </div>
                 <div class="mb-3">
+                    <label class="form-label">Kode Akun Hutang</label>
+                    <select class="form-control" wire:model="kode_akun_id">
+                        <option value="">Pilih Kode Akun Hutang</option>
+                        @foreach ($dataKodeAkun as $item)
+                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                        @endforeach
+                    </select>
+                    @error('kode_akun_id')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
                     <label class="form-label">Deskripsi</label>
                     <input class="form-control" type="text" wire:model="deskripsi" />
                     @error('deskripsi')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
-                <div class="form-check mb-3">
+                {{-- <div class="form-check mb-3">
                     <input class="form-check-input" type="checkbox" id="konsinyator" value="1"
                         wire:model="konsinyator" />
                     <label class="form-check-label" for="konsinyator">
                         Konsinyator
                     </label>
-                </div>
+                </div> --}}
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')

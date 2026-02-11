@@ -38,7 +38,7 @@
                         <th>Nama</th>
                         <th>Alamat</th>
                         <th>No. Telp.</th>
-                        <th>Konsinyator</th>
+                        <th>Kode Akun Hutang</th>
                         <th class="w-10px"></th>
                     </tr>
                 </thead>
@@ -51,7 +51,7 @@
                             <td>{{ $row->nama }}</td>
                             <td>{{ $row->alamat }}</td>
                             <td>{{ $row->no_hp }}</td>
-                            <td>{{ $row->konsinyator == 1 ? 'Ya' : '' }}</td>
+                            <td>{{ $row->kode_akun_id }} - {{ $row->kodeAkun?->nama }}</td>
                             <td class="with-btn-group text-end" nowrap>
                                 @role('administrator|supervisor|operator')
                                     <x-action :row="$row" custom="" :detail="false" :edit="true"

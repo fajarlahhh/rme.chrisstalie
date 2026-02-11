@@ -18,6 +18,11 @@ class Supplier extends Model
     {
         return $this->belongsTo(Pengguna::class)->with('kepegawaianPegawai')->withTrashed();
     }
+    
+    public function kodeAkun(): BelongsTo
+    {
+        return $this->belongsTo(KodeAkun::class);
+    }
 
     public function scopeConsignment($query)
     {
