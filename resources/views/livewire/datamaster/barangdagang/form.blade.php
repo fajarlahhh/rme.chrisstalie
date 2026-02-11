@@ -68,7 +68,7 @@
                             styleBase: 'form-control'
                         })" wire:model.live="kode_akun_id" data-width="100%">
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach ($dataKodeAkun as $item)
+                        @foreach (collect($dataKodeAkun)->where('kategori', 'Aktiva') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
@@ -89,7 +89,7 @@
                     })" wire:model.live="kode_akun_penjualan_id"
                         data-width="100%">
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach ($dataKodeAkunPenjualan as $item)
+                        @foreach (collect($dataKodeAkun)->where('kategori', 'Pendapatan') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}
                             </option>
                         @endforeach
@@ -111,7 +111,7 @@
                     })" wire:model.live="kode_akun_modal_id"
                         data-width="100%">
                         <option hidden selected>-- Tidak Ada Kode Akun --</option>
-                        @foreach ($dataKodeAkunModal as $item)
+                        @foreach (collect($dataKodeAkun)->where('kategori', 'Beban') as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>

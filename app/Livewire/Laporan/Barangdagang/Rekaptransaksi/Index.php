@@ -10,7 +10,7 @@ use Livewire\Attributes\Url;
 class Index extends Component
 {
     #[Url]
-    public $cari, $persediaan, $kode_akun_id, $bulan;
+    public $cari, $persediaan, $kode_akun_id, $bulan, $satuan = 'Utama';
     public $dataKodeAkun = [];
 
     public function mount()
@@ -54,7 +54,7 @@ class Index extends Component
             })
             ->where(fn($q) => $q
                 ->where('nama', 'like', '%' . $this->cari . '%'))
-            ->orderBy('nama')
+            ->orderBy('id')
             ->get();
     }
 

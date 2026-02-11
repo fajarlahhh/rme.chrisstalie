@@ -73,27 +73,28 @@
                     $stokAwal = $row->stokAwal
                         ->map(
                             fn($q) => [
-                                'qty' => $q->qty / $row->barangSatuanUtama?->rasio_dari_terkecil,
+                                'qty' => $q->qty / ($satuan == 'Utama' ? $row->barangSatuanUtama?->rasio_dari_terkecil : 1),
                             ],
                         )
                         ->sum('qty');
                     $stokMasuk = $row->stokMasuk
                         ->map(
                             fn($q) => [
-                                'qty' => $q->qty * $q->barangSatuan->rasio_dari_terkecil / $row->barangSatuanUtama?->rasio_dari_terkecil,
+                                'qty' => $q->qty * $q->barangSatuan->rasio_dari_terkecil / ($satuan == 'Utama' ? $row->barangSatuanUtama?->rasio_dari_terkecil : 1),
                             ],
                         )
                         ->sum('qty');
                     $stokKeluar = $row->stokKeluar
                         ->map(
                             fn($q) => [
-                                'qty' => $q->qty * $q->barangSatuan->rasio_dari_terkecil / $row->barangSatuanUtama?->rasio_dari_terkecil,
+                                'qty' => $q->qty * $q->barangSatuan->rasio_dari_terkecil / ($satuan == 'Utama' ? $row->barangSatuanUtama?->rasio_dari_terkecil : 1),
                             ],
                         )
                         ->sum('qty');
                     $stokAkhir = $stokAwal + $stokMasuk - $stokKeluar;
                 @endphp
                 <td>{{ ++$i }}</td>
+                <td>{{ $row->id }}</td>
                 <td>{{ $row->nama }}</td>
                 <td>{{ $row->barangSatuanUtama?->nama }} {{ $row->barangSatuanUtama?->konversi_satuan }}</td>
                 <td class="text-end">
