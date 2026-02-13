@@ -142,7 +142,11 @@ class Index extends Component
     public function penyusutan($periode)
     {
         $periodeSekarang = $periode->format('Y-m-01');
-        $dataAset = Aset::select('nilai_penyusutan', 'id', 'kode_akun_penyusutan_id')->where('tanggal_perolehan', '<=', $periode->format('Y-m-t'))->where('metode_penyusutan', 'Garis Lurus')->get();
+        $dataAset = Aset::select('nilai_penyusutan', 'id', 'kode_akun_penyusutan_id')
+            ->where('tanggal_perolehan', '<=', $periode->format('Y-m-t'))
+            ->where('metode_penyusutan', 'Garis Lurus')
+            ->where('tanggal_terminasi', '>=', $periode->format('Y-m-01'))
+            ->get();
         $detail = $dataAset->groupBy('kode_akun_penyusutan_id')->map(function ($aset) {
             return [
                 'debet' => 0,
