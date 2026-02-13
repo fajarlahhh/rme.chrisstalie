@@ -70,11 +70,11 @@
                                 <small>
                                     <ul>
                                         <li>Total Tindakan :
-                                            <strong>{{ number_format($row->total_tindakan) }}</strong>
+                                            <strong>{{ number_format($row->total_tindakan + $row->diskon) }}</strong>
                                         </li>
                                         <li>Total Resep : <strong>{{ number_format($row->total_resep) }}</strong></li>
                                         <li>Total Barang :
-                                            <strong>{{ number_format($row->total_harga_barang + $row->total_diskon_barang) }}</strong>
+                                            <strong>{{ number_format($row->total_harga_barang) }}</strong>
                                         </li>
                                         <li>Total Diskon :
                                             <strong>{{ number_format($row->total_diskon_barang + $row->total_diskon_tindakan + $row->diskon) }}</strong>

@@ -50,6 +50,7 @@
                 <thead>
                     <tr>
                         <th class="w-10px">No.</th>
+                        <th>ID</th>
                         <th>No. Registrasi</th>
                         <th>Jenis</th>
                         <th>Tanggal</th>
@@ -62,6 +63,7 @@
                     @foreach ($data as $index => $row)
                         <tr>
                             <td>{{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}</td>
+                            <td>{{ $row->id }}</td>
                             <td>{{ $row->nomor }}</td>
                             <td>{{ $row->jenis }}</td>
                             <td>{{ $row->tanggal }}</td>
