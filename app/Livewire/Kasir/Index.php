@@ -407,6 +407,14 @@ class Index extends Component
             'kredit' => $q->sum('kredit'),
         ])->toArray();
 
+        $hppJasaPelayan = [
+            [
+                'kode_akun_id' =>  $this->getKodeAkunTransaksiByTransaksi('HPP Jasa Pelayanan')->kode_akun_id,
+                'debet' => collect($jasaDokter)->sum('kredit') + collect($jasaPerawat)->sum('kredit'),
+                'kredit' => 0,
+            ]
+        ];
+
         $biayaPenyusutanAset = collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
             return [
                 'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi('Biaya Penyusutan Aset')->kode_akun_id,
@@ -420,6 +428,8 @@ class Index extends Component
         $data = array_merge($data, $jasaDokter); // Kewajiban Biaya Dokter
 
         $data = array_merge($data, $jasaPerawat); // Kewajiban Biaya Perawat
+
+        $data = array_merge($data, $hppJasaPelayan); // HPP Jasa Pelayanan
 
         $data = array_merge($data, $biayaPenyusutanAset); // Biaya Penyusutan Aset
 
@@ -435,7 +445,7 @@ class Index extends Component
             return [
                 'kode_akun_id' => $q['kode_akun_id'],
                 'debet' => 0,
-                'kredit' => ($q['biaya'] - $q['biaya_jasa_dokter'] - $q['biaya_jasa_perawat']) * $q['qty'],
+                'kredit' => $q['biaya'] * $q['qty'],
             ];
         })->all()); // Tindakan
 
