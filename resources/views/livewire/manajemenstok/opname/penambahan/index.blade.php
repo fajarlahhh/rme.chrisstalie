@@ -35,6 +35,7 @@
                         <th>Tanggal</th>
                         <th>Catatan</th>
                         <th>Barang</th>
+                        <th>Satuan</th>
                         <th>Qty</th>
                         <th>No. Batch</th>
                         <th>Tgl. Kedaluarsa</th>
@@ -50,6 +51,7 @@
                             <td class="text-nowrap w-100px">{{ $row->created_at }}</td>
                             <td class="text-nowrap w-100px">{{ $row->catatan }}</td>
                             <td class="text-nowrap w-100px">{{ $row->barang->nama }}</td>
+                            <td class="text-nowrap w-100px">{{ $row->barangSatuan->nama }}</td>
                             <td class="text-nowrap w-100px">{{ $row->qty }}</td>
                             <td class="text-nowrap w-100px">{{ $row->no_batch }}</td>
                             <td class="text-nowrap w-100px">{{ $row->tanggal_kedaluarsa }}</td>
