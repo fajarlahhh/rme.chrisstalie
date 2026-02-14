@@ -134,11 +134,11 @@ return [
                     "title" => "Opname",
                     "urutkan" => true,
                     "sub_menu" => [
-                        // [
-                        //     "title" => "Penambahan",
-                        //     "urutkan" => true,
-                        //     "method" => ["Index", "Form"],
-                        // ],
+                        [
+                            "title" => "Penambahan",
+                            "urutkan" => true,
+                            "method" => ["Index", "Form"],
+                        ],
                         [
                             "title" => "Pengurangan",
                             "urutkan" => true,
