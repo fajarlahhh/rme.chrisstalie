@@ -28,6 +28,7 @@
             </div>
         </div>
         <div class="panel-body">
+            <x-alert />
             <div class="table-responsive">
                 <table class="table table-hover">
                     <thead>
@@ -127,8 +128,8 @@
                                                 :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                         @else
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
-                                                :print="false" :permanentdelete="false" :restore="true"
-                                                :delete="false" />
+                                                :print="false" :permanentdelete="false" :restore="false"
+                                                :delete="true" />
                                         @endif
                                     @endunlessrole
                                 </td>
