@@ -48,7 +48,7 @@
                     <td>{{ $sub['periode'] }}</td>
                     <td>{{ $sub['uraian'] }}</td>
                     <td>{{ $sub['id'] }}</td>
-                    <td class="text-nowrap">{{ $sub['tipe'] }}</td>
+                    <td class="text-nowrap">{{ $sub['id'] }}</td>
                     <td class="text-end">
                         @if ($cetak)
                             {{ $sub['debet'] }}
