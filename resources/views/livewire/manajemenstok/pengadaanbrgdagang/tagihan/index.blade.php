@@ -123,7 +123,7 @@
                                         <x-action :row="$row" custom="" :detail="false" :edit="false"
                                             :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                     @else
-                                        @if ($row->pengadaanPelunasan)
+                                        @if ($row->pengadaanPelunasanDetail)
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentdelete="false" :restore="false"
                                                 :delete="false" />

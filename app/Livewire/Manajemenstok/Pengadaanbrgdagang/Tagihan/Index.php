@@ -10,6 +10,7 @@ use App\Class\JurnalkeuanganClass;
 
 class Index extends Component
 {
+    use WithPagination;
     #[Url]
     public $bulan, $cari;
 
@@ -32,7 +33,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.manajemenstok.pengadaanbrgdagang.tagihan.index', [
-            'data' => PengadaanTagihan::with(['pengadaanPemesanan.pengadaanPemesananDetail.barangSatuan.barang', 'pengadaanPemesanan.supplier', 'keuanganJurnal'])
+            'data' => PengadaanTagihan::with(['pengadaanPemesanan.pengadaanPemesananDetail.barangSatuan.barang', 'pengadaanPelunasanDetail', 'pengadaanPemesanan.supplier', 'keuanganJurnal'])
                 ->where('tanggal', 'like', $this->bulan . '%')
                 ->where(fn($q) => $q->where('no_faktur', 'like', '%' . $this->cari . '%')
                     ->orWhere('catatan', 'like', '%' . $this->cari . '%')

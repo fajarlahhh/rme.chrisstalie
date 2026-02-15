@@ -21,6 +21,11 @@ class PengadaanTagihan extends Model
         return $this->hasOne(PengadaanPelunasanDetail::class);
     }
 
+    public function pengadaanPelunasanDetail(): HasOne
+    {
+        return $this->hasOne(PengadaanPelunasanDetail::class);
+    }
+
     public function supplier(): BelongsTo
     {
         return $this->belongsTo(Supplier::class);
