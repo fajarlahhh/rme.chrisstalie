@@ -46,7 +46,7 @@ class Index extends Component
     public function getData($paginate = true)
     {
         $query = Barang::with(['barangSatuan' => fn($q) => $q->orderBy('rasio_dari_terkecil', 'desc')])->with([
-            'pengguna.kepegawaianPegawai',
+            'pengguna',
             'kodeAkun', 
             'kodeAkunPenjualan',
             'kodeAkunModal'

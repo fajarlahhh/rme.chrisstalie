@@ -36,7 +36,7 @@ class Data extends Component
 
     public function render()
     {
-        $query = Pembayaran::where('bebas', 1)->with(['stokKeluar.barang', 'stokKeluar.barangSatuan', 'pengguna.kepegawaianPegawai']);
+        $query = Pembayaran::where('bebas', 1)->with(['stokKeluar.barang', 'stokKeluar.barangSatuan', 'pengguna']);
 
         if ($this->tanggal1) {
             $query->whereBetween(DB::raw('DATE(tanggal)'), [$this->tanggal1, $this->tanggal2]);

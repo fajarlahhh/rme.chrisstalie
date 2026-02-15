@@ -67,6 +67,7 @@ class Form extends Component
             $data->supplier_id = $this->supplier;
             $data->kode_akun_pembayaran_id = $this->kode_akun_pembayaran_id;
             $data->jumlah = $pengadaanTagihan->sum('total_tagihan');
+            $data->pengguna_id = auth()->id();
             $data->save();
 
             $data->pengadaanPelunasanDetail()->delete();

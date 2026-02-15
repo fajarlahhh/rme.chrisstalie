@@ -49,7 +49,7 @@ class Index extends Component
 
     public function getPengeluaran()
     {
-        return KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
+        return KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna')
             ->leftJoin('keuangan_jurnal_detail', 'keuangan_jurnal.id', '=', 'keuangan_jurnal_detail.keuangan_jurnal_id')
             ->leftJoin('kode_akun', 'keuangan_jurnal_detail.kode_akun_id', '=', 'kode_akun.id')->select(
                 'keuangan_jurnal.id as id',

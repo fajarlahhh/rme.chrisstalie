@@ -39,7 +39,7 @@ class Data extends Component
             'data' => Registrasi::with([
                 'pasien',
                 'nakes',
-                'pengguna.kepegawaianPegawai',
+                'pengguna',
                 'pembayaran'
             ])
                 ->when($this->status == 2, fn($q) => $q->whereHas('pembayaran')->where('tanggal', $this->tanggal))

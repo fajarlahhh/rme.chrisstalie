@@ -38,7 +38,7 @@ class Index extends Component
 
     public function getData()
     {
-        $query = KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
+        $query = KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna')
             ->whereHas('keuanganJurnalDetail', function ($query) {
                 $query->whereIn('kode_akun_id', collect($this->dataKodeAkun)->pluck('id'));
             })

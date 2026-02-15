@@ -33,7 +33,7 @@ class Index extends Component
     public function render()
     {
         return view('livewire.pengaturan.shift.index', [
-            'data' => Shift::where('nama', 'like', '%' . $this->cari . '%')->with('pengguna.kepegawaianPegawai')->orderBy('nama')->paginate(10)
+            'data' => Shift::where('nama', 'like', '%' . $this->cari . '%')->with('pengguna')->orderBy('nama')->paginate(10)
         ]);
     }
 }

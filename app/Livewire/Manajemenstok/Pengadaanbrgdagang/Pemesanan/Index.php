@@ -48,7 +48,7 @@ class Index extends Component
     {
         if ($this->status == 'Belum Buat SP') {
             $data = PengadaanPermintaan::with([
-                'pengguna.kepegawaianPegawai',
+                'pengguna',
                 'pengadaanPermintaanDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaanDetail.barangSatuan.barang',
                 'pengadaanPemesanan.stokMasuk',
@@ -67,7 +67,7 @@ class Index extends Component
             $data = PengadaanPemesanan::with([
                 'supplier',
                 'penanggungJawab',
-                'pengguna.kepegawaianPegawai',
+                'pengguna',
                 'pengadaanPemesananDetail.barangSatuan.barang',
                 'pengadaanPemesananDetail.barangSatuan.satuanKonversi',
                 'pengadaanPermintaan',

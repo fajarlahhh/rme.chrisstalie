@@ -43,7 +43,7 @@ class Index extends Component
                     ->where('nama', 'like', '%' . $this->cari . '%')
                     ->orWhereHas('kepegawaianPegawai', fn($q) => $q->where('nama', 'like', '%' . $this->cari . '%'))
             )->where('aktif', $this->aktif)
-                ->with('pengguna.kepegawaianPegawai', 'kepegawaianPegawai')
+                ->with('pengguna', 'kepegawaianPegawai')
                 ->orderBy('nama')->paginate(10)
         ]);
     }

@@ -152,7 +152,7 @@ class Index extends Component
 
     public function getDataPasienTindakanResepObat()
     {
-        $this->dataPasienTindakanResepObat = Registrasi::with('pasien', 'nakes', 'pengguna.kepegawaianPegawai', 'tindakan', 'resepObat', 'peracikanResepObat')
+        $this->dataPasienTindakanResepObat = Registrasi::with('pasien', 'nakes', 'pengguna', 'tindakan', 'resepObat', 'peracikanResepObat')
             ->whereDoesntHave('pembayaran')
             ->where(function ($query) {
                 $query->whereDoesntHave('resepObat')

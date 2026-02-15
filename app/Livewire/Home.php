@@ -73,7 +73,7 @@ class Home extends Component
 
     public function getDataPengeluaranBulanIni()
     {
-        return KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna.kepegawaianPegawai')
+        return KeuanganJurnal::with('keuanganJurnalDetail.kodeAkun', 'pengguna')
             ->whereHas('keuanganJurnalDetail', function ($query) {
                 $query->whereIn('kode_akun_id', KodeAkun::where('parent_id', '11100')->get()->pluck('id'));
             })

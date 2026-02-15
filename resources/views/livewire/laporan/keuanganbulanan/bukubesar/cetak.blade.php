@@ -11,7 +11,6 @@
             <th class="w-100px bg-gray-100">Tanggal</th>
             <th class="bg-gray-100">Uraian</th>
             <th class="bg-gray-100">Jurnal</th>
-            <th class="w-200px text-nowrap bg-gray-100">ID</th>
             <th class="w-150px text-nowrap bg-gray-100">Debet</th>
             <th class="w-150px text-nowrap bg-gray-100">Kredit</th>
             <th class="w-150px text-nowrap bg-gray-100">Saldo</th>
@@ -24,7 +23,6 @@
             <td>Saldo Awal</td>
             <td></td>
             <td></td>
-            <td class="text-end"></td>
             <td class="text-end"></td>
             <td class="text-end">
                 @if ($cetak)
@@ -48,7 +46,6 @@
                     <td>{{ $sub['periode'] }}</td>
                     <td>{{ $sub['uraian'] }}</td>
                     <td>{{ $sub['id'] }}</td>
-                    <td class="text-nowrap">{{ $sub['id'] }}</td>
                     <td class="text-end">
                         @if ($cetak)
                             {{ $sub['debet'] }}

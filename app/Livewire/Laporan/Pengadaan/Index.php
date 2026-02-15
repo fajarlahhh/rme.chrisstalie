@@ -18,7 +18,7 @@ class Index extends Component
 
     public function getData()
     {
-        return Purchase::with(['purchaseDetail.goods', 'pengguna.kepegawaianPegawai', 'stokMasuk', 'expenditure.pengguna'])->whereBetween('date', [$this->date1, $this->date2])->orderBy('created_at', 'desc')->get();
+        return Purchase::with(['purchaseDetail.goods', 'pengguna', 'stokMasuk', 'expenditure.pengguna'])->whereBetween('date', [$this->date1, $this->date2])->orderBy('created_at', 'desc')->get();
     }
 
     public function print()

@@ -38,7 +38,7 @@ class Index extends Component
             ->with([
                 'pasien',
                 'nakes',
-                'pengguna.kepegawaianPegawai',
+                'pengguna',
                 'siteMarking.pengguna'
             ]);
 

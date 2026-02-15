@@ -44,7 +44,7 @@ class Index extends Component
     {
         return view('livewire.pengaturan.hargajual.index', [
             'data' => BarangSatuan::select('barang_satuan.*', 'barang.nama as barang_nama')
-                ->with(['barang', 'pengguna.kepegawaianPegawai', 'satuanKonversi'])
+                ->with(['barang', 'pengguna', 'satuanKonversi'])
                 ->when($this->barang_id, fn($q) => $q->where('barang_id', $this->barang_id))
                 ->leftJoin('barang', 'barang_satuan.barang_id', '=', 'barang.id')
                 ->orderBy('barang.nama')

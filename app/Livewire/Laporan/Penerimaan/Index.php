@@ -37,7 +37,7 @@ class Index extends Component
 
     private function getData($paginate = true)
     {
-        $query = Pembayaran::with(['registrasi.pasien', 'pengguna.kepegawaianPegawai'])->whereBetween(DB::raw('DATE(tanggal)'), [$this->tanggal1, $this->tanggal2]);
+        $query = Pembayaran::with(['registrasi.pasien', 'pengguna'])->whereBetween(DB::raw('DATE(tanggal)'), [$this->tanggal1, $this->tanggal2]);
         if (!auth()->user()->hasRole(['administrator', 'supervisor'])) {
             $query->where('pengguna_id', auth()->id());
         }
