@@ -14,6 +14,7 @@
             <th class="w-150px text-nowrap bg-gray-100">Debet</th>
             <th class="w-150px text-nowrap bg-gray-100">Kredit</th>
             <th class="w-150px text-nowrap bg-gray-100">Saldo</th>
+            <th class="w-150px text-nowrap bg-gray-100">Keterangan</th>
         </tr>
     </thead>
     <tbody>
@@ -31,6 +32,7 @@
                     {{ number_format($saldo, 2) }}
                 @endif
             </td>
+            <td></td>
         </tr>
         @php
             $sumSaldo = $saldo;
@@ -67,6 +69,7 @@
                             {{ number_format($sumSaldo, 2) }}
                         @endif
                     </td>
+                    <td>{{ $sub['system'] ? 'System' : 'Manual' }}</td>
                 </tr>
             @endforeach
         @endif
