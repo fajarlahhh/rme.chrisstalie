@@ -1,4 +1,4 @@
-<div x-data="pegawaiForm()" x-init="init()" x-ref="alpineRoot">
+<div x-data="form()" x-init="init()" x-ref="alpineRoot">
     @section('title', (!$data->exists ? 'Tambah' : 'Edit') . ' Pegawai')
 
     @section('breadcrumb')
@@ -253,7 +253,7 @@
 
 @push('scripts')
     <script>
-        function pegawaiForm() {
+        function form() {
             return {
                 nik: @js(old('nik', $data->nik ?? '')),
                 sipa: @js(old('sipa', $data->sipa ?? '')),
