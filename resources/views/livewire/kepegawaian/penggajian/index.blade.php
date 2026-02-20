@@ -123,7 +123,7 @@
                                         target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                                 <td class="text-end text-nowrap">
                                     @unlessrole('guest')
-                                        @if ($row->keuanganJurnal->waktu_tutup_buku)
+                                        @if ($row->keuanganJurnal?->waktu_tutup_buku)
                                             <x-action :row="$row" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentdelete="false" :restore="false" :delete="false" />
                                         @else
