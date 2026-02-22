@@ -52,6 +52,7 @@ class Form extends Component
             $this->data->barang_id = $this->barang_id;
             $this->data->harga_jual = $this->harga_jual;
             $this->data->utama = $this->utama;
+            $this->data->pengguna_id = auth()->id();
             $this->data->save();
             session()->flash('success', 'Berhasil menyimpan data');
         });
