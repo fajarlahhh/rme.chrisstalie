@@ -55,6 +55,8 @@ class Form extends Component
             $data->tanggal = now();
             $data->barang_id = $this->barang['barang_id'];
             $data->qty = $this->qty_keluar;
+            $data->no_batch = $this->barang['no_batch'];
+            $data->tanggal_kedaluarsa = $this->barang['tanggal_kedaluarsa'];
             $data->harga = $this->barang['harga'];
             $data->catatan = $this->catatan;
             $data->pengguna_id = auth()->id();

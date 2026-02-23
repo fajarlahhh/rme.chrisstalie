@@ -37,7 +37,7 @@ class Index extends Component
         });
         session()->flash('success', 'Berhasil menghapus data');
     }
-    
+
     public function render()
     {
         $query = StokKeluar::with(['barang', 'barangSatuan', 'pengguna', 'keuanganJurnal'])->whereNull('pembayaran_id')->where('created_at', 'like', $this->bulan . '%');
