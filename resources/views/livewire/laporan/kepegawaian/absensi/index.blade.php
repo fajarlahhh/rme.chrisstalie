@@ -13,15 +13,13 @@
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
                 setTimeout(() => {
                     $('#modal-cetak').modal('show')
                 }, 1000)
             })" class="btn btn-warning">
-                Cetak</a>
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
+                Cetak</a>&nbsp;
                     <select class="form-control" wire:model.lazy="jenis">
                         <option value="Rekap">Rekap</option>
                         <option value="Per Pegawai">Per Pegawai</option>
@@ -39,8 +37,6 @@
                             @endforeach
                         </select>
                     @endif
-                </div>
-            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

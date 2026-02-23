@@ -9,14 +9,12 @@
     <h1 class="page-header">Harga Jual</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             @role('administrator|supervisor')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
-                    Tambah</a>
+                    Tambah</a>&nbsp;
             @endrole
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
                     <select class="form-control w-200px" wire:model.lazy="barang_id" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
@@ -31,8 +29,6 @@
                             <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                         @endforeach
                     </select>
-                </div>
-            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

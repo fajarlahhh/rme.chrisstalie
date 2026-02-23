@@ -9,12 +9,12 @@
     <h1 class="page-header">Penggajian </h1>
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             <div class="row w-100">
                 <div class="col-md-2">
                     @unlessrole('guest')
                         <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
-                            class="btn btn-outline-secondary btn-block">Tambah</a>
+                            class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;
                     @endunlessrole
                 </div>
                 <div class="col-md-10">
@@ -24,8 +24,6 @@
                                 wire:model.lazy="bulan" />
                         </div>
                     </div>
-                </div>
-            </div>
         </div>
         <div class="panel-body">
             <x-alert />

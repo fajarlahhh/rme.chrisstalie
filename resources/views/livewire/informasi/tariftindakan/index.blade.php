@@ -10,7 +10,7 @@
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             <div wire:ignore class="w-100">
                 <select class="form-control" x-init="$($el).select2({
                     width: '100%',

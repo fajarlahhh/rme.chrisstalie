@@ -9,16 +9,14 @@
     <h1 class="page-header">Supplier</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
                     Tambah</a>&nbsp;
             @endrole
             <a href="javascript:;" wire:click="export" class="btn btn-success">
-                Export</a>
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
+                Export</a>&nbsp;
                     <select data-container="body" class="form-control "wire:model.lazy="exist">
                         <option value="1">Exist</option>
                         <option value="2">Deleted</option>
@@ -26,8 +24,6 @@
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari">
-                </div>
-            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

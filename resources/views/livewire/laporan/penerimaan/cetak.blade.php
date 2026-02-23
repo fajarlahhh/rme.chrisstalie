@@ -30,7 +30,9 @@
         <tr>
             <th class="bg-gray-300 text-white">No.</th>
             <th class="bg-gray-300 text-white">No. Nota</th>
-            <th class="bg-gray-300 text-white">Pasien</th>
+            <th class="bg-gray-300 text-white">Nama</th>
+            <th class="bg-gray-300 text-white">Alamat</th>
+            <th class="bg-gray-300 text-white">Jenis Kelamin</th>
             <th class="bg-gray-300 text-white">Tindakan</th>
             <th class="bg-gray-300 text-white">Resep</th>
             <th class="bg-gray-300 text-white">Penjualan Barang</th>
@@ -54,6 +56,12 @@
                 <td>{{ $row['id'] }}</td>
                 <td>
                     {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['nama']) ? $row['registrasi']['pasien']['nama'] : '' }}
+                </td>
+                <td>
+                    {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['alamat']) ? $row['registrasi']['pasien']['alamat'] : '' }}
+                </td>
+                <td>
+                    {{ isset($row['registrasi']) && isset($row['registrasi']['pasien']) && isset($row['registrasi']['pasien']['jenis_kelamin']) ? $row['registrasi']['pasien']['jenis_kelamin'] : '' }}
                 </td>
                 <td class="text-end">{{ $cetak ? $row['total_tindakan'] : number_format($row['total_tindakan']) }}</td>
                 <td class="text-end">{{ $cetak ? $row['total_resep'] : number_format($row['total_resep']) }}</td>
@@ -81,7 +89,7 @@
     </tbody>
     <tfoot>
         <tr>
-            <th colspan="3">Total</th>
+            <th colspan="5">Total</th>
             <th class="text-end">
                 {{ $cetak ? $data->sum('total_tindakan') : number_format($data->sum('total_tindakan')) }}
             </th>

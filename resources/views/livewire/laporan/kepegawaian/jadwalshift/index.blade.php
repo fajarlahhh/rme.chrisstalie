@@ -10,18 +10,14 @@
     <h1 class="page-header">Jadwal Shift</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
                 setTimeout(() => {
                     $('#modal-cetak').modal('show')
                 }, 1000)
             })" class="btn btn-warning">
-                Cetak</a>
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
+                Cetak</a>&nbsp;
                     <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11" max="{{ date('Y-m') }}">&nbsp;
-                </div>
-            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

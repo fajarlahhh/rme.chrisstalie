@@ -13,7 +13,7 @@
 
     <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
         <div class="panel panel-inverse">
-            <div class="panel-heading">
+            <div class="panel-heading overflow-auto d-flex">
                 <h4 class="panel-title">Assessment (Penilaian)</h4>
             </div>
             <div class="panel-body">

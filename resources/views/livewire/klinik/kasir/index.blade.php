@@ -10,9 +10,7 @@
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
+        <div class="panel-heading overflow-auto d-flex">
                     <select data-container="body" class="form-control" wire:model.lazy="status">
                         <option value="1">Belum Bayar</option>
                         <option value="2">Sudah Bayar</option>
@@ -26,8 +24,6 @@
                     <input type="text" class="form-control w-200px" placeholder="Cari"
                         aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
                         wire:model.lazy="cari">
-                </div>
-            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

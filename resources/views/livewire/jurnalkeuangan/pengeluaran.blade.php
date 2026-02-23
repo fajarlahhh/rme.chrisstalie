@@ -2,7 +2,7 @@
     <form wire:submit="submit">
         <div class="panel panel-inverse" data-sortable-id="table-basic-2">
             <!-- BEGIN panel-heading -->
-            <div class="panel-heading">
+            <div class="panel-heading overflow-auto d-flex">
                 <h4 class="panel-title">Pengeluaran</h4>
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i

@@ -12,7 +12,7 @@
                 <div class="modal-footer">
                     <a href="javascript:;" x-init="$($el).on('click', function() {
                         cetak();
-                    })" class="btn btn-primary">Cetak</a>
+                    })" class="btn btn-primary">Cetak</a>&nbsp;
                 </div>
             </div>
         </div>

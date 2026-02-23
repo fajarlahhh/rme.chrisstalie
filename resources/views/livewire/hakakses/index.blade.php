@@ -8,23 +8,18 @@
     <h1 class="page-header">Hak Akses</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
                     class="btn btn-primary">
-                    Tambah</a>
+                    Tambah</a>&nbsp;
             @endrole
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
-                    <select data-container="body" class="form-control "wire:model.lazy="exist">
-                        <option value="1">Exist</option>
-                        <option value="2">Deleted</option>
-                    </select>&nbsp;
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
-                </div>
-            </div>
+            <select data-container="body" class="form-control w-auto" wire:model.lazy="exist">
+                <option value="1">Exist</option>
+                <option value="2">Deleted</option>
+            </select>&nbsp;
+            <input type="text" class="form-control w-auto" placeholder="Cari" aria-label="Sizing example input"
+                autocomplete="off" aria-describedby="basic-addon2" wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -51,13 +46,13 @@
                             <td>{{ $row->getRoleNames()->first() }}
                             </td>
                             <td class="with-btn-group text-end" nowrap>
-                @role('administrator|supervisor|operator')
+                                @role('administrator|supervisor|operator')
                                     @if ($row->uid != 'administrator')
                                         @if ($row->trashed())
-                                            <x-action :row="$row"  custom="" :detail="false" :edit="false"
+                                            <x-action :row="$row" custom="" :detail="false" :edit="false"
                                                 :print="false" :permanentdelete="false" :restore="true" :delete="false" />
                                         @else
-                                            <x-action :row="$row"  custom="" :detail="false" :edit="true"
+                                            <x-action :row="$row" custom="" :detail="false" :edit="true"
                                                 :print="false" :permanentdelete="true" :restore="false"
                                                 :delete="true" />
                                         @endif
@@ -73,7 +68,7 @@
             {{ $data->links() }}
         </div>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>

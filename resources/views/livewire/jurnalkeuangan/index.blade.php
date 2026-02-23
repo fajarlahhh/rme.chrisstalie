@@ -8,7 +8,7 @@
     <h1 class="page-header">Jurnal Keuangan</h1>
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             @role('administrator|supervisor|operator')
                 <div class="btn-group my-n1">
                     <a class="btn btn-outline-secondary btn-block"
@@ -26,23 +26,19 @@
                         @endrole
                     </div>
                 </div>
+                &nbsp;
             @endrole
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
-                    <select class="form-control w-auto" wire:model.lazy="jenis">
-                        <option value="">Semua Jenis</option>
-                        @foreach ($dataJenis as $item)
-                            <option value="{{ $item['jenis'] }}">{{ $item['jenis'] }}</option>
-                        @endforeach
-                    </select>
-                    &nbsp;
-                    <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
-                    &nbsp;
-                    <input type="text" class="form-control w-200px" placeholder="Cari"
-                        aria-label="Sizing example input" autocomplete="off" aria-describedby="basic-addon2"
-                        wire:model.lazy="cari">
-                </div>
-            </div>
+            <select class="form-control w-auto" wire:model.lazy="jenis">
+                <option value="">Semua Jenis</option>
+                @foreach ($dataJenis as $item)
+                    <option value="{{ $item['jenis'] }}">{{ $item['jenis'] }}</option>
+                @endforeach
+            </select>
+            &nbsp;
+            <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
+            &nbsp;
+            <input type="text" class="form-control w-200px" placeholder="Cari" aria-label="Sizing example input"
+                autocomplete="off" aria-describedby="basic-addon2" wire:model.lazy="cari">
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

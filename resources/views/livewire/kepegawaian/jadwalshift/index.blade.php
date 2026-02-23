@@ -10,7 +10,7 @@
 
     <form wire:submit.prevent="submit">
         <div class="panel panel-inverse" data-sortable-id="table-basic-2">
-            <div class="panel-heading">
+            <div class="panel-heading overflow-auto d-flex">
                 <h4 class="panel-title">Form</h4>
             </div>
             <div class="panel-body">

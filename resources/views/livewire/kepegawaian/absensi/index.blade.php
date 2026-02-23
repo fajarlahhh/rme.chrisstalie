@@ -38,7 +38,7 @@
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             <div class="row w-100">
                 <div class="col-md-2">
                     @unlessrole('guest')

@@ -10,25 +10,22 @@
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             <a href="javascript:;" wire:click="print" x-init="$($el).on('click', function() {
                 setTimeout(() => {
                     $('#modal-cetak').modal('show')
                 }, 1000)
             })" class="btn btn-warning">
-                Cetak</a>
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
-                    <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal" />
-                    &nbsp;
-                    <select class="form-control" wire:model.lazy="pengguna_id">
-                        <option value="">Semua Pengguna</option>
-                        @foreach ($dataPengguna as $item)
-                            <option value="{{ $item->id }}">{{ $item->nama }}</option>
-                        @endforeach
-                    </select>
-                </div>
-            </div>
+                Cetak</a>&nbsp;
+            <input class="form-control" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
+                wire:model.lazy="tanggal" />
+            &nbsp;
+            <select class="form-control" wire:model.lazy="pengguna_id">
+                <option value="">Semua Pengguna</option>
+                @foreach ($dataPengguna as $item)
+                    <option value="{{ $item->id }}">{{ $item->nama }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />
@@ -36,7 +33,7 @@
         </div>
     </div>
     <x-modal.cetak judul="" />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

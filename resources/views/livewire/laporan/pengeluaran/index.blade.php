@@ -12,11 +12,9 @@
 
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
-        <div class="panel-heading">
+        <div class="panel-heading overflow-auto d-flex">
             <a href="javascript:;" wire:click="export" class="btn btn-success">
-                Export</a>
-            <div class="w-100">
-                <div class="panel-heading-btn float-end">
+                Export</a>&nbsp;
                     <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal1" id="tanggal"
                         class="form-control w-auto">&nbsp;s/d&nbsp;
                     <input type="date" autocomplete="off" min="2025-11-29" max="{{ date('Y-m-d') }}" wire:model.lazy="tanggal2" id="tanggal"
@@ -36,8 +34,6 @@
                             <option value="{{ $item['id'] }}">{{ $item['nama'] }}</option>
                         @endforeach
                     </select>
-                </div>
-            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

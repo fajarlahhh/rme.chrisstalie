@@ -105,7 +105,7 @@
             </div>
             <form wire:submit.prevent="submitPemeriksaanAwal">
                 <div class="panel panel-inverse bg-gray-100">
-                    <div class="panel-heading">
+                    <div class="panel-heading overflow-auto d-flex">
                         <h4 class="panel-title">Anamnesis (Subjective)</h4>
                     </div>
                     <div class="panel-body">
@@ -149,7 +149,7 @@
                 </div>
 
                 <div class="panel panel-inverse bg-gray-100">
-                    <div class="panel-heading">
+                    <div class="panel-heading overflow-auto d-flex">
                         <h4 class="panel-title">Pemeriksaan Fisik (Objective)</h4>
                     </div>
                     <div class="panel-body">
@@ -395,7 +395,7 @@
                 </div>
 
                 <div class="panel panel-inverse bg-gray-100">
-                    <div class="panel-heading">
+                    <div class="panel-heading overflow-auto d-flex">
                         <h4 class="panel-title">Diagnosis & Perencanaan (Assessment & Plan)</h4>
                     </div>
                     <div class="panel-body">
