@@ -43,7 +43,7 @@
                     </select>
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">No. Faktur</label>
+                    <label class="form-label">No. Invoice/Faktur</label>
                     <input class="form-control" type="text" wire:model="no_faktur" x-model="no_faktur" required />
                     @error('no_faktur')
                         <span class="text-danger">{{ $message }}</span>

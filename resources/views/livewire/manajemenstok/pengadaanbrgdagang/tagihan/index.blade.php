@@ -29,7 +29,7 @@
                     <tr>
                         <th class="w-10px">No.</th>
                         <th>Data Pemesanan</th>
-                        <th>No. Faktur</th>
+                        <th>No. Tagihan/Faktur</th>
                         <th>Tanggal</th>
                         <th>Catatan</th>
                         <th>Jatuh Tempo</th>
@@ -111,7 +111,7 @@
                                     </tfoot>
                                 </table>
                             </td>
-                            <td>{{ $row->status }}</td>
+                            <td>{!! $row->pengadaanPelunasanDetail ? '<span class="badge bg-success">Lunas</span>' : '' !!}</td>
                             <td><a href="/jurnalkeuangan?bulan={{ substr($row->keuanganJurnal?->tanggal, 0, 7) }}&cari={{ $row->keuanganJurnal?->nomor }}"
                                     target="_blank">{{ $row->keuanganJurnal?->nomor }}</a></td>
                             <td class="with-btn-group text-end" nowrap>
