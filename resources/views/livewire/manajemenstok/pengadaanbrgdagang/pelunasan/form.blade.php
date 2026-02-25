@@ -40,67 +40,63 @@
                         <tr>
                             <th class="w-5px"></th>
                             <th class="w-300px">No. Tagihan</th>
-                            <th class="w-150px">Tanggal</th>
+                            <th class="w-150px">Tgl. Invoice</th>
                             <th class="w-150px">Tgl. Jatuh Tempo</th>
                             <th>Detail</th>
                         </tr>
                         @foreach ($pengadaanTagihan as $item)
                             <tr>
-                                <td
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
+                                <td>
                                     <input type="checkbox" class="form-check-input" x-model="pengadaan_tagihan_id"
                                         :value="String({{ $item['id'] ?? '' }})"
                                         @click.stop="toggleCheckedId({{ $item['id'] ?? '' }})">
                                 </td>
-                                <td
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
+                                <td>
                                     {{ $item['no_faktur'] }}</td>
-                                <td
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
+                                <td>
                                     {{ $item['tanggal'] }}</td>
-                                <td
-                                    rowspan="{{ count($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail']) + 1 }}">
+                                <td>
                                     {{ $item['tanggal_jatuh_tempo'] }}</td>
                                 <td>
                                     <table class="table table-bordered fs-11px">
                                         <thead>
                                             <tr>
-                                                <th>Nama Barang</th>
-                                                <th>Satuan</th>
-                                                <th>Harga Satuan</th>
-                                                <th>Qty</th>
-                                                <th>Total</th>
+                                                <th class="p-1">Nama Barang</th>
+                                                <th class="p-1">Satuan</th>
+                                                <th class="p-1">Harga Satuan</th>
+                                                <th class="p-1">Qty</th>
+                                                <th class="p-1">Total</th>
                                             </tr>
                                         </thead>
                                         @foreach ($item['pengadaan_pemesanan']['pengadaan_pemesanan_detail'] as $q)
                                             <tr>
-                                                <td nowrap>{{ $q['barang']['nama'] }}</td>
-                                                <td nowrap>{{ $q['barang_satuan']['nama'] }}</td>
-                                                <td class="text-end w-70px" nowrap>
+                                                <td class="p-1" nowrap>{{ $q['barang']['nama'] }}</td>
+                                                <td class="p-1" nowrap>{{ $q['barang_satuan']['nama'] }}</td>
+                                                <td class="text-end w-70px p-1" nowrap>
                                                     {{ number_format($q['harga_beli'], 2) }}</td>
-                                                    <td class="text-end w-70px" nowrap>{{ $q['qty'] }}</td>
-                                                <td class="text-end w-70px" nowrap>
+                                                <td class="text-end w-70px p-1" nowrap>{{ $q['qty'] }}</td>
+                                                <td class="text-end w-70px p-1" nowrap>
                                                     {{ number_format($q['harga_beli'] * $q['qty'], 2) }}</td>
                                             </tr>
                                         @endforeach
                                         <tr>
-                                            <th colspan="4">Total Harga Barang</th>
-                                            <th class="text-end w-70px" nowrap>
+                                            <th colspan="4" class="p-1">Total Harga Barang</th>
+                                            <th class="text-end w-70px p-1" nowrap>
                                                 {{ number_format($item['total_harga_barang'], 2) }}</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4">Diskon</th>
-                                            <th class="text-end w-70px" nowrap>
+                                            <th colspan="4" class="p-1">Diskon</th>
+                                            <th class="text-end w-70px p-1" nowrap>
                                                 {{ number_format($item['diskon'], 2) }}</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4">PPN</th>
-                                            <th class="text-end w-70px" nowrap>
+                                            <th colspan="4" class="p-1">PPN</th>
+                                            <th class="text-end w-70px p-1" nowrap>
                                                 {{ number_format($item['ppn'], 2) }}</th>
                                         </tr>
                                         <tr>
-                                            <th colspan="4">Total Tagihan</th>
-                                            <th class="text-end w-70px" nowrap>
+                                            <th colspan="4" class="p-1">Total Tagihan</th>
+                                            <th class="text-end w-70px p-1" nowrap>
                                                 {{ number_format($item['total_tagihan'], 2) }}</th>
                                         </tr>
                                     </table>
