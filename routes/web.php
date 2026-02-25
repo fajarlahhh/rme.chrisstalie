@@ -79,6 +79,23 @@ Route::middleware(['auth'])->group(function () {
                     'alamat' => $q->alamat,
                 ])->toArray();
         });
+        Route::get('pasien', function (Request $req) {
+            return Pasien::whereHas('member')->where(
+                fn($q) => $q
+                    ->where('nik', 'like', "%$req->cari%")
+                    ->orWhere('id', 'like', "%$req->cari%")->orWhere('alamat', 'like', "%$req->cari%")
+                    ->orWhere('nama', 'like', "%$req->cari%")
+                    ->orWhereHas('registrasi', fn($q) => $q->where('id', 'like', "%$req->cari%"))
+            )->orderBy('nama', 'asc')->get()
+                ->map(fn($q) => [
+                    'id' => $q->id,
+                    'text' => $q->id . ' - ' . $q->nama . ', ' . $q->alamat,
+                    'rm' => $q->id,
+                    'nik' => $q->nik ?: '',
+                    'nama' => $q->nama,
+                    'alamat' => $q->alamat,
+                ])->toArray();
+        });
         Route::get('barang', function (Request $req) {
             return Barang::where('nama', 'like', "%$req->cari%")->where('persediaan', 'Apotek')->get()->map(fn($q) => [
                 'id' => $q->id,

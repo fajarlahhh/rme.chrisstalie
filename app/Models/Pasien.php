@@ -2,10 +2,11 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class Pasien extends Model
 {
@@ -43,5 +44,10 @@ class Pasien extends Model
     public function getUmurAttribute()
     {
         return Carbon::parse($this->tanggal_lahir)->age;
+    }
+
+    public function member(): HasOne
+    {
+        return $this->hasOne(Member::class, 'id');
     }
 }

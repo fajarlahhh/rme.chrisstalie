@@ -131,9 +131,9 @@ return [
             "icon" => "<i class='fa fa-star'></i>",
             "sub_menu" => [
                 [
-                    "title" => "Registrasi",
+                    "title" => "Data",
                     "urutkan" => true,
-                    "method" => ["Index", "data"],
+                    "method" => ["Index", "Data", "Form"],
                 ],
                 [
                     "title" => "Deposit",

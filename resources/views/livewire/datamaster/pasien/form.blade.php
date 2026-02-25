@@ -99,11 +99,11 @@
                 </button>
                 <x-alert />
             </div>
-        
-        <x-modal.konfirmasi />
-    </form>
+
+            <x-modal.konfirmasi />
+        </form>
     </div>
-    
+
     <div wire:loading>
         <x-loading />
     </div>
