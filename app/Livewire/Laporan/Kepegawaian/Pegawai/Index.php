@@ -4,9 +4,13 @@ namespace App\Livewire\Laporan\Kepegawaian\Pegawai;
 
 use Livewire\Component;
 use App\Models\KepegawaianPegawai;
+use Livewire\Attributes\Url;
 
 class Index extends Component
 {
+    #[Url]
+    public $status = 'Aktif';
+
     public function print()
     {
         $cetak = view('livewire.laporan.kepegawaian.pegawai.cetak', [
@@ -18,7 +22,9 @@ class Index extends Component
 
     private function getData()
     {
-        return KepegawaianPegawai::all()->toArray();
+        return KepegawaianPegawai::when($this->status, function ($query) {
+            $query->where('status', $this->status);
+        })->orderBy('nama')->get()->toArray();
     }
 
     public function render()

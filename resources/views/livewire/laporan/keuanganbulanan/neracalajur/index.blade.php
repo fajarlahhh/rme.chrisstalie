@@ -13,7 +13,7 @@
     <div class="panel panel-inverse" data-sortable-id="table-basic-2">
         <!-- BEGIN panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <a href="javascript:;" wire:click="export" class="btn btn-success">
+            <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <input type="month" autocomplete="off" wire:model.lazy="bulan" min="2025-09"

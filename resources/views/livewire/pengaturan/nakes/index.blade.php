@@ -12,7 +12,7 @@
         <div class="panel-heading overflow-auto d-flex">
             @role('administrator|supervisor|operator')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
-                    class="btn btn-outline-secondary btn-block">Tambah</a>
+                    class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;
             @endrole
             <div class="ms-auto d-flex align-items-center">
                 <select class="form-control w-auto" wire:model.lazy="aktif">

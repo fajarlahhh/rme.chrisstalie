@@ -14,7 +14,7 @@
                 setTimeout(() => {
                     $('#modal-cetak').modal('show')
                 }, 1000)
-            })" class="btn btn-warning">
+            })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <input type="month" class="form-control w-auto" wire:model.lazy="bulan" min="2025-11"

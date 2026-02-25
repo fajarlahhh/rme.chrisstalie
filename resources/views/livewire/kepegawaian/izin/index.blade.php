@@ -12,7 +12,7 @@
         <div class="panel-heading overflow-auto d-flex">
             @unlessrole('guest')
                 <a href="javascript:window.location.href=window.location.href.split('?')[0] + '/form'"
-                    class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;
+                    class="btn btn-outline-secondary btn-block">Tambah</a>&nbsp;&nbsp;
             @endunlessrole
             <div class="ms-auto d-flex align-items-center">
                 <input class="form-control w-auto" type="date" autocomplete="off" wire:model="tanggal1" />&nbsp;

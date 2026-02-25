@@ -15,8 +15,14 @@
                 setTimeout(() => {
                     $('#modal-cetak').modal('show')
                 }, 1000)
-            })" class="btn btn-warning">
+            })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
+            <div class="ms-auto d-flex align-items-center">
+                <select class="form-control w-auto" wire:model.lazy="status">
+                    <option value="Aktif">Aktif</option>
+                    <option value="Non Aktif">Non Aktif</option>
+                </select>
+            </div>
         </div>
         <div class="panel-body table-responsive">
             <x-alert />

@@ -10,7 +10,7 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <a href="javascript:;" wire:click="export" class="btn btn-success">
+            <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"

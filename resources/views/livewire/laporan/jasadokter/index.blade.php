@@ -11,7 +11,7 @@
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading overflow-auto d-flex">
-            <a href="javascript:;" wire:click="export" class="btn btn-warning">
+            <a href="javascript:;" wire:click="export" class="btn btn-outline-success btn-block">
                 Export</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"

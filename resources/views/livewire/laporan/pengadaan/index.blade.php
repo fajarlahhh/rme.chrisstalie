@@ -15,7 +15,7 @@
                 setTimeout(() => {
                     $('#modal-cetak').modal('show')
                 }, 1000)
-            })" class="btn btn-warning">
+            })" class="btn btn-outline-info btn-block">
                 Cetak</a>&nbsp;
             <div class="ms-auto d-flex align-items-center">
                 <input class="form-control w-auto" type="date" min="2025-11-29" max="{{ date('Y-m-d') }}"
