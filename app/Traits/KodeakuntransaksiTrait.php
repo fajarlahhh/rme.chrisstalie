@@ -14,7 +14,7 @@ trait KodeakuntransaksiTrait
 
     public function getKodeAkunTransaksiByTransaksi($transaksi)
     {
-        $data  = KeuanganKodeAkunTransaksi::where('transaksi', $transaksi)->get();
+        $data  = KeuanganKodeAkunTransaksi::whereIn('transaksi', $transaksi)->get();
 
         if ($data->count() > 1) {
             return $data;
@@ -25,7 +25,7 @@ trait KodeakuntransaksiTrait
 
     public function getKodeAkunTransaksiByKategori($kategori)
     {
-        $data  = KeuanganKodeAkunTransaksi::where('kategori', $kategori)->get();
+        $data  = KeuanganKodeAkunTransaksi::whereIn('kategori', $kategori)->get();
         if ($data->count() > 1) {
             return $data;
         }

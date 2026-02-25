@@ -28,8 +28,8 @@ class Hutang extends Component
             $this->nilai = $this->data->keuanganJurnalDetail->sum('kredit');
         }
         // $this->tanggal = date('Y-m-d');
-        $this->dataJenisHutang = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi('Hutang Ke Pemegang Saham/Bank')->pluck('kode_akun_id'))->get()->toArray();
-        $this->dataKasBank = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi('Pemasukan')->pluck('kode_akun_id'))->get()->toArray();
+        $this->dataJenisHutang = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi(['Hutang Ke Pemegang Saham', 'Hutang Ke Bank'])->pluck('kode_akun_id'))->get()->toArray();
+        $this->dataKasBank = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi(['Pemasukan'])->pluck('kode_akun_id'))->orWhereIn(DB::raw('left(id, 1)'), ['6', '7'])->get()->toArray();
     }
 
     public function submit()

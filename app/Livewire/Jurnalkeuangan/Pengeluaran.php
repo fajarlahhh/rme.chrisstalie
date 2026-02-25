@@ -30,7 +30,7 @@ class Pengeluaran extends Component
         }
         // $this->tanggal = date('Y-m-d');
         $this->dataJenisPengeluaran = KodeAkun::detail()->whereIn(DB::raw('left(id, 1)'), ['6', '7'])->get()->toArray();
-        $this->dataSumberDana = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi('Pembayaran')->pluck('kode_akun_id'))->get()->toArray();
+        $this->dataSumberDana = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi(['Pembayaran'])->pluck('kode_akun_id'))->get()->toArray();
     }
 
     public function submit()

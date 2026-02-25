@@ -8,10 +8,12 @@ use Illuminate\Support\Facades\DB;
 use App\Traits\CustomValidationTrait;
 use App\Models\KeuanganJurnal;
 use App\Models\KodeAkun;
+use App\Traits\KodeakuntransaksiTrait;
 
 class Pindahsaldokas extends Component
 {
     use CustomValidationTrait;
+    use KodeakuntransaksiTrait;
     public KeuanganJurnal $data;
     public $tanggal, $uraian, $sumber_dana_id, $tujuan_dana_id, $nilai;
     public  $dataKodeAkun = [];
@@ -26,7 +28,7 @@ class Pindahsaldokas extends Component
             $this->nilai = $this->data->keuanganJurnalDetail->sum('kredit');
         }
         // $this->tanggal = date('Y-m-d');
-        $this->dataKodeAkun = KodeAkun::detail()->whereIn('parent_id', ['11100'])->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByKategori(['Kas'])->pluck('kode_akun_id'))->get()->toArray();
     }
 
     public function submit()

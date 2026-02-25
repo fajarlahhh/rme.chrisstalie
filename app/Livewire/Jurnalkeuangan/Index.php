@@ -13,7 +13,7 @@ class Index extends Component
     use WithPagination;
 
     #[Url]
-    public $cari, $bulan, $jenis;
+    public $cari, $bulan, $jenis, $kategori;
 
     public function mount()
     {
@@ -36,6 +36,8 @@ class Index extends Component
         return KeuanganJurnal::with(['keuanganJurnalDetail.kodeAkun', 'pengguna'])
             ->when($this->jenis, fn($q) => $q->where('jenis', $this->jenis))
             ->where('tanggal', 'like', $this->bulan . '%')
+            ->when($this->kategori == 1, fn($q) => $q->where('system', $this->kategori))
+            ->when($this->kategori == 2, fn($q) => $q->where('system', '0'))
             ->where(
                 fn($q) => $q
                     ->where('id', 'like', $this->cari . '%')

@@ -36,6 +36,12 @@
                     @endforeach
                 </select>
                 &nbsp;
+                <select class="form-control w-auto" wire:model.lazy="kategori">
+                    <option value="">Semua Kategori</option>
+                    <option value="1">Sistem</option>
+                    <option value="2">Manual</option>
+                </select>
+                &nbsp;
                 <input type="month" class="form-control w-auto" wire:model.lazy="bulan" max="{{ date('Y-m') }}">
                 &nbsp;
                 <input type="text" class="form-control w-auto" placeholder="Cari" autocomplete="off"

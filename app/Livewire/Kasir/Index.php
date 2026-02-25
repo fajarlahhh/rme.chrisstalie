@@ -369,7 +369,7 @@ class Index extends Component
 
         $pendapatan = array_merge($pendapatan, [
             [
-                'kode_akun_id' =>  $this->getKodeAkunTransaksiByTransaksi('Diskon Pendapatan')->kode_akun_id,
+                'kode_akun_id' =>  $this->getKodeAkunTransaksiByTransaksi(['Diskon Pendapatan'])->kode_akun_id,
                 'debet' => $this->total_diskon_barang + $this->total_diskon_tindakan,
                 'kredit' => 0,
             ]
@@ -411,7 +411,7 @@ class Index extends Component
 
         $hppJasaPelayan = [
             [
-                'kode_akun_id' =>  $this->getKodeAkunTransaksiByTransaksi('HPP Jasa Pelayanan')->kode_akun_id,
+                'kode_akun_id' =>  $this->getKodeAkunTransaksiByTransaksi(['HPP Jasa Pelayanan'])->kode_akun_id,
                 'debet' => collect($jasaDokter)->sum('kredit') + collect($jasaPerawat)->sum('kredit'),
                 'kredit' => 0,
             ]
@@ -419,7 +419,7 @@ class Index extends Component
 
         $biayaPenyusutanAset = collect($this->alat)->where('metode_penyusutan', 'Satuan Hasil Produksi')->map(function ($q) {
             return [
-                'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi('Biaya Penyusutan Aset')->kode_akun_id,
+                'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi(['Biaya Penyusutan Aset'])->kode_akun_id,
                 'debet' => $q['biaya'] * $q['qty'],
                 'kredit' => 0,
             ];

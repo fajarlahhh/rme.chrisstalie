@@ -20,7 +20,7 @@ class Form extends Component
 
     public function mount()
     {
-        $this->dataKodeAkun = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi('Pembayaran')->pluck('kode_akun_id'))->get()->toArray();
+        $this->dataKodeAkun = KodeAkun::detail()->whereIn('id', $this->getKodeAkunTransaksiByTransaksi(['Pembayaran'])->pluck('kode_akun_id'))->get()->toArray();
         $this->tanggal = date('Y-m-01');
         $this->periode = date('Y-m');
         $this->updatedPeriode($this->periode);

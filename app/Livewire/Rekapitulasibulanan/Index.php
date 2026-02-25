@@ -157,7 +157,7 @@ class Index extends Component
         $detail[] = [
             'debet' => collect($detail)->sum('kredit'),
             'kredit' => 0,
-            'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi('Biaya Penyusutan Aset')->kode_akun_id
+            'kode_akun_id' => $this->getKodeAkunTransaksiByTransaksi(['Biaya Penyusutan Aset'])->kode_akun_id
         ];
 
         KeuanganJurnal::where('jenis', 'Penyusutan')->where('tanggal', '>=', $periodeSekarang)->delete();
