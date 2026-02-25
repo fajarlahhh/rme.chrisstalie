@@ -77,12 +77,7 @@ class Index extends Component
             'keluhan_awal'
         ]);
     }
-
-    public function updated()
-    {
-        $this->resetPage();
-    }
-
+    
     public function submit()
     {
         $rules = [
