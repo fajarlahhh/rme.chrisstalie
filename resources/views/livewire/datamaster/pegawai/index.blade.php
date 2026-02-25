@@ -29,7 +29,7 @@
             <table class="table table-hover">
                 <thead>
                     <tr>
-                        <th class="w-10px">No.</th>
+                        <th class="w-10px">ID</th>
                         <th>No. KTP</th>
                         <th>Nama</th>
                         <th>Alamat</th>
@@ -42,9 +42,7 @@
                 <tbody>
                     @foreach ($data as $index => $row)
                         <tr>
-                            <td>
-                                {{ ($data->currentPage() - 1) * $data->perPage() + $loop->iteration }}
-                            </td>
+                            <td>{{ $row->id }}</td>
                             <td>{{ $row->nik }}</td>
                             <td>{{ $row->nama }}</td>
                             <td>{{ $row->alamat }}</td>
