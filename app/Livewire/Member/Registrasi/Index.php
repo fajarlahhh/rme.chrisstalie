@@ -5,7 +5,9 @@ namespace App\Livewire\Member\Registrasi;
 use App\Models\Member;
 use App\Models\Pasien;
 use Livewire\Component;
+use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 use App\Traits\CustomValidationTrait;
 
 class Index extends Component
@@ -113,10 +115,22 @@ class Index extends Component
             $member = new Member();
             $member->id = $pasien->id;
             $member->email = $this->email;
+            $member->token = Str::random(60);
             $member->pengguna_id = auth()->id();
             $member->save();
 
-            session()->flash('success', 'Berhasil menyimpan data');
+            try {
+                Mail::send('livewire.member.registrasi.email', [
+                    'nama' => $this->nama,
+                    'url' => 'https://chrisstaliederma.id/verifikasi/' . urlencode($pasien->id) . '/' . urlencode($member->token),
+                ], function ($message) {
+                    $message->to($this->email)
+                        ->subject('Verifikasi Pendaftaran Member - Chrisstalie Derma Clinic');
+                });
+                session()->flash('success', 'Berhasil menyimpan data');
+            } catch (\Exception $e) {
+                session()->flash('error', 'Gagal mengirim email verifikasi: ' . $e->getMessage());
+            }
         });
 
         return redirect('/member/registrasi');

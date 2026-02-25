@@ -154,6 +154,15 @@
                             @enderror
                         </div>
                         <div class="mb-3">
+                            <label class="form-label">Nama</label>
+                            <input class="form-control" type="text" wire:model="nama"
+                                @if ($nama) disabled @endif
+                                @if (!$pasien_id) disabled @endif />
+                            @error('nama')
+                                <span class="text-danger">{{ $message }}</span>
+                            @enderror
+                        </div>
+                        <div class="mb-3">
                             <label class="form-label">No. KTP</label>
                             <input class="form-control" type="text" wire:model="nik"
                                 @if ($nik) disabled @endif
