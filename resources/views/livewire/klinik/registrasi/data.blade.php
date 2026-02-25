@@ -1,13 +1,13 @@
 <div>
-    @section('title', 'Data Pendaftaran')
+    @section('title', 'Data Registrasi')
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Klinik</li>
-        <li class="breadcrumb-item">Pendaftaran</li>
+        <li class="breadcrumb-item">Registrasi</li>
         <li class="breadcrumb-item active">Data</li>
     @endsection
 
-    <h1 class="page-header">Pendaftaran <small>Data</small></h1>
+    <h1 class="page-header">Registrasi <small>Data</small></h1>
 
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->

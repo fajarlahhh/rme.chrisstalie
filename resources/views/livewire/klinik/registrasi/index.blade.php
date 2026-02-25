@@ -3,8 +3,7 @@
 
     @section('breadcrumb')
         <li class="breadcrumb-item">Klinik</li>
-        <li class="breadcrumb-item">Registrasi</li>
-        <li class="breadcrumb-item active">Input</li>
+        <li class="breadcrumb-item active">Registrasi</li>
     @endsection
 
     <h1 class="page-header">Registrasi</h1>

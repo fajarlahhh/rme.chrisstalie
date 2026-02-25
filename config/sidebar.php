@@ -126,6 +126,23 @@ return [
             ]
         ],
         [
+            "title" => "Member",
+            "urutkan" => true,
+            "icon" => "<i class='fa fa-star'></i>",
+            "sub_menu" => [
+                [
+                    "title" => "Registrasi",
+                    "urutkan" => true,
+                    "method" => ["Index", "data"],
+                ],
+                [
+                    "title" => "Deposit",
+                    "urutkan" => true,
+                    "method" => ["Index", "Form"],
+                ],
+            ]
+        ],
+        [
             "title" => "Manajemen Stok",
             "urutkan" => true,
             "icon" => "<i class='fas fa-boxes'></i>",
