@@ -9,8 +9,6 @@
 
     <h1 class="page-header">Pasien <small>{{ !$data->exists ? 'Tambah' : 'Edit' }}</small></h1>
 
-    <x-alert />
-
     <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
         <!-- begin panel-heading -->
         <div class="panel-heading ui-sortable-handle">
@@ -19,7 +17,6 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">RM</label>
                     <input class="form-control" type="text" wire:model="rm" disabled />
@@ -88,7 +85,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -100,7 +99,9 @@
                 </button>
                 <x-alert />
             </div>
-        </form>
+        
+        <x-modal.konfirmasi />
+    </form>
     </div>
     
     <div wire:loading>

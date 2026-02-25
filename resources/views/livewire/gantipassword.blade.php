@@ -15,7 +15,6 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">UID</label>
                     <input class="form-control" type="uid" value="{{ auth()->user()->uid }}" disabled />
@@ -25,9 +24,7 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
-                    <input class="form-control" type="text"
-                        value="{{ auth()->user()->nama }}"
-                        disabled />
+                    <input class="form-control" type="text" value="{{ auth()->user()->nama }}" disabled />
                     @error('nama')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -62,7 +59,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -71,9 +70,6 @@
         </form>
     </div>
 
-    <x-alert />
-
-    
     <div wire:loading>
         <x-loading />
     </div>

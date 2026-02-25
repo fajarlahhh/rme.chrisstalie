@@ -16,7 +16,6 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="alert alert-warning">
                     Pesanan yang bisa dipilih adalah pesanan yang sudah lengkap stok masuk dan belum dibuat tagihannya.
                 </div>
@@ -146,7 +145,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -156,11 +157,12 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Kembali
                 </button>
+                <x-alert />
             </div>
+
+            <x-modal.konfirmasi />
         </form>
     </div>
-
-    <x-alert />
 
     <div wire:loading>
         <x-loading />

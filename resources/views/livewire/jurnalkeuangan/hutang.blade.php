@@ -1,17 +1,9 @@
-<div x-data="{
-    confirmAndSubmit(event) {
-        if (confirm('Apakah Anda yakin ingin memindahkan saldo kas?')) {
-            $wire.submit();
-        } else {
-            event.preventDefault();
-        }
-    }
-}">
-    <form @submit.prevent="confirmAndSubmit($event)">
+<div>
+    <form wire:submit="submit">
         <div class="panel panel-inverse" data-sortable-id="table-basic-2">
             <!-- BEGIN panel-heading -->
             <div class="panel-heading overflow-auto d-flex">
-                <h4 class="panel-title">Pindah Saldo Kas</h4>
+                <h4 class="panel-title">Hutang</h4>
                 <div class="panel-heading-btn">
                     <a href="javascript:;" class="btn btn-xs btn-icon btn-default" data-toggle="panel-expand"><i
                             class="fa fa-expand"></i></a>
@@ -36,7 +28,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Sumber Dana</label>
+                    <label class="form-label" for="jenis_hutang_id">Jenis Hutang</label>
                     <select class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
@@ -45,18 +37,19 @@
                         style: '',
                         showSubtext: true,
                         styleBase: 'form-control'
-                    })" wire:model="sumber_dana_id" data-width="100%">
-                        <option hidden selected>-- Pilih Sumber Dana --</option>
-                        @foreach ($dataKodeAkun as $item)
-                            <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
+                    })" wire:model="jenis_hutang_id"
+                        data-width="100%">
+                        <option hidden selected>-- Pilih Jenis Hutang --</option>
+                        @foreach ($dataJenisHutang as $row)
+                            <option value="{{ $row['id'] }}">{{ $row['id'] }} - {{ $row['nama'] }}</option>
                         @endforeach
                     </select>
-                    @error('sumber_dana_id')
+                    @error('jenis_hutang_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label" for="tujuan_dana_id">Tujuan Dana</label>
+                    <label class="form-label">Kas/Bank</label>
                     <select class="form-control" x-init="$($el).selectpicker({
                         liveSearch: true,
                         width: 'auto',
@@ -65,20 +58,19 @@
                         style: '',
                         showSubtext: true,
                         styleBase: 'form-control'
-                    })" wire:model="tujuan_dana_id" data-width="100%">
-                        <option hidden selected>-- Pilih Tujuan Dana --</option>
-                        @foreach ($dataKodeAkun as $item)
+                    })" wire:model="kas_bank_id" data-width="100%">
+                        <option hidden selected>-- Pilih Kas/Bank --</option>
+                        @foreach ($dataKasBank as $item)
                             <option value="{{ $item['id'] }}">{{ $item['id'] }} - {{ $item['nama'] }}</option>
                         @endforeach
                     </select>
-                    @error('tujuan_dana_id')
+                    @error('kas_bank_id')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>
                 <div class="mb-3">
                     <label class="form-label" for="nilai">Nilai</label>
-                    <input type="number" class="form-control" step="any" wire:model="nilai" id="nilai"
-                        min="0">
+                    <input type="number" class="form-control" step="any" wire:model="nilai" id="nilai" min="0">
                     @error('nilai')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -100,10 +92,8 @@
                 <x-alert />
             </div>
         </div>
-    
         <x-modal.konfirmasi />
     </form>
-
     <div wire:loading>
         <x-loading />
     </div>

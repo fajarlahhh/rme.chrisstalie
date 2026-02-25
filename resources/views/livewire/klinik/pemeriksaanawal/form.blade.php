@@ -420,7 +420,9 @@
                 </div>
                 <hr>
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -438,6 +440,8 @@
                     Data
                 </button>
                 <x-alert />
+            
+                <x-modal.konfirmasi />
             </form>
         </div>
         <div class="tab-pane fade" id="default-tab-1" role="tabpanel" wire:ignore.self>
@@ -604,7 +608,9 @@
                 </div>
                 <hr>
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -622,6 +628,8 @@
                     Data
                 </button>
                 <x-alert />
+            
+                <x-modal.konfirmasi />
             </form>
         </div>
     </div>

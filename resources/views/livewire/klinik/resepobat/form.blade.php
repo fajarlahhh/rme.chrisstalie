@@ -83,8 +83,8 @@
                                     </div>
                                     <div class="col-md-1 text-end">
                                         <template x-if="resepIndex > 0">
-                                            <button type="button" wire:loading.attr="disabled" class="btn btn-danger btn-xs"
-                                                @click="hapusResep(resepIndex)">
+                                            <button type="button" wire:loading.attr="disabled"
+                                                class="btn btn-danger btn-xs" @click="hapusResep(resepIndex)">
                                                 &nbsp;x&nbsp;
                                             </button>
                                         </template>
@@ -132,7 +132,8 @@
                                                         autocomplete="off">
                                                 </td>
                                                 <td class="w-10px align-middle">
-                                                    <button type="button" wire:loading.attr="disabled" class="btn btn-warning btn-sm"
+                                                    <button type="button" wire:loading.attr="disabled"
+                                                        class="btn btn-warning btn-sm"
                                                         @click="hapusBarang(resepIndex, barangIndex)">
                                                         <i class="fa fa-times"></i>
                                                     </button>
@@ -142,8 +143,8 @@
                                         <tr>
                                             <td colspan="3">
                                                 <div class="text-center">
-                                                    <button class="btn btn-secondary" wire:loading.attr="disabled" type="button"
-                                                        @click="tambahBarang(resepIndex)">
+                                                    <button class="btn btn-secondary" wire:loading.attr="disabled"
+                                                        type="button" @click="tambahBarang(resepIndex)">
                                                         Tambah Barang
                                                     </button>
                                                 </div>
@@ -155,7 +156,8 @@
                             </div>
                         </template>
                         <div class="text-center">
-                            <button type="button" wire:loading.attr="disabled" class="btn btn-info" @click="tambahResep()">
+                            <button type="button" wire:loading.attr="disabled" class="btn btn-info"
+                                @click="tambahResep()">
                                 Tambah Resep
                             </button>
                         </div>
@@ -175,11 +177,13 @@
                         <x-alert />
                     </div>
                 </div>
+
+                <x-modal.konfirmasi />
             </form>
         </div>
     </div>
     <x-modal.cetak judul='Nota' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>

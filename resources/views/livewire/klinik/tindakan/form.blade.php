@@ -183,7 +183,9 @@
                         <x-alert />
                     </div>
                 </div>
-            </form>
+            
+        <x-modal.konfirmasi />
+    </form>
         </div>
     </div>
     

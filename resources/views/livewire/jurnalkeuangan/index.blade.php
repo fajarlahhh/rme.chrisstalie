@@ -18,12 +18,12 @@
                         data-bs-toggle="dropdown"><b class="caret"></b></button>
                     <div class="dropdown-menu dropdown-menu-start">
                         <a class="dropdown-item"
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=hutang'">Hutang</a>
+                        <a class="dropdown-item"
                             href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pengeluaran'">Pengeluaran</a>
-                        @role('administrator|supervisor')
-                            <a class="dropdown-item"
-                                href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pindahsaldokas'">Pindah
-                                Saldo Kas</a>
-                        @endrole
+                        <a class="dropdown-item"
+                            href="javascript:window.location.href=window.location.href.split('?')[0] + '/form?jenis=pindahsaldokas'">Pindah
+                            Saldo Kas</a>
                     </div>
                 </div>
                 &nbsp;

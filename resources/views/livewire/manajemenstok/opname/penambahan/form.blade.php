@@ -10,13 +10,12 @@
 
     <h1 class="page-header">Penambahan <small>Opname</small></h1>
 
-    <form wire:submit="submit">
-        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-            <div class="panel-heading ui-sortable-handle">
-                <h4 class="panel-title">Form</h4>
-            </div>
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <div class="panel-heading ui-sortable-handle">
+            <h4 class="panel-title">Form</h4>
+        </div>
+        <form wire:submit="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Cari Barang</label>
                     <div wire:ignore>
@@ -61,7 +60,8 @@
                 </div>
                 <div class="mb-3">
                     <label class="form-label">Tgl. Kedaluarsa</label>
-                    <input type="date" class="form-control" wire:model="tanggal_kedaluarsa" min="{{ date('Y-m-d') }}">
+                    <input type="date" class="form-control" wire:model="tanggal_kedaluarsa"
+                        min="{{ date('Y-m-d') }}">
                     @error('tanggal_kedaluarsa')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
@@ -90,7 +90,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -102,8 +104,10 @@
                 </button>
                 <x-alert />
             </div>
-        </div>
-    </form>
+            <x-modal.konfirmasi />
+        </form>
+    </div>
+
 
     <div wire:loading>
         <x-loading />

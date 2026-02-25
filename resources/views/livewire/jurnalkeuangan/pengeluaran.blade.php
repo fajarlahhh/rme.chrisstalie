@@ -12,7 +12,6 @@
             <!-- END panel-heading -->
             <!-- BEGIN panel-body -->
             <div class="panel-body">
-                <x-alert />
                 <div class="mb-3">
                     <label class="form-label" for="tanggal">Tanggal</label>
                     <input type="date" class="form-control" wire:model="tanggal" id="tanggal"
@@ -80,7 +79,9 @@
             <!-- END panel-body -->
             <div class="panel-footer">
                 @unlessrole('guest')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -91,6 +92,8 @@
                 <x-alert />
             </div>
         </div>
+    
+        <x-modal.konfirmasi />
     </form>
 
     <div wire:loading>

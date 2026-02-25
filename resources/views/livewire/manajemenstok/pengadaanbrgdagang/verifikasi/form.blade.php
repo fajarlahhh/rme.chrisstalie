@@ -16,7 +16,6 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="alert alert-info">
                     <h4 class="alert-heading">Data Permintaan</h4>
                     <div class="mb-3">
@@ -61,16 +60,16 @@
                                                 autocomplete="off" disabled>
                                         </td>
                                         <td>
-                                            <input type="text" class="form-control"
-                                                value="{{ $row['satuan'] }}" autocomplete="off" disabled>
+                                            <input type="text" class="form-control" value="{{ $row['satuan'] }}"
+                                                autocomplete="off" disabled>
                                             @error('barang.' . $index . '.satuan')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
                                         </td>
                                         <td>
                                             <input type="number" class="form-control w-100px" min="0"
-                                                step="1" min="0" max="100"
-                                                value="{{ $row['qty'] }}" autocomplete="off" disabled>
+                                                step="1" min="0" max="100" value="{{ $row['qty'] }}"
+                                                autocomplete="off" disabled>
                                             @error('barang.' . $index . '.qty')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -78,8 +77,8 @@
                                         <td>
                                             <input type="number" class="form-control w-200px" min="0"
                                                 step="1" min="0" max="{{ $row['qty'] }}"
-                                                wire:model="barang.{{ $index }}.qty_disetujui" autocomplete="off"
-                                                @if ($status == 'Ditolak') disabled @endif>
+                                                wire:model="barang.{{ $index }}.qty_disetujui"
+                                                autocomplete="off" @if ($status == 'Ditolak') disabled @endif>
                                             @error('barang.' . $index . '.qty_disetujui')
                                                 <span class="text-danger">{{ $message }}</span>
                                             @enderror
@@ -102,7 +101,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -112,11 +113,12 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>
+                <x-alert />
             </div>
+
+            <x-modal.konfirmasi />
         </form>
     </div>
-
-    <x-alert />
 
     <x-modal.cetak judul='Nota' />
 

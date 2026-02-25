@@ -17,7 +17,6 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Barang</label>
                     <select class="form-control" @if ($data->exists) disabled @endif
@@ -68,7 +67,8 @@
                                     style: '',
                                     showSubtext: true,
                                     styleBase: 'form-control'
-                                })" @if ($data->exists) disabled @endif>
+                                })"
+                                @if ($data->exists) disabled @endif>
                                 <option hidden selected>-- Tidak Ada Satuan Konversi --</option>
                                 @foreach ($dataBarangSatuan as $item)
                                     <option data-subtext="Rp. {{ number_format($item['harga_jual'], 0, ',', '.') }}"
@@ -76,7 +76,8 @@
                                         {{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
-                            <input class="form-control" type="text" wire:model="faktor_konversi" @if ($data->exists) disabled @endif>
+                            <input class="form-control" type="text" wire:model="faktor_konversi"
+                                @if ($data->exists) disabled @endif>
                         </div>
                         @error('faktor_konversi')
                             <span class="text-danger">{{ $message }}</span>
@@ -96,7 +97,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -106,12 +109,12 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>
+                <x-alert />
             </div>
+
+            <x-modal.konfirmasi />
         </form>
     </div>
-
-    <x-alert />
-
 
     <div wire:loading>
         <x-loading />

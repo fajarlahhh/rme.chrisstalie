@@ -16,7 +16,6 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="row w-100">
                     <div class="col-md-4">
                         @if ($data->exists)
@@ -117,7 +116,11 @@
                                     @endphp
                                     @foreach (collect(config('sidebar.menu'))->sortBy('title')->all() as $subKey => $subRow)
                                         @php
-                                            $menu = str_replace([' ', '&', '\'', '.'], '', strtolower($subRow['title']));
+                                            $menu = str_replace(
+                                                [' ', '&', '\'', '.'],
+                                                '',
+                                                strtolower($subRow['title']),
+                                            );
                                         @endphp
                                         <div class="col-lg-6 mb-3">
                                             <div class="form-check">
@@ -146,7 +149,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -156,13 +161,13 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>
+                <x-alert />
             </div>
+
+            <x-modal.konfirmasi />
         </form>
     </div>
 
-    <x-alert />
-
-    
     <div wire:loading>
         <x-loading />
     </div>

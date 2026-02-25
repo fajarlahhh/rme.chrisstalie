@@ -22,4 +22,14 @@ trait KodeakuntransaksiTrait
 
         return $data->first();
     }
+
+    public function getKodeAkunTransaksiByKategori($kategori)
+    {
+        $data  = KeuanganKodeAkunTransaksi::where('kategori', $kategori)->get();
+        if ($data->count() > 1) {
+            return $data;
+        }
+
+        return $data->first();
+    }
 }

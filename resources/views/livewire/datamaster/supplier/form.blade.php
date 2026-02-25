@@ -17,7 +17,6 @@
         </div>
         <form wire:submit.prevent="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="mb-3">
                     <label class="form-label">Nama</label>
                     <input class="form-control" type="text" wire:model="nama" />
@@ -68,7 +67,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -80,7 +81,9 @@
                 </button>
                 <x-alert />
             </div>
-        </form>
+        
+        <x-modal.konfirmasi />
+    </form>
     </div>
     
     <div wire:loading>

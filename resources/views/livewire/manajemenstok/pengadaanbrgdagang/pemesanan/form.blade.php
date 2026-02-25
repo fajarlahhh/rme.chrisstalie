@@ -16,7 +16,6 @@
         </div>
         <form wire:submit.prevent="submit" @submit.prevent="syncToLivewire()">
             <div class="panel-body">
-                <x-alert />
                 <div class="alert alert-info">
                     <h4 class="alert-heading">Data Permintaan</h4>
                     <div class="mb-3">
@@ -156,7 +155,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -166,11 +167,12 @@
                     <span wire:loading class="spinner-border spinner-border-sm"></span>
                     Batal
                 </button>
+                <x-alert />
             </div>
+
+            <x-modal.konfirmasi />
         </form>
     </div>
-
-    <x-alert />
 
     <x-modal.cetak judul='Nota' />
 

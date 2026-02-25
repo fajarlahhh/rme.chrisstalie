@@ -10,13 +10,12 @@
 
     <h1 class="page-header">Pengurangan <small>Opname</small></h1>
 
-    <form wire:submit="submit">
-        <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
-            <div class="panel-heading ui-sortable-handle">
-                <h4 class="panel-title">Form</h4>
-            </div>
+    <div class="panel panel-inverse" data-sortable-id="form-stuff-1">
+        <div class="panel-heading ui-sortable-handle">
+            <h4 class="panel-title">Form</h4>
+        </div>
+        <form wire:submit="submit">
             <div class="panel-body">
-                <x-alert />
                 <div class="alert alert-primary">
                     <div class="mb-3">
                         <label class="form-label">Cari Barang</label>
@@ -36,14 +35,14 @@
                                     var qty = option.data('qty');
                                     if (!nama) return state.text;
                                     return $(`<div>
-                                                    <div style='font-weight:bold'>${nama}</div>
-                                                    <div style='font-size:90%;color:#6c757d'>
-                                                        Harga Beli : ${harga} <br/>
-                                                        Tgl. Kedaluarsa : ${tglExp} <br/>
-                                                        Batch : ${batch} <br/>
-                                                        <strong>Qty : ${qty} ${satuan}</strong> <br/>
-                                                    </div>
-                                                </div>`);
+                                                                                                            <div style='font-weight:bold'>${nama}</div>
+                                                                                                            <div style='font-size:90%;color:#6c757d'>
+                                                                                                                Harga Beli : ${harga} <br/>
+                                                                                                                Tgl. Kedaluarsa : ${tglExp} <br/>
+                                                                                                                Batch : ${batch} <br/>
+                                                                                                                <strong>Qty : ${qty} ${satuan}</strong> <br/>
+                                                                                                            </div>
+                                                                                                        </div>`);
                                 },
                                 templateSelection: function(state) {
                                     if (!state.id) return state.text;
@@ -111,7 +110,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -123,8 +124,10 @@
                 </button>
                 <x-alert />
             </div>
-        </div>
-    </form>
+            <x-modal.konfirmasi />
+        </form>
+    </div>
+
 
     <div wire:loading>
         <x-loading />

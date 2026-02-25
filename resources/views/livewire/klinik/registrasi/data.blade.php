@@ -91,7 +91,9 @@
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                         <button type="button" class="btn btn-primary" wire:click="submitHakKewajiban">Submit</button>
                     </div>
-                </form>
+                
+        <x-modal.konfirmasi />
+    </form>
             </div>
         </div>
     </div>

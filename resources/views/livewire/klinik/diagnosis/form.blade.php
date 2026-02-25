@@ -17,7 +17,6 @@
                 <h4 class="panel-title">Assessment (Penilaian)</h4>
             </div>
             <div class="panel-body">
-                <x-alert />
                 <div class="alert alert-info table-responsive h-400px">
                     <h5>History Diagnosis</h5>
                     <table class="table">
@@ -125,7 +124,9 @@
             </div>
             <div class="panel-footer">
                 @role('administrator|supervisor|operator')
-                    <button type="submit" class="btn btn-success" wire:loading.attr="disabled">
+                    <button type="button" x-init="$($el).on('click', function() {
+                        $('#modal-konfirmasi').modal('show');
+                    })" class="btn btn-success" wire:loading.attr="disabled">
                         <span wire:loading class="spinner-border spinner-border-sm"></span>
                         Submit
                     </button>
@@ -145,6 +146,8 @@
                 <x-alert />
             </div>
         </div>
+    
+        <x-modal.konfirmasi />
     </form>
     
     <div wire:loading>

@@ -150,11 +150,13 @@
                         <x-alert />
                     </div>
                 </div>
+
+                <x-modal.konfirmasi />
             </form>
         </div>
     </div>
     <x-modal.cetak judul='Nota' />
-    
+
     <div wire:loading>
         <x-loading />
     </div>
