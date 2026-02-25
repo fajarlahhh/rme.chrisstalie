@@ -37,7 +37,7 @@ class Index extends Component
     {
         switch ($this->jenis) {
             case 'perhargajual':
-                return StokKeluar::with(['barang', 'barangSatuan.satuanKonversi'])
+                return StokKeluar::with(['barang', 'barangSatuan'])
                     ->when($this->persediaan, fn($q) => $q->whereHas('barang', fn($q) => $q->where('persediaan', $this->persediaan)))
                     ->whereBetween('tanggal', [$this->tanggal1, $this->tanggal2])
                     ->get()
@@ -46,14 +46,14 @@ class Index extends Component
                             'tanggal' => $q->tanggal,
                             'nama' => $q->barang->nama,
                             'barang_id' => $q->barang->nama . $q->barang->id . $q->barang_satuan_id,
-                            'satuan' => $q->barangSatuan->nama . ' ' . $q->barangSatuan->konversi_satuan,
+                            'satuan' => $q->barangSatuan->nama,
                             'harga_jual' => $q->harga,
                             'qty' => $q->qty,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
                 break;
             case 'pertanggalkedaluarsa':
-                return Stok::with(['barang.barangSatuanTerkecil.satuanKonversi'])
+                return Stok::with(['barang.barangSatuanTerkecil'])
                     ->whereNotNull('stok_keluar_id')
                     ->whereBetween('tanggal_keluar', [$this->tanggal1, $this->tanggal2])
                     ->get()
@@ -62,7 +62,7 @@ class Index extends Component
                             'tanggal_kedaluarsa' => $q->tanggal_kedaluarsa,
                             'barang_id' => $q->barang->nama . $q->barang->id . $q->tanggal_kedaluarsa,
                             'nama' => $q->barang->nama,
-                            'satuan' => $q->barang->barangSatuanTerkecil->nama . ' ' . $q->barang->barangSatuanTerkecil->konversi_satuan,
+                            'satuan' => $q->barang->barangSatuanTerkecil->nama,
                             'qty' => 1,
                         ];
                     })->sortBy('barang_id')->groupBy('barang_id')->toArray();
