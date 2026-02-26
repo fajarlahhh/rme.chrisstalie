@@ -9,6 +9,11 @@ class TindakanAlatBarang extends Model
 {
     //
     protected $table = 'tindakan_alat_barang';
+
+    public function tindakan(): BelongsTo
+    {
+        return $this->belongsTo(Tindakan::class);
+    }
     
     public function tarifTindakan(): BelongsTo
     {

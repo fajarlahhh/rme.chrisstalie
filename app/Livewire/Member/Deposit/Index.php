@@ -5,10 +5,15 @@ namespace App\Livewire\Member\Deposit;
 use Livewire\Component;
 use App\Models\Member;
 use App\Models\MemberSaldo;
+use Livewire\WithPagination;
+use Livewire\Attributes\Url;
 
 class Index extends Component
 {
-    public $tanggal1, $tanggal2;
+    use WithPagination;
+
+    #[Url]
+    public $tanggal1, $tanggal2, $cari;
 
     public function mount()
     {
@@ -25,7 +30,10 @@ class Index extends Component
 
     public function getData($paginate = true)
     {
-        $query = MemberSaldo::whereBetween('created_at', [$this->tanggal1 . ' 00:00:00', $this->tanggal2 . ' 23:59:59'])->with('member')->whereNotNull('metode_bayar')->orderBy('created_at', 'desc');
+        $query = MemberSaldo::whereBetween('created_at', [$this->tanggal1 . ' 00:00:00', $this->tanggal2 . ' 23:59:59'])->with('member.pasien')->whereNotNull('metode_bayar')->orderBy('created_at', 'desc')
+            ->where(fn($q) => $q
+                ->where('member_id', 'like', '%' . $this->cari . '%')
+                ->orWhereHas('member', fn($r) => $r->whereHas('pasien', fn($r) => $r->where('nama', 'like', '%' . $this->cari . '%'))));
         return $paginate ? $query->paginate(10) : $query;
     }
 

@@ -293,19 +293,7 @@ return [
                             "title" => "Tindakan",
                             "method" => ["Index"],
                         ],
-                        [
-                            "title" => "Barang",
-                            "method" => ["Index"],
-                        ],
-                        [
-                            "title" => "Kunjungan Pasien",
-                            "method" => ["Index"],
-                        ],
                     ]
-                ],
-                [
-                    "title" => "Laporan Harian Kas",
-                    "method" => ["Index"],
                 ],
                 [
                     "title" => "Laporan Harian Kas",
