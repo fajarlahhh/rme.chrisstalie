@@ -37,7 +37,7 @@
                     @enderror
                 </div>
                 <div class="mb-3">
-                    <label class="form-label">Satuan <small>(Satuan Terkecil)</small></label>
+                    <label class="form-label">Satuan <small class="text-danger">(Ini adalah satuan penjualan terkecil, artinya tidak ada satuan penjualan yang lebih kecil dari ini. Ini tidak dapat diubah lagi. Kesalahan penginputan satuan akan menyebabkan kesalahan stok dan harga jual.)</small></label>
                     <input class="form-control" type="text" wire:model="satuan"
                         @if ($data->exists) disabled @endif />
                     @error('satuan')
