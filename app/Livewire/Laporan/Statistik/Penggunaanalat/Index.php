@@ -28,7 +28,18 @@ class Index extends Component
                 'biaya' => $q->sum(fn($q) => $q->biaya * $q->qty),
                 'qty' => $q->sum('qty'),
             ];
-        })->sortByDesc('nama')->values()->toArray();
+        })->sortByDesc('qty')->values()->toArray();
+    }
+
+    public function print()
+    {
+        $cetak = view('livewire.laporan.statistik.penggunaanalat.cetak', [
+            'cetak' => false,
+            'tanggal1' => $this->tanggal1,
+            'tanggal2' => $this->tanggal2,
+            'data' => $this->getData(),
+        ])->render();
+        session()->flash('cetak', $cetak);
     }
 
     public function render()

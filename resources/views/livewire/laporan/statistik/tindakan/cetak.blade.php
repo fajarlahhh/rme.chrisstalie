@@ -3,7 +3,7 @@
         <img src="/assets/img/login.png" class="w-200px" alt="" />
         <br>
         <br>
-        <h5>Laporan Penggunaan Alat</h5>
+        <h5>Laporan Penggunaan Tindakan</h5>
         <hr>
     </div>
     <br>
@@ -19,7 +19,7 @@
     <thead>
         <tr>
             <th class="bg-gray-300 text-white">No.</th>
-            <th class="bg-gray-300 text-white">Nama Alat</th>
+            <th class="bg-gray-300 text-white">Nama Tindakan</th>
             <th class="bg-gray-300 text-white">Qty</th>
             <th class="bg-gray-300 text-white">Total Biaya</th>
         </tr>

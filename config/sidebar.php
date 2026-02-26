@@ -293,6 +293,10 @@ return [
                             "title" => "Tindakan",
                             "method" => ["Index"],
                         ],
+                        [
+                            "title" => "Kunjungan Pasien",
+                            "method" => ["Index"],
+                        ],
                     ]
                 ],
                 [

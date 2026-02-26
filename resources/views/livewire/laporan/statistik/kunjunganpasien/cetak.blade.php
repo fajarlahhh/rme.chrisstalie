@@ -3,7 +3,7 @@
         <img src="/assets/img/login.png" class="w-200px" alt="" />
         <br>
         <br>
-        <h5>Laporan Penggunaan Alat</h5>
+        <h5>Laporan Kunjungan Pasien</h5>
         <hr>
     </div>
     <br>
@@ -19,7 +19,10 @@
     <thead>
         <tr>
             <th class="bg-gray-300 text-white">No.</th>
-            <th class="bg-gray-300 text-white">Nama Alat</th>
+            <th class="bg-gray-300 text-white">No. RM</th>
+            <th class="bg-gray-300 text-white">Nama Pasien</th>
+            <th class="bg-gray-300 text-white">Alamat</th>
+            <th class="bg-gray-300 text-white">Jenis Kelamin</th>
             <th class="bg-gray-300 text-white">Qty</th>
             <th class="bg-gray-300 text-white">Total Biaya</th>
         </tr>
@@ -28,13 +31,16 @@
         @foreach ($data as $index => $row)
             <tr>
                 <td>{{ $index + 1 }}</td>
+                <td>{{ $row['id'] }}</td>
                 <td>{{ $row['nama'] }}</td>
+                <td>{{ $row['alamat'] }}</td>
+                <td>{{ $row['jenis_kelamin'] }}</td>
                 <td class="text-end">{{ $cetak ? $row['qty'] : number_format($row['qty']) }}</td>
                 <td class="text-end">{{ $cetak ? $row['biaya'] : number_format($row['biaya'], 2) }}</td>
             </tr>
         @endforeach
         <tr>
-            <th colspan="3">TOTAL</th>
+            <th colspan="6">TOTAL</th>
             <th class="text-end">
                 {{ $cetak ? collect($data)->sum('biaya') : number_format(collect($data)->sum('biaya'), 2) }}</th>
         </tr>
