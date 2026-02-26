@@ -76,8 +76,9 @@
                                         {{ $item['nama'] }}</option>
                                 @endforeach
                             </select>
-                            <input class="form-control" type="text" wire:model="faktor_konversi"
-                                @if ($data->exists) disabled @endif>
+                            <input class="form-control" type="text"
+                                placeholder="Jumlah yang ada dalam satuan yg baru terhadap satuan konversi yang dipilih"
+                                wire:model="faktor_konversi" @if ($data->exists) disabled @endif>
                         </div>
                         @error('faktor_konversi')
                             <span class="text-danger">{{ $message }}</span>
