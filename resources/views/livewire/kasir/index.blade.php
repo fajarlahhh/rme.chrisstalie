@@ -195,7 +195,7 @@
                 },
                 hapusResep(index) {
                     this.resep.splice(index, 1);
-                    hitungTotalResep();
+                    this.hitungTotalResep();
                     this.hitungTotalTagihan();
                 },
                 hitungTotalResep() {
