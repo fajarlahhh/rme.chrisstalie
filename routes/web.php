@@ -79,7 +79,7 @@ Route::middleware(['auth'])->group(function () {
                     'alamat' => $q->alamat,
                 ])->toArray();
         });
-        Route::get('pasien', function (Request $req) {
+        Route::get('member', function (Request $req) {
             return Pasien::whereHas('member')->where(
                 fn($q) => $q
                     ->where('nik', 'like', "%$req->cari%")
