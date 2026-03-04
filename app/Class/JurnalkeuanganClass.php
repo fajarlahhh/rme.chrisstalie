@@ -63,7 +63,7 @@ class JurnalkeuanganClass
     public static function tutupBuku($tanggal) : bool
     {
         $periode = \Carbon\Carbon::parse($tanggal)->addMonth()->format('Y-m-01');
-        $keuanganJurnal = KeuanganSaldo::where('periode', $periode)->get();
+        $keuanganJurnal = KeuanganSaldo::where('periode', $periode)->where('tutup_buku', 1)->get();
         if ($keuanganJurnal->count() > 0) {
             return true;
         }

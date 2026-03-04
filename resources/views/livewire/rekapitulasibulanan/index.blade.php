@@ -17,6 +17,13 @@
                     <label class="form-label">Bulan</label>
                     <input type="month" class="form-control" wire:model="bulan" min="2025-09">
                 </div>
+                <div class="mb-3">
+                    <label class="form-label">Tutup Buku</label>
+                    <select class="form-control" wire:model="tutup_buku">
+                        <option value="0">Tidak</option>
+                        <option value="1">Ya</option>
+                    </select>
+                </div>
                 <div class="alert alert-info">
                     <strong>Info:</strong> Rekapitulasi bulanan akan menghitung semua data yang ada pada bulan tersebut.
                     <ul>

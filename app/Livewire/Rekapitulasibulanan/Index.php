@@ -20,7 +20,7 @@ class Index extends Component
 {
     use KodeakuntransaksiTrait;
     #[Url]
-    public $bulan;
+    public $bulan, $tutup_buku = 0;
 
     public function mount()
     {
@@ -127,6 +127,7 @@ class Index extends Component
                     'kredit_jurnal' => $kreditJurnal,
                     'kredit' => $kreditNeraca,
                     'debet' => $debetNeraca,
+                    'tutup_buku' => $this->tutup_buku,
                     'pengguna_id' => auth()->id(),
                     'created_at' => now(),
                     'updated_at' => now(),
@@ -199,9 +200,11 @@ class Index extends Component
             $this->penyusutan($periode);
             $this->stok($periode);
             $this->keuangan($periode);
-            KeuanganJurnal::where('tanggal', 'like', $periode->format('Y-m') . '%')->update([
-                'waktu_tutup_buku' => now(),
-            ]);
+            if ($this->tutup_buku) {
+                KeuanganJurnal::where('tanggal', 'like', $periode->format('Y-m') . '%')->update([
+                    'waktu_tutup_buku' => now(),
+                ]);
+            }
         });
         // $periode->addMonth();
         // }
