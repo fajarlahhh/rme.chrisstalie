@@ -113,5 +113,23 @@
                 <th colspan="2"></th>
             @endrole
         </tr>
+            <tr>
+                <th class="bg-gray-300 text-white">No.</th>
+                <th class="bg-gray-300 text-white">No. Nota</th>
+                <th class="bg-gray-300 text-white">Nama</th>
+                <th class="bg-gray-300 text-white">Alamat</th>
+                <th class="bg-gray-300 text-white">Jenis Kelamin</th>
+                <th class="bg-gray-300 text-white">Tindakan</th>
+                <th class="bg-gray-300 text-white">Resep</th>
+                <th class="bg-gray-300 text-white">Penjualan Barang</th>
+                <th class="bg-gray-300 text-white">Total Sebelum Diskon</th>
+                <th class="bg-gray-300 text-white">Diskon</th>
+                <th class="bg-gray-300 text-white">Total Setelah Diskon</th>
+                @role('administrator|supervisor')
+                    <th class="bg-gray-300 text-white">Kasir</th>
+                @endrole
+                <th class="bg-gray-300 text-white">Metode Bayar</th>
+                <th class="bg-gray-300 text-white">Keterangan</th>
+            </tr>
     </tfoot>
 </table>
