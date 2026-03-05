@@ -18,8 +18,11 @@
             <div class="panel-body">
                 <div class="alert alert-danger">
                     <ul>
-                        <li>Jika barang yang dinputkan adalah pemindahan stok dari apotek ke klinik, maka inputkan harga beli nya sesua dengan <strong>Harga Beli/Modal yang dikeluarkan dari stok apotek</strong></li>
-                        <li>Jika barang yang dinputkan adalah barang lebih dari hasil opname, maka inputkan <strong>Harga Beli/Modal = 0</strong></li>
+                        <li>Jika barang yang dinputkan adalah pemindahan stok dari apotek ke klinik, maka inputkan harga
+                            beli nya sesua dengan <strong>Harga Beli/Modal yang dikeluarkan dari stok apotek</strong>
+                        </li>
+                        <li>Jika barang yang dinputkan adalah barang lebih dari hasil opname, maka inputkan
+                            <strong>Harga Beli/Modal = 0</strong></li>
                     </ul>
                 </div>
                 <div class="mb-3">
@@ -83,6 +86,17 @@
                     <label class="form-label">Qty Masuk (Dalam Satuan {{ $satuan['nama'] ?? '' }})</label>
                     <input type="number" class="form-control" wire:model="qty_masuk" min="1" autocomplete="off">
                     @error('qty_masuk')
+                        <span class="text-danger">{{ $message }}</span>
+                    @enderror
+                </div>
+                <div class="mb-3">
+                    <label class="form-label">Transaksi</label>
+                    <select class="form-control" wire:model="transaksi">
+                        <option value="" selected hidden>-- Pilih Transaksi --</option>
+                        <option value="pemindahan">Pemindahan Stok</option>
+                        <option value="opname">Opname</option>
+                    </select>
+                    @error('harga_jual')
                         <span class="text-danger">{{ $message }}</span>
                     @enderror
                 </div>

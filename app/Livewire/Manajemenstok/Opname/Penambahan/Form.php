@@ -6,7 +6,6 @@ use App\Models\Stok;
 use App\Models\Barang;
 use Livewire\Component;
 use App\Models\StokMasuk;
-use App\Class\BarangClass;
 use App\Class\JurnalkeuanganClass;
 use App\Models\BarangSatuan;
 use Illuminate\Support\Facades\DB;
@@ -17,7 +16,7 @@ class Form extends Component
     use CustomValidationTrait;
     public $dataBarang = [], $barang, $dataStok = [], $barang_id, $dataBarangSatuan = [];
 
-    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli, $tanggal_kedaluarsa, $no_batch;
+    public $satuan_id, $satuan, $tanggal, $qty_masuk, $catatan, $harga_beli, $tanggal_kedaluarsa, $no_batch, $transaksi;
 
     public function updatedBarangId($value)
     {
@@ -52,6 +51,7 @@ class Form extends Component
             'satuan_id' => 'required',
             'no_batch' => 'required',
             'catatan' => 'required',
+            'transaksi' => 'required',
         ]);
 
         DB::transaction(function () {
@@ -69,6 +69,7 @@ class Form extends Component
             $data->barang_satuan_id = $this->satuan_id;
             $data->rasio_dari_terkecil = $this->satuan['rasio_dari_terkecil'];
             $data->harga_beli = $this->harga_beli;
+            $data->transaksi = $this->transaksi;
             $data->pengguna_id = auth()->id();
             $data->save();
 
