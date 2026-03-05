@@ -16,6 +16,12 @@
         </div>
         <form wire:submit="submit">
             <div class="panel-body">
+                <div class="alert alert-danger">
+                    <ul>
+                        <li>Jika barang yang dinputkan adalah pemindahan stok dari apotek ke klinik, maka inputkan harga beli nya sesua dengan <strong>Harga Beli/Modal yang dikeluarkan dari stok apotek</strong></li>
+                        <li>Jika barang yang dinputkan adalah barang lebih dari hasil opname, maka inputkan <strong>Harga Beli/Modal = 0</strong></li>
+                    </ul>
+                </div>
                 <div class="mb-3">
                     <label class="form-label">Cari Barang</label>
                     <div wire:ignore>
